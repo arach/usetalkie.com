@@ -57,7 +57,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} dark`}>
+    <html lang="en" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} dark`} suppressHydrationWarning>
       <head>
         {/* Apply saved/system theme before paint to prevent FOUC */}
         <Script id="theme-init" strategy="beforeInteractive">

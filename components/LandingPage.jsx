@@ -28,6 +28,9 @@ import HeroBadge from './HeroBadge'
 import PricingSection from './PricingSection'
 import ThemeToggle from './ThemeToggle'
 
+// Feature flags
+const SHOW_AGENTS = false // Hide Talkie for Agents until ready
+
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
   const [pricingActive, setPricingActive] = useState(false)
@@ -88,12 +91,14 @@ export default function LandingPage() {
             >
               Talkie for Mobile
             </Link>
-            <Link
-              href="/workflows"
-              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
-            >
-              Talkie for Agents
-            </Link>
+            {SHOW_AGENTS && (
+              <Link
+                href="/workflows"
+                className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
+              >
+                Talkie for Agents
+              </Link>
+            )}
             <Link
               href="/philosophy"
               className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
@@ -138,14 +143,16 @@ export default function LandingPage() {
                 <Smartphone className="w-4 h-4" />
                 Talkie for Mobile
               </Link>
-              <Link
-                href="/workflows"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-              >
-                <Layers className="w-4 h-4" />
-                Automation
-              </Link>
+              {SHOW_AGENTS && (
+                <Link
+                  href="/workflows"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                >
+                  <Layers className="w-4 h-4" />
+                  Automation
+                </Link>
+              )}
               <Link
                 href="/philosophy"
                 onClick={() => setMobileMenuOpen(false)}
@@ -207,34 +214,39 @@ export default function LandingPage() {
             Drive all your Mac apps when you&apos;re working. Capture memos on iPhone and Watch when you&apos;re on the go.
           </p>
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-            <div className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)]">
+          <div className={`mt-8 grid grid-cols-1 gap-4 text-left ${SHOW_AGENTS ? 'sm:grid-cols-3' : 'sm:grid-cols-2 max-w-2xl mx-auto'}`}>
+            <Link href="/dictation" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
               <div className="flex items-center gap-2 mb-2">
                 <Laptop className="w-4 h-4 text-emerald-500" />
-                <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">Talkie for Mac</span>
+                <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 group-hover/triad:text-emerald-600 dark:group-hover/triad:text-emerald-400 transition-colors">Talkie for Mac</span>
+                <ArrowRight className="w-3 h-3 text-zinc-400 ml-auto opacity-0 -translate-x-2 group-hover/triad:opacity-100 group-hover/triad:translate-x-0 transition-all" />
               </div>
               <p className="text-sm text-zinc-700 dark:text-zinc-300">
                 Voice to action with dictation and workflows.
               </p>
-            </div>
-            <div className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)]">
+            </Link>
+            <Link href="/capture" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
               <div className="flex items-center gap-2 mb-2">
                 <Smartphone className="w-4 h-4 text-emerald-500" />
-                <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">Talkie for Mobile</span>
+                <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 group-hover/triad:text-emerald-600 dark:group-hover/triad:text-emerald-400 transition-colors">Talkie for Mobile</span>
+                <ArrowRight className="w-3 h-3 text-zinc-400 ml-auto opacity-0 -translate-x-2 group-hover/triad:opacity-100 group-hover/triad:translate-x-0 transition-all" />
               </div>
               <p className="text-sm text-zinc-700 dark:text-zinc-300">
                 Capture on iPhone and Watch, synced to Mac.
               </p>
-            </div>
-            <div className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)]">
-              <div className="flex items-center gap-2 mb-2">
-                <Bot className="w-4 h-4 text-emerald-500" />
-                <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">Talkie for Agents</span>
-              </div>
-              <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                Voice-initiated workflows for tasks and documents.
-              </p>
-            </div>
+            </Link>
+            {SHOW_AGENTS && (
+              <Link href="/workflows" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
+                <div className="flex items-center gap-2 mb-2">
+                  <Bot className="w-4 h-4 text-emerald-500" />
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 group-hover/triad:text-emerald-600 dark:group-hover/triad:text-emerald-400 transition-colors">Talkie for Agents</span>
+                  <ArrowRight className="w-3 h-3 text-zinc-400 ml-auto opacity-0 -translate-x-2 group-hover/triad:opacity-100 group-hover/triad:translate-x-0 transition-all" />
+                </div>
+                <p className="text-sm text-zinc-700 dark:text-zinc-300">
+                  Voice-initiated workflows for tasks and documents.
+                </p>
+              </Link>
+            )}
           </div>
 
           <div className="mt-8 flex justify-center">
@@ -267,7 +279,7 @@ export default function LandingPage() {
                 {[
                   { id: 'mac', label: 'Talkie for Mac', icon: Laptop },
                   { id: 'go', label: 'Talkie for Mobile', icon: Smartphone },
-                  { id: 'agents', label: 'Talkie for Agents', icon: Bot },
+                  ...(SHOW_AGENTS ? [{ id: 'agents', label: 'Talkie for Agents', icon: Bot }] : []),
                 ].map(({ id, label, icon: Icon }) => (
                   <button
                     key={id}
@@ -349,7 +361,7 @@ export default function LandingPage() {
                 </div>
               )}
 
-              {featureTab === 'agents' && (
+              {SHOW_AGENTS && featureTab === 'agents' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
                   {[
                     {
@@ -399,7 +411,7 @@ export default function LandingPage() {
                     Explore Talkie for Mobile <ArrowRight className="w-3 h-3" />
                   </Link>
                 )}
-                {featureTab === 'agents' && (
+                {SHOW_AGENTS && featureTab === 'agents' && (
                   <Link
                     href="/workflows"
                     className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
