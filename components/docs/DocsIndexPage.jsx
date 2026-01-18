@@ -4,6 +4,9 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Server, Globe, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Route } from 'lucide-react'
 import Container from '../Container'
 
+// Feature flags
+const SHOW_TAILSCALE_DOCS = false // Hide Tailscale setup until needed
+
 const DocCard = ({ href, icon: Icon, title, description, color }) => (
   <Link
     href={href}
@@ -117,13 +120,15 @@ export default function DocsIndexPage() {
                 color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
               />
 
-              <DocCard
-                href="/docs/tailscale"
-                icon={Globe}
-                title="Tailscale Configuration"
-                description="Set up secure, peer-to-peer networking between your Mac and iPhone. No port forwarding or cloud relay needed."
-                color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
-              />
+              {SHOW_TAILSCALE_DOCS && (
+                <DocCard
+                  href="/docs/tailscale"
+                  icon={Globe}
+                  title="Tailscale Configuration"
+                  description="Set up secure, peer-to-peer networking between your Mac and iPhone. No port forwarding or cloud relay needed."
+                  color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
+                />
+              )}
             </div>
           </div>
 
