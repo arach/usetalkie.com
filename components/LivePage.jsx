@@ -164,7 +164,7 @@ export default function LivePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="https://github.com/arach/usetalkie.com/releases/download/v2.0.8/Talkie-2.0.8.dmg" className="h-12 px-8 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-emerald-500/25">
+              <a href="https://github.com/arach/usetalkie.com/releases/download/v2.0.9/Talkie-2.0.9.dmg" className="h-12 px-8 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-emerald-500/25">
                 <Download className="w-4 h-4" />
                 <span>Download for Mac</span>
               </a>
@@ -1095,7 +1095,7 @@ export default function LivePage() {
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-10 max-w-lg mx-auto">
             Get early access to Talkie and turn voice into action across Mac, iPhone, and Watch.
           </p>
-          <a href="https://github.com/arach/usetalkie.com/releases/download/v2.0.8/Talkie-2.0.8.dmg" className="inline-flex h-14 px-10 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all items-center gap-3 shadow-xl shadow-emerald-500/25">
+          <a href="https://github.com/arach/usetalkie.com/releases/download/v2.0.9/Talkie-2.0.9.dmg" className="inline-flex h-14 px-10 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all items-center gap-3 shadow-xl shadow-emerald-500/25">
             <Download className="w-5 h-5" />
             <span>Download for Mac</span>
           </a>
