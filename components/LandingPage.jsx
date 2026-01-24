@@ -590,9 +590,9 @@ export default function LandingPage() {
             <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white transition-colors group-hover/footer-logo:text-emerald-600 dark:group-hover/footer-logo:text-emerald-400">Talkie</span>
           </div>
           <div className="flex gap-8 text-[10px] font-mono uppercase text-zinc-500">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">Twitter</a>
+            <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">@usetalkieapp</a>
             <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">Discord</a>
-            <a href="mailto:hello@talkie.arach.dev" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
+            <a href="mailto:hello@usetalkie.com" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
             <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>
             <a href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
           </div>
