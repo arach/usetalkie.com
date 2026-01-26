@@ -251,7 +251,7 @@ export default function LandingPage() {
 
           <div className="mt-8 flex justify-center">
             <a
-              href="https://github.com/arach/usetalkie.com/releases/download/v2.0.11/Talkie-2.0.11.dmg"
+              href="https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg"
               className="h-12 px-8 rounded bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl"
             >
               <Laptop className="w-4 h-4" />
