@@ -58,6 +58,10 @@ export default function AboutPage() {
                 and gets out of your way. No subscriptions, no cloud dependency. Just press a key, talk, and
                 your words appear wherever you're typing.
               </p>
+              <p>
+                Dictation is just the beginning. When you take voice-first workflows seriously, a whole surface
+                opens up: memory, analysis, automation, context. That's where Talkie is headed.
+              </p>
             </div>
           </div>
 
