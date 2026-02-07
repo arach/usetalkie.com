@@ -39,19 +39,20 @@ export default function AboutPage() {
             <ConsoleHeader label="THE STORY" />
 
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white leading-tight uppercase mb-4">
-              Voice-first productivity, built by someone who believes talking is faster than typing.
+              You don't get the full value of AI unless you can communicate at high velocity.
             </h1>
 
             <div className="space-y-3 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
               <p>
-                Talkie started as a personal frustration. As someone who spends all day coding and writing,
-                I found myself wishing I could just <em>talk</em> to my computer instead of typing everything out.
-                Existing voice tools were clunky, required internet, or didn't integrate well with my workflow.
+                Typing is a bottleneck. The faster you can get ideas out of your head and into your tools,
+                the more you can leverage AI to amplify your work. Voice is the unlock.
               </p>
               <p>
-                So I built what I wanted: a native macOS app that lives in your menu bar, transcribes locally
-                with state-of-the-art AI, and gets out of your way. No subscriptions, no cloud dependency,
-                no privacy concerns. Just press a key, talk, and your words appear wherever you're typing.
+                Talkie started as a personal frustration. Existing voice tools were clunky, required internet,
+                or didn't integrate well with my workflow. So I built what I wanted: a native macOS app that
+                lives in your menu bar, transcribes locally with state-of-the-art AI, and gets out of your way.
+                No subscriptions, no cloud dependency, no privacy concerns. Just press a key, talk, and your
+                words appear wherever you're typing.
               </p>
             </div>
           </div>
