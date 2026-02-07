@@ -75,7 +75,7 @@ export default function AboutPage() {
                 <img
                   src="/arach-circle.png"
                   alt="Arach Tchoupani"
-                  className="w-28 h-28 md:w-36 md:h-36 rounded-lg object-cover flex-shrink-0"
+                  className="w-28 h-28 md:w-36 md:h-36 rounded-lg object-cover flex-shrink-0 transition-transform duration-300 hover:rotate-3"
                 />
 
                 <div className="flex-1">
