@@ -3,10 +3,10 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Github, Linkedin, Mail, MapPin, Building2, Sparkles } from 'lucide-react'
 
-const ConsoleHeader = ({ label }) => (
+const ConsoleHeader = ({ label, green }) => (
   <div className="mb-6 select-none">
-    <h2 className="text-xs font-mono font-bold uppercase text-zinc-500">&gt; {label}</h2>
-    <div className="w-full border-b border-zinc-300 dark:border-zinc-700 mt-2"></div>
+    <h2 className={`text-xs font-mono font-bold uppercase ${green ? 'text-emerald-600 dark:text-emerald-500' : 'text-zinc-500'}`}>&gt; {label}</h2>
+    <div className={`w-full border-b mt-2 ${green ? 'border-emerald-500/30' : 'border-zinc-300 dark:border-zinc-700'}`}></div>
   </div>
 )
 
@@ -66,7 +66,7 @@ export default function AboutPage() {
                 <img
                   src="/arach-circle.png"
                   alt="Arach Tchoupani"
-                  className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover flex-shrink-0"
+                  className="w-28 h-28 md:w-36 md:h-36 rounded-lg object-cover flex-shrink-0"
                 />
 
                 <div className="flex-1">
@@ -147,7 +147,7 @@ export default function AboutPage() {
 
           {/* CONNECT */}
           <div>
-            <ConsoleHeader label="CONNECT" />
+            <ConsoleHeader label="CONNECT" green />
 
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
               Follow Talkie for updates, tips, and behind-the-scenes development.
