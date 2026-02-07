@@ -62,10 +62,12 @@ export default function AboutPage() {
 
           <div className="bg-zinc-100 dark:bg-zinc-800/50 rounded-2xl p-8 md:p-10">
             <div className="flex flex-col md:flex-row gap-8 items-start">
-              {/* Avatar placeholder */}
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0">
-                <span className="text-4xl md:text-5xl font-bold text-white">A</span>
-              </div>
+              {/* Profile photo */}
+              <img
+                src="/arach-circle.png"
+                alt="Arach Tchoupani"
+                className="w-24 h-24 md:w-32 md:h-32 rounded-2xl object-cover flex-shrink-0"
+              />
 
               <div className="flex-1">
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
