@@ -1,0 +1,17 @@
+{
+  "name": "talkie-marketing-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing API for Talkie - handles email signups, mockup generation, and growth functions. Deploy to marketing.usetalkie.com",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.1.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "vercel": "^39.0.0"
+  }
+}

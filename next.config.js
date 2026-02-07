@@ -14,4 +14,4 @@ if (basePath) {
   config.assetPrefix = `${basePath}/`
 }
 
-module.exports = config
+export default config

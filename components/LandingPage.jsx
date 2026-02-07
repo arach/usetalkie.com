@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import {
   Mic,
@@ -27,6 +27,7 @@ import Container from './Container'
 import HeroBadge from './HeroBadge'
 import PricingSection from './PricingSection'
 import ThemeToggle from './ThemeToggle'
+import { trackDownload, trackScrollDepth, trackFeatureTab, captureUTMParams } from '../lib/analytics'
 
 // Feature flags
 const SHOW_AGENTS = false // Hide Talkie for Agents until ready
@@ -36,10 +37,29 @@ export default function LandingPage() {
   const [pricingActive, setPricingActive] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [featureTab, setFeatureTab] = useState('mac')
+  const scrollMilestones = useRef(new Set())
 
+  // Capture UTM params on mount
+  useEffect(() => {
+    captureUTMParams()
+  }, [])
+
+  // Scroll tracking
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 8)
+
+      // Track scroll depth milestones
+      const scrollPercent = Math.round(
+        (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+      )
+      const milestones = [25, 50, 75, 100]
+      for (const milestone of milestones) {
+        if (scrollPercent >= milestone && !scrollMilestones.current.has(milestone)) {
+          scrollMilestones.current.add(milestone)
+          trackScrollDepth(milestone)
+        }
+      }
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -100,6 +120,12 @@ export default function LandingPage() {
               </Link>
             )}
             <Link
+              href="/demo"
+              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
+            >
+              Demo
+            </Link>
+            <Link
               href="/philosophy"
               className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
             >
@@ -113,15 +139,19 @@ export default function LandingPage() {
             >
               Pricing
             </a>
+            <ThemeToggle floating={false} />
           </div>
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 -mr-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile: theme toggle + menu button */}
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle floating={false} />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 -mr-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </Container>
         {/* Mobile menu */}
         {mobileMenuOpen && (
@@ -153,6 +183,14 @@ export default function LandingPage() {
                   Automation
                 </Link>
               )}
+              <Link
+                href="/demo"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <Zap className="w-4 h-4" />
+                Demo
+              </Link>
               <Link
                 href="/philosophy"
                 onClick={() => setMobileMenuOpen(false)}
@@ -252,6 +290,7 @@ export default function LandingPage() {
           <div className="mt-8 flex justify-center">
             <a
               href="https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg"
+              onClick={() => trackDownload('latest', 'hero')}
               className="h-12 px-8 rounded bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl"
             >
               <Laptop className="w-4 h-4" />
@@ -284,7 +323,7 @@ export default function LandingPage() {
                   <button
                     key={id}
                     type="button"
-                    onClick={() => setFeatureTab(id)}
+                    onClick={() => { setFeatureTab(id); trackFeatureTab(id) }}
                   className={`group inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest transition-all ${
                     featureTab === id
                       ? 'bg-zinc-900 text-white dark:bg-white dark:text-black shadow-[0_10px_30px_rgba(0,0,0,0.18)]'
@@ -574,7 +613,7 @@ export default function LandingPage() {
             <span className="font-display italic">Stop uploading your thoughts</span> <br className="hidden md:block" /> <span className="font-bold">to someone else&apos;s cloud.</span>
           </h2>
           <div className="flex justify-center">
-            <a href="https://github.com/arach/usetalkie.com/releases/download/v2.0.11/Talkie-2.0.11.dmg" className="group/btn relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider overflow-hidden rounded hover:shadow-lg transition-shadow">
+            <a href="https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg" onClick={() => trackDownload('latest', 'cta_bottom')} className="group/btn relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider overflow-hidden rounded hover:shadow-lg transition-shadow">
               <span className="relative z-10">Download for Mac</span>
               <ArrowRight className="w-4 h-4 relative z-10 group-hover/btn:translate-x-1 transition-transform" />
             </a>
@@ -599,8 +638,6 @@ export default function LandingPage() {
           <p className="text-[10px] font-mono uppercase text-zinc-400">© {new Date().getFullYear()} Talkie Systems Inc.</p>
         </Container>
       </footer>
-      {/* Floating, understated theme toggle */}
-      <ThemeToggle />
     </div>
   )
 }
