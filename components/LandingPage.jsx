@@ -22,6 +22,7 @@ import {
   Book,
   Terminal,
   Layers,
+  User,
 } from 'lucide-react'
 import Container from './Container'
 import HeroBadge from './HeroBadge'
@@ -131,6 +132,12 @@ export default function LandingPage() {
             >
               Philosophy
             </Link>
+            <Link
+              href="/about"
+              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
+            >
+              About
+            </Link>
             <a
               href="#pricing"
               className={`cursor-pointer transition-colors ${
@@ -198,6 +205,14 @@ export default function LandingPage() {
               >
                 <Quote className="w-4 h-4" />
                 Philosophy
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <User className="w-4 h-4" />
+                About
               </Link>
               <a
                 href="#pricing"
@@ -628,10 +643,13 @@ export default function LandingPage() {
             <div className="w-3 h-3 bg-zinc-900 dark:bg-white rounded-sm transition-all group-hover/footer-logo:rotate-45 group-hover/footer-logo:bg-emerald-500 dark:group-hover/footer-logo:bg-emerald-400"></div>
             <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white transition-colors group-hover/footer-logo:text-emerald-600 dark:group-hover/footer-logo:text-emerald-400">Talkie</span>
           </div>
-          <div className="flex gap-8 text-[10px] font-mono uppercase text-zinc-500">
-            <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">@usetalkieapp</a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">Discord</a>
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] font-mono uppercase text-zinc-500">
+            <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors font-bold">
+              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              @usetalkieapp
+            </a>
             <a href="mailto:hello@usetalkie.com" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
+            <a href="/about" className="hover:text-black dark:hover:text-white transition-colors">About</a>
             <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>
             <a href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
           </div>
