@@ -1,20 +1,30 @@
 "use client"
-import React, { useState, useEffect } from 'react'
-import { Check, Clock } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Check, Clock, ChevronDown } from 'lucide-react'
+import { trackSignup, getStoredUTMParams } from '../lib/analytics'
+
+const USE_CASES = [
+  { value: '', label: 'What will you use Talkie for?' },
+  { value: 'dictation', label: 'Dictation & writing' },
+  { value: 'notes', label: 'Voice memos & notes' },
+  { value: 'workflows', label: 'Automating workflows' },
+  { value: 'coding', label: 'Coding & development' },
+  { value: 'other', label: 'Something else' },
+]
 
 export default function PricingSection() {
   const [email, setEmail] = useState('')
+  const [useCase, setUseCase] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [errorMsg, setErrorMsg] = useState('')
   const [trap, setTrap] = useState('') // honeypot
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-
-  // Use env var if provided; otherwise default to your Formspree endpoint
-  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || 'mkgaanoo'
+  const formLoadTime = useRef(Date.now())
 
   // Countdown to end of January 2026
   useEffect(() => {
-    const launchDate = new Date('2026-01-31T23:59:59')
+    const launchDate = new Date('2026-03-21T23:59:59')
 
     const updateCountdown = () => {
       const now = new Date()
@@ -38,36 +48,97 @@ export default function PricingSection() {
     return () => clearInterval(interval)
   }, [])
 
+  // API endpoint - marketing.usetalkie.com
+  const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://marketing.usetalkie.com'
+  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || 'mkgaanoo'
+
+  const submitToFormspree = async (em, selectedUseCase) => {
+    const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        email: em,
+        useCase: selectedUseCase || 'not_specified',
+        _subject: `Talkie Early Access: ${selectedUseCase || 'not_specified'}`,
+      }),
+    })
+    return res.ok
+  }
+
   const handleEmailSubmit = async (e) => {
     e.preventDefault()
     const em = email.trim()
-    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return
-
-    if (!formspreeId) {
-      // graceful fallback to mailto if not configured
-      const subject = encodeURIComponent('Talkie Early Access')
-      const body = encodeURIComponent(`Sign me up for early access: ${em}`)
-      window.location.href = `mailto:hello@example.com?subject=${subject}&body=${body}`
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      setErrorMsg('Please enter a valid email')
       return
     }
 
+    // Honeypot check - silently succeed
+    if (trap) {
+      setStatus('success')
+      setIsSubmitted(true)
+      return
+    }
+
+    setErrorMsg('')
+    setStatus('sending')
+
     try {
-      if (trap) { setIsSubmitted(true); setEmail(''); return } // Honeypot trips as success silently
-      setStatus('sending')
-      const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+      // Try the marketing API (deployed to marketing.usetalkie.com)
+      const res = await fetch(`${apiUrl}/subscribe`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email: em, _subject: 'Talkie Early Access' }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: em,
+          useCase: useCase || 'not_specified',
+          honeypot: trap,
+          formLoadTime: formLoadTime.current,
+          utm: getStoredUTMParams(),
+        }),
       })
+
       if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setStatus('success')
+          setIsSubmitted(true)
+          setEmail('')
+          setUseCase('')
+          trackSignup(useCase || 'not_specified')
+          return
+        }
+      }
+
+      // If API failed, try Formspree fallback
+      const formspreeOk = await submitToFormspree(em, useCase)
+      if (formspreeOk) {
         setStatus('success')
         setIsSubmitted(true)
         setEmail('')
+        setUseCase('')
+        trackSignup(useCase || 'not_specified')
       } else {
         setStatus('error')
+        setErrorMsg('Something went wrong. Please try again.')
       }
     } catch {
-      setStatus('error')
+      // API route doesn't exist (static hosting) - fall back to Formspree
+      try {
+        const formspreeOk = await submitToFormspree(em, useCase)
+        if (formspreeOk) {
+          setStatus('success')
+          setIsSubmitted(true)
+          setEmail('')
+          setUseCase('')
+          trackSignup(useCase || 'not_specified')
+        } else {
+          setStatus('error')
+          setErrorMsg('Something went wrong. Please try again.')
+        }
+      } catch {
+        setStatus('error')
+        setErrorMsg('Network error. Please try again.')
+      }
     }
   }
 
@@ -146,14 +217,32 @@ export default function PricingSection() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm font-mono text-center text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                   />
-                  <input type="text" tabIndex="-1" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} className="hidden" aria-hidden="true" />
+                  <div className="relative">
+                    <select
+                      value={useCase}
+                      onChange={(e) => setUseCase(e.target.value)}
+                      className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm font-mono text-center text-zinc-900 dark:text-white appearance-none focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors cursor-pointer"
+                    >
+                      {USE_CASES.map(({ value, label }) => (
+                        <option key={value} value={value} className="text-left">
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+                  </div>
+                  {/* Honeypot - hidden from users */}
+                  <input type="text" tabIndex="-1" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} className="absolute -left-[9999px]" aria-hidden="true" />
                   <button
                     type="submit"
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-3 text-xs font-bold uppercase tracking-widest transition-colors"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-3 text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50"
                     disabled={status === 'sending'}
                   >
                     {status === 'sending' ? 'Sending…' : 'Join Early Testers'}
                   </button>
+                  {errorMsg && (
+                    <p className="text-[10px] text-center text-red-500 mt-1">{errorMsg}</p>
+                  )}
                   <p className="text-[10px] text-center text-zinc-400 mt-2">
                     Early testers get launch discounts.
                   </p>

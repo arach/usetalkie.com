@@ -152,7 +152,7 @@ export default function FeaturesPage() {
               <div className="flex flex-col gap-1 text-left">
                 <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
                   <Monitor className="w-3 h-3" />
-                  macOS 13+ • Workflow Editor
+                  macOS 26+ • Workflow Editor
                 </div>
                 <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-400 uppercase">
                   <Terminal className="w-3 h-3 text-purple-500" />
