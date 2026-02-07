@@ -5,8 +5,8 @@ import { ArrowLeft, Github, Linkedin, Mail, MapPin, Building2, Sparkles } from '
 
 const ConsoleHeader = ({ label, green }) => (
   <div className="mb-6 select-none">
-    <h2 className={`text-xs font-mono font-bold uppercase ${green ? 'text-emerald-600 dark:text-emerald-500' : 'text-zinc-500'}`}>&gt; {label}</h2>
-    <div className={`w-full border-b mt-2 ${green ? 'border-emerald-500/30' : 'border-zinc-300 dark:border-zinc-700'}`}></div>
+    <h2 className={`text-xs font-mono font-bold uppercase transition-colors ${green ? 'text-emerald-600 dark:text-emerald-500' : 'text-zinc-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-500'}`}>&gt; {label}</h2>
+    <div className={`w-full border-b mt-2 transition-colors ${green ? 'border-emerald-500/30' : 'border-zinc-300 dark:border-zinc-700 group-hover:border-emerald-500/30'}`}></div>
   </div>
 )
 
@@ -35,7 +35,7 @@ export default function AboutPage() {
         <article className="mx-auto max-w-3xl">
 
           {/* THE STORY */}
-          <div className="mb-12">
+          <div className="mb-12 group">
             <ConsoleHeader label="THE STORY" />
 
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white leading-tight uppercase mb-4">
@@ -62,7 +62,7 @@ export default function AboutPage() {
           </div>
 
           {/* THE FOUNDER */}
-          <div className="mb-12">
+          <div className="mb-12 group">
             <ConsoleHeader label="THE FOUNDER" />
 
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 backdrop-blur-xl p-6">
@@ -151,7 +151,7 @@ export default function AboutPage() {
           </div>
 
           {/* CONNECT */}
-          <div>
+          <div className="group">
             <ConsoleHeader label="CONNECT" green />
 
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
