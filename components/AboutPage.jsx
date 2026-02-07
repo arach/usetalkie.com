@@ -103,13 +103,13 @@ export default function AboutPage() {
                 {/* Social Links */}
                 <div className="flex flex-wrap gap-3">
                   <a
-                    href="https://x.com/araborni"
+                    href="https://x.com/arach"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
                   >
                     <Twitter className="w-4 h-4" />
-                    @araborni
+                    @arach
                   </a>
                   <a
                     href="https://github.com/arach"
