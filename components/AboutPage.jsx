@@ -162,6 +162,29 @@ export default function AboutPage() {
               Follow Talkie for updates, tips, and behind-the-scenes development.
             </p>
 
+            {/* Newsletter signup */}
+            <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 p-6 mb-6">
+              <p className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-500 mb-3">Stay informed</p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                Occasional updates on new features, voice-first workflows, and what I'm building.
+              </p>
+              <form className="flex gap-2" action="https://buttondown.com/api/emails/embed-subscribe/talkie" method="post" target="_blank">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                  className="flex-1 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500"
+                />
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </div>
+
             <div className="flex flex-wrap gap-3">
               <a
                 href="https://x.com/usetalkieapp"
