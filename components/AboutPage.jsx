@@ -81,7 +81,7 @@ export default function AboutPage() {
                   15+ years in tech, from software engineer to CTO. Previously co-founded
                   Breathe Life (acquired 2022), worked at Meta on Creators and Facebook.
                   Now focused on AI-powered tools that make work feel more natural.
-                  Based in the SF Bay Area.
+                  Based in Montreal, visits SF often.
                 </p>
 
                 {/* Stats */}
@@ -92,7 +92,7 @@ export default function AboutPage() {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
                     <MapPin className="w-4 h-4" />
-                    <span>SF Bay Area</span>
+                    <span>Montreal / SF</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
                     <Sparkles className="w-4 h-4" />
@@ -174,7 +174,7 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="border-t border-zinc-200 dark:border-zinc-800 py-8 mt-20">
         <div className="max-w-4xl mx-auto px-4 text-center text-sm text-zinc-500 dark:text-zinc-500">
-          <p>&copy; {new Date().getFullYear()} Talkie. Built with care in San Francisco.</p>
+          <p>&copy; {new Date().getFullYear()} Talkie. Built with care in Montreal.</p>
         </div>
       </footer>
     </div>
