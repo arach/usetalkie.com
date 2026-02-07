@@ -48,10 +48,10 @@ export default function AboutPage() {
                 the more you can leverage AI to amplify your work. Voice is the unlock.
               </p>
               <p>
-                Existing voice tools never treated developers as first-class citizens. They were clunky,
-                required internet, or locked your data away. So I built Talkie for engineers and tech-forward
-                people who want control: open data, everything is a file, fully pluggable and hookable.
-                Your data. We want you to tinker.
+                I was a power user of early voice tools like SuperWhisper and Whisper Flow — they were great
+                and opened my eyes to what was possible. But none of them treated developers as first-class
+                citizens. So I built Talkie for engineers and tech-forward people who want control: open data,
+                everything is a file, fully pluggable and hookable. Your data. We want you to tinker.
               </p>
               <p>
                 A native macOS app that lives in your menu bar, transcribes locally with state-of-the-art AI,
