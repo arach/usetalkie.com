@@ -94,9 +94,7 @@ export default function LandingPage() {
       }`}>
         <Container className="h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded bg-gradient-to-br from-emerald-500 to-teal-400 text-white shadow-sm">
-              <Mic className="h-3.5 w-3.5" />
-            </div>
+            <img src="/talkie-icon.png" alt="Talkie" className="h-7 w-7 rounded" />
             <span className="font-bold text-base tracking-tight font-mono uppercase">Talkie</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -639,9 +637,9 @@ export default function LandingPage() {
 
       <footer className="py-12 bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
         <Container className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="group/footer-logo flex items-center gap-2 cursor-default">
-            <div className="w-3 h-3 bg-zinc-900 dark:bg-white rounded-sm transition-all group-hover/footer-logo:rotate-45 group-hover/footer-logo:bg-emerald-500 dark:group-hover/footer-logo:bg-emerald-400"></div>
-            <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white transition-colors group-hover/footer-logo:text-emerald-600 dark:group-hover/footer-logo:text-emerald-400">Talkie</span>
+          <div className="flex items-center gap-2">
+            <img src="/talkie-icon.png" alt="Talkie" className="h-5 w-5 rounded" />
+            <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Talkie</span>
           </div>
           <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] font-mono uppercase text-zinc-500">
             <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors font-bold">
