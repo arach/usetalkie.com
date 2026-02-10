@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request) {
   try {
     const { email } = await request.json()
@@ -10,9 +8,10 @@ export async function POST(request) {
       return Response.json({ error: 'Email is required' }, { status: 400 })
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.contacts.create({
       email,
-      segments: [{ id: process.env.RESEND_SEGMENT_ID }],
+      audienceId: process.env.RESEND_AUDIENCE_ID,
     })
 
     return Response.json({ success: true })
