@@ -1,7 +1,7 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Github, Linkedin, Mail, MapPin, Building2, Sparkles } from 'lucide-react'
+import { ArrowLeft, Github, Linkedin, Mail, MapPin, Building2, Sparkles, Check, Loader2 } from 'lucide-react'
 
 const ConsoleHeader = ({ label, green }) => (
   <div className="mb-6 select-none">
@@ -11,6 +11,31 @@ const ConsoleHeader = ({ label, green }) => (
 )
 
 export default function AboutPage() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState('idle') // idle, loading, success, error
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault()
+    setStatus('loading')
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      if (res.ok) {
+        setStatus('success')
+        setEmail('')
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
       {/* Navigation */}
@@ -105,7 +130,7 @@ export default function AboutPage() {
                     </div>
                     <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>AI/ML enthusiast</span>
+                      <span>AI pilled, voice pilled</span>
                     </div>
                   </div>
 
@@ -159,51 +184,71 @@ export default function AboutPage() {
             <ConsoleHeader label="CONNECT" />
 
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
-              Follow Talkie for updates, tips, and behind-the-scenes development.
+              I love hearing from users. Feedback, ideas, questions, or just a quick hello. Don't be a stranger.
             </p>
 
-            {/* Newsletter signup */}
-            <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 p-6 mb-6">
-              <p className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-500 mb-3">Stay informed</p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                Occasional updates on new features, voice-first workflows, and what I'm building.
-              </p>
-              <form className="flex gap-2" action="https://buttondown.com/api/emails/embed-subscribe/talkie" method="post" target="_blank">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  required
-                  className="flex-1 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
+            <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 p-6">
+              {/* Newsletter */}
+              <div className="mb-6">
+                <p className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-500 mb-2">Newsletter</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                  I send occasional updates on new features and what I'm working on. No spam, unsubscribe anytime.
+                </p>
+                {status === 'success' ? (
+                  <div className="inline-flex items-center gap-2 px-4 py-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded text-sm text-emerald-700 dark:text-emerald-400">
+                    <Check className="w-4 h-4" />
+                    You're subscribed. Thanks for joining.
+                  </div>
+                ) : (
+                  <form className="flex gap-2 max-w-md" onSubmit={handleSubscribe}>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      required
+                      disabled={status === 'loading'}
+                      className="flex-1 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 disabled:opacity-50"
+                    />
+                    <button
+                      type="submit"
+                      disabled={status === 'loading'}
+                      className="px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {status === 'loading' ? (
+                        <>
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                          Subscribing
+                        </>
+                      ) : (
+                        'Subscribe'
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
 
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="https://x.com/usetalkieapp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-                Follow @usetalkieapp
-              </a>
-              <a
-                href="mailto:hey@usetalkie.com"
-                className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                hey@usetalkie.com
-              </a>
+              {/* Social & Contact */}
+              <div className="flex flex-wrap gap-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+                <a
+                  href="https://x.com/usetalkieapp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                  @usetalkieapp
+                </a>
+                <a
+                  href="mailto:hey@usetalkie.com"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                >
+                  <Mail className="w-4 h-4" />
+                  hey@usetalkie.com
+                </a>
+              </div>
             </div>
           </div>
 
@@ -213,9 +258,9 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="py-12 bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
         <div className="max-w-3xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="group/footer-logo flex items-center gap-2 cursor-default">
-            <div className="w-3 h-3 bg-zinc-900 dark:bg-white rounded-sm transition-all group-hover/footer-logo:rotate-45 group-hover/footer-logo:bg-emerald-500 dark:group-hover/footer-logo:bg-emerald-400"></div>
-            <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white transition-colors group-hover/footer-logo:text-emerald-600 dark:group-hover/footer-logo:text-emerald-400">Talkie</span>
+          <div className="flex items-center gap-2">
+            <img src="/talkie-icon.png" alt="Talkie" className="h-5 w-5 rounded" />
+            <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Talkie</span>
           </div>
           <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] font-mono uppercase text-zinc-500">
             <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors font-bold">
