@@ -148,7 +148,7 @@ export default function CapturePage() {
       {/* Video Showcase */}
       <section className="py-16 md:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
         <Container>
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-sm mx-auto">
             <VideoPlayer
               src="/recording-preview-compressed.mp4"
               title="Talkie Mobile Capture"
