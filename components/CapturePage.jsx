@@ -22,6 +22,7 @@ import {
 import Container from './Container'
 import ThemeToggle from './ThemeToggle'
 import SubNav from './SubNav'
+import VideoPlayer from './VideoPlayer'
 
 const CaptureCard = ({ icon: Icon, title, description }) => (
   <div className="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 rounded-xl hover:border-blue-500/50 transition-colors">
@@ -140,6 +141,22 @@ export default function CapturePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Video Showcase */}
+      <section className="py-16 md:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+        <Container>
+          <div className="max-w-4xl mx-auto">
+            <VideoPlayer
+              src="/videos/TalkiePromo.mp4"
+              title="Talkie Mobile Demo"
+              aspectRatio="square"
+              autoPlay={false}
+              loop={true}
+              className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
+            />
           </div>
         </Container>
       </section>
