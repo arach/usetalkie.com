@@ -210,32 +210,83 @@ export default function LivePage() {
               </div>
 
               {/* Playlist - appears on hover */}
-              <div className="absolute top-4 right-4 w-56 opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 pointer-events-none group-hover/video:pointer-events-auto">
-                <div className="bg-black/90 backdrop-blur-lg rounded-lg p-3 shadow-2xl border border-zinc-700/50">
-                  <p className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-500 mb-3">Playlist</p>
-                  <div className="space-y-2">
-                    {/* Overview - Active */}
-                    <div className="flex gap-2 p-1.5 rounded bg-emerald-500/20 border border-emerald-500/30 cursor-pointer">
-                      <div className="w-16 h-9 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
-                        <video src="/videos/TalkieOverview.mp4" className="w-full h-full object-cover" muted />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-[10px] font-bold text-emerald-400 uppercase">Overview</h4>
-                        <p className="text-[9px] text-zinc-500 truncate">Quick intro</p>
-                      </div>
+              <div className="absolute top-4 right-4 w-60 opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 pointer-events-none group-hover/video:pointer-events-auto">
+                <div className="bg-black/90 backdrop-blur-lg rounded-lg p-3 shadow-2xl border border-zinc-700/50 max-h-[400px] overflow-y-auto">
+                  <p className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-500 mb-3">All Demos</p>
+
+                  {/* Overview - Active */}
+                  <div className="flex gap-2 p-1.5 rounded bg-emerald-500/20 border border-emerald-500/30 cursor-pointer mb-3">
+                    <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
+                      <video src="/videos/TalkieOverview.mp4" className="w-full h-full object-cover" muted />
                     </div>
-                    {/* Dictate */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-[10px] font-bold text-emerald-400 uppercase">Overview</h4>
+                      <p className="text-[9px] text-zinc-500 truncate">Quick intro</p>
+                    </div>
+                  </div>
+
+                  {/* Dictate Section */}
+                  <p className="text-[8px] font-mono font-bold uppercase tracking-widest text-zinc-600 mb-2 mt-3">Dictate</p>
+                  <div className="space-y-1.5 mb-3">
                     <div className="flex gap-2 p-1.5 rounded border border-zinc-700 hover:border-emerald-500/30 hover:bg-emerald-500/10 cursor-pointer transition-colors">
-                      <div className="w-16 h-9 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
+                      <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
                         <video src="/videos/TalkieDictation.mp4" className="w-full h-full object-cover" muted />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-[10px] font-bold text-zinc-300 uppercase">Dictate</h4>
+                        <h4 className="text-[10px] font-bold text-zinc-300">Basics</h4>
                         <p className="text-[9px] text-zinc-500 truncate">Voice to text</p>
                       </div>
                     </div>
-                    {/* More coming */}
-                    <p className="text-[9px] text-zinc-600 text-center pt-1">More demos coming...</p>
+                    <div className="flex gap-2 p-1.5 rounded border border-zinc-800 opacity-40 cursor-not-allowed">
+                      <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
+                        <span className="text-[7px] text-zinc-600">SOON</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-zinc-500">Advanced</h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Orchestrate Section */}
+                  <p className="text-[8px] font-mono font-bold uppercase tracking-widest text-zinc-600 mb-2">Orchestrate</p>
+                  <div className="space-y-1.5 mb-3">
+                    <div className="flex gap-2 p-1.5 rounded border border-zinc-800 opacity-40 cursor-not-allowed">
+                      <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
+                        <span className="text-[7px] text-zinc-600">SOON</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-zinc-500">Workflows</h4>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 p-1.5 rounded border border-zinc-800 opacity-40 cursor-not-allowed">
+                      <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
+                        <span className="text-[7px] text-zinc-600">SOON</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-zinc-500">Integrations</h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Manage Section */}
+                  <p className="text-[8px] font-mono font-bold uppercase tracking-widest text-zinc-600 mb-2">Manage</p>
+                  <div className="space-y-1.5">
+                    <div className="flex gap-2 p-1.5 rounded border border-zinc-800 opacity-40 cursor-not-allowed">
+                      <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
+                        <span className="text-[7px] text-zinc-600">SOON</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-zinc-500">Library</h4>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 p-1.5 rounded border border-zinc-800 opacity-40 cursor-not-allowed">
+                      <div className="w-14 h-8 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
+                        <span className="text-[7px] text-zinc-600">SOON</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-zinc-500">Search</h4>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -247,38 +298,49 @@ export default function LivePage() {
             </div>
           </div>
 
-          {/* Three Balanced Story Items */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          {/* Three Core Demo Videos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {/* Dictate */}
-            <div className="text-center group cursor-pointer">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40">
-                <Mic className="w-7 h-7 text-emerald-500" />
+            <div className="group cursor-pointer">
+              <div className="relative aspect-video rounded-xl overflow-hidden mb-3 border border-zinc-200 dark:border-zinc-800 group-hover:border-emerald-500/50 transition-colors shadow-lg group-hover:shadow-xl group-hover:shadow-emerald-500/10">
+                <video src="/videos/TalkieDictation.mp4" className="w-full h-full object-cover" muted />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                    <Play className="w-4 h-4 text-black ml-0.5" fill="currentColor" />
+                  </div>
+                </div>
               </div>
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">Dictate</h3>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Dictate</h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Voice to text in any app. Hold the hotkey, speak, release.
+                Voice to text in any app
               </p>
             </div>
 
-            {/* Orchestrate */}
-            <div className="text-center group cursor-pointer">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40">
-                <Zap className="w-7 h-7 text-emerald-500" />
+            {/* Orchestrate - Coming Soon */}
+            <div className="group cursor-pointer opacity-60">
+              <div className="relative aspect-video rounded-xl overflow-hidden mb-3 border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800 shadow-lg">
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <Zap className="w-8 h-8 text-zinc-400 mb-2" />
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Coming Soon</span>
+                </div>
               </div>
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">Orchestrate</h3>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Orchestrate</h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Trigger workflows and automations with your voice.
+                Workflows and automations
               </p>
             </div>
 
-            {/* Manage */}
-            <div className="text-center group cursor-pointer">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40">
-                <Database className="w-7 h-7 text-emerald-500" />
+            {/* Manage - Coming Soon */}
+            <div className="group cursor-pointer opacity-60">
+              <div className="relative aspect-video rounded-xl overflow-hidden mb-3 border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800 shadow-lg">
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <Database className="w-8 h-8 text-zinc-400 mb-2" />
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Coming Soon</span>
+                </div>
               </div>
-              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">Manage</h3>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Manage</h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Search, organize, and export your voice library.
+                Library, search, and export
               </p>
             </div>
           </div>
