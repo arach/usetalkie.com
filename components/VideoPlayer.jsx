@@ -153,7 +153,7 @@ export default function VideoPlayer({
         {!isPlaying && (
           <button
             onClick={togglePlay}
-            className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors cursor-pointer"
+            className="absolute inset-0 flex items-end justify-center pb-[20%] bg-black/30 hover:bg-black/40 transition-colors cursor-pointer"
             aria-label="Play video"
           >
             <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
