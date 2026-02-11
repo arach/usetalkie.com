@@ -41,6 +41,7 @@ import {
 import Container from './Container'
 import ThemeToggle from './ThemeToggle'
 import SubNav from './SubNav'
+import VideoPlayer from './VideoPlayer'
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <div className="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-colors">
@@ -179,6 +180,25 @@ export default function LivePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Video Showcase */}
+      <section className="py-16 md:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+        <Container>
+          <div className="max-w-4xl mx-auto">
+            <VideoPlayer
+              src="/videos/TalkieDictation.mp4"
+              title="Talkie Dictation Demo"
+              aspectRatio="video"
+              autoPlay={false}
+              loop={true}
+              className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
+            />
+            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-6 font-mono uppercase tracking-wider">
+              See voice to action in real time
+            </p>
           </div>
         </Container>
       </section>
