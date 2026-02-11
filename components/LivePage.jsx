@@ -195,9 +195,9 @@ export default function LivePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl">
-            {/* Main Video Player */}
-            <div className="lg:col-span-2">
+          {/* Main Video with Playlist Overlay */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="relative group/video">
               <div className="rounded-xl overflow-hidden">
                 <VideoPlayer
                   src="/videos/TalkieOverview.mp4"
@@ -208,59 +208,78 @@ export default function LivePage() {
                   className="shadow-2xl shadow-black/20 dark:shadow-black/50"
                 />
               </div>
-              <div className="mt-4">
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">Overview</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">A quick look at Talkie for Mac — voice to action, local-first, private by design.</p>
+
+              {/* Playlist - appears on hover */}
+              <div className="absolute top-4 right-4 w-56 opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 pointer-events-none group-hover/video:pointer-events-auto">
+                <div className="bg-black/90 backdrop-blur-lg rounded-lg p-3 shadow-2xl border border-zinc-700/50">
+                  <p className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-500 mb-3">Playlist</p>
+                  <div className="space-y-2">
+                    {/* Overview - Active */}
+                    <div className="flex gap-2 p-1.5 rounded bg-emerald-500/20 border border-emerald-500/30 cursor-pointer">
+                      <div className="w-16 h-9 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
+                        <video src="/videos/TalkieOverview.mp4" className="w-full h-full object-cover" muted />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-emerald-400 uppercase">Overview</h4>
+                        <p className="text-[9px] text-zinc-500 truncate">Quick intro</p>
+                      </div>
+                    </div>
+                    {/* Dictate */}
+                    <div className="flex gap-2 p-1.5 rounded border border-zinc-700 hover:border-emerald-500/30 hover:bg-emerald-500/10 cursor-pointer transition-colors">
+                      <div className="w-16 h-9 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
+                        <video src="/videos/TalkieDictation.mp4" className="w-full h-full object-cover" muted />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-[10px] font-bold text-zinc-300 uppercase">Dictate</h4>
+                        <p className="text-[9px] text-zinc-500 truncate">Voice to text</p>
+                      </div>
+                    </div>
+                    {/* More coming */}
+                    <p className="text-[9px] text-zinc-600 text-center pt-1">More demos coming...</p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Playlist */}
-            <div className="space-y-3">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400 mb-4">Playlist</p>
+            <div className="mt-4 text-center">
+              <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">Overview</h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">A quick look at Talkie for Mac — voice to action, local-first, private by design.</p>
+            </div>
+          </div>
 
-              {/* Overview - Active */}
-              <div className="flex gap-3 p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 cursor-pointer">
-                <div className="w-24 h-14 rounded bg-zinc-900 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                  <video src="/videos/TalkieOverview.mp4" className="w-full h-full object-cover" muted />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Overview</h4>
-                  <p className="text-[10px] text-zinc-500 truncate">Quick intro to Talkie</p>
-                </div>
+          {/* Three Balanced Story Items */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {/* Dictate */}
+            <div className="text-center group cursor-pointer">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40">
+                <Mic className="w-7 h-7 text-emerald-500" />
               </div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">Dictate</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Voice to text in any app. Hold the hotkey, speak, release.
+              </p>
+            </div>
 
-              {/* Dictate - Available */}
-              <div className="flex gap-3 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/30 hover:bg-emerald-500/5 cursor-pointer transition-colors">
-                <div className="w-24 h-14 rounded bg-zinc-900 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                  <video src="/videos/TalkieDictation.mp4" className="w-full h-full object-cover" muted />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wide">Dictate</h4>
-                  <p className="text-[10px] text-zinc-500 truncate">Voice to text anywhere</p>
-                </div>
+            {/* Orchestrate */}
+            <div className="text-center group cursor-pointer">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40">
+                <Zap className="w-7 h-7 text-emerald-500" />
               </div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">Orchestrate</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Trigger workflows and automations with your voice.
+              </p>
+            </div>
 
-              {/* Orchestrate - Coming Soon */}
-              <div className="flex gap-3 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 opacity-50 cursor-not-allowed">
-                <div className="w-24 h-14 rounded bg-zinc-100 dark:bg-zinc-800 flex-shrink-0 flex items-center justify-center">
-                  <span className="text-[8px] font-mono text-zinc-400 uppercase">Soon</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wide">Orchestrate</h4>
-                  <p className="text-[10px] text-zinc-500 truncate">Workflows & automation</p>
-                </div>
+            {/* Manage */}
+            <div className="text-center group cursor-pointer">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40">
+                <Database className="w-7 h-7 text-emerald-500" />
               </div>
-
-              {/* Manage - Coming Soon */}
-              <div className="flex gap-3 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 opacity-50 cursor-not-allowed">
-                <div className="w-24 h-14 rounded bg-zinc-100 dark:bg-zinc-800 flex-shrink-0 flex items-center justify-center">
-                  <span className="text-[8px] font-mono text-zinc-400 uppercase">Soon</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wide">Manage</h4>
-                  <p className="text-[10px] text-zinc-500 truncate">Library & search</p>
-                </div>
-              </div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">Manage</h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                Search, organize, and export your voice library.
+              </p>
             </div>
           </div>
         </Container>
