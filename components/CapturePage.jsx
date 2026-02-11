@@ -150,9 +150,9 @@ export default function CapturePage() {
         <Container>
           <div className="max-w-4xl mx-auto">
             <VideoPlayer
-              src="/videos/TalkiePromo.mp4"
-              title="Talkie Mobile Demo"
-              aspectRatio="square"
+              src="/recording-preview-compressed.mp4"
+              title="Talkie Mobile Capture"
+              aspectRatio="video"
               autoPlay={false}
               loop={true}
               className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
