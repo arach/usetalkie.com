@@ -37,6 +37,7 @@ import {
   Keyboard,
   Circle,
   AudioWaveform,
+  Play,
 } from 'lucide-react'
 import Container from './Container'
 import ThemeToggle from './ThemeToggle'
@@ -184,21 +185,53 @@ export default function LivePage() {
         </Container>
       </section>
 
-      {/* Video Showcase */}
+      {/* Demos Section */}
       <section className="py-16 md:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
         <Container>
-          <div className="max-w-4xl mx-auto">
-            <VideoPlayer
-              src="/videos/TalkieDictation.mp4"
-              title="Talkie Dictation Demo"
-              aspectRatio="video"
-              autoPlay={false}
-              loop={true}
-              className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
-            />
-            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-6 font-mono uppercase tracking-wider">
-              See voice to action in real time
-            </p>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-4">
+              <Play className="w-3 h-3 text-emerald-500" fill="currentColor" />
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Demos</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">
+              See it in action
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Dictation Demo - Available */}
+            <div className="group">
+              <div className="rounded-xl overflow-hidden mb-3">
+                <VideoPlayer
+                  src="/videos/TalkieDictation.mp4"
+                  title="Dictation Demo"
+                  aspectRatio="video"
+                  autoPlay={false}
+                  loop={true}
+                  className="shadow-lg"
+                />
+              </div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Dictation</h3>
+              <p className="text-xs text-zinc-500">Voice to text in any app</p>
+            </div>
+
+            {/* Orchestrate Demo - Coming Soon */}
+            <div className="group opacity-60">
+              <div className="aspect-video rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center mb-3">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Coming Soon</span>
+              </div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Orchestrate</h3>
+              <p className="text-xs text-zinc-500">Workflows and automation</p>
+            </div>
+
+            {/* Sync Demo - Coming Soon */}
+            <div className="group opacity-60">
+              <div className="aspect-video rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center mb-3">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Coming Soon</span>
+              </div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Sync</h3>
+              <p className="text-xs text-zinc-500">iCloud sync across devices</p>
+            </div>
           </div>
         </Container>
       </section>
