@@ -96,33 +96,26 @@ export default function CapturePage() {
             <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5" />
             BACK
           </Link>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Talkie for Mobile</span>
-          </div>
+
+          {/* Platform Nav - Center */}
+          <SubNav />
+
+          <div className="w-16" /> {/* Spacer for balance */}
         </Container>
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-20 pb-16 md:pt-22 md:pb-20 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+      <section className="relative pt-18 pb-12 md:pt-20 md:pb-16 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
         <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
         <Container className="relative z-10">
-          {/* Sub Navigation */}
-          <div className="flex justify-center mb-6">
-            <SubNav />
-          </div>
-
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
               <span className="font-display italic">Voice</span> <span className="text-zinc-400 dark:text-zinc-500">to</span>{' '}
               <span className="font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Capture.</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-zinc-700 dark:text-zinc-300 leading-snug mb-4 font-display">
-              Your best ideas don&apos;t wait for you to sit down.
-            </p>
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-10">
-              Speak on iPhone or Apple Watch. Keep moving. Find the transcript waiting on your Mac, ready for the next step.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
+              Speak anywhere - iPhone, Watch, iPad, Mac. Everything syncs, stays private.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -272,7 +265,7 @@ export default function CapturePage() {
                   <CaptureFeedItem
                     time="11:45 AM"
                     location="Home Node"
-                    text="Met Sarah for coffee. She mentioned the vector database issue—it's likely a circular dependency in the middleware."
+                    text="Met Sarah for coffee. She mentioned the vector database issue - it's likely a circular dependency in the middleware."
                     icon={Activity}
                   />
                   <CaptureFeedItem

@@ -73,7 +73,7 @@ export default function AboutPage() {
                 the more you can leverage AI to amplify your work. Voice is the unlock.
               </p>
               <p>
-                I was a power user of early voice tools like SuperWhisper and Wispr Flow — they were great
+                I was a power user of early voice tools like SuperWhisper and Wispr Flow - they were great
                 and opened my eyes to what was possible. But none of them treated developers as first-class
                 citizens. So I built Talkie for engineers and tech-forward people who want control: open data,
                 everything is a file, fully pluggable and hookable. Your data. I want you to tinker.
