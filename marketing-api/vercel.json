@@ -11,6 +11,8 @@
     { "source": "/mockup", "destination": "/api/mockup" },
     { "source": "/mockup/", "destination": "/api/mockup" },
     { "source": "/regenerate", "destination": "/api/regenerate" },
-    { "source": "/subscribe", "destination": "/api/subscribe" }
+    { "source": "/download", "destination": "/api/download" },
+    { "source": "/subscribe", "destination": "/api/subscribe" },
+    { "source": "/testflight", "destination": "/api/testflight" }
   ]
 }
