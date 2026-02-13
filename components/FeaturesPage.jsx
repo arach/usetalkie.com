@@ -115,33 +115,25 @@ export default function FeaturesPage() {
             BACK
           </Link>
 
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Talkie for Agents</span>
-          </div>
+          {/* Platform Nav - Center */}
+          <SubNav />
+
+          <div className="w-16" /> {/* Spacer for balance */}
         </Container>
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-20 pb-16 md:pt-22 md:pb-20 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+      <section className="relative pt-18 pb-12 md:pt-20 md:pb-16 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
         <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
         <Container className="relative z-10">
-          {/* Sub Navigation */}
-          <div className="flex justify-center mb-6">
-            <SubNav />
-          </div>
-
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
               <span className="font-display italic">Voice</span> <span className="text-zinc-400 dark:text-zinc-500">to</span>{' '}
               <span className="font-bold bg-gradient-to-r from-purple-500 to-violet-400 bg-clip-text text-transparent">Agents.</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-zinc-700 dark:text-zinc-300 leading-snug mb-4 font-display">
-              Speak once, run everywhere.
-            </p>
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-10">
-              Voice-driven workflows turn your words into documents, tasks, and actions across your Mac — local-first and private.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
+              Voice-driven workflows turn your words into documents, tasks, and actions - local-first and private.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -376,7 +368,7 @@ export default function FeaturesPage() {
               <div>
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-6">Record From Anywhere</h3>
                 <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-xl">
-                  Add Talkie widgets to your Home Screen, Lock Screen, or Control Center for instant voice capture — no need to open the app.
+                  Add Talkie widgets to your Home Screen, Lock Screen, or Control Center for instant voice capture - no need to open the app.
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   <FeatureCard title="Home Screen Widget" description="Small or medium widget with quick record button and memo count." />

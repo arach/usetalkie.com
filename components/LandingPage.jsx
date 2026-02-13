@@ -321,7 +321,7 @@ export default function LandingPage() {
               <span className="font-display italic font-medium">Voice</span> to Everything, <span className="bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">Instantly.</span>
             </h2>
             <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-              Talkie is the connective tissue — driving your favorite tools with the right context, then pinging you when it's done.
+              Talkie is the connective tissue - driving your favorite tools with the right context, then pinging you when it's done.
             </p>
           </div>
 
@@ -508,7 +508,7 @@ export default function LandingPage() {
                 <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400 block mb-2 transition-colors group-hover/devices:text-emerald-500">001 / DEVICES</span>
                 <h3 className="text-sm font-bold text-zinc-900 dark:text-white mb-2 uppercase tracking-tight transition-colors group-hover/devices:text-emerald-600 dark:group-hover/devices:text-emerald-400">iPhone + Mac = The Perfect Pair</h3>
                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-xs">
-                  Your iPhone is the perfect capture device — always on you, always ready. Your Mac is where raw ideas become real output.
+                  Your iPhone is the perfect capture device - always on you, always ready. Your Mac is where raw ideas become real output.
                 </p>
               </div>
               <div className="group/apps p-4 -m-4 rounded-lg transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900/50">

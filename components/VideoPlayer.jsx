@@ -146,7 +146,7 @@ export default function VideoPlayer({
           loop={loop}
           muted={isMuted}
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
 
         {/* Click to play overlay */}

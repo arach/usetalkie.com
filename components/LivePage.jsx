@@ -43,6 +43,33 @@ import Container from './Container'
 import ThemeToggle from './ThemeToggle'
 import SubNav from './SubNav'
 import VideoPlayer from './VideoPlayer'
+import DemoViewer from './DemoViewer'
+import HubDiagram from './HubDiagram'
+
+// Demo sections data
+const DEMO_SECTIONS = [
+  {
+    id: 'dictate',
+    title: 'Dictate',
+    description: 'Voice to text in any app',
+    videos: [
+      { id: 'overview', title: 'Overview', src: '/videos/TalkieOverview.mp4' },
+      { id: 'dictation', title: 'Dictation', src: '/videos/TalkieDictation.mp4' },
+    ],
+  },
+  {
+    id: 'orchestrate',
+    title: 'Orchestrate',
+    description: 'Workflows & automation',
+    videos: [], // Coming soon
+  },
+  {
+    id: 'manage',
+    title: 'Manage',
+    description: 'Library & search',
+    videos: [], // Coming soon
+  },
+]
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <div className="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-colors">
@@ -108,7 +135,8 @@ const ConfigLine = ({ label, value }) => (
 
 export default function LivePage() {
   const [scrolled, setScrolled] = useState(false)
-  const [activeFeature, setActiveFeature] = useState(null) // 'hotkeys' | 'models' | 'paste' | null
+  const [activeFeature, setActiveFeature] = useState('hotkeys') // 'hotkeys' | 'models' | 'paste'
+  const [hubSectionHovered, setHubSectionHovered] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -135,34 +163,26 @@ export default function LivePage() {
             BACK
           </Link>
 
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Talkie for Mac</span>
-          </div>
+          {/* Platform Nav - Center */}
+          <SubNav />
+
+          <div className="w-16" /> {/* Spacer for balance */}
         </Container>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 md:pt-22 md:pb-20 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+      <section className="relative pt-18 pb-12 md:pt-20 md:pb-16 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
         <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
 
         <Container className="relative z-10">
-          {/* Sub Navigation */}
-          <div className="flex justify-center mb-6">
-            <SubNav />
-          </div>
-
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
               <span className="font-display italic">Voice</span> <span className="text-zinc-400 dark:text-zinc-500">to</span>{' '}
               <span className="font-bold bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">Action.</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-zinc-700 dark:text-zinc-300 leading-snug mb-4 font-display">
-              You speak faster than you type.
-            </p>
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-10">
-              Speak and Talkie types, transcribes, or triggers workflows. Your Mac voice system — local-first and private.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
+              Speak and Talkie types, transcribes, or runs workflows. Local-first, private.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -186,330 +206,83 @@ export default function LivePage() {
       </section>
 
       {/* Demos Section */}
-      <section className="py-16 md:py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+      <section className="py-16 md:py-20 bg-zinc-950 border-t border-zinc-800">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            {/* Left: Header + Thumbnails */}
-            <div className="lg:col-span-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
-                <Play className="w-3 h-3 text-emerald-500" fill="currentColor" />
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Demos</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl text-zinc-900 dark:text-white tracking-tight mb-4">
-                <span className="font-display italic">See</span> <span className="font-bold">it in action.</span>
-              </h2>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
-                Watch how Talkie turns voice into action across dictation, workflows, and more.
-              </p>
-
-              {/* Core Demo Thumbnails */}
-              <div className="space-y-4">
-                {/* Dictate */}
-                <div className="group cursor-pointer flex gap-4 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all">
-                  <div className="relative w-28 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-200 dark:border-zinc-700">
-                    <video src="/videos/TalkieDictation.mp4" className="w-full h-full object-cover" muted />
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                      <Play className="w-4 h-4 text-white" fill="currentColor" />
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Dictate</h3>
-                    <p className="text-xs text-zinc-500 leading-relaxed">Voice to text in any app</p>
-                  </div>
-                </div>
-
-                {/* Orchestrate - Coming Soon */}
-                <div className="flex gap-4 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 opacity-50">
-                  <div className="relative w-28 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                    <span className="text-[9px] font-mono text-zinc-400 uppercase">Soon</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Orchestrate</h3>
-                    <p className="text-xs text-zinc-500 leading-relaxed">Workflows & automation</p>
-                  </div>
-                </div>
-
-                {/* Manage - Coming Soon */}
-                <div className="flex gap-4 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 opacity-50">
-                  <div className="relative w-28 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                    <span className="text-[9px] font-mono text-zinc-400 uppercase">Soon</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Manage</h3>
-                    <p className="text-xs text-zinc-500 leading-relaxed">Library & search</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Main Video with Playlist */}
-            <div className="lg:col-span-8 relative">
-              <div className="relative group/video">
-                <div className="rounded-xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.08)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.6)]">
-                  <VideoPlayer
-                    src="/videos/TalkieOverview.mp4"
-                    title="Overview Demo"
-                    aspectRatio="video"
-                    autoPlay={false}
-                    loop={true}
-                    className=""
-                  />
-                </div>
-
-                {/* Playlist - appears on hover */}
-                <div className="absolute top-4 right-4 w-56 opacity-0 group-hover/video:opacity-100 transition-opacity duration-300 pointer-events-none group-hover/video:pointer-events-auto">
-                  <div className="bg-black/90 backdrop-blur-lg rounded-lg p-3 shadow-2xl border border-zinc-700/50 max-h-[350px] overflow-y-auto">
-                    <p className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-500 mb-3">All Demos</p>
-
-                    {/* Overview - Active */}
-                    <div className="flex gap-2 p-1.5 rounded bg-emerald-500/20 border border-emerald-500/30 cursor-pointer mb-2">
-                      <div className="w-12 h-7 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
-                        <video src="/videos/TalkieOverview.mp4" className="w-full h-full object-cover" muted />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-[10px] font-bold text-emerald-400 uppercase">Overview</h4>
-                      </div>
-                    </div>
-
-                    {/* Dictate */}
-                    <div className="flex gap-2 p-1.5 rounded border border-zinc-700 hover:border-emerald-500/30 hover:bg-emerald-500/10 cursor-pointer transition-colors mb-2">
-                      <div className="w-12 h-7 rounded bg-zinc-800 flex-shrink-0 overflow-hidden">
-                        <video src="/videos/TalkieDictation.mp4" className="w-full h-full object-cover" muted />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-[10px] font-bold text-zinc-300 uppercase">Dictate</h4>
-                      </div>
-                    </div>
-
-                    {/* Coming Soon Items */}
-                    <div className="space-y-1.5 opacity-40">
-                      <div className="flex gap-2 p-1.5 rounded border border-zinc-800">
-                        <div className="w-12 h-7 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
-                          <span className="text-[7px] text-zinc-600">SOON</span>
-                        </div>
-                        <div className="flex-1"><h4 className="text-[10px] font-bold text-zinc-500 uppercase">Orchestrate</h4></div>
-                      </div>
-                      <div className="flex gap-2 p-1.5 rounded border border-zinc-800">
-                        <div className="w-12 h-7 rounded bg-zinc-800 flex-shrink-0 flex items-center justify-center">
-                          <span className="text-[7px] text-zinc-600">SOON</span>
-                        </div>
-                        <div className="flex-1"><h4 className="text-[10px] font-bold text-zinc-500 uppercase">Manage</h4></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">Overview</h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">A quick look at Talkie for Mac — voice to action, local-first, private by design.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Command Center */}
-      <section className="py-16 md:py-24 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
-                <Command className="w-3 h-3 text-emerald-500" />
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Command Center</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl text-zinc-900 dark:text-white tracking-tight mb-4">
-                <span className="font-display italic">Voice</span> <span className="font-bold">to system actions.</span>
-              </h2>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
-                Talkie for Mac sits at the center of your workflow, turning intent into precise actions with local-first speed.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Database className="w-4 h-4 text-emerald-500" />
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">Local First</span>
-                  </div>
-                  <p className="text-[10px] text-zinc-500 uppercase leading-relaxed tracking-wide">
-                    Everything stays on your device, with optional iCloud sync.
-                  </p>
-                </div>
-                <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Cpu className="w-4 h-4 text-emerald-500" />
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">M-Series Native</span>
-                  </div>
-                  <p className="text-[10px] text-zinc-500 uppercase leading-relaxed tracking-wide">
-                    Neural Engine acceleration for fast, private inference.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-8 relative">
-              <div className="relative bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-[0_40px_100px_rgba(0,0,0,0.08)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.6)] rounded-xl overflow-hidden">
-                <div className="h-11 bg-zinc-50/80 dark:bg-zinc-900/80 backdrop-blur-md flex items-center justify-between px-5 border-b border-zinc-100 dark:border-zinc-800">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div className="w-3 h-3 rounded-full bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div className="w-3 h-3 rounded-full bg-zinc-200 dark:bg-zinc-800"></div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Command className="w-3.5 h-3.5 text-zinc-400" />
-                    <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-widest">TALKIE_MAC_CENTER</span>
-                  </div>
-                  <Settings2 className="w-4 h-4 text-zinc-400" />
-                </div>
-
-                <div className="p-6 md:p-8 min-h-[520px] flex flex-col bg-white dark:bg-black/50">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-                    <TechPill label="Latency" value="12.4ms" />
-                    <TechPill label="Throughput" value="1.4T/s" />
-                    <TechPill label="Auth" value="ENCLAVE" valueClass="text-blue-500" />
-                    <TechPill label="Storage" value="SQLITE" valueClass="text-zinc-500" />
-                  </div>
-
-                  <div className="flex-1 flex flex-col gap-6">
-                    <div className="relative p-6 bg-zinc-50 dark:bg-zinc-900/50 border border-emerald-500/20 rounded-lg">
-                      <div className="absolute top-4 right-4 flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-[9px] font-mono font-bold uppercase text-emerald-500">Listening...</span>
-                      </div>
-                      <div className="text-[10px] font-mono text-zinc-500 uppercase mb-4 tracking-widest">Real-time Inference</div>
-                      <p className="text-lg font-medium tracking-tight text-zinc-800 dark:text-zinc-100 italic leading-snug">
-                        "Hey Talkie, open the last PR on the web-app repo and draft a summary for the weekly standup."
-                      </p>
-                    </div>
-
-                    <div className="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 shadow-xl">
-                      <div className="px-4 py-2 bg-zinc-800/50 border-b border-zinc-700/50 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Terminal className="w-3 h-3 text-emerald-500" />
-                          <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">Shell Execution Log</span>
-                        </div>
-                        <span className="text-[9px] font-mono text-zinc-600">PID: 14242</span>
-                      </div>
-                      <div className="p-4 font-mono text-[11px] space-y-2">
-                        <div className="flex gap-3 text-zinc-500">
-                          <span>[09:42:01]</span>
-                          <span className="text-blue-400">➜</span>
-                          <span>gh pr list --limit 1 --json number,title</span>
-                        </div>
-                        <div className="flex gap-3 text-zinc-300 pl-6">
-                          <span>[RESULT]</span>
-                          <span>#442: Refactor(core): Auth Middleware Fix</span>
-                        </div>
-                        <div className="flex gap-3 text-zinc-500 pt-2">
-                          <span>[09:42:02]</span>
-                          <span className="text-purple-400">➜</span>
-                          <span>Invoke LLM(context: #442) &rarr; StandupSummary.json</span>
-                        </div>
-                        <div className="flex gap-3 text-emerald-500 pt-2">
-                          <span>[09:42:04]</span>
-                          <span>SUCCESS: Summary exported to ~/Documents/Standups/</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <Keyboard className="w-3.5 h-3.5 text-zinc-400" />
-                          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">Global Hotkeys</span>
-                        </div>
-                        <div className="space-y-1">
-                          <ConfigLine label="Start Capture" value="⌥ + Space" />
-                          <ConfigLine label="Instant Action" value="⌘ + ⇧ + A" />
-                          <ConfigLine label="Abort Flow" value="Esc" />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <Settings2 className="w-3.5 h-3.5 text-zinc-400" />
-                          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">Post Processing</span>
-                        </div>
-                        <div className="space-y-1">
-                          <ConfigLine label="Auto-JSON" value="Enabled" />
-                          <ConfigLine label="Dictionaries" value="Tech Core" />
-                          <ConfigLine label="Sanitize PII" value="Strict" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 h-px bg-zinc-200 dark:bg-zinc-800"></div>
-                  <div className="mt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[9px] font-mono text-zinc-500 uppercase">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1.5">
-                        <Lock className="w-3 h-3 text-emerald-500" />
-                        <span>Secure Enclave Locked</span>
-                      </div>
-                      <div className="w-px h-3 bg-zinc-200 dark:bg-zinc-800 hidden md:block"></div>
-                      <div className="flex items-center gap-1.5">
-                        <Search className="w-3 h-3 text-zinc-400" />
-                        <span>Global Index: 8.4k Thoughts</span>
-                      </div>
-                    </div>
-                    <span>v1.2.0-stable</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Why Voice - Benefits */}
-      <section className="py-16 md:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
-        <Container>
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
-              <Zap className="w-3 h-3 text-emerald-500" />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Why Voice?</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-6">
-              Execute at the<br/>
-              <span className="text-emerald-500">speed of thought.</span>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl text-white tracking-tight">
+              <span className="font-display italic">See</span> <span className="font-bold">Talkie in action.</span>
             </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-              Speaking is the most natural way to express complex thoughts. Talkie turns your voice into text instantly, so you can capture ideas at the speed you think them.
+          </div>
+          <DemoViewer sections={DEMO_SECTIONS} />
+        </Container>
+      </section>
+
+      {/* The Hub */}
+      <section
+        className="py-16 md:py-20 bg-zinc-950 border-t border-zinc-800"
+        onMouseEnter={() => setHubSectionHovered(true)}
+        onMouseLeave={() => setHubSectionHovered(false)}
+      >
+        <Container>
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl text-white tracking-tight mb-3">
+              <span className="font-display italic">One app.</span> <span className="font-bold">Everywhere.</span>
+            </h2>
+            <p className="text-zinc-500 leading-relaxed max-w-xl mx-auto">
+              Talkie connects your voice to everything - apps, devices, services, and AI.
             </p>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mb-16">
-            <StatCard value="~40" label="Keyboard WPM" />
-            <StatCard value="200+" label="Talkie WPM" />
-            <StatCard value="5x" label="Faster" />
+          <HubDiagram sectionHovered={hubSectionHovered} />
+        </Container>
+      </section>
+
+      {/* How It Works - Consolidated */}
+      <section className="py-16 md:py-24 bg-zinc-950 border-t border-zinc-800">
+        <Container>
+          {/* Centered Header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
+              <Zap className="w-3 h-3 text-emerald-500" />
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">Why Voice?</span>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tight mb-6">
+              Execute at the <span className="text-emerald-500">speed of thought.</span>
+            </h2>
           </div>
 
-          {/* Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <BenefitCard
-              icon={Zap}
-              title="Speed"
-              description="We speak at 150 words per minute but type at 40. Voice capture lets you get thoughts out before they evolve or fade."
-              highlight="4x faster capture"
-            />
-            <BenefitCard
-              icon={Eye}
-              title="Rest Your Eyes"
-              description="Look away from the screen while you speak. Mid-length thoughts flow better when you're not staring at a cursor waiting for words."
-              highlight="Natural expression"
-            />
-            <BenefitCard
-              icon={Rocket}
-              title="Ecosystem"
-              description="Capture on iPhone or Watch, then continue on Mac with workflows that turn speech into action."
-              highlight="Memo → Workflow → Action"
-            />
-          </div>
+          {/* Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            {/* Left: Stats + Description */}
+            <div>
+              {/* Stats Row */}
+              <div className="flex items-center gap-8 p-5 bg-zinc-900/50 border border-zinc-800 rounded-xl mb-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-zinc-500">~40</div>
+                  <div className="text-[10px] font-mono uppercase text-zinc-600">Typing WPM</div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <ArrowRight className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-emerald-500">200+</div>
+                  <div className="text-[10px] font-mono uppercase text-zinc-600">Voice WPM</div>
+                </div>
+                <div className="flex-1 text-right">
+                  <div className="text-2xl font-bold text-white">5x</div>
+                  <div className="text-[10px] font-mono uppercase text-zinc-600">Faster</div>
+                </div>
+              </div>
 
-          {/* Works in Any App */}
-          <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="max-w-2xl mx-auto">
-              {/* Mock Menu Bar */}
-              <div className="bg-zinc-800/80 backdrop-blur rounded-lg px-3 py-1.5 flex items-center justify-between mb-3 mx-auto max-w-md">
+              <p className="text-zinc-400 leading-relaxed">
+                We speak at 150 words per minute but type at 40. Voice lets you capture ideas before they fade - directly into any app, with text that lands exactly where your cursor was.
+              </p>
+            </div>
+
+            {/* Right: Menu Bar Mockup */}
+            <div>
+              <div className="bg-zinc-800/80 backdrop-blur rounded-lg px-3 py-1.5 flex items-center justify-between">
                 <div className="flex items-center gap-3 text-[10px] text-zinc-400 font-medium">
                   <span></span>
                   <span>Cursor</span>
@@ -530,33 +303,31 @@ export default function LivePage() {
                   <span className="text-[10px] text-zinc-500 ml-1">9:41 AM</span>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-500 text-center mb-8">Find it in your menu bar</p>
+              <p className="text-[10px] text-zinc-600 text-center mt-2">Lives in your menu bar, works everywhere</p>
+            </div>
+          </div>
 
-              {/* Headline */}
-              <h3 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight text-center mb-2">
-                Works in Any App
-              </h3>
-              <p className="text-sm text-zinc-500 text-center mb-10">
-                Global hotkey triggers recording anywhere
-              </p>
+          {/* Features Panel - Full Width Below */}
+          <div className="mt-16 max-w-2xl mx-auto">
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
 
               {/* Three Features with Shared Slide-Down Panel */}
               <div
                 className="relative"
-                onMouseLeave={() => setActiveFeature(null)}
+                onMouseLeave={() => setActiveFeature('hotkeys')}
               >
                 {/* Feature Columns */}
-                <div className="grid grid-cols-3 gap-8">
+                <div className="grid grid-cols-3 gap-4">
                   {/* Global Hotkeys */}
                   <div
                     className="text-center cursor-pointer"
                     onMouseEnter={() => setActiveFeature('hotkeys')}
                   >
-                    <div className={`w-14 h-14 mx-auto mb-4 bg-zinc-100 dark:bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'hotkeys' ? 'border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/10 scale-110' : 'border-zinc-200 dark:border-zinc-700'}`}>
-                      <Command className="w-6 h-6 text-emerald-500" />
+                    <div className={`w-12 h-12 mx-auto mb-3 bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'hotkeys' ? 'border-emerald-500 bg-emerald-500/10 scale-110' : 'border-zinc-700'}`}>
+                      <Command className="w-5 h-5 text-emerald-500" />
                     </div>
-                    <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Global Hotkeys</h4>
-                    <p className="text-xs text-zinc-500 leading-relaxed">Works in any app</p>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wide mb-1">Hotkeys</h4>
+                    <p className="text-[10px] text-zinc-500">Any app</p>
                   </div>
 
                   {/* No Latency */}
@@ -564,11 +335,11 @@ export default function LivePage() {
                     className="text-center cursor-pointer"
                     onMouseEnter={() => setActiveFeature('models')}
                   >
-                    <div className={`w-14 h-14 mx-auto mb-4 bg-zinc-100 dark:bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'models' ? 'border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/10 scale-110' : 'border-zinc-200 dark:border-zinc-700'}`}>
-                      <AudioWaveform className="w-6 h-6 text-emerald-500" />
+                    <div className={`w-12 h-12 mx-auto mb-3 bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'models' ? 'border-emerald-500 bg-emerald-500/10 scale-110' : 'border-zinc-700'}`}>
+                      <AudioWaveform className="w-5 h-5 text-emerald-500" />
                     </div>
-                    <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">No Latency</h4>
-                    <p className="text-xs text-zinc-500 leading-relaxed">On-device AI models</p>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wide mb-1">Local AI</h4>
+                    <p className="text-[10px] text-zinc-500">No latency</p>
                   </div>
 
                   {/* Smart Paste */}
@@ -576,25 +347,25 @@ export default function LivePage() {
                     className="text-center cursor-pointer"
                     onMouseEnter={() => setActiveFeature('paste')}
                   >
-                    <div className={`w-14 h-14 mx-auto mb-4 bg-zinc-100 dark:bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'paste' ? 'border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/10 scale-110' : 'border-zinc-200 dark:border-zinc-700'}`}>
-                      <Clipboard className="w-6 h-6 text-emerald-500" />
+                    <div className={`w-12 h-12 mx-auto mb-3 bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'paste' ? 'border-emerald-500 bg-emerald-500/10 scale-110' : 'border-zinc-700'}`}>
+                      <Clipboard className="w-5 h-5 text-emerald-500" />
                     </div>
-                    <h4 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-1">Smart Paste</h4>
-                    <p className="text-xs text-zinc-500 leading-relaxed">Text appears instantly</p>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wide mb-1">Smart Paste</h4>
+                    <p className="text-[10px] text-zinc-500">Auto-types</p>
                   </div>
                 </div>
 
                 {/* Slide-Down Panel */}
-                <div className={`transition-all duration-300 ease-out ${activeFeature ? 'opacity-100 mt-8' : 'opacity-0 mt-0 pointer-events-none'}`}>
-                  {/* Triangle Pointer - Outside overflow container */}
-                  <div className="relative h-2 overflow-visible">
+                <div className={`transition-all duration-300 ease-out ${activeFeature ? 'opacity-100 mt-2' : 'opacity-0 mt-0 pointer-events-none'}`}>
+                  {/* Triangle Pointer */}
+                  <div className="relative h-2">
                     <div
-                      className={`absolute w-4 h-4 bg-zinc-950 border-l border-t border-zinc-800 rotate-45 transition-all duration-300 ease-out ${activeFeature ? 'opacity-100' : 'opacity-0'}`}
+                      className={`absolute w-2.5 h-2.5 bg-zinc-950 border-l border-t border-zinc-700 rotate-45 transition-all duration-300 ease-out ${activeFeature ? 'opacity-100' : 'opacity-0'}`}
                       style={{
-                        left: activeFeature === 'hotkeys' ? 'calc(16.67% - 8px)' :
-                              activeFeature === 'models' ? 'calc(50% - 8px)' :
-                              'calc(83.33% - 8px)',
-                        top: '-4px'
+                        left: activeFeature === 'hotkeys' ? 'calc(16.67% - 5px)' :
+                              activeFeature === 'models' ? 'calc(50% - 5px)' :
+                              'calc(83.33% - 5px)',
+                        top: '-1px'
                       }}
                     />
                   </div>
@@ -745,31 +516,6 @@ export default function LivePage() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Talkie AI Teaser */}
-          <div className="mt-16 pt-12 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full mb-6">
-                <AudioWaveform className="w-3 h-3 text-emerald-500" />
-                <Sparkles className="w-3 h-3 text-emerald-500" />
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">Talkie AI</span>
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-4">
-                Your workflow. Your data. Your insights.
-              </h3>
-              <div className="space-y-4 text-zinc-600 dark:text-zinc-400 leading-relaxed text-left max-w-2xl mx-auto">
-                <p>
-                  Every dictation is a live log of how you work: how you break down goals, sequence steps, and make decisions.
-                </p>
-                <p>
-                  Today that stream feeds other platforms: chat, CRMs, ticketing systems, code hosts, AI coding tools. They learn. They improve. You pay.
-                </p>
-                <p>
-                  Talkie keeps that stream in one place, under your control, as training data for your own models and scripts.
-                </p>
               </div>
             </div>
           </div>
