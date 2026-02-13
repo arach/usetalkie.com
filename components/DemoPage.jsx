@@ -5,7 +5,7 @@ import { ArrowLeft, Laptop, Play, Check, Loader2 } from 'lucide-react'
 import Container from './Container'
 import VideoPlayer from './VideoPlayer'
 import ThemeToggle from './ThemeToggle'
-import { trackDownload } from '../lib/analytics'
+import { trackDownload, trackSignup } from '../lib/analytics'
 
 export default function DemoPage() {
   const [email, setEmail] = useState('')
@@ -23,6 +23,7 @@ export default function DemoPage() {
       if (res.ok) {
         setStatus('success')
         setEmail('')
+        trackSignup('demo', 'general', 'demo')
       } else {
         setStatus('error')
       }

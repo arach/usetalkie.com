@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Github, Linkedin, Mail, MapPin, Building2, Sparkles, Check, Loader2 } from 'lucide-react'
+import { trackSignup } from '../lib/analytics'
 
 const ConsoleHeader = ({ label, green }) => (
   <div className="mb-6 select-none">
@@ -28,6 +29,7 @@ export default function AboutPage() {
       if (res.ok) {
         setStatus('success')
         setEmail('')
+        trackSignup('newsletter', 'general', 'about')
       } else {
         setStatus('error')
       }
