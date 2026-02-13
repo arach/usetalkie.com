@@ -173,10 +173,14 @@ export default async function handler(req, res) {
     const bezelResponse = await fetch(bezelUrl)
 
     if (!bezelResponse.ok) {
-      return res.status(500).json({
-        error: 'Failed to fetch device bezel',
+      // List available bezels
+      const availableBezels = ['Black'] // Currently only Black is available
+      return res.status(400).json({
+        error: `Bezel not available: ${selectedColor}`,
+        availableColors: availableBezels,
         bezelUrl,
         status: bezelResponse.status,
+        hint: 'Only Black bezel is currently available. Set color=Black to continue.',
       })
     }
 
