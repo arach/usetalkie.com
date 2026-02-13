@@ -104,7 +104,7 @@ export default function PricingSection() {
           setIsSubmitted(true)
           setEmail('')
           setUseCase('')
-          trackSignup(useCase || 'not_specified')
+          trackSignup(useCase || 'not_specified', 'general', 'pricing')
           return
         }
       }
@@ -116,7 +116,7 @@ export default function PricingSection() {
         setIsSubmitted(true)
         setEmail('')
         setUseCase('')
-        trackSignup(useCase || 'not_specified')
+        trackSignup(useCase || 'not_specified', 'general', 'pricing')
       } else {
         setStatus('error')
         setErrorMsg('Something went wrong. Please try again.')
@@ -130,7 +130,7 @@ export default function PricingSection() {
           setIsSubmitted(true)
           setEmail('')
           setUseCase('')
-          trackSignup(useCase || 'not_specified')
+          trackSignup(useCase || 'not_specified', 'general', 'pricing')
         } else {
           setStatus('error')
           setErrorMsg('Something went wrong. Please try again.')
