@@ -17,10 +17,7 @@ import {
   Laptop,
   Download,
   Cpu,
-  Database,
   HardDrive,
-  Lock,
-  Search,
   Sparkles,
   Lightbulb,
   Target,
@@ -32,12 +29,7 @@ import {
   FileText,
   Palette,
   RefreshCw,
-  Settings2,
-  Terminal,
-  Keyboard,
   Circle,
-  AudioWaveform,
-  Play,
 } from 'lucide-react'
 import Container from './Container'
 import ThemeToggle from './ThemeToggle'
@@ -135,7 +127,6 @@ const ConfigLine = ({ label, value }) => (
 
 export default function LivePage() {
   const [scrolled, setScrolled] = useState(false)
-  const [activeFeature, setActiveFeature] = useState('hotkeys') // 'hotkeys' | 'models' | 'paste'
   const [hubSectionHovered, setHubSectionHovered] = useState(false)
 
   useEffect(() => {
@@ -237,287 +228,116 @@ export default function LivePage() {
         </Container>
       </section>
 
-      {/* How It Works - Consolidated */}
+      {/* Why Voice */}
       <section className="py-16 md:py-24 bg-zinc-950 border-t border-zinc-800">
         <Container>
           {/* Centered Header */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
-              <Zap className="w-3 h-3 text-emerald-500" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
+              <Zap className="w-3.5 h-3.5 text-emerald-500" />
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">Why Voice?</span>
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tight mb-6">
-              Execute at the <span className="text-emerald-500">speed of thought.</span>
+              Execute at the<br /><span className="text-emerald-500">speed of thought.</span>
             </h2>
+
+            <p className="text-zinc-400 leading-relaxed max-w-2xl mx-auto">
+              Speaking is the most natural way to express complex thoughts. Talkie turns your voice into text instantly, so you can capture ideas at the speed you think them.
+            </p>
           </div>
 
-          {/* Two Column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            {/* Left: Stats + Description */}
-            <div>
-              {/* Stats Row */}
-              <div className="flex items-center gap-8 p-5 bg-zinc-900/50 border border-zinc-800 rounded-xl mb-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-zinc-500">~40</div>
-                  <div className="text-[10px] font-mono uppercase text-zinc-600">Typing WPM</div>
+          {/* Stats Row */}
+          <div className="flex items-center justify-center gap-16 md:gap-24 mb-16">
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-emerald-500">~40</div>
+              <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 mt-1">Keyboard WPM</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-emerald-500">200+</div>
+              <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 mt-1">Talkie WPM</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white">5x</div>
+              <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 mt-1">Faster</div>
+            </div>
+          </div>
+
+          {/* Three Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Speed */}
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-5 h-5 text-emerald-500" />
                 </div>
-                <div className="flex flex-col items-center">
-                  <ArrowRight className="w-5 h-5 text-emerald-500" />
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-emerald-500">200+</div>
-                  <div className="text-[10px] font-mono uppercase text-zinc-600">Voice WPM</div>
-                </div>
-                <div className="flex-1 text-right">
-                  <div className="text-2xl font-bold text-white">5x</div>
-                  <div className="text-[10px] font-mono uppercase text-zinc-600">Faster</div>
+                <div>
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Speed</h3>
                 </div>
               </div>
-
-              <p className="text-zinc-400 leading-relaxed">
-                We speak at 150 words per minute but type at 40. Voice lets you capture ideas before they fade - directly into any app, with text that lands exactly where your cursor was.
+              <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+                We speak at 150 words per minute but type at 40. Voice capture lets you get thoughts out before they evolve or fade.
               </p>
+              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">4x Faster Capture</p>
             </div>
 
-            {/* Right: Menu Bar Mockup */}
-            <div>
-              <div className="bg-zinc-800/80 backdrop-blur rounded-lg px-3 py-1.5 flex items-center justify-between">
-                <div className="flex items-center gap-3 text-[10px] text-zinc-400 font-medium">
-                  <span></span>
-                  <span>Cursor</span>
-                  <span className="text-zinc-600">File</span>
-                  <span className="text-zinc-600">Edit</span>
-                  <span className="text-zinc-600">View</span>
+            {/* Rest Your Eyes */}
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Eye className="w-5 h-5 text-emerald-500" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-zinc-700 flex items-center justify-center">
-                    <Circle className="w-2 h-2 text-zinc-500" />
-                  </div>
-                  <div className="w-4 h-4 rounded bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center">
-                    <Mic className="w-2 h-2 text-emerald-400" />
-                  </div>
-                  <div className="w-4 h-4 rounded bg-zinc-700 flex items-center justify-center">
-                    <span className="text-[8px] text-zinc-500">≡</span>
-                  </div>
-                  <span className="text-[10px] text-zinc-500 ml-1">9:41 AM</span>
+                <div>
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Rest Your Eyes</h3>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-600 text-center mt-2">Lives in your menu bar, works everywhere</p>
+              <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+                Look away from the screen while you speak. Mid-length thoughts flow better when you're not staring at a cursor waiting for words.
+              </p>
+              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">Natural Expression</p>
+            </div>
+
+            {/* Ecosystem */}
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Ecosystem</h3>
+                </div>
+              </div>
+              <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+                Capture on iPhone or Watch, then continue on Mac with workflows that turn speech into action.
+              </p>
+              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">Memo → Workflow → Action</p>
             </div>
           </div>
 
-          {/* Features Panel - Full Width Below */}
-          <div className="mt-16 max-w-2xl mx-auto">
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
-
-              {/* Three Features with Shared Slide-Down Panel */}
-              <div
-                className="relative"
-                onMouseLeave={() => setActiveFeature('hotkeys')}
-              >
-                {/* Feature Columns */}
-                <div className="grid grid-cols-3 gap-4">
-                  {/* Global Hotkeys */}
-                  <div
-                    className="text-center cursor-pointer"
-                    onMouseEnter={() => setActiveFeature('hotkeys')}
-                  >
-                    <div className={`w-12 h-12 mx-auto mb-3 bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'hotkeys' ? 'border-emerald-500 bg-emerald-500/10 scale-110' : 'border-zinc-700'}`}>
-                      <Command className="w-5 h-5 text-emerald-500" />
-                    </div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wide mb-1">Hotkeys</h4>
-                    <p className="text-[10px] text-zinc-500">Any app</p>
-                  </div>
-
-                  {/* No Latency */}
-                  <div
-                    className="text-center cursor-pointer"
-                    onMouseEnter={() => setActiveFeature('models')}
-                  >
-                    <div className={`w-12 h-12 mx-auto mb-3 bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'models' ? 'border-emerald-500 bg-emerald-500/10 scale-110' : 'border-zinc-700'}`}>
-                      <AudioWaveform className="w-5 h-5 text-emerald-500" />
-                    </div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wide mb-1">Local AI</h4>
-                    <p className="text-[10px] text-zinc-500">No latency</p>
-                  </div>
-
-                  {/* Smart Paste */}
-                  <div
-                    className="text-center cursor-pointer"
-                    onMouseEnter={() => setActiveFeature('paste')}
-                  >
-                    <div className={`w-12 h-12 mx-auto mb-3 bg-zinc-800 border rounded-xl flex items-center justify-center transition-all duration-200 ${activeFeature === 'paste' ? 'border-emerald-500 bg-emerald-500/10 scale-110' : 'border-zinc-700'}`}>
-                      <Clipboard className="w-5 h-5 text-emerald-500" />
-                    </div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wide mb-1">Smart Paste</h4>
-                    <p className="text-[10px] text-zinc-500">Auto-types</p>
-                  </div>
+          {/* Menu Bar - Works in Any App */}
+          <div className="mt-16 max-w-lg mx-auto text-center">
+            <div className="bg-zinc-800/80 backdrop-blur rounded-lg px-4 py-2 flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3 text-[11px] text-zinc-400 font-medium">
+                <span></span>
+                <span>Cursor</span>
+                <span className="text-zinc-600">File</span>
+                <span className="text-zinc-600">Edit</span>
+                <span className="text-zinc-600">View</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-zinc-700 flex items-center justify-center">
+                  <Circle className="w-2 h-2 text-zinc-500" />
                 </div>
-
-                {/* Slide-Down Panel */}
-                <div className={`transition-all duration-300 ease-out ${activeFeature ? 'opacity-100 mt-2' : 'opacity-0 mt-0 pointer-events-none'}`}>
-                  {/* Triangle Pointer */}
-                  <div className="relative h-2">
-                    <div
-                      className={`absolute w-2.5 h-2.5 bg-zinc-950 border-l border-t border-zinc-700 rotate-45 transition-all duration-300 ease-out ${activeFeature ? 'opacity-100' : 'opacity-0'}`}
-                      style={{
-                        left: activeFeature === 'hotkeys' ? 'calc(16.67% - 5px)' :
-                              activeFeature === 'models' ? 'calc(50% - 5px)' :
-                              'calc(83.33% - 5px)',
-                        top: '-1px'
-                      }}
-                    />
-                  </div>
-
-                  <div className="relative bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden -mt-1">
-                    {/* Texture overlay */}
-                    <div className="absolute inset-0 bg-tactical-grid-dark opacity-30 pointer-events-none" />
-
-                    {/* Content Container - Fixed Height for Stability */}
-                    <div className="relative h-[280px] overflow-hidden">
-                      {/* Hotkeys Content */}
-                      <div className={`absolute inset-0 p-6 transition-all duration-300 ease-out ${activeFeature === 'hotkeys' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8 pointer-events-none'}`}>
-                        <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-4">Recording Modes</p>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="flex flex-col items-center gap-3 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                              <Keyboard className="w-5 h-5 text-emerald-500" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white mb-1">Push to Talk</p>
-                              <p className="text-xs text-zinc-500 mb-2">Hold to record</p>
-                              <span className="text-xs font-mono text-zinc-400 bg-zinc-800 px-2 py-1 rounded">⌥⌘L</span>
-                            </div>
-                          </div>
-                          <div className="flex flex-col items-center gap-3 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                              <Mic className="w-5 h-5 text-emerald-500" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white mb-1">Toggle Mode</p>
-                              <p className="text-xs text-zinc-500 mb-2">Hands-free recording</p>
-                              <span className="text-xs font-mono text-zinc-400 bg-zinc-800 px-2 py-1 rounded">⌥⌘;</span>
-                            </div>
-                          </div>
-                          <div className="flex flex-col items-center gap-3 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                              <Circle className="w-4 h-4 text-emerald-500 fill-emerald-500" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white mb-1">Always-on Pill</p>
-                              <p className="text-xs text-zinc-500 mb-2">Click to talk</p>
-                              <span className="text-xs font-mono text-zinc-400 bg-zinc-800 px-2 py-1 rounded">Menu Bar</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Models Content */}
-                      <div className={`absolute inset-0 p-6 transition-all duration-300 ease-out ${activeFeature === 'models' ? 'opacity-100 translate-x-0' : activeFeature === 'hotkeys' ? 'opacity-0 translate-x-8 pointer-events-none' : 'opacity-0 -translate-x-8 pointer-events-none'}`}>
-                        <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-4">Choose Your Model</p>
-                        <div className="grid grid-cols-2 gap-6 max-w-xl mx-auto">
-                          {/* Parakeet Card */}
-                          <a href="https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2" target="_blank" rel="noopener noreferrer" className="relative bg-zinc-900/50 border-2 border-emerald-500 rounded-xl p-5 block hover:bg-emerald-500/10 transition-colors">
-                            <div className="absolute -top-2.5 left-4">
-                              <span className="px-2 py-0.5 bg-emerald-500 text-[10px] font-mono font-bold uppercase tracking-wider text-white rounded">Recommended</span>
-                            </div>
-                            <div className="flex items-center gap-3 mt-2 mb-4">
-                              <div className="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center p-1.5">
-                                <img src="/nvidia-logo.png" alt="NVIDIA" className="w-full h-full object-contain" />
-                              </div>
-                              <div>
-                                <span className="text-base text-white font-bold">Parakeet</span>
-                                <span className="text-zinc-500 text-sm ml-1.5">v3</span>
-                              </div>
-                            </div>
-                            <div className="space-y-2 text-sm">
-                              <div className="flex justify-between">
-                                <span className="text-zinc-500">Size</span>
-                                <span className="text-zinc-300 font-mono">~200 MB</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-zinc-500">Speed</span>
-                                <span className="text-emerald-400 font-mono">Ultra-fast</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-zinc-500">Languages</span>
-                                <span className="text-zinc-300 font-mono">English</span>
-                              </div>
-                            </div>
-                          </a>
-
-                          {/* Whisper Card */}
-                          <a href="https://huggingface.co/openai/whisper-large-v3" target="_blank" rel="noopener noreferrer" className="relative bg-zinc-900/50 border border-zinc-700 rounded-xl p-5 block hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-colors">
-                            <div className="absolute -top-2.5 left-4">
-                              <span className="px-2 py-0.5 bg-cyan-600 text-[10px] font-mono font-bold uppercase tracking-wider text-white rounded">Multilingual</span>
-                            </div>
-                            <div className="flex items-center gap-3 mt-2 mb-4">
-                              <div className="w-10 h-10 bg-zinc-700 rounded-lg flex items-center justify-center p-1.5">
-                                <img src="/openai-logo.png" alt="OpenAI" className="w-full h-full object-contain opacity-70" />
-                              </div>
-                              <div>
-                                <span className="text-base text-white font-bold">Whisper</span>
-                                <span className="text-zinc-500 text-sm ml-1.5">lg-v3</span>
-                              </div>
-                            </div>
-                            <div className="space-y-2 text-sm">
-                              <div className="flex justify-between">
-                                <span className="text-zinc-500">Size</span>
-                                <span className="text-zinc-300 font-mono">~1.5 GB</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-zinc-500">Speed</span>
-                                <span className="text-zinc-300 font-mono">Fast</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-zinc-500">Languages</span>
-                                <span className="text-zinc-300 font-mono">99+</span>
-                              </div>
-                            </div>
-                          </a>
-                        </div>
-                        <p className="text-xs text-zinc-500 text-center mt-4">Click cards to learn more • Switch anytime in settings</p>
-                      </div>
-
-                      {/* Paste Content */}
-                      <div className={`absolute inset-0 p-6 transition-all duration-300 ease-out ${activeFeature === 'paste' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8 pointer-events-none'}`}>
-                        <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-4">Smart Features</p>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="flex flex-col items-center gap-3 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                              <Target className="w-5 h-5 text-emerald-500" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white mb-1">App Awareness</p>
-                              <p className="text-xs text-zinc-500 leading-snug">Tracks which app you started from</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-col items-center gap-3 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                              <MousePointer2 className="w-5 h-5 text-emerald-500" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white mb-1">Auto-paste</p>
-                              <p className="text-xs text-zinc-500 leading-snug">Paste directly or copy to clipboard</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-col items-center gap-3 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                              <Zap className="w-5 h-5 text-emerald-500" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white mb-1">Return to Origin</p>
-                              <p className="text-xs text-zinc-500 leading-snug">Text lands exactly where cursor was</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="w-4 h-4 rounded bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center">
+                  <Mic className="w-2 h-2 text-emerald-400" />
                 </div>
+                <div className="w-4 h-4 rounded bg-zinc-700 flex items-center justify-center">
+                  <span className="text-[8px] text-zinc-500">≡</span>
+                </div>
+                <span className="text-[10px] text-zinc-500 ml-1">9:41 AM</span>
               </div>
             </div>
+            <p className="text-sm text-zinc-500">Lives in your menu bar. <span className="text-zinc-300">Works in any app.</span></p>
           </div>
         </Container>
       </section>
