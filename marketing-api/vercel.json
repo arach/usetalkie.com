@@ -1,18 +1,3 @@
 {
-  "version": 2,
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    { "source": "/admin", "destination": "/api/admin" },
-    { "source": "/admin/", "destination": "/api/admin" },
-    { "source": "/mockup", "destination": "/api/mockup" },
-    { "source": "/mockup/", "destination": "/api/mockup" },
-    { "source": "/regenerate", "destination": "/api/regenerate" },
-    { "source": "/download", "destination": "/api/download" },
-    { "source": "/subscribe", "destination": "/api/subscribe" },
-    { "source": "/testflight", "destination": "/api/testflight" }
-  ]
+  "framework": "nextjs"
 }

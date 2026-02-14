@@ -1,18 +1,30 @@
 {
-  "name": "talkie-marketing-api",
-  "version": "1.0.0",
+  "name": "talkie-marketing",
+  "version": "2.0.0",
   "private": true,
-  "description": "Marketing API for Talkie - handles email signups, mockup generation, and growth functions. Deploy to marketing.usetalkie.com",
+  "description": "Marketing dashboard for Talkie - handles email signups, mockup generation, and admin functions",
   "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel --prod"
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@vercel/blob": "^2.1.0",
+    "@clerk/nextjs": "^6.12.0",
+    "@vercel/blob": "^0.27.1",
+    "lucide-react": "^0.469.0",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "resend": "^4.0.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "vercel": "^39.0.0"
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
   }
 }
