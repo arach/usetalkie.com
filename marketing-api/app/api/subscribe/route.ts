@@ -173,12 +173,14 @@ export async function POST(request: NextRequest) {
       success: true,
       message: "You're on the list!",
       emailSent,
+    }, {
+      headers: { 'Access-Control-Allow-Origin': '*' },
     })
   } catch (error) {
     console.error('Subscription error:', error)
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.' },
-      { status: 500 }
+      { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } }
     )
   }
 }
