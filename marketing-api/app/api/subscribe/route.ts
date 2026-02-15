@@ -148,7 +148,8 @@ export async function POST(request: NextRequest) {
 
         // Only send welcome email for new contacts
         if (isNew) {
-          const welcome = getTemplate('welcome')!
+          const templateSlug = useCase === 'mac' ? 'welcome-mac' : 'welcome-ios'
+          const welcome = getTemplate(templateSlug) || getTemplate('welcome')!
           await resend.emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'Talkie <hello@mail.usetalkie.com>',
             to: cleanEmail,
