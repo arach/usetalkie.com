@@ -49,7 +49,7 @@ export default function PricingSection() {
   }, [])
 
   // API endpoint - marketing.usetalkie.com
-  const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://marketing.usetalkie.com'
+  const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://marketing.usetalkie.com/api'
   const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || 'mkgaanoo'
 
   const submitToFormspree = async (em, selectedUseCase) => {
