@@ -1,8 +1,22 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { Settings, User, Shield, Bell } from 'lucide-react'
+import { isDevMode, getDevUser } from '@/lib/dev-auth'
 
 export default async function SettingsPage() {
-  const user = await currentUser()
+  let userData: { email: string; firstName: string | null; lastName: string | null; id: string }
+
+  if (isDevMode()) {
+    const dev = getDevUser()
+    userData = { email: dev.email, firstName: dev.firstName, lastName: dev.lastName, id: dev.userId }
+  } else {
+    const user = await currentUser()
+    userData = {
+      email: user?.emailAddresses[0]?.emailAddress || '',
+      firstName: user?.firstName || null,
+      lastName: user?.lastName || null,
+      id: user?.id || '',
+    }
+  }
 
   return (
     <div>
@@ -23,17 +37,17 @@ export default async function SettingsPage() {
           <div className="grid gap-4">
             <div>
               <label className="block text-sm text-zinc-400 mb-1">Email</label>
-              <p className="text-white">{user?.emailAddresses[0]?.emailAddress}</p>
+              <p className="text-white">{userData.email}</p>
             </div>
             <div>
               <label className="block text-sm text-zinc-400 mb-1">Name</label>
               <p className="text-white">
-                {user?.firstName} {user?.lastName}
+                {userData.firstName} {userData.lastName}
               </p>
             </div>
             <div>
               <label className="block text-sm text-zinc-400 mb-1">User ID</label>
-              <p className="text-xs text-zinc-500 font-mono">{user?.id}</p>
+              <p className="text-xs text-zinc-500 font-mono">{userData.id}</p>
             </div>
           </div>
         </div>

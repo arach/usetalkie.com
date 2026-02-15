@@ -2,7 +2,19 @@ import { list } from '@vercel/blob'
 import Link from 'next/link'
 import { LayoutDashboard, Image as ImageIcon, Upload, ExternalLink } from 'lucide-react'
 
+const emptyStats = {
+  uploadsCount: 0,
+  mockupsCount: 0,
+  totalSize: 0,
+  recentMockups: [] as any[],
+}
+
 async function getStats() {
+  // Vercel Blob throws synchronously if no token is configured
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return emptyStats
+  }
+
   try {
     const [uploads, mockups] = await Promise.all([
       list({ prefix: 'uploads/' }),

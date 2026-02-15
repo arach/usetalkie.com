@@ -1,0 +1,45 @@
+import * as schema from './schema'
+
+const INIT_SQL = `
+DO $$ BEGIN
+  CREATE TYPE contact_status AS ENUM ('contact', 'active', 'churned');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+CREATE TABLE IF NOT EXISTS contacts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) NOT NULL UNIQUE,
+  status contact_status NOT NULL DEFAULT 'contact',
+  clerk_user_id VARCHAR(255) UNIQUE,
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
+  use_case VARCHAR(255),
+  source VARCHAR(255),
+  utm_source VARCHAR(255),
+  utm_medium VARCHAR(255),
+  utm_campaign VARCHAR(255),
+  resend_contact_id VARCHAR(255),
+  email_unsubscribed BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  converted_at TIMESTAMPTZ
+);
+`
+
+function createDb() {
+  if (process.env.NODE_ENV === 'production') {
+    const { sql } = require('@vercel/postgres') as typeof import('@vercel/postgres')
+    const { drizzle } = require('drizzle-orm/vercel-postgres') as typeof import('drizzle-orm/vercel-postgres')
+    return drizzle(sql, { schema })
+  } else {
+    const { PGlite } = require('@electric-sql/pglite') as typeof import('@electric-sql/pglite')
+    const { drizzle } = require('drizzle-orm/pglite') as typeof import('drizzle-orm/pglite')
+    const client = new PGlite('.pglite')
+    client.exec(INIT_SQL).catch((err: Error) =>
+      console.error('PGlite schema init failed:', err)
+    )
+    return drizzle(client, { schema })
+  }
+}
+
+export const db = createDb()

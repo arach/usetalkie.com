@@ -1,4 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 // Public routes that don't require authentication
 const isPublicRoute = createRouteMatcher([
@@ -6,14 +8,25 @@ const isPublicRoute = createRouteMatcher([
   '/sign-up(.*)',
   '/api/subscribe(.*)',
   '/api/testflight(.*)',
+  '/api/webhooks/clerk(.*)',
 ])
 
-export default clerkMiddleware(async (auth, request) => {
-  // Protect all routes except public ones
-  if (!isPublicRoute(request)) {
-    await auth.protect()
-  }
-})
+function devMiddleware(request: NextRequest) {
+  return NextResponse.next()
+}
+
+// In development, bypass Clerk entirely for fast local iteration.
+// NODE_ENV is set by Next.js itself — production builds always use 'production',
+// so this cannot be activated in prod even if other env vars are tampered with.
+const handler = process.env.NODE_ENV === 'development'
+  ? devMiddleware
+  : clerkMiddleware(async (auth, request) => {
+      if (!isPublicRoute(request)) {
+        await auth.protect()
+      }
+    })
+
+export default handler
 
 export const config = {
   matcher: [

@@ -1,12 +1,21 @@
 import { NextResponse } from 'next/server'
 import { list, del } from '@vercel/blob'
 import { auth } from '@clerk/nextjs/server'
+import { isDevMode } from '@/lib/dev-auth'
+
+async function checkAuth() {
+  if (isDevMode()) return true
+  const { userId } = await auth()
+  return !!userId
+}
 
 export async function GET() {
-  const { userId } = await auth()
-
-  if (!userId) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json({ uploads: [], mockups: [] })
   }
 
   try {
@@ -30,9 +39,7 @@ export async function GET() {
 }
 
 export async function DELETE(request: Request) {
-  const { userId } = await auth()
-
-  if (!userId) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

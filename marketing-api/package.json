@@ -4,27 +4,36 @@
   "private": true,
   "description": "Marketing dashboard for Talkie - handles email signups, mockup generation, and admin functions",
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.0",
     "@vercel/blob": "^0.27.1",
+    "@vercel/postgres": "^0.10.0",
+    "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.469.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^4.0.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "svix": "^1.85.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.3.15",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.31.9",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.2"
   }
 }
