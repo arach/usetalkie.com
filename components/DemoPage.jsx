@@ -5,11 +5,13 @@ import { ArrowLeft, Laptop, Play, Check, Loader2 } from 'lucide-react'
 import Container from './Container'
 import VideoPlayer from './VideoPlayer'
 import ThemeToggle from './ThemeToggle'
+import DownloadModal from './DownloadModal'
 import { trackDownload, trackSignup } from '../lib/analytics'
 
 export default function DemoPage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState('idle')
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false)
 
   const handleNotify = async (e) => {
     e.preventDefault()
