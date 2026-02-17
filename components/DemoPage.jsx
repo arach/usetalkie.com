@@ -95,33 +95,33 @@ export default function DemoPage() {
             )}
           </div>
 
-          {/* Main Promo Video */}
+          {/* Hero Video */}
           <div className="mb-12">
             <VideoPlayer
-              src="/videos/TalkiePromo.mp4"
-              title="TalkiePromo"
-              aspectRatio="square"
-              autoPlay={false}
-              loop={false}
-              className="max-w-xl mx-auto shadow-2xl rounded-lg"
-            />
-            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-4 font-mono uppercase tracking-wider">
-              23 second overview
-            </p>
-          </div>
-
-          {/* Quick Demo Video */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-center text-zinc-900 dark:text-white mb-6">
-              Quick Demo
-            </h2>
-            <VideoPlayer
-              src="/videos/TalkieOverview.mp4"
+              src="/videos/TalkieHero.mp4"
               title="Talkie Overview"
               aspectRatio="video"
               autoPlay={false}
               loop={false}
               className="max-w-3xl mx-auto shadow-2xl rounded-lg"
+            />
+            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 mt-4 font-mono uppercase tracking-wider">
+              60 second overview
+            </p>
+          </div>
+
+          {/* Short Promo */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-center text-zinc-900 dark:text-white mb-6">
+              Quick Promo
+            </h2>
+            <VideoPlayer
+              src="/videos/TalkiePromo.mp4"
+              title="Talkie Promo"
+              aspectRatio="video"
+              autoPlay={false}
+              loop={false}
+              className="max-w-xl mx-auto shadow-2xl rounded-lg"
             />
           </div>
 

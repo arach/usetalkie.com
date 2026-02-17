@@ -45,21 +45,32 @@ const DEMO_SECTIONS = [
     title: 'Dictate',
     description: 'Voice to text in any app',
     videos: [
-      { id: 'overview', title: 'Overview', src: '/videos/TalkieOverview.mp4' },
-      { id: 'dictation', title: 'Dictation', src: '/videos/TalkieDictation.mp4' },
+      { id: 'hold-to-talk', title: 'Hold-to-Talk', src: '/videos/TalkieHoldToTalk.mp4' },
+      { id: 'return-to-origin', title: 'Return to Origin', src: '/videos/TalkieReturnToOrigin.mp4' },
+      { id: 'smart-routing', title: 'Smart Routing', src: '/videos/TalkieSmartRouting.mp4' },
+      { id: 'dictation', title: 'Use Cases', src: '/videos/TalkieDictation.mp4' },
     ],
   },
   {
     id: 'orchestrate',
     title: 'Orchestrate',
     description: 'Workflows & automation',
-    videos: [], // Coming soon
+    videos: [
+      { id: 'workflow-file', title: 'Voice → File', src: '/videos/TalkieWorkflowFile.mp4' },
+      { id: 'workflow-shell', title: 'Voice → Shell', src: '/videos/TalkieWorkflowShell.mp4' },
+      { id: 'workflow-agent', title: 'Voice → Agent', src: '/videos/TalkieWorkflowAgent.mp4' },
+      { id: 'workflow-editor', title: 'Pipeline Editor', src: '/videos/TalkieWorkflowEditor.mp4' },
+    ],
   },
   {
     id: 'manage',
     title: 'Manage',
     description: 'Library & search',
-    videos: [], // Coming soon
+    videos: [
+      { id: 'echoes', title: 'Echoes', src: '/videos/TalkieEchoes.mp4' },
+      { id: 'search', title: 'Search', src: '/videos/TalkieSearch.mp4' },
+      { id: 'export', title: 'Export', src: '/videos/TalkieExport.mp4' },
+    ],
   },
 ]
 

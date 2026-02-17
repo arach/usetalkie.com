@@ -141,15 +141,29 @@ export default function CapturePage() {
       {/* Video Showcase */}
       <section className="py-16 md:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
         <Container>
-          <div className="max-w-sm mx-auto">
-            <VideoPlayer
-              src="/videos/MobileRecording.mp4"
-              title="Talkie Mobile Capture"
-              aspectRatio="video"
-              autoPlay={false}
-              loop={true}
-              className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div>
+              <VideoPlayer
+                src="/videos/TalkieiPhoneCapture.mp4"
+                title="iPhone Quick Capture"
+                aspectRatio="video"
+                autoPlay={false}
+                loop={true}
+                className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
+              />
+              <p className="text-center text-[10px] font-mono text-zinc-500 mt-3 uppercase tracking-wider">Quick Capture</p>
+            </div>
+            <div>
+              <VideoPlayer
+                src="/videos/TalkieiPhoneSync.mp4"
+                title="iPhone to Mac Sync"
+                aspectRatio="video"
+                autoPlay={false}
+                loop={true}
+                className="shadow-2xl shadow-black/20 dark:shadow-black/50 rounded-xl overflow-hidden"
+              />
+              <p className="text-center text-[10px] font-mono text-zinc-500 mt-3 uppercase tracking-wider">Sync to Mac</p>
+            </div>
           </div>
         </Container>
       </section>
