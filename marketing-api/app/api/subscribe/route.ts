@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { waitUntil } from '@vercel/functions'
-import { Resend } from 'resend'
 import { db } from '@/lib/db'
 import { contacts } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { getTemplate } from '@/lib/emails/templates'
+import { addToAudience, sendWelcomeSequence } from '@/lib/emails/service'
 
 // Simple in-memory rate limiting
 const submissions = new Map<string, { count: number; firstSubmission: number }>()
@@ -46,7 +45,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { email, useCase, honeypot, formLoadTime, utm } = await request.json()
+    const { email, useCase, referralSource, honeypot, formLoadTime, utm } = await request.json()
 
     // Honeypot check
     if (honeypot) {
@@ -81,17 +80,18 @@ export async function POST(request: NextRequest) {
         email: cleanEmail,
         status: 'contact',
         useCase: useCase || null,
-        source: 'early_access',
+        source: referralSource || 'direct',
         utmSource: utm?.utm_source || null,
         utmMedium: utm?.utm_medium || null,
         utmCampaign: utm?.utm_campaign || null,
       })
     } else {
-      // Update use_case and UTM if not already set
+      // Update use_case, source, and UTM if not already set
       await db
         .update(contacts)
         .set({
           useCase: useCase || undefined,
+          source: referralSource || undefined,
           utmSource: utm?.utm_source || undefined,
           utmMedium: utm?.utm_medium || undefined,
           utmCampaign: utm?.utm_campaign || undefined,
@@ -99,74 +99,23 @@ export async function POST(request: NextRequest) {
         .where(eq(contacts.email, cleanEmail))
     }
 
-    // Sync to Resend audience + send welcome email (only for new contacts)
+    // Sync to Resend and send emails (only for new contacts)
     let emailSent = false
-    if (process.env.RESEND_API_KEY) {
-      try {
-        const resend = new Resend(process.env.RESEND_API_KEY)
+    if (process.env.RESEND_API_KEY && isNew) {
+      emailSent = true
 
-        // Add contact to Resend audience and store the contact ID
-        const audienceId = process.env.RESEND_SEGMENT_ID
-        if (audienceId) {
-          const result = await resend.contacts.create({
-            email: cleanEmail,
-            audienceId,
-            unsubscribed: false,
-          }).catch((err) => {
-            console.error('Failed to add contact:', err)
-            return null
-          })
-
-          // Store resend_contact_id back to DB
-          if (result?.data?.id) {
-            await db
-              .update(contacts)
-              .set({ resendContactId: result.data.id })
-              .where(eq(contacts.email, cleanEmail))
-              .catch((err) => console.error('Failed to store resend_contact_id:', err))
-          }
-        }
-
-        // Only send welcome email for new contacts
-        if (isNew) {
-          const macUseCases = ['dictation', 'coding', 'workflows']
-          const templateSlug = macUseCases.includes(useCase) ? 'welcome-mac' : 'welcome-ios'
-          const welcome = getTemplate(templateSlug) || getTemplate('welcome')!
-          await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
-            to: cleanEmail,
-            bcc: process.env.NOTIFY_EMAIL || 'notifs@usetalkie.com',
-            subject: welcome.subject,
-            html: welcome.renderHtml({ email: cleanEmail }),
-            text: welcome.renderText({ email: cleanEmail }),
-            replyTo: 'arach@usetalkie.com',
-          })
-
-          emailSent = true
-          console.log(`Welcome email sent to ${cleanEmail}`)
-
-          // Schedule follow-up in background (waitUntil keeps function alive after response)
-          const followUp = getTemplate('follow-up')
-          if (followUp) {
-            waitUntil((async () => {
-              await new Promise((r) => setTimeout(r, 2000))
-              const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-              await resend.emails.send({
-                from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
-                to: cleanEmail,
-                subject: followUp.subject,
-                html: followUp.renderHtml({ email: cleanEmail }),
-                text: followUp.renderText({ email: cleanEmail }),
-                replyTo: 'arach@usetalkie.com',
-                scheduledAt,
-              })
-              console.log(`Follow-up scheduled for ${cleanEmail} at ${scheduledAt}`)
-            })().catch((err) => console.error('Follow-up scheduling error:', err)))
-          }
-        }
-      } catch (emailError) {
-        console.error('Resend email error:', emailError)
+      // Add to Resend audience
+      const resendContactId = await addToAudience(cleanEmail)
+      if (resendContactId) {
+        await db
+          .update(contacts)
+          .set({ resendContactId })
+          .where(eq(contacts.email, cleanEmail))
+          .catch((err) => console.error('Failed to store resend_contact_id:', err))
       }
+
+      // Send welcome email + follow-up in background
+      waitUntil(sendWelcomeSequence({ email: cleanEmail, useCase }))
     }
 
     return NextResponse.json({

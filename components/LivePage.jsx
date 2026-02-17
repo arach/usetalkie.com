@@ -37,6 +37,7 @@ import SubNav from './SubNav'
 import VideoPlayer from './VideoPlayer'
 import DemoViewer from './DemoViewer'
 import HubDiagram from './HubDiagram'
+import DownloadModal from './DownloadModal'
 
 // Demo sections data
 const DEMO_SECTIONS = [
@@ -139,6 +140,7 @@ const ConfigLine = ({ label, value }) => (
 export default function LivePage() {
   const [scrolled, setScrolled] = useState(false)
   const [hubSectionHovered, setHubSectionHovered] = useState(false)
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -188,10 +190,10 @@ export default function LivePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#pricing" className="h-12 px-8 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-emerald-500/25">
+              <button onClick={() => setDownloadModalOpen(true)} className="h-12 px-8 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-emerald-500/25">
                 <Download className="w-4 h-4" />
-                <span>Get Early Access</span>
-              </a>
+                <span>Download for Mac</span>
+              </button>
               <div className="flex flex-col gap-1 text-left">
                 <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
                   <Laptop className="w-3 h-3" />
@@ -796,12 +798,12 @@ export default function LivePage() {
             Accelerate thoughts<br/>to action.
           </h2>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-10 max-w-lg mx-auto">
-            Get early access to Talkie and turn voice into action across Mac, iPhone, and Watch.
+            Download Talkie for Mac and turn voice into action with dictation and workflows.
           </p>
-          <a href="#pricing" className="inline-flex h-14 px-10 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all items-center gap-3 shadow-xl shadow-emerald-500/25">
+          <button onClick={() => setDownloadModalOpen(true)} className="inline-flex h-14 px-10 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all items-center gap-3 shadow-xl shadow-emerald-500/25">
             <Download className="w-5 h-5" />
-            <span>Get Early Access</span>
-          </a>
+            <span>Download for Mac</span>
+          </button>
           <p className="mt-8 text-xs font-mono uppercase text-zinc-400">macOS 26+ • Apple Silicon optimized • Signed & Notarized</p>
         </Container>
       </section>
@@ -826,6 +828,9 @@ export default function LivePage() {
       </footer>
 
       <ThemeToggle />
+
+      {/* Download Modal */}
+      <DownloadModal isOpen={downloadModalOpen} onClose={() => setDownloadModalOpen(false)} />
     </div>
   )
 }

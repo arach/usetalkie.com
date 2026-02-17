@@ -1,5 +1,5 @@
 const TESTFLIGHT_URL = 'https://marketing.usetalkie.com/testflight?ref=welcome-email'
-const MAC_DOWNLOAD_URL = 'https://marketing.usetalkie.com/dl'
+const MAC_DOWNLOAD_URL = 'https://usetalkie.com/dl?ref=welcome-email'
 const QR_IMAGE_URL = 'https://marketing.usetalkie.com/images/testflight-qr.png'
 const ICON_URL = 'https://usetalkie.com/talkie-icon.png'
 

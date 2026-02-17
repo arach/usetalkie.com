@@ -212,7 +212,7 @@ export default function PricingSection() {
                   <p className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide">You&apos;re on the list.</p>
                   <div className="mt-4 space-y-3">
                     <a
-                      href="https://marketing.usetalkie.com/dl"
+                      href="/dl?ref=pricing"
                       className="w-full inline-flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-100"
                     >
                       Download Talkie for Mac
