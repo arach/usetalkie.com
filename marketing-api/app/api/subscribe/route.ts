@@ -98,26 +98,6 @@ export async function POST(request: NextRequest) {
         .where(eq(contacts.email, cleanEmail))
     }
 
-    // Forward to Formspree (fire-and-forget)
-    const formspreeId = process.env.FORMSPREE_ID || 'mkgaanoo'
-    const formspreePromise = fetch(`https://formspree.io/f/${formspreeId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        email: cleanEmail,
-        useCase: useCase || 'not_specified',
-        source: 'early_access',
-        timestamp: new Date().toISOString(),
-        utm_source: utm?.utm_source,
-        utm_medium: utm?.utm_medium,
-        utm_campaign: utm?.utm_campaign,
-        _subject: `Talkie Early Access: ${useCase || 'not_specified'}`,
-      }),
-    })
-
     // Sync to Resend audience + send welcome email (only for new contacts)
     let emailSent = false
     if (process.env.RESEND_API_KEY) {
@@ -153,6 +133,7 @@ export async function POST(request: NextRequest) {
           await resend.emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'Talkie <hello@mail.usetalkie.com>',
             to: cleanEmail,
+            bcc: process.env.NOTIFY_EMAIL || 'notifs@usetalkie.com',
             subject: welcome.subject,
             html: welcome.renderHtml({ email: cleanEmail }),
             text: welcome.renderText({ email: cleanEmail }),
@@ -182,8 +163,6 @@ export async function POST(request: NextRequest) {
         console.error('Resend email error:', emailError)
       }
     }
-
-    await formspreePromise
 
     return NextResponse.json({
       success: true,

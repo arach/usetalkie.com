@@ -50,21 +50,6 @@ export default function PricingSection() {
 
   // API endpoint - marketing.usetalkie.com
   const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://marketing.usetalkie.com/api'
-  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || 'mkgaanoo'
-
-  const submitToFormspree = async (em, selectedUseCase) => {
-    const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        email: em,
-        useCase: selectedUseCase || 'not_specified',
-        _subject: `Talkie Early Access: ${selectedUseCase || 'not_specified'}`,
-      }),
-    })
-    return res.ok
-  }
-
   const handleEmailSubmit = async (e) => {
     e.preventDefault()
     const em = email.trim()
@@ -97,21 +82,8 @@ export default function PricingSection() {
         }),
       })
 
-      if (res.ok) {
-        const data = await res.json()
-        if (data.success) {
-          setStatus('success')
-          setIsSubmitted(true)
-          setEmail('')
-          setUseCase('')
-          trackSignup(useCase || 'not_specified', 'general', 'pricing')
-          return
-        }
-      }
-
-      // If API failed, try Formspree fallback
-      const formspreeOk = await submitToFormspree(em, useCase)
-      if (formspreeOk) {
+      const data = await res.json()
+      if (res.ok && data.success) {
         setStatus('success')
         setIsSubmitted(true)
         setEmail('')
@@ -119,26 +91,11 @@ export default function PricingSection() {
         trackSignup(useCase || 'not_specified', 'general', 'pricing')
       } else {
         setStatus('error')
-        setErrorMsg('Something went wrong. Please try again.')
+        setErrorMsg(data.error || 'Something went wrong. Please try again.')
       }
     } catch {
-      // API route doesn't exist (static hosting) - fall back to Formspree
-      try {
-        const formspreeOk = await submitToFormspree(em, useCase)
-        if (formspreeOk) {
-          setStatus('success')
-          setIsSubmitted(true)
-          setEmail('')
-          setUseCase('')
-          trackSignup(useCase || 'not_specified', 'general', 'pricing')
-        } else {
-          setStatus('error')
-          setErrorMsg('Something went wrong. Please try again.')
-        }
-      } catch {
-        setStatus('error')
-        setErrorMsg('Network error. Please try again.')
-      }
+      setStatus('error')
+      setErrorMsg('Network error. Please try again.')
     }
   }
 

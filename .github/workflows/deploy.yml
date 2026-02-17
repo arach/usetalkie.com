@@ -30,7 +30,6 @@ jobs:
         run: npm run build
         env:
           # No BASE_PATH needed - custom domain (usetalkie.com) serves from root
-          NEXT_PUBLIC_FORMSPREE_ID: ${{ secrets.FORMSPREE_ID }}
           NEXT_PUBLIC_REGULAR_PRICE: ${{ vars.REGULAR_PRICE }}
           NEXT_PUBLIC_LAUNCH_PRICE: ${{ vars.LAUNCH_PRICE }}
       - name: Upload artifact
