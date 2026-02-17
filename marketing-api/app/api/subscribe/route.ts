@@ -161,6 +161,22 @@ export async function POST(request: NextRequest) {
 
           emailSent = true
           console.log(`Welcome email sent to ${cleanEmail}`)
+
+          // Schedule follow-up email for 24 hours later
+          const followUp = getTemplate('follow-up')
+          if (followUp) {
+            const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+            await resend.emails.send({
+              from: process.env.RESEND_FROM_EMAIL || 'Talkie <hello@mail.usetalkie.com>',
+              to: cleanEmail,
+              subject: followUp.subject,
+              html: followUp.renderHtml({ email: cleanEmail }),
+              text: followUp.renderText({ email: cleanEmail }),
+              replyTo: 'hey@usetalkie.com',
+              scheduledAt,
+            })
+            console.log(`Follow-up email scheduled for ${cleanEmail} at ${scheduledAt}`)
+          }
         }
       } catch (emailError) {
         console.error('Resend email error:', emailError)

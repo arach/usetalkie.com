@@ -209,6 +209,62 @@ Questions or feedback? Just reply to this email - I read everything.
 https://usetalkie.com`,
 }
 
+// --- Follow-up (24h after signup) ---
+
+const followUpTemplate: EmailTemplate = {
+  slug: 'follow-up',
+  name: 'Follow-up (24h)',
+  description: 'Sent 24 hours after signup. Asks for feedback and checks if setup went smoothly.',
+  subject: 'How\'s Talkie working for you?',
+  variables: ['email'],
+  renderHtml: () => emailShell(`
+              <p style="margin: 0 0 18px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
+                Hey! Just checking in - you signed up for Talkie yesterday and I wanted to make sure everything is working smoothly.
+              </p>
+              <p style="margin: 0 0 18px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
+                Have you had a chance to try it out? I'd genuinely love to hear how it's going - what's working, what's not, what you wish it did differently.
+              </p>
+              <p style="margin: 0 0 18px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
+                If you ran into any issues getting set up, just reply to this email and I'll help you out personally.
+              </p>
+              <div style="background: #1a1a1a; border-radius: 10px; padding: 20px;">
+                <p style="margin: 0 0 12px; color: #fff; ${mono}; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Quick links</p>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding: 6px 0;">
+                      <a href="${MAC_DOWNLOAD_URL}" style="color: #10b981; text-decoration: none; font-size: 14px;">Download Talkie for Mac</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0;">
+                      <a href="${TESTFLIGHT_URL}" style="color: #10b981; text-decoration: none; font-size: 14px;">Get iPhone TestFlight</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0;">
+                      <a href="https://usetalkie.com/docs" style="color: #10b981; text-decoration: none; font-size: 14px;">Setup guide & docs</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+`),
+  renderText: () => `How's Talkie working for you?
+
+Hey! Just checking in - you signed up for Talkie yesterday and I wanted to make sure everything is working smoothly.
+
+Have you had a chance to try it out? I'd genuinely love to hear how it's going - what's working, what's not, what you wish it did differently.
+
+If you ran into any issues getting set up, just reply to this email and I'll help you out personally.
+
+Quick links:
+- Download Talkie for Mac: ${MAC_DOWNLOAD_URL}
+- Get iPhone TestFlight: ${TESTFLIGHT_URL}
+- Setup guide & docs: https://usetalkie.com/docs
+
+- Arach, Founder of Talkie
+https://usetalkie.com`,
+}
+
 // Keep the old 'welcome' slug as an alias for iOS (backwards compat with existing subscribe flow)
 const welcomeLegacyTemplate: EmailTemplate = {
   ...welcomeIosTemplate,
@@ -221,6 +277,7 @@ export const templates: EmailTemplate[] = [
   welcomeLegacyTemplate,
   welcomeIosTemplate,
   welcomeMacTemplate,
+  followUpTemplate,
 ]
 
 export function getTemplate(slug: string): EmailTemplate | undefined {
