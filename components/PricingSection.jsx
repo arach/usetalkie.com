@@ -210,7 +210,21 @@ export default function PricingSection() {
                     <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <p className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide">You&apos;re on the list.</p>
-                  <p className="text-xs text-zinc-500 mt-1">We&apos;ll be in touch soon.</p>
+                  <div className="mt-4 space-y-3">
+                    <a
+                      href="https://marketing.usetalkie.com/dl"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-100"
+                    >
+                      Download Talkie for Mac
+                    </a>
+                    <a
+                      href="https://marketing.usetalkie.com/testflight"
+                      className="w-full inline-flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors hover:border-zinc-400 dark:hover:border-zinc-500"
+                    >
+                      Get iPhone TestFlight
+                    </a>
+                  </div>
+                  <p className="text-[10px] text-zinc-400 mt-3">Check your email for setup instructions.</p>
                 </div>
               )}
             </div>

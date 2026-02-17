@@ -128,12 +128,11 @@ export default function DemoPage() {
           {/* CTA */}
           <div className="text-center space-y-4">
             <a
-              href="https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg"
-              onClick={() => trackDownload('latest', 'demo_page')}
+              href="/#pricing"
               className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider rounded hover:scale-105 transition-transform shadow-lg"
             >
               <Laptop className="w-4 h-4" />
-              Download for Mac
+              Get Early Access
             </a>
             <p className="text-[10px] font-mono uppercase text-zinc-400">
               macOS 26+ required

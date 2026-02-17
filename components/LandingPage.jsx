@@ -302,12 +302,11 @@ export default function LandingPage() {
 
           <div className="mt-8 flex justify-center">
             <a
-              href="https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg"
-              onClick={() => trackDownload('latest', 'hero')}
+              href="#pricing"
               className="h-12 px-8 rounded bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl"
             >
               <Laptop className="w-4 h-4" />
-              <span>Download Talkie for Mac</span>
+              <span>Get Early Access</span>
             </a>
           </div>
         </Container>
@@ -626,8 +625,8 @@ export default function LandingPage() {
             <span className="font-display italic">Stop uploading your thoughts</span> <br className="hidden md:block" /> <span className="font-bold">to someone else&apos;s cloud.</span>
           </h2>
           <div className="flex justify-center">
-            <a href="https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg" onClick={() => trackDownload('latest', 'cta_bottom')} className="group/btn relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider overflow-hidden rounded hover:shadow-lg transition-shadow">
-              <span className="relative z-10">Download for Mac</span>
+            <a href="#pricing" className="group/btn relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider overflow-hidden rounded hover:shadow-lg transition-shadow">
+              <span className="relative z-10">Get Early Access</span>
               <ArrowRight className="w-4 h-4 relative z-10 group-hover/btn:translate-x-1 transition-transform" />
             </a>
           </div>

@@ -129,7 +129,8 @@ export async function POST(request: NextRequest) {
 
         // Only send welcome email for new contacts
         if (isNew) {
-          const templateSlug = useCase === 'mac' ? 'welcome-mac' : 'welcome-ios'
+          const macUseCases = ['dictation', 'coding', 'workflows']
+          const templateSlug = macUseCases.includes(useCase) ? 'welcome-mac' : 'welcome-ios'
           const welcome = getTemplate(templateSlug) || getTemplate('welcome')!
           await resend.emails.send({
             from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
