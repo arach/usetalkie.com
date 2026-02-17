@@ -21,12 +21,12 @@ export async function POST(request: NextRequest) {
 
   const resend = new Resend(apiKey)
   const { data, error } = await resend.emails.send({
-    from: process.env.RESEND_FROM_EMAIL || 'Talkie <hello@mail.usetalkie.com>',
+    from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
     to,
     subject: template.subject,
     html: template.renderHtml({ email: to }),
     text: template.renderText({ email: to }),
-    replyTo: 'hey@usetalkie.com',
+    replyTo: 'arach@usetalkie.com',
   })
 
   if (error) {

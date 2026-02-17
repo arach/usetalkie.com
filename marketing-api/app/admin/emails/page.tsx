@@ -134,8 +134,8 @@ function TemplatesTab() {
                 <button
                   onClick={() => {
                     setSendSlug(t.slug)
-                    setSendTo('hey@usetalkie.com')
-                    handleSend(t.slug, 'hey@usetalkie.com')
+                    setSendTo('arach@usetalkie.com')
+                    handleSend(t.slug, 'arach@usetalkie.com')
                   }}
                   disabled={sending}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors disabled:opacity-50"

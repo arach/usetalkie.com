@@ -131,13 +131,13 @@ export async function POST(request: NextRequest) {
           const templateSlug = useCase === 'mac' ? 'welcome-mac' : 'welcome-ios'
           const welcome = getTemplate(templateSlug) || getTemplate('welcome')!
           await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || 'Talkie <hello@mail.usetalkie.com>',
+            from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
             to: cleanEmail,
             bcc: process.env.NOTIFY_EMAIL || 'notifs@usetalkie.com',
             subject: welcome.subject,
             html: welcome.renderHtml({ email: cleanEmail }),
             text: welcome.renderText({ email: cleanEmail }),
-            replyTo: 'hey@usetalkie.com',
+            replyTo: 'arach@usetalkie.com',
           })
 
           emailSent = true
@@ -148,12 +148,12 @@ export async function POST(request: NextRequest) {
           if (followUp) {
             const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
             await resend.emails.send({
-              from: process.env.RESEND_FROM_EMAIL || 'Talkie <hello@mail.usetalkie.com>',
+              from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
               to: cleanEmail,
               subject: followUp.subject,
               html: followUp.renderHtml({ email: cleanEmail }),
               text: followUp.renderText({ email: cleanEmail }),
-              replyTo: 'hey@usetalkie.com',
+              replyTo: 'arach@usetalkie.com',
               scheduledAt,
             })
             console.log(`Follow-up email scheduled for ${cleanEmail} at ${scheduledAt}`)
