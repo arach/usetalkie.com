@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { waitUntil } from '@vercel/functions'
 import { Resend } from 'resend'
 import { db } from '@/lib/db'
 import { contacts } from '@/lib/db/schema'
@@ -143,20 +144,23 @@ export async function POST(request: NextRequest) {
           emailSent = true
           console.log(`Welcome email sent to ${cleanEmail}`)
 
-          // Schedule follow-up email for 24 hours later
+          // Schedule follow-up in background (waitUntil keeps function alive after response)
           const followUp = getTemplate('follow-up')
           if (followUp) {
-            const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-            await resend.emails.send({
-              from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
-              to: cleanEmail,
-              subject: followUp.subject,
-              html: followUp.renderHtml({ email: cleanEmail }),
-              text: followUp.renderText({ email: cleanEmail }),
-              replyTo: 'arach@usetalkie.com',
-              scheduledAt,
-            })
-            console.log(`Follow-up email scheduled for ${cleanEmail} at ${scheduledAt}`)
+            waitUntil((async () => {
+              await new Promise((r) => setTimeout(r, 2000))
+              const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+              await resend.emails.send({
+                from: process.env.RESEND_FROM_EMAIL || 'Arach Tchoupani <arach@mail.usetalkie.com>',
+                to: cleanEmail,
+                subject: followUp.subject,
+                html: followUp.renderHtml({ email: cleanEmail }),
+                text: followUp.renderText({ email: cleanEmail }),
+                replyTo: 'arach@usetalkie.com',
+                scheduledAt,
+              })
+              console.log(`Follow-up scheduled for ${cleanEmail} at ${scheduledAt}`)
+            })().catch((err) => console.error('Follow-up scheduling error:', err)))
           }
         }
       } catch (emailError) {
