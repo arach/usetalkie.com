@@ -12,6 +12,7 @@ import {
   Settings,
   ExternalLink,
   Terminal,
+  Bug,
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -37,6 +38,7 @@ const navSections = [
       { href: '/assets', label: 'Assets', icon: ImageIcon },
       { href: '/emails', label: 'Emails', icon: Mail },
       { href: '/subscribers', label: 'Subscribers', icon: Users },
+      { href: '/reports', label: 'Reports', icon: Bug },
     ],
   },
   {
