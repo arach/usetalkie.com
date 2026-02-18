@@ -19,7 +19,7 @@ export async function getAppliedMigrations(): Promise<MigrationRecord[]> {
       ORDER BY created_at DESC
     `)
 
-    return result.rows as MigrationRecord[]
+    return result.rows as unknown as MigrationRecord[]
   } catch (error) {
     // Table might not exist yet if no migrations have run
     console.error('Failed to fetch migrations:', error)

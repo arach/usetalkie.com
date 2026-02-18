@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 5173",
+    "dev:all": "./dev.sh",
+    "dev:marketing": "cd marketing-api && bun dev -p 3100",
     "build": "next build",
     "export": "next build",
     "start": "next start",
