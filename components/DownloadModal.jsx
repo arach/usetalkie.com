@@ -30,7 +30,7 @@ export default function DownloadModal({ isOpen, onClose }) {
   const [trap, setTrap] = useState('') // honeypot
   const formLoadTime = useRef(Date.now())
 
-  const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://api.usetalkie.com/api'
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.usetalkie.com/api'
 
   const handleSubmit = async (e) => {
     e.preventDefault()

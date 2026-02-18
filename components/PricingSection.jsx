@@ -48,8 +48,8 @@ export default function PricingSection() {
     return () => clearInterval(interval)
   }, [])
 
-  // API endpoint - marketing.usetalkie.com
-  const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://api.usetalkie.com/api'
+  // API endpoint - api.usetalkie.com
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.usetalkie.com/api'
   const handleEmailSubmit = async (e) => {
     e.preventDefault()
     const em = email.trim()
@@ -69,7 +69,7 @@ export default function PricingSection() {
     setStatus('sending')
 
     try {
-      // Try the marketing API (deployed to marketing.usetalkie.com)
+      // Try the marketing API (deployed to api.usetalkie.com)
       const res = await fetch(`${apiUrl}/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -237,7 +237,7 @@ export default function PricingSection() {
                       Download Talkie for Mac
                     </a>
                     <a
-                      href="https://marketing.usetalkie.com/testflight"
+                      href="https://api.usetalkie.com/testflight"
                       className="w-full inline-flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors hover:border-zinc-400 dark:hover:border-zinc-500"
                     >
                       Get iPhone TestFlight
