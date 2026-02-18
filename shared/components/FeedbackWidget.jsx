@@ -85,7 +85,7 @@ export default function FeedbackWidget() {
     setStatus('sending')
 
     // Use environment variable or fallback to production
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.usetalkie.com/api'
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://app.usetalkie.com/api'
 
     try {
       // Send feedback via email using API

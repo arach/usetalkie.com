@@ -20,7 +20,7 @@ export default function AboutPage() {
     setStatus('loading')
 
     try {
-      const res = await fetch('https://api.usetalkie.com/api/subscribe', {
+      const res = await fetch('https://app.usetalkie.com/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

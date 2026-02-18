@@ -67,14 +67,14 @@ export default function ThankYouPage() {
             {/* Download Links */}
             <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 mb-6 space-y-3">
               <a
-                href="https://api.usetalkie.com/dl"
+                href="https://app.usetalkie.com/dl"
                 className="w-full flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-100 rounded-sm"
               >
                 <Laptop className="w-4 h-4" />
                 Download Talkie for Mac
               </a>
               <a
-                href="https://api.usetalkie.com/testflight"
+                href="https://app.usetalkie.com/testflight"
                 className="w-full flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors hover:border-zinc-400 dark:hover:border-zinc-500 rounded-sm"
               >
                 <Smartphone className="w-3.5 h-3.5" />
