@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Talkie Admin',
   description: 'Admin dashboard for Talkie',
   icons: {
-    icon: 'https://usetalkie.com/talkie-icon.png',
+    icon: '/talkie-icon.png',
   },
 }
 
