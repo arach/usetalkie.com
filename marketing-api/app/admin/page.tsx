@@ -1,6 +1,7 @@
 import { list } from '@vercel/blob'
 import Link from 'next/link'
-import { LayoutDashboard, Image as ImageIcon, Upload, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, Image as ImageIcon, Upload, ExternalLink, Database } from 'lucide-react'
+import { getMigrationStatus } from '@/lib/db/migrations'
 
 const emptyStats = {
   uploadsCount: 0,
@@ -54,7 +55,10 @@ function formatBytes(bytes: number) {
 }
 
 export default async function AdminDashboard() {
-  const stats = await getStats()
+  const [stats, migrationStatus] = await Promise.all([
+    getStats(),
+    getMigrationStatus(),
+  ])
 
   return (
     <div>
@@ -65,7 +69,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-emerald-500/10 rounded-lg">
@@ -95,6 +99,21 @@ export default async function AdminDashboard() {
           </div>
           <p className="text-3xl font-bold text-white">{formatBytes(stats.totalSize)}</p>
         </div>
+
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-cyan-500/10 rounded-lg">
+              <Database className="w-5 h-5 text-cyan-500" />
+            </div>
+            <span className="text-sm text-zinc-400">DB Migrations</span>
+          </div>
+          <p className="text-3xl font-bold text-white">{migrationStatus.totalApplied}</p>
+          {migrationStatus.lastMigration && (
+            <p className="text-xs text-zinc-500 mt-1">
+              Last: {new Date(migrationStatus.lastMigration.created_at).toLocaleDateString()}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Quick Actions */}
@@ -118,6 +137,38 @@ export default async function AdminDashboard() {
             Visit Website
           </a>
         </div>
+      </div>
+
+      {/* Database Migrations */}
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-8">
+        <h2 className="text-lg font-semibold text-white mb-4">Database Migrations</h2>
+        {migrationStatus.migrations.length > 0 ? (
+          <div className="space-y-2">
+            {migrationStatus.migrations.map((migration) => (
+              <div
+                key={migration.id}
+                className="flex items-center justify-between p-3 bg-zinc-800/50 rounded-lg"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                  <div>
+                    <p className="text-sm text-white font-mono">
+                      Migration #{migration.id}
+                    </p>
+                    <p className="text-xs text-zinc-500 font-mono">
+                      {migration.hash.substring(0, 12)}...
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-zinc-400">
+                  {new Date(migration.created_at).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-zinc-500">No migrations applied yet</p>
+        )}
       </div>
 
       {/* Recent Activity */}

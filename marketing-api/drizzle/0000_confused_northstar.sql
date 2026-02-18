@@ -1,5 +1,12 @@
-CREATE TYPE "public"."contact_status" AS ENUM('contact', 'active', 'churned');--> statement-breakpoint
-CREATE TABLE "contacts" (
+-- Create enum type if it doesn't exist
+DO $$ BEGIN
+  CREATE TYPE "public"."contact_status" AS ENUM('contact', 'active', 'churned');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+--> statement-breakpoint
+
+-- Create contacts table if it doesn't exist
+CREATE TABLE IF NOT EXISTS "contacts" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"status" "contact_status" DEFAULT 'contact' NOT NULL,
@@ -20,7 +27,9 @@ CREATE TABLE "contacts" (
 	CONSTRAINT "contacts_clerk_user_id_unique" UNIQUE("clerk_user_id")
 );
 --> statement-breakpoint
-CREATE TABLE "feedback_threads" (
+
+-- Create feedback_threads table if it doesn't exist
+CREATE TABLE IF NOT EXISTS "feedback_threads" (
 	"id" varchar(12) PRIMARY KEY NOT NULL,
 	"sender_email" varchar(255) NOT NULL,
 	"feedback" varchar(5000) NOT NULL,
@@ -30,9 +39,11 @@ CREATE TABLE "feedback_threads" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE INDEX "contacts_email_idx" ON "contacts" USING btree ("email");--> statement-breakpoint
-CREATE INDEX "contacts_clerk_user_id_idx" ON "contacts" USING btree ("clerk_user_id");--> statement-breakpoint
-CREATE INDEX "contacts_status_idx" ON "contacts" USING btree ("status");--> statement-breakpoint
-CREATE INDEX "contacts_created_at_idx" ON "contacts" USING btree ("created_at");--> statement-breakpoint
-CREATE INDEX "feedback_threads_created_at_idx" ON "feedback_threads" USING btree ("created_at");--> statement-breakpoint
-CREATE INDEX "feedback_threads_replied_idx" ON "feedback_threads" USING btree ("replied");
+
+-- Create indexes if they don't exist
+CREATE INDEX IF NOT EXISTS "contacts_email_idx" ON "contacts" USING btree ("email");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "contacts_clerk_user_id_idx" ON "contacts" USING btree ("clerk_user_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "contacts_status_idx" ON "contacts" USING btree ("status");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "contacts_created_at_idx" ON "contacts" USING btree ("created_at");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "feedback_threads_created_at_idx" ON "feedback_threads" USING btree ("created_at");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "feedback_threads_replied_idx" ON "feedback_threads" USING btree ("replied");
