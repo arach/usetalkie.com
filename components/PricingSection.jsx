@@ -120,7 +120,7 @@ export default function PricingSection() {
                 No subscription. Buy once. Your recordings, your workflows, your devices.
               </p>
 
-              <ul className="space-y-3">
+              <ul className="space-y-3 mb-6">
                 {[
                   "Mac app + iPhone + Watch companion",
                   "Encrypted iCloud Sync",
@@ -133,6 +133,25 @@ export default function PricingSection() {
                   </li>
                 ))}
               </ul>
+
+              {/* Pricing note */}
+              <div className="p-4 bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded">
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2">
+                  I haven't figured out pricing yet. I'd love to add as much value in a free tier as possible — which is why everything is built local-first so it doesn't cost me much to support. At the same time, for me to spend more time on this project, some transparent pricing would be more sustainable.
+                </p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2">
+                  If you have input on pricing, send me a quick email — would love your thoughts.
+                </p>
+                <p className="text-xs text-zinc-900 dark:text-white font-semibold">
+                  Sign up now and you'll be included in the early supporters discount.
+                </p>
+                <a
+                  href="mailto:arach@usetalkie.com?subject=Pricing feedback"
+                  className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors inline-block mt-2"
+                >
+                  arach@usetalkie.com
+                </a>
+              </div>
             </div>
 
             {/* Right: Pricing Card */}
