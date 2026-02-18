@@ -52,4 +52,19 @@ function createDb() {
   }
 }
 
-export const db = createDb()
+// Lazy-initialize db only when accessed (prevents build-time connections)
+let _db: ReturnType<typeof createDb> | null = null
+
+export function getDb() {
+  if (!_db) {
+    _db = createDb()
+  }
+  return _db
+}
+
+// Legacy export for backward compatibility (lazy-initialized)
+export const db = new Proxy({} as ReturnType<typeof createDb>, {
+  get(_, prop) {
+    return getDb()[prop as keyof ReturnType<typeof createDb>]
+  }
+})

@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { LayoutDashboard, Image as ImageIcon, Upload, ExternalLink, Database } from 'lucide-react'
 import { getMigrationStatus } from '@/lib/db/migrations'
 
+// Force dynamic rendering (requires runtime database access)
+export const dynamic = 'force-dynamic'
+
 const emptyStats = {
   uploadsCount: 0,
   mockupsCount: 0,
