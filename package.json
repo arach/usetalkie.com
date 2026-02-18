@@ -6,8 +6,11 @@
   "scripts": {
     "dev": "next dev -p 5173",
     "dev:all": "./dev.sh",
-    "dev:marketing": "cd marketing-api && bun dev -p 3100",
+    "dev:api": "cd api && npm run dev",
+    "dev:admin": "cd admin && npm run dev",
     "build": "next build",
+    "build:api": "cd api && npm run build",
+    "build:admin": "cd admin && npm run build",
     "export": "next build",
     "start": "next start",
     "postbuild": "echo 'Build complete'",

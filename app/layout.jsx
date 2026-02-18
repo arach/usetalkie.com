@@ -2,7 +2,7 @@ import './globals.css'
 import Script from 'next/script'
 import { Space_Grotesk, JetBrains_Mono, Fraunces } from 'next/font/google'
 import DevConsole from '../components/DevConsole'
-import FeedbackWidget from '../components/FeedbackWidget'
+import FeedbackWidget from '../shared/components/FeedbackWidget'
 
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
 const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' })

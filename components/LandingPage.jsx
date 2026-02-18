@@ -30,9 +30,10 @@ import PricingSection from './PricingSection'
 import ThemeToggle from './ThemeToggle'
 import DownloadModal from './DownloadModal'
 import { trackDownload, trackScrollDepth, trackFeatureTab, captureUTMParams } from '../lib/analytics'
+import { FEATURES } from '../shared/config/features'
 
 // Feature flags
-const SHOW_AGENTS = false // Hide Talkie for Agents until ready
+const SHOW_AGENTS = FEATURES.SHOW_AGENTS
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)

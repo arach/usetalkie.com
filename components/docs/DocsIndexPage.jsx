@@ -3,9 +3,10 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Server, Globe, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Route } from 'lucide-react'
 import Container from '../Container'
+import { FEATURES } from '../../shared/config/features'
 
 // Feature flags
-const SHOW_TAILSCALE_DOCS = false // Hide Tailscale setup until needed
+const SHOW_TAILSCALE_DOCS = FEATURES.SHOW_TAILSCALE_DOCS
 
 const DocCard = ({ href, icon: Icon, title, description, color }) => (
   <Link
