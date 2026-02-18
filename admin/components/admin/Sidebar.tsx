@@ -28,21 +28,21 @@ const navSections = [
   {
     label: 'Overview',
     items: [
-      { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/', label: 'Dashboard', icon: LayoutDashboard },
     ],
   },
   {
     label: 'Content',
     items: [
-      { href: '/admin/assets', label: 'Assets', icon: ImageIcon },
-      { href: '/admin/emails', label: 'Emails', icon: Mail },
-      { href: '/admin/subscribers', label: 'Subscribers', icon: Users },
+      { href: '/assets', label: 'Assets', icon: ImageIcon },
+      { href: '/emails', label: 'Emails', icon: Mail },
+      { href: '/subscribers', label: 'Subscribers', icon: Users },
     ],
   },
   {
     label: 'System',
     items: [
-      { href: '/admin/settings', label: 'Settings', icon: Settings },
+      { href: '/settings', label: 'Settings', icon: Settings },
     ],
   },
 ]
@@ -56,9 +56,9 @@ export default function Sidebar({ user, isDevMode = false }: SidebarProps) {
     <aside className="fixed left-0 top-0 h-screen w-64 bg-zinc-900/80 backdrop-blur-xl border-r border-zinc-800/60 flex flex-col">
       {/* Header */}
       <div className="px-5 py-5 border-b border-zinc-800/60">
-        <Link href="/admin" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <Image
-            src="https://usetalkie.com/talkie-icon.png"
+            src="/talkie-icon.png"
             alt="Talkie"
             width={28}
             height={28}
@@ -89,7 +89,7 @@ export default function Sidebar({ user, isDevMode = false }: SidebarProps) {
             <ul className="space-y-0.5">
               {section.items.map((item) => {
                 const isActive = pathname === item.href ||
-                  (item.href !== '/admin' && pathname.startsWith(item.href))
+                  (item.href !== '/' && pathname.startsWith(item.href))
                 const Icon = item.icon
 
                 return (
