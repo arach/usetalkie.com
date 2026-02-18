@@ -6,6 +6,8 @@ import {
   boolean,
   timestamp,
   index,
+  text,
+  jsonb,
 } from 'drizzle-orm/pg-core'
 
 export const contactStatusEnum = pgEnum('contact_status', [
@@ -72,3 +74,28 @@ export const feedbackThreads = pgTable(
 
 export type FeedbackThread = typeof feedbackThreads.$inferSelect
 export type NewFeedbackThread = typeof feedbackThreads.$inferInsert
+
+// Bug reports from Talkie app (in-app diagnostics)
+export const reports = pgTable(
+  'reports',
+  {
+    id: varchar('id', { length: 36 }).primaryKey(), // UUID from client
+    source: varchar('source', { length: 50 }).notNull(), // 'talkie', 'live', 'engine'
+    userDescription: text('user_description'), // User's description of the issue
+    systemInfo: jsonb('system_info').notNull(), // OS, version, chip, memory
+    appsInfo: jsonb('apps_info').notNull(), // Running apps, versions, PIDs
+    contextInfo: jsonb('context_info').notNull(), // Connection state, last error
+    logs: jsonb('logs').notNull(), // Array of log lines
+    performance: jsonb('performance'), // Performance metrics (optional)
+    createdAt: timestamp('created_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index('reports_source_idx').on(table.source),
+    index('reports_created_at_idx').on(table.createdAt),
+  ]
+)
+
+export type Report = typeof reports.$inferSelect
+export type NewReport = typeof reports.$inferInsert

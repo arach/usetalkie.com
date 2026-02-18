@@ -8,6 +8,13 @@
       "when": 1771431621201,
       "tag": "0000_confused_northstar",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771437127913,
+      "tag": "0001_far_crystal",
+      "breakpoints": true
     }
   ]
 }
