@@ -8,7 +8,6 @@ import { MessageSquare, X, Send, Loader2, History, Trash2, Copy } from 'lucide-r
  * Tracks feedback history in localStorage
  */
 export default function FeedbackWidget() {
-  console.log('🔵 FeedbackWidget rendering')
   const [isOpen, setIsOpen] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [feedback, setFeedback] = useState('')
