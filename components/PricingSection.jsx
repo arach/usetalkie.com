@@ -49,7 +49,7 @@ export default function PricingSection() {
   }, [])
 
   // API endpoint - api.usetalkie.com
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://marketing.usetalkie.com/api'
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.usetalkie.com/api'
   const handleEmailSubmit = async (e) => {
     e.preventDefault()
     const em = email.trim()
