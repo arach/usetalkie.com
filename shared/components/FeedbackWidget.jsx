@@ -8,6 +8,7 @@ import { MessageSquare, X, Send, Loader2, History, Trash2, Copy } from 'lucide-r
  * Tracks feedback history in localStorage
  */
 export default function FeedbackWidget() {
+  console.log('🔵 FeedbackWidget rendering')
   const [isOpen, setIsOpen] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [feedback, setFeedback] = useState('')
@@ -85,7 +86,7 @@ export default function FeedbackWidget() {
     setStatus('sending')
 
     // Use environment variable or fallback to production
-    const apiUrl = process.env.NEXT_PUBLIC_MARKETING_API_URL || 'https://api.usetalkie.com/api'
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.usetalkie.com/api'
 
     try {
       // Send feedback via email using marketing API
@@ -123,10 +124,31 @@ export default function FeedbackWidget() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-[9998] p-3 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 9998,
+          padding: '12px',
+          backgroundColor: '#10b981',
+          color: 'white',
+          borderRadius: '50%',
+          border: 'none',
+          cursor: 'pointer',
+          boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = '#059669'
+          e.currentTarget.style.transform = 'scale(1.1)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = '#10b981'
+          e.currentTarget.style.transform = 'scale(1)'
+        }}
         aria-label="Send feedback"
       >
-        <MessageSquare className="w-5 h-5" />
+        <MessageSquare style={{ width: '20px', height: '20px' }} />
       </button>
     )
   }
