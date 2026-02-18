@@ -130,10 +130,9 @@ const welcomeIosTemplate: EmailTemplate = {
               ${ctaButton(TESTFLIGHT_URL, 'Download TestFlight Beta')}
               ${qrBlock()}
               ${featureList([
-                'Voice memos synced to iCloud',
+                'Voice memos with fully local transcription',
+                'Easy sync to iCloud and your Mac',
                 'Beautiful keyboard with voice dictation',
-                'Local AI transcription - nothing leaves your device',
-                'Smart paste - text goes where your cursor was',
                 'Works with iPhone &amp; Apple Watch',
               ])}
               <div style="margin-top: 24px; padding: 16px; background: #1a1a1a; border-radius: 10px; text-align: center;">
@@ -149,10 +148,9 @@ Get the TestFlight beta on your iPhone:
 ${TESTFLIGHT_URL}
 
 What you get:
-- Voice memos synced to iCloud
+- Voice memos with fully local transcription
+- Easy sync to iCloud and your Mac
 - Beautiful keyboard with voice dictation
-- Local AI transcription - nothing leaves your device
-- Smart paste - text goes where your cursor was
 - Works with iPhone & Apple Watch
 
 Also available on Mac:
