@@ -49,3 +49,26 @@ export const contacts = pgTable(
 
 export type Contact = typeof contacts.$inferSelect
 export type NewContact = typeof contacts.$inferInsert
+
+// Feedback threads for reply routing
+export const feedbackThreads = pgTable(
+  'feedback_threads',
+  {
+    id: varchar('id', { length: 12 }).primaryKey(), // Short unique ID (e.g., 'a7b2c9d4e5f6')
+    senderEmail: varchar('sender_email', { length: 255 }).notNull(),
+    feedback: varchar('feedback', { length: 5000 }).notNull(),
+    url: varchar('url', { length: 500 }),
+    userAgent: varchar('user_agent', { length: 500 }),
+    replied: boolean('replied').notNull().default(false), // Track if user replied
+    createdAt: timestamp('created_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index('feedback_threads_created_at_idx').on(table.createdAt),
+    index('feedback_threads_replied_idx').on(table.replied),
+  ]
+)
+
+export type FeedbackThread = typeof feedbackThreads.$inferSelect
+export type NewFeedbackThread = typeof feedbackThreads.$inferInsert

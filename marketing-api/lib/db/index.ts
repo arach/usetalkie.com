@@ -24,6 +24,16 @@ CREATE TABLE IF NOT EXISTS contacts (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   converted_at TIMESTAMPTZ
 );
+
+CREATE TABLE IF NOT EXISTS feedback_threads (
+  id VARCHAR(12) PRIMARY KEY,
+  sender_email VARCHAR(255) NOT NULL,
+  feedback VARCHAR(5000) NOT NULL,
+  url VARCHAR(500),
+  user_agent VARCHAR(500),
+  replied BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 `
 
 function createDb() {
