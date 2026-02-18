@@ -4,13 +4,15 @@
   "private": true,
   "description": "Marketing dashboard for Talkie - handles email signups, mockup generation, and admin functions",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3100",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3100",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "tsx lib/db/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "postinstall": "npm run db:migrate || true"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.0",
