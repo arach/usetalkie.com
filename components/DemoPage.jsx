@@ -17,7 +17,7 @@ export default function DemoPage() {
     e.preventDefault()
     setStatus('loading')
     try {
-      const res = await fetch('https://api.usetalkie.com/api/subscribe', {
+      const res = await fetch('https://marketing.usetalkie.com/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, source: 'demo' }),

@@ -88,7 +88,7 @@ export default function FeedbackWidget() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.usetalkie.com/api'
 
     try {
-      // Send feedback via email using marketing API
+      // Send feedback via email using API
       const res = await fetch(`${apiUrl}/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
