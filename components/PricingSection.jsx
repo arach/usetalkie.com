@@ -137,13 +137,13 @@ export default function PricingSection() {
               {/* Pricing note */}
               <div className="p-4 bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded">
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2">
-                  I haven't figured out pricing yet. I'd love to add as much value in a free tier as possible — which is why everything is built local-first so it doesn't cost me much to support. At the same time, for me to spend more time on this project, some transparent pricing would be more sustainable.
+                  I'm still working out the pricing model. The great thing about privacy-first architecture is that my costs to distribute remain fairly low. That said, sustainable pricing helps me invest more time in making Talkie better.
                 </p>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2">
-                  If you have input on pricing, send me a quick email — would love your thoughts.
+                  Have ideas about what fair pricing looks like? Send me your thoughts — I'd genuinely love to hear from you.
                 </p>
                 <p className="text-xs text-zinc-900 dark:text-white font-semibold">
-                  Sign up now and you'll be included in the early supporters discount.
+                  Sign up now and you'll get early supporter pricing when we launch.
                 </p>
                 <a
                   href="mailto:arach@usetalkie.com?subject=Pricing feedback"

@@ -122,7 +122,7 @@ const welcomeIosTemplate: EmailTemplate = {
                 Thanks for signing up! You're one of the first to get early access to Talkie - voice-to-text that actually works.
               </p>
               <p style="margin: 0 0 18px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
-                This is super early, so any feedback is incredibly appreciated. Found a bug? Have an idea? Press <strong style="color: #10b981;">⌘K</strong> on the website or just reply to this email - I read everything and respond to everyone.
+                This is super early, so I'd love to hear any feedback. Found a bug? Have an idea? Press <strong style="color: #10b981;">⌘K</strong> on the website or just reply to this email - I read everything and respond to everyone.
               </p>
               <p style="margin: 0 0 24px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
                 Get the TestFlight beta on your iPhone and start dictating in seconds:
@@ -175,7 +175,7 @@ const welcomeMacTemplate: EmailTemplate = {
                 Thanks for signing up! You're one of the first to get early access to Talkie - voice-to-text that actually works.
               </p>
               <p style="margin: 0 0 18px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
-                This is super early, so any feedback is incredibly appreciated. Found a bug? Have an idea? Press <strong style="color: #10b981;">⌘K</strong> on the website or just reply to this email - I read everything and respond to everyone.
+                This is super early, so I'd love to hear any feedback. Found a bug? Have an idea? Press <strong style="color: #10b981;">⌘K</strong> on the website or just reply to this email - I read everything and respond to everyone.
               </p>
               <p style="margin: 0 0 24px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
                 Download Talkie for Mac and start dictating in seconds:
