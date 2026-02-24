@@ -23,6 +23,7 @@ import {
   Terminal,
   Layers,
   User,
+  Lightbulb,
 } from 'lucide-react'
 import Container from './Container'
 import HeroBadge from './HeroBadge'
@@ -87,7 +88,7 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+    <div className="min-h-screen bg-stone-50 dark:bg-[#0a0f0d] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-emerald-600 selection:text-white dark:selection:bg-emerald-500 dark:selection:text-black">
       {/* Navigation */}
       <a href="#get" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 btn-ghost">Skip to content</a>
       <nav className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 backdrop-blur-md ${
@@ -102,26 +103,6 @@ export default function LandingPage() {
           </div>
           <div className="hidden md:flex items-center gap-8 text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
             <Link
-              href="/dictation"
-              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
-            >
-              Talkie for Mac
-            </Link>
-            <Link
-              href="/capture"
-              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
-            >
-              Talkie for Mobile
-            </Link>
-            {SHOW_AGENTS && (
-              <Link
-                href="/workflows"
-                className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
-              >
-                Talkie for Agents
-              </Link>
-            )}
-            <Link
               href="/demo"
               className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
             >
@@ -132,6 +113,18 @@ export default function LandingPage() {
               className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
             >
               Philosophy
+            </Link>
+            <Link
+              href="/ideas"
+              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
+            >
+              Ideas
+            </Link>
+            <Link
+              href="/security"
+              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
+            >
+              Security
             </Link>
             <Link
               href="/about"
@@ -166,32 +159,6 @@ export default function LandingPage() {
           <div className="md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md">
             <Container className="py-4 flex flex-col gap-3">
               <Link
-                href="/dictation"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-              >
-                <Laptop className="w-4 h-4" />
-                Talkie for Mac
-              </Link>
-              <Link
-                href="/capture"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-              >
-                <Smartphone className="w-4 h-4" />
-                Talkie for Mobile
-              </Link>
-              {SHOW_AGENTS && (
-                <Link
-                  href="/workflows"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                >
-                  <Layers className="w-4 h-4" />
-                  Automation
-                </Link>
-              )}
-              <Link
                 href="/demo"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
@@ -206,6 +173,22 @@ export default function LandingPage() {
               >
                 <Quote className="w-4 h-4" />
                 Philosophy
+              </Link>
+              <Link
+                href="/ideas"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <Lightbulb className="w-4 h-4" />
+                Ideas
+              </Link>
+              <Link
+                href="/security"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                Security
               </Link>
               <Link
                 href="/about"
@@ -228,25 +211,8 @@ export default function LandingPage() {
         )}
       </nav>
 
-      {/* Announcement Banner - below nav */}
-      <div className="fixed top-14 left-0 right-0 z-40 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 border-b border-emerald-400/30 group/banner transition-opacity duration-300">
-        <Link href="/dictation" className="block">
-          <div className="h-10 flex items-center justify-center text-[11px] px-4">
-            {/* Left spacer to counterbalance right reserved area */}
-            <div className="w-10" />
-            <span className="text-white font-bold">Talkie for Mac</span>
-            <span className="text-white/40 mx-2">•</span>
-            <span className="text-white/90">Dictation plus workflows, with iPhone &amp; Watch capture</span>
-            {/* Reserved area for arrow */}
-            <div className="w-10 flex items-center ml-0.5">
-              <ArrowRight className="w-3 h-3 text-white flex-shrink-0 transition-all duration-300 ease-out -translate-x-2 group-hover/banner:translate-x-0" />
-            </div>
-          </div>
-        </Link>
-      </div>
-
       {/* Hero Section - Technical Grid Background */}
-      <section className="relative pt-36 pb-12 md:pt-40 md:pb-16 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+      <section className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden bg-gradient-to-b from-stone-100 to-stone-50 dark:from-[#0d1210] dark:to-[#0a0f0d]">
         <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
 
 
@@ -306,7 +272,7 @@ export default function LandingPage() {
           <div className="mt-8 flex justify-center">
             <button
               onClick={() => setDownloadModalOpen(true)}
-              className="h-12 px-8 rounded bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-2 shadow-xl hover:shadow-2xl"
+              className="h-12 px-8 rounded bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 dark:hover:bg-emerald-400 hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl"
             >
               <Laptop className="w-4 h-4" />
               <span>Download for Mac</span>
@@ -316,7 +282,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="relative py-16 md:py-24 bg-white dark:bg-black border-y border-zinc-200 dark:border-zinc-800">
+      <section className="relative py-16 md:py-24 bg-white dark:bg-[#0a0f0d] border-y border-stone-200/70 dark:border-emerald-900/20">
         <Container>
           <div className="text-center mb-8">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-zinc-900 dark:text-white leading-tight">
@@ -341,7 +307,7 @@ export default function LandingPage() {
                     onClick={() => { setFeatureTab(id); trackFeatureTab(id) }}
                   className={`group inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest transition-all ${
                     featureTab === id
-                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-black shadow-[0_10px_30px_rgba(0,0,0,0.18)]'
+                      ? 'bg-zinc-800 text-white dark:bg-white dark:text-black shadow-[0_10px_30px_rgba(0,0,0,0.12)]'
                       : 'bg-white/70 text-zinc-600 dark:bg-zinc-900/70 dark:text-zinc-400 hover:backdrop-blur-2xl hover:text-zinc-900 dark:hover:text-white'
                     }`}
                     aria-pressed={featureTab === id}
@@ -481,7 +447,7 @@ export default function LandingPage() {
       </section>
 
       {/* Manifesto Section (Preview) */}
-      <section id="philosophy" className="py-12 md:py-16 bg-white dark:bg-zinc-950 border-t border-b border-zinc-200 dark:border-zinc-800">
+      <section id="philosophy" className="py-12 md:py-16 bg-stone-50 dark:bg-[#0d1210] border-t border-b border-stone-200/70 dark:border-emerald-900/20">
         <Container>
           <div className="max-w-4xl mx-auto space-y-6">
 
@@ -524,12 +490,13 @@ export default function LandingPage() {
 
             {/* Outro */}
             <div className="text-center pt-4 space-y-4">
-              <div className="group/believe inline-flex items-center gap-2 px-4 py-2 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-black/50 transition-all hover:border-emerald-500/50 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-default">
+              <Link href="/philosophy" className="group/believe inline-flex items-center gap-2 px-4 py-2 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-black/50 transition-all hover:border-emerald-500/50 hover:bg-emerald-50 dark:hover:bg-emerald-950/20">
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse group-hover/believe:scale-125 transition-transform"></div>
                 <p className="text-zinc-900 dark:text-white font-bold text-[10px] uppercase tracking-wide transition-colors group-hover/believe:text-emerald-600 dark:group-hover/believe:text-emerald-400">
                   We believe something essential is missing.
                 </p>
-              </div>
+                <ArrowRight className="w-3 h-3 text-zinc-400 opacity-0 -translate-x-1 group-hover/believe:opacity-100 group-hover/believe:translate-x-0 transition-all" />
+              </Link>
             </div>
 
           </div>
@@ -537,7 +504,7 @@ export default function LandingPage() {
       </section>
 
       {/* Security Architecture Preview Section */}
-      <section id="security-preview" className="py-16 md:py-24 bg-zinc-900 border-t border-b border-zinc-800 relative overflow-hidden">
+      <section id="security-preview" className="py-16 md:py-24 bg-gradient-to-b from-[#0f1a16] to-[#0a1410] border-t border-b border-emerald-900/30 relative overflow-hidden">
         <div className="absolute inset-0 bg-tactical-grid-dark opacity-15 pointer-events-none" />
 
         <Container className="relative z-10">
@@ -562,11 +529,11 @@ export default function LandingPage() {
           </div>
 
           {/* Condensed 3-column stance */}
-          <div className="bg-zinc-950 border border-zinc-800 rounded-sm overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-zinc-800">
+          <div className="bg-[#081210] border border-emerald-900/30 rounded-lg overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-emerald-900/20">
 
               {/* Local Storage */}
-              <div className="p-6 group/local transition-colors hover:bg-zinc-900/50">
+              <div className="p-6 group/local transition-colors hover:bg-emerald-950/30">
                 <div className="flex items-center gap-3 mb-3">
                   <HardDrive className="w-4 h-4 text-emerald-500 transition-transform group-hover/local:scale-110" />
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 transition-colors group-hover/local:text-emerald-500">Local-First</span>
@@ -577,7 +544,7 @@ export default function LandingPage() {
               </div>
 
               {/* iCloud */}
-              <div className="p-6 group/icloud transition-colors hover:bg-zinc-900/50">
+              <div className="p-6 group/icloud transition-colors hover:bg-emerald-950/30">
                 <div className="flex items-center gap-3 mb-3">
                   <Cloud className="w-4 h-4 text-emerald-500 transition-transform group-hover/icloud:scale-110" />
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 transition-colors group-hover/icloud:text-emerald-500">Your iCloud</span>
@@ -588,7 +555,7 @@ export default function LandingPage() {
               </div>
 
               {/* On-Device AI */}
-              <div className="p-6 group/ai transition-colors hover:bg-zinc-900/50">
+              <div className="p-6 group/ai transition-colors hover:bg-emerald-950/30">
                 <div className="flex items-center gap-3 mb-3">
                   <Cpu className="w-4 h-4 text-emerald-500 transition-transform group-hover/ai:scale-110" />
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 transition-colors group-hover/ai:text-emerald-500">On-Device AI</span>
@@ -607,7 +574,7 @@ export default function LandingPage() {
               <Mic className="w-3 h-3 text-emerald-500 transition-transform group-hover/highlight1:scale-125" />
               <span className="text-emerald-400 transition-colors group-hover/highlight1:text-emerald-300">Voice transcribed on-device</span>
             </div>
-            <div className="hidden md:block w-px h-4 bg-zinc-700"></div>
+            <div className="hidden md:block w-px h-4 bg-emerald-800/40"></div>
             <div className="group/highlight2 flex items-center gap-2 cursor-default">
               <ShieldCheck className="w-3 h-3 text-emerald-500 transition-transform group-hover/highlight2:scale-125" />
               <span className="text-emerald-400 transition-colors group-hover/highlight2:text-emerald-300">Memos stay on your Mac</span>
@@ -620,7 +587,7 @@ export default function LandingPage() {
       <PricingSection />
 
       {/* Condensed CTA */}
-      <section id="get" className="relative py-24 bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-black border-t border-zinc-200 dark:border-zinc-800 group/cta">
+      <section id="get" className="relative py-24 bg-gradient-to-b from-white to-stone-50 dark:from-[#0d1210] dark:to-[#0a0f0d] border-t border-stone-200/70 dark:border-emerald-900/20 group/cta">
         <div className="absolute inset-0 pointer-events-none bg-noise" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <Cpu className="w-8 h-8 mx-auto text-zinc-400 mb-6 transition-all duration-500 group-hover/cta:text-emerald-500 group-hover/cta:rotate-180" strokeWidth={1} />
@@ -628,7 +595,7 @@ export default function LandingPage() {
             <span className="font-display italic">Stop uploading your thoughts</span> <br className="hidden md:block" /> <span className="font-bold">to someone else&apos;s cloud.</span>
           </h2>
           <div className="flex justify-center">
-            <button onClick={() => setDownloadModalOpen(true)} className="group/btn relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold text-xs uppercase tracking-wider overflow-hidden rounded hover:shadow-lg transition-shadow">
+            <button onClick={() => setDownloadModalOpen(true)} className="group/btn relative inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider overflow-hidden rounded hover:bg-emerald-700 dark:hover:bg-emerald-400 hover:shadow-lg transition-all">
               <span className="relative z-10">Download for Mac</span>
               <ArrowRight className="w-4 h-4 relative z-10 group-hover/btn:translate-x-1 transition-transform" />
             </button>
@@ -637,7 +604,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="py-12 bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
+      <footer className="py-12 bg-stone-100 dark:bg-[#081210] border-t border-stone-200/70 dark:border-emerald-900/20">
         <Container className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <img src="/talkie-icon.png" alt="Talkie" className="h-5 w-5 rounded" />
@@ -650,6 +617,8 @@ export default function LandingPage() {
             </a>
             <a href="mailto:hello@usetalkie.com" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
             <a href="/about" className="hover:text-black dark:hover:text-white transition-colors">About</a>
+            <a href="/ideas" className="hover:text-black dark:hover:text-white transition-colors">Ideas</a>
+            <a href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</a>
             <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>
             <a href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
           </div>

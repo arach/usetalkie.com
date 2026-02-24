@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import {
   ArrowLeft,
@@ -13,6 +13,8 @@ import {
   Sparkles,
   MapPin,
   CheckCircle2,
+  Check,
+  ChevronDown,
   History,
   Activity,
   Waves,
@@ -23,6 +25,149 @@ import Container from './Container'
 import ThemeToggle from './ThemeToggle'
 import SubNav from './SubNav'
 import VideoPlayer from './VideoPlayer'
+import { trackSignup, getStoredUTMParams } from '../lib/analytics'
+
+const USE_CASES = [
+  { value: '', label: 'What will you use Talkie for?' },
+  { value: 'dictation', label: 'Dictation & writing' },
+  { value: 'notes', label: 'Voice memos & notes' },
+  { value: 'workflows', label: 'Automating workflows' },
+  { value: 'coding', label: 'Coding & development' },
+  { value: 'other', label: 'Something else' },
+]
+
+function InlineEarlyAccessForm({ source = 'capture' }) {
+  const [showForm, setShowForm] = useState(false)
+  const [email, setEmail] = useState('')
+  const [useCase, setUseCase] = useState('')
+  const [status, setStatus] = useState('idle')
+  const [errorMsg, setErrorMsg] = useState('')
+  const [trap, setTrap] = useState('')
+  const formLoadTime = useRef(Date.now())
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://app.usetalkie.com/api'
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const em = email.trim()
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      setErrorMsg('Please enter a valid email')
+      return
+    }
+    if (trap) {
+      setStatus('success')
+      return
+    }
+    setErrorMsg('')
+    setStatus('sending')
+    try {
+      const res = await fetch(`${apiUrl}/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: em,
+          useCase: useCase || 'not_specified',
+          honeypot: trap,
+          formLoadTime: formLoadTime.current,
+          utm: getStoredUTMParams(),
+        }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setStatus('success')
+        setEmail('')
+        setUseCase('')
+        trackSignup(useCase || 'not_specified', 'capture', source)
+      } else {
+        setStatus('error')
+        setErrorMsg(data.error || 'Something went wrong. Please try again.')
+      }
+    } catch {
+      setStatus('error')
+      setErrorMsg('Network error. Please try again.')
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="text-center py-4 animate-in fade-in zoom-in duration-300">
+        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+          <Check className="w-5 h-5 text-blue-500" />
+        </div>
+        <p className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide">You&apos;re on the list.</p>
+        <div className="mt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/dl?ref=capture"
+            className="h-10 px-6 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-100 flex items-center"
+          >
+            Download for Mac
+          </a>
+          <a
+            href="https://app.usetalkie.com/testflight"
+            className="h-10 px-6 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-[10px] font-bold uppercase tracking-widest transition-colors hover:border-zinc-400 dark:hover:border-zinc-500 flex items-center"
+          >
+            Get iPhone TestFlight
+          </a>
+        </div>
+        <p className="text-[10px] text-zinc-400 mt-2">Check your email for setup instructions.</p>
+      </div>
+    )
+  }
+
+  if (!showForm) {
+    return (
+      <button
+        onClick={() => setShowForm(true)}
+        className="h-12 px-8 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-blue-500/25 cursor-pointer"
+      >
+        <Smartphone className="w-4 h-4" />
+        <span>Get Early Access</span>
+      </button>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto animate-in fade-in slide-in-from-top-2 duration-300">
+      <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-blue-500/30 rounded-xl p-5 space-y-3 shadow-xl shadow-blue-500/10">
+        <input
+          type="email"
+          required
+          placeholder="enter@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoFocus
+          className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 rounded-lg text-sm font-mono text-center text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors"
+        />
+        <div className="relative">
+          <select
+            value={useCase}
+            onChange={(e) => setUseCase(e.target.value)}
+            className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 rounded-lg text-sm font-mono text-center text-zinc-900 dark:text-white appearance-none focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 transition-colors cursor-pointer"
+          >
+            {USE_CASES.map(({ value, label }) => (
+              <option key={value} value={value} className="text-left">{label}</option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+        </div>
+        <input type="text" tabIndex="-1" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} className="absolute -left-[9999px]" aria-hidden="true" />
+        <button
+          type="submit"
+          disabled={status === 'sending'}
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          {status === 'sending' ? 'Sending…' : 'Join Early Testers'}
+        </button>
+        {errorMsg && (
+          <p className="text-[10px] text-center text-red-500">{errorMsg}</p>
+        )}
+        <p className="text-[10px] text-center text-zinc-400">
+          Early testers get launch discounts.
+        </p>
+      </div>
+    </form>
+  )
+}
 
 const CaptureCard = ({ icon: Icon, title, description }) => (
   <div className="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 rounded-xl hover:border-blue-500/50 transition-colors">
@@ -118,12 +263,9 @@ export default function CapturePage() {
               Speak anywhere - iPhone, Watch, iPad, Mac. Everything syncs, stays private.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="/#pricing" className="h-12 px-8 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-blue-500/25">
-                <Smartphone className="w-4 h-4" />
-                <span>Get Early Access</span>
-              </a>
-              <div className="flex flex-col gap-1 text-left">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <InlineEarlyAccessForm source="capture-hero" />
+              <div className="flex flex-col gap-1 text-center sm:text-left">
                 <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
                   <Smartphone className="w-3 h-3" />
                   iOS 17+ • watchOS 10+
@@ -321,10 +463,9 @@ export default function CapturePage() {
           <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-lg mx-auto">
             Join early access and keep every idea connected to your Mac.
           </p>
-          <a href="/#pricing" className="inline-flex h-12 px-8 rounded bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-widest transition-colors items-center gap-2">
-            <Mic className="w-4 h-4" />
-            <span>Get Early Access</span>
-          </a>
+          <div className="flex justify-center">
+            <InlineEarlyAccessForm source="capture-bottom" />
+          </div>
         </Container>
       </section>
 

@@ -100,11 +100,11 @@ export default function PricingSection() {
   }
 
   return (
-    <section id="pricing" className="py-24 bg-zinc-50 dark:bg-black relative">
+    <section id="pricing" className="py-24 bg-white dark:bg-[#0a0f0d] relative">
       <div className="absolute inset-0 bg-tactical-grid dark:bg-tactical-grid-dark bg-[size:40px_40px] opacity-50 pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6">
-        <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-8 md:p-12 rounded-sm shadow-sm">
+        <div className="bg-white/80 dark:bg-[#0d1210]/80 backdrop-blur-md border border-stone-200/70 dark:border-emerald-900/20 p-8 md:p-12 rounded-lg shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
             {/* Left: Value Prop */}
@@ -134,28 +134,19 @@ export default function PricingSection() {
                 ))}
               </ul>
 
-              {/* Pricing note */}
-              <div className="p-4 bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded">
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2">
-                  I'm still working out the pricing model. The great thing about privacy-first architecture is that my costs to distribute remain fairly low. That said, sustainable pricing helps me invest more time in making Talkie better.
+              {/* Early access note */}
+              <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-500/20 rounded">
+                <p className="text-xs text-zinc-900 dark:text-white font-semibold mb-1">
+                  Join before April 1st.
                 </p>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2">
-                  Have ideas about what fair pricing looks like? Send me your thoughts — I'd genuinely love to hear from you.
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  Early supporters get preferential access to pricing and future launches. No commitment — just a head start.
                 </p>
-                <p className="text-xs text-zinc-900 dark:text-white font-semibold">
-                  Sign up now and you'll get early supporter pricing when we launch.
-                </p>
-                <a
-                  href="mailto:arach@usetalkie.com?subject=Pricing feedback"
-                  className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors inline-block mt-2"
-                >
-                  arach@usetalkie.com
-                </a>
               </div>
             </div>
 
             {/* Right: Pricing Card */}
-            <div className="bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 p-6 relative group/card transition-all hover:border-emerald-500/30">
+            <div className="bg-stone-50 dark:bg-[#081210] border border-stone-200/70 dark:border-emerald-900/20 p-6 rounded-lg relative group/card transition-all hover:border-emerald-500/30">
               {/* Corner Accents */}
               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-900 dark:border-white transition-all group-hover/card:w-4 group-hover/card:h-4 group-hover/card:border-emerald-500" />
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-900 dark:border-white transition-all group-hover/card:w-4 group-hover/card:h-4 group-hover/card:border-emerald-500" />
@@ -232,7 +223,7 @@ export default function PricingSection() {
                   <div className="mt-4 space-y-3">
                     <a
                       href="/dl?ref=pricing"
-                      className="w-full inline-flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-100"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 dark:bg-emerald-500 text-white py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-emerald-700 dark:hover:bg-emerald-400 rounded"
                     >
                       Download Talkie for Mac
                     </a>

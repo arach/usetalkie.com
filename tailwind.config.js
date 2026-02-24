@@ -6,7 +6,8 @@ export default {
   content: [
     './app/**/*.{js,jsx,ts,tsx,mdx}',
     './components/**/*.{js,jsx,ts,tsx,mdx}',
-    './shared/**/*.{js,jsx,ts,tsx,mdx}'
+    './shared/**/*.{js,jsx,ts,tsx,mdx}',
+    './content/**/*.mdx'
   ],
   theme: {
     extend: {

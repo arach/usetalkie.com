@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 5173",
+    "dev": "portless talkie next dev",
     "dev:all": "./dev.sh",
     "dev:api": "cd api && npm run dev",
     "dev:admin": "cd admin && npm run dev",
@@ -18,8 +18,10 @@
     "mockup": "node scripts/create-iphone-mockup.js"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.462.0",
     "next": "^16.0.10",
+    "next-mdx-remote": "^6.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "resend": "^6.9.1"
