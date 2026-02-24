@@ -1,17 +1,17 @@
 ---
 title: "Why Talkie Has a CLI"
-description: "GUI apps are growing command lines. Here's why we built one for a voice app — and what it means for the future of personal software."
+description: "GUI apps are growing command lines. Here's why we built one for a voice app, and what it means for the future of personal software."
 date: "2026-02-23"
 tags: ["cli", "developer-tools", "automation"]
 ---
 
 ## The terminal is back
 
-Something interesting is happening. Apps that were built for graphical interfaces — note-taking tools, design apps, knowledge bases — are shipping command-line interfaces.
+Something interesting is happening. Apps that were built for graphical interfaces (note-taking tools, design apps, knowledge bases) are shipping command-line interfaces.
 
 Obsidian just did it. Their [1.12.0 release](https://obsidian.md/changelog/2026-02-10-desktop-v1.12.0/) introduced a full CLI that mirrors their GUI. Anything you can do by clicking, you can now do by typing. The Hacker News thread lit up. People want this.
 
-It's not nostalgia. It's not developers being contrarian. It's a recognition that the way we interact with software is fundamentally changing — and the command line is uniquely positioned for what comes next.
+It's not nostalgia. The way we interact with software is changing, and the command line fits what's coming next better than most people expect.
 
 ## Why a voice app needs a command line
 
@@ -19,7 +19,7 @@ On the surface, a CLI for a voice app sounds contradictory. Talkie's whole point
 
 Because the CLI isn't for capturing. It's for everything that happens *after* capture.
 
-When you speak a memo into Talkie, that memo becomes data — a transcript, a summary, extracted tasks, workflow outputs. That data is yours, sitting in a local SQLite database on your Mac. The CLI is how you get at it programmatically.
+When you speak a memo into Talkie, that memo becomes data: a transcript, a summary, extracted tasks, workflow outputs. That data is yours, sitting in a local SQLite database on your Mac. The CLI is how you get at it programmatically.
 
 ```bash
 # What did I capture this week?
@@ -32,11 +32,11 @@ talkie search "product roadmap"
 talkie workflows --since 24h
 ```
 
-These aren't things you'd do with your voice. They're things you do at your desk, in your terminal, often as part of a larger workflow. The CLI meets you where you already are.
+These aren't things you'd do with your voice. They're things you do at your desk, in your terminal, often as part of a larger workflow.
 
 ## Your data, your way out
 
-There's a principle baked into Talkie's architecture: your data should be accessible without our UI. The app could disappear tomorrow, and your memos, transcripts, and workflow outputs would still be there — in a standard SQLite file, queryable with any tool.
+There's a principle baked into Talkie's architecture: your data should be accessible without our UI. The app could disappear tomorrow, and your memos, transcripts, and workflow outputs would still be there in a standard SQLite file, queryable with any tool.
 
 The CLI makes this concrete. It reads your database directly, in read-only mode, with zero network calls. No API keys, no authentication, no server. Just your files on your disk.
 
@@ -48,37 +48,37 @@ talkie --db ~/path/to/talkie.sqlite memos
 talkie stats --pretty
 ```
 
-This is what data sovereignty actually looks like in practice. Not a promise in a privacy policy. A binary on your machine that reads your local files.
+Not a promise in a privacy policy. A binary on your machine that reads your local files.
 
 ## The agent layer
 
-Here's where it gets interesting. The resurgence of CLIs isn't just about human users typing commands. It's about machines.
+CLIs aren't just for humans typing commands anymore. They're for machines.
 
-AI agents — Claude, GPT, custom scripts — work best when they can call structured commands and get predictable output. A GUI is opaque to an agent. A CLI is transparent. Every command has documented inputs and structured outputs.
+AI agents work best when they can call structured commands and get predictable output. A GUI is opaque to an agent. A CLI is transparent. Every command has documented inputs and structured outputs.
 
-Talkie's CLI defaults to JSON output:
+Talkie's CLI defaults to JSON:
 
 ```bash
 talkie memos --since 7d
-# Returns structured JSON — parseable by any script or agent
+# Returns structured JSON, parseable by any script or agent
 ```
 
-This means an AI agent can query your voice memos, search your transcripts, check workflow status, and integrate the results into whatever it's building. Your voice captures become a data source that feeds into the broader ecosystem of tools on your machine.
+An AI agent can query your voice memos, search your transcripts, check workflow status, and feed the results into whatever it's doing. Your voice captures become data that any tool on your machine can access.
 
-The Hacker News discussion around Obsidian's CLI echoed this exact point — commenters immediately saw the potential for connecting AI agents to their knowledge base. The same logic applies to voice data. Your spoken thoughts shouldn't be locked in a GUI silo. They should be first-class data that any tool can access.
+The Hacker News discussion around Obsidian's CLI echoed this. Commenters immediately saw the potential for connecting agents to their knowledge base. Same logic applies here. Spoken thoughts shouldn't be locked in a GUI.
 
 ## What the CLI covers
 
-The Talkie CLI is built with Bun and ships as a single binary. Here's the surface area:
+The Talkie CLI is built with Bun and ships as a single binary.
 
-**Core commands** — access your data:
+Data commands:
 - `talkie memos` — list and retrieve voice memos with transcripts, summaries, and tasks
 - `talkie dictations` — list recent dictations with metadata about which app received them
 - `talkie search` — full-text search across all recordings (uses FTS5 when available)
 - `talkie workflows` — inspect workflow runs, step-by-step outputs, and errors
 - `talkie stats` — usage statistics, streaks, word counts, top apps
 
-**Dev commands** — manage the system:
+Dev commands:
 - `talkie dev status` — health check across all Talkie services
 - `talkie dev start/stop/restart` — control TalkieServer and related processes
 - `talkie dev logs` — tail logs from any service
@@ -86,14 +86,14 @@ The Talkie CLI is built with Bun and ships as a single binary. Here's the surfac
 - `talkie dev build` — build the Swift app from source
 - `talkie dev clean` — reset build artifacts
 
-Every command supports `--json` (default) for machine consumption and `--pretty` for human reading. Date filters accept relative values like `7d`, `24h`, or `30m` alongside absolute dates.
+Every command supports `--json` (default) for machines and `--pretty` for humans. Date filters accept relative values like `7d`, `24h`, or `30m`.
 
 ## The pattern
 
-We think this is a pattern more apps should follow. If your app stores user data locally, give users a CLI to access it. Not because everyone will use it — most won't. But because it signals something important about how you think about your users' relationship to their own data.
+I think more apps should do this. If your app stores user data locally, give users a CLI. Most people won't use it. But it says something about how you think about their data.
 
-A CLI says: this data is yours. Here's a tool to get at it. Script it, pipe it, feed it to an agent, back it up, analyze it — whatever you want. We built the GUI for the common case. The CLI is for everything else.
+A CLI says: this is yours. Script it, pipe it, feed it to an agent, back it up. We built the GUI for the common case. The CLI is for everything else.
 
-Obsidian gets this. Their vault is a folder of Markdown files — always accessible, always portable. The CLI extends that philosophy to the app's more complex features. We're doing the same thing with voice data.
+Obsidian gets this. Their vault is just a folder of Markdown files. The CLI extends that to the app's more complex features. We're doing the same with voice data.
 
-The terminal isn't going away. If anything, in an age of AI agents and automated workflows, it's more relevant than ever. The best apps will be the ones that work both ways — beautiful when you're looking at them, and scriptable when you're not.
+The terminal isn't going away. If anything, agents and automation are making it more relevant than it's been in years.
