@@ -1,0 +1,68 @@
+---
+title: "Three Layers of Transcription"
+description: "The same voice memo, transcribed three different ways. From Apple Speech on iOS to Parakeet v3 with post-processing — each layer improves readability while preserving the speaker's intent."
+date: "2026-02-24"
+tags: ["transcription", "parakeet", "on-device"]
+---
+
+## The setup
+
+A two-minute voice memo recorded on iPhone. Stream-of-consciousness, the kind of thing you capture while walking before an idea disappears. Natural speech with fillers, false starts, and mid-thought corrections.
+
+We ran it through three transcription layers:
+
+1. **Apple Speech** — iOS on-device recognition (what you get when you record in the app)
+2. **Parakeet v3 raw** — NVIDIA's ASR model running locally on Mac, no post-processing
+3. **Parakeet v3 + post-processing** — Same model, with dictionary-based filler removal
+
+Each layer builds on the previous one. The diffs show exactly what changes.
+
+---
+
+## Layer 1 → 2: Apple Speech → Raw Parakeet v3
+
+The model swap. Same audio file, different recognition engine. Apple's on-device speech recognition vs NVIDIA's Parakeet running locally through TalkieEngine.
+
+<TranscriptionDiff id="apple-to-parakeet" />
+
+### What changed
+
+**Punctuation surgery.** Apple wraps fillers in commas: `, um,` and `, uh,`. Parakeet leaves them bare. This matters because comma-wrapped fillers create false pauses when you read the transcript back.
+
+**Sentence flow.** Apple breaks mid-thought with periods: `needs. And then` becomes `needs, and then`. The thought continues — the punctuation should too.
+
+**Capitalization.** Apple capitalizes after false sentence boundaries: `way, It would` becomes `way it would`.
+
+**Compound words.** `fine tuned` becomes `fine-tuned`. Small but correct.
+
+The word count is identical (238). The content is the same. But the Parakeet transcript reads like a more faithful representation of continuous speech.
+
+---
+
+## Layer 2 → 3: Raw Parakeet → Post-Processed
+
+Same model, now with dictionary-based post-processing. This is the layer that strips filler words.
+
+<TranscriptionDiff id="parakeet-to-postprocessed" />
+
+### What changed
+
+**Pure subtraction.** The only change is removing `um`, `uh`, and `Um`. Thirteen instances. No other words, punctuation, or structure touched.
+
+**Why not strip fillers in the model?** Parakeet transcribes what it hears. The fillers are real — the speaker said them. Post-processing is a separate concern: what you want to *read* versus what was *said*. Keeping these as separate layers means you can always get back to the raw transcript.
+
+**The numbers.** 238 words down to 225. A 5% reduction for a 100% readability improvement.
+
+---
+
+## The stack
+
+Three layers, each doing one thing well:
+
+1. **Better model** — Parakeet v3 gets the words right, punctuates naturally, handles compound words. Runs entirely on-device through TalkieEngine.
+
+2. **Post-processing** — Dictionary-based filler removal. Surgical, predictable, reversible. The raw transcript is always preserved.
+
+3. **Local-first** — All of this runs on your Mac. No cloud API, no latency, no data leaving the device.
+
+The gap between "good enough" and "actually readable" transcription isn't one big leap. It's small, stackable improvements — each one easy to understand, easy to debug, and easy to reverse.

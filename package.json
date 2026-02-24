@@ -18,10 +18,12 @@
     "mockup": "node scripts/create-iphone-mockup.js"
   },
   "dependencies": {
+    "@pierre/diffs": "^1.0.11",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.462.0",
     "next": "^16.0.10",
     "next-mdx-remote": "^6.0.0",
+    "portless": "^0.4.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "resend": "^6.9.1"

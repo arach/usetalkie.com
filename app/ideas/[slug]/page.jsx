@@ -1,6 +1,11 @@
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { getAllSlugs, getIdeaBySlug } from '../../../lib/ideas'
 import IdeaLayout from '../../../components/IdeaLayout'
+import TranscriptionDiff from '../../../components/TranscriptionDiff'
+
+const mdxComponents = {
+  TranscriptionDiff,
+}
 
 export function generateStaticParams() {
   return getAllSlugs().map(slug => ({ slug }))
@@ -37,7 +42,7 @@ export default async function IdeaPost({ params }) {
       date={idea.date}
       tags={idea.tags}
     >
-      <MDXRemote source={idea.content} />
+      <MDXRemote source={idea.content} components={mdxComponents} />
     </IdeaLayout>
   )
 }
