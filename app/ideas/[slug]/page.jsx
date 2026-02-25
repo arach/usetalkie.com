@@ -27,6 +27,11 @@ export async function generateMetadata({ params }) {
       type: 'article',
       publishedTime: idea.date,
       tags: idea.tags,
+      images: [{ url: `/og/ideas/${slug}.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: [`/og/ideas/${slug}.png`],
     },
   }
 }
