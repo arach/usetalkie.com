@@ -30,6 +30,9 @@ import {
   Palette,
   RefreshCw,
   Circle,
+  Terminal,
+  Copy,
+  Check,
 } from 'lucide-react'
 import Container from './Container'
 import ThemeToggle from './ThemeToggle'
@@ -137,10 +140,13 @@ const ConfigLine = ({ label, value }) => (
   </div>
 )
 
+const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
+
 export default function LivePage() {
   const [scrolled, setScrolled] = useState(false)
   const [hubSectionHovered, setHubSectionHovered] = useState(false)
   const [downloadModalOpen, setDownloadModalOpen] = useState(false)
+  const [cliCopied, setCliCopied] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -804,7 +810,37 @@ export default function LivePage() {
             <Download className="w-5 h-5" />
             <span>Download for Mac</span>
           </button>
-          <p className="mt-8 text-xs font-mono uppercase text-zinc-400">macOS 26+ • Apple Silicon optimized • Signed & Notarized</p>
+
+          {/* CLI install alternative */}
+          <div className="mt-6 max-w-md mx-auto">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="w-8 h-px bg-zinc-300 dark:bg-zinc-700" />
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">or via terminal</span>
+              <div className="w-8 h-px bg-zinc-300 dark:bg-zinc-700" />
+            </div>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(CLI_INSTALL_CMD)
+                setCliCopied(true)
+                setTimeout(() => setCliCopied(false), 2000)
+              }}
+              className="group w-full flex items-center justify-between gap-3 bg-zinc-900 dark:bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 hover:border-zinc-700 transition-colors cursor-pointer"
+              title="Click to copy"
+            >
+              <div className="flex items-center gap-2 font-mono text-xs text-zinc-400 overflow-hidden">
+                <Terminal className="w-3.5 h-3.5 text-zinc-500 flex-shrink-0" />
+                <span className="text-zinc-500 select-none">&gt;</span>
+                <span className="text-emerald-400 truncate">{CLI_INSTALL_CMD}</span>
+              </div>
+              {cliCopied ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+              ) : (
+                <Copy className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 flex-shrink-0 transition-colors" />
+              )}
+            </button>
+          </div>
+
+          <p className="mt-6 text-xs font-mono uppercase text-zinc-400">macOS 26+ • Apple Silicon optimized • Signed & Notarized</p>
         </Container>
       </section>
 

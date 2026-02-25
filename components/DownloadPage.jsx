@@ -1,13 +1,15 @@
 "use client"
 import React, { useState } from 'react'
-import { Download, CheckCircle2, Laptop, Copy, Check } from 'lucide-react'
+import { Download, CheckCircle2, Laptop, Copy, Check, Terminal } from 'lucide-react'
 import Link from 'next/link'
 
 const GITHUB_DMG_URL = 'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
+const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
 
 export default function DownloadPage() {
   const [downloading, setDownloading] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [cliCopied, setCliCopied] = useState(false)
 
   const handleDownload = () => {
     setDownloading(true)
@@ -19,6 +21,16 @@ export default function DownloadPage() {
       await navigator.clipboard.writeText(GITHUB_DMG_URL)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
+  const handleCliCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(CLI_INSTALL_CMD)
+      setCliCopied(true)
+      setTimeout(() => setCliCopied(false), 2000)
     } catch (err) {
       console.error('Failed to copy:', err)
     }
@@ -102,6 +114,36 @@ export default function DownloadPage() {
                   )}
                 </button>
               </div>
+            </div>
+
+            {/* CLI Install */}
+            <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-2 mb-3">
+                <Terminal className="w-3.5 h-3.5 text-zinc-400" />
+                <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                  Or install via terminal
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 bg-zinc-900 dark:bg-zinc-950 border border-zinc-800 rounded p-3 font-mono text-xs text-emerald-400 overflow-hidden">
+                  <span className="text-zinc-500 select-none">&gt; </span>
+                  <span className="select-all">{CLI_INSTALL_CMD}</span>
+                </div>
+                <button
+                  onClick={handleCliCopy}
+                  className="flex-shrink-0 h-[42px] w-[42px] flex items-center justify-center bg-zinc-900 dark:bg-zinc-950 border border-zinc-800 rounded hover:bg-zinc-800 dark:hover:bg-zinc-900 transition-colors"
+                  title="Copy install command"
+                >
+                  {cliCopied ? (
+                    <Check className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-zinc-400" />
+                  )}
+                </button>
+              </div>
+              <p className="text-[10px] font-mono text-zinc-400 mt-2">
+                Installs the CLI, downloads the app, and launches it.
+              </p>
             </div>
 
             {/* System requirements */}
