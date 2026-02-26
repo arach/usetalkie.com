@@ -41,7 +41,7 @@ export default function IdeaLayout({ title, description, date, tags, children })
         {/* Hero header area */}
         <div className="relative border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-950">
           <div className="absolute inset-0 bg-grid-fade pointer-events-none opacity-30" />
-          <div className="relative max-w-3xl mx-auto px-6 pt-16 pb-12">
+          <div className="relative max-w-3xl mx-auto px-6 pt-10 pb-12">
             {tags && tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {tags.map(tag => (
