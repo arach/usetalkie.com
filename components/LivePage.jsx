@@ -857,6 +857,7 @@ export default function LivePage() {
             <Link href="/capture" className="hover:text-black dark:hover:text-white transition-colors">On The Go</Link>
             <Link href="/workflows" className="hover:text-black dark:hover:text-white transition-colors">Workflows</Link>
             <Link href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</Link>
+            <Link href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</Link>
             <Link href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</Link>
           </div>
           <p className="text-[10px] font-mono uppercase text-zinc-400">&copy; {new Date().getFullYear()} Talkie Systems Inc.</p>

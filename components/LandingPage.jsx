@@ -620,6 +620,7 @@ export default function LandingPage() {
             <a href="/ideas" className="hover:text-black dark:hover:text-white transition-colors">Ideas</a>
             <a href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</a>
             <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>
+            <a href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</a>
             <a href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
           </div>
           <p className="text-[10px] font-mono uppercase text-zinc-400">© {new Date().getFullYear()} Talkie Systems Inc.</p>

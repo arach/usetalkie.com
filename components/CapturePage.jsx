@@ -480,6 +480,7 @@ export default function CapturePage() {
             <Link href="/dictation" className="hover:text-black dark:hover:text-white transition-colors">Dictation</Link>
             <Link href="/workflows" className="hover:text-black dark:hover:text-white transition-colors">Workflows</Link>
             <Link href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</Link>
+            <Link href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</Link>
           </div>
           <p className="text-[10px] font-mono uppercase text-zinc-400">&copy; {new Date().getFullYear()} Talkie Systems Inc.</p>
         </Container>

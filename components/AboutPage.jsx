@@ -271,6 +271,7 @@ export default function AboutPage() {
             </a>
             <a href="mailto:hey@usetalkie.com" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
             <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>
+            <a href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</a>
             <a href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
           </div>
           <p className="text-[10px] font-mono uppercase text-zinc-400">&copy; {new Date().getFullYear()} Talkie Systems Inc.</p>
