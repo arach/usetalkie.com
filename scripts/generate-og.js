@@ -18,11 +18,13 @@ mkdirSync(ogIdeasDir, { recursive: true });
 const interBold = readFileSync(join(__dirname, 'fonts', 'Inter-Bold.ttf'));
 const interRegular = readFileSync(join(__dirname, 'fonts', 'Inter-Regular.ttf'));
 const jetbrainsMono = readFileSync(join(__dirname, 'fonts', 'JetBrainsMono-Regular.ttf'));
+const instrumentSerif = readFileSync(join(__dirname, 'fonts', 'InstrumentSerif-Regular.ttf'));
 
 const fonts = [
   { name: 'Inter', data: interBold, weight: 700, style: 'normal' },
   { name: 'Inter', data: interRegular, weight: 400, style: 'normal' },
   { name: 'JetBrains Mono', data: jetbrainsMono, weight: 400, style: 'normal' },
+  { name: 'Instrument Serif', data: instrumentSerif, weight: 400, style: 'normal' },
 ];
 
 // Talkie brand colors
@@ -55,7 +57,7 @@ function truncate(str, max = 140) {
   return str.slice(0, max).replace(/\s+\S*$/, '') + '...';
 }
 
-// Shared brand background elements (grid, glows, crosses, accent line)
+// Shared brand background elements (grid, glows, corner marks, accent line)
 function brandBackground() {
   return [
     // Major grid (80px) with emerald tint
@@ -68,7 +70,7 @@ function brandBackground() {
         opacity: 0.4,
       },
     }),
-    // Radial glow from top-left cross
+    // Radial glow from top-left corner
     h('div', {
       style: {
         position: 'absolute',
@@ -76,7 +78,7 @@ function brandBackground() {
         backgroundImage: `radial-gradient(circle at 80px 80px, rgba(34, 197, 94, 0.12) 0%, transparent 40%)`,
       },
     }),
-    // Radial glow from bottom-right cross
+    // Radial glow from bottom-right corner
     h('div', {
       style: {
         position: 'absolute',
@@ -84,64 +86,36 @@ function brandBackground() {
         backgroundImage: `radial-gradient(circle at 1120px 560px, rgba(34, 197, 94, 0.10) 0%, transparent 40%)`,
       },
     }),
-    // Top-left cross — horizontal faded
+    // Top-left corner — horizontal (going right from corner)
     h('div', {
       style: {
-        position: 'absolute', top: 79, left: 20, width: 180, height: 2,
-        background: `linear-gradient(to right, transparent, ${COLORS.crossColor}40 30px, ${COLORS.crossColor}40 150px, transparent)`,
+        position: 'absolute', top: 79, left: 80, width: 100, height: 2,
+        background: `linear-gradient(to right, ${COLORS.crossColor}, transparent)`,
+        opacity: 0.7,
       },
     }),
-    // Top-left cross — horizontal dashed
+    // Top-left corner — vertical (going down from corner)
     h('div', {
       style: {
-        position: 'absolute', top: 79, left: 40, width: 120, height: 2,
-        background: `repeating-linear-gradient(to right, ${COLORS.crossColor} 0px, ${COLORS.crossColor} 6px, transparent 6px, transparent 10px)`,
-        opacity: 0.9,
+        position: 'absolute', top: 80, left: 79, width: 2, height: 100,
+        background: `linear-gradient(to bottom, ${COLORS.crossColor}, transparent)`,
+        opacity: 0.7,
       },
     }),
-    // Top-left cross — vertical faded
+    // Bottom-right corner — horizontal (going left from corner)
     h('div', {
       style: {
-        position: 'absolute', top: 20, left: 79, width: 2, height: 180,
-        background: `linear-gradient(to bottom, transparent, ${COLORS.crossColor}40 30px, ${COLORS.crossColor}40 150px, transparent)`,
+        position: 'absolute', top: 559, left: 1020, width: 100, height: 2,
+        background: `linear-gradient(to left, ${COLORS.crossColor}, transparent)`,
+        opacity: 0.7,
       },
     }),
-    // Top-left cross — vertical dashed
+    // Bottom-right corner — vertical (going up from corner)
     h('div', {
       style: {
-        position: 'absolute', top: 40, left: 79, width: 2, height: 120,
-        background: `repeating-linear-gradient(to bottom, ${COLORS.crossColor} 0px, ${COLORS.crossColor} 6px, transparent 6px, transparent 10px)`,
-        opacity: 0.9,
-      },
-    }),
-    // Bottom-right cross — horizontal faded
-    h('div', {
-      style: {
-        position: 'absolute', top: 559, left: 1000, width: 180, height: 2,
-        background: `linear-gradient(to right, transparent, ${COLORS.crossColor}40 30px, ${COLORS.crossColor}40 150px, transparent)`,
-      },
-    }),
-    // Bottom-right cross — horizontal dashed
-    h('div', {
-      style: {
-        position: 'absolute', top: 559, left: 1040, width: 120, height: 2,
-        background: `repeating-linear-gradient(to right, ${COLORS.crossColor} 0px, ${COLORS.crossColor} 6px, transparent 6px, transparent 10px)`,
-        opacity: 0.9,
-      },
-    }),
-    // Bottom-right cross — vertical faded
-    h('div', {
-      style: {
-        position: 'absolute', top: 430, left: 1119, width: 2, height: 180,
-        background: `linear-gradient(to bottom, transparent, ${COLORS.crossColor}40 30px, ${COLORS.crossColor}40 150px, transparent)`,
-      },
-    }),
-    // Bottom-right cross — vertical dashed
-    h('div', {
-      style: {
-        position: 'absolute', top: 470, left: 1119, width: 2, height: 120,
-        background: `repeating-linear-gradient(to bottom, ${COLORS.crossColor} 0px, ${COLORS.crossColor} 6px, transparent 6px, transparent 10px)`,
-        opacity: 0.9,
+        position: 'absolute', top: 460, left: 1119, width: 2, height: 100,
+        background: `linear-gradient(to top, ${COLORS.crossColor}, transparent)`,
+        opacity: 0.7,
       },
     }),
     // Bottom accent line
@@ -248,43 +222,52 @@ const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
 },
   ...brandBackground(),
 
+  // Left accent bar (editorial stripe)
+  h('div', {
+    style: {
+      position: 'absolute', top: 0, left: 0, width: 5, height: '100%',
+      background: `linear-gradient(to bottom, transparent 10%, ${COLORS.accent} 30%, ${COLORS.accent} 70%, transparent 90%)`,
+    },
+  }),
+
   // Content container
   h('div', {
     style: {
-      display: 'flex', flexDirection: 'column', padding: '80px 120px',
+      display: 'flex', flexDirection: 'column', padding: '100px 100px 72px 120px',
       position: 'relative', height: '100%',
     },
   },
-    // Top row: ;)Talkie on left, date on right
+    // Top row: "Ideas" label + date
     h('div', {
       style: {
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40,
+        display: 'flex', alignItems: 'center', gap: 24, marginBottom: 40,
       },
     },
-      h('div', {
-        style: {
-          display: 'flex', alignItems: 'center', padding: '12px 24px',
-          borderRadius: 12, border: `3px solid ${COLORS.accent}`,
-          backgroundColor: 'rgba(34, 197, 94, 0.08)', transform: 'rotate(-10deg)',
-        },
-      },
-        h('span', {
-          style: { fontSize: 20, fontWeight: 600, color: COLORS.accent, fontFamily: 'Inter' },
-        }, ';)'),
-        h('span', {
-          style: { fontSize: 20, fontWeight: 600, color: COLORS.text, letterSpacing: '-0.01em' },
-        }, 'Talkie'),
-      ),
       h('span', {
-        style: { fontSize: 16, fontWeight: 400, color: COLORS.textMuted },
+        style: {
+          fontSize: 14, fontWeight: 700, color: COLORS.accent,
+          textTransform: 'uppercase', letterSpacing: '0.14em',
+          fontFamily: 'JetBrains Mono',
+        },
+      }, 'Ideas'),
+      // Thin separator
+      h('div', {
+        style: { width: 1, height: 14, backgroundColor: COLORS.textMuted, opacity: 0.3 },
+      }),
+      h('span', {
+        style: {
+          fontSize: 14, fontWeight: 400, color: COLORS.textMuted,
+          fontFamily: 'JetBrains Mono',
+        },
       }, formatDate(date)),
     ),
 
-    // Title
+    // Title — serif, editorial
     h('div', {
       style: {
-        fontSize: 56, fontWeight: 700, color: COLORS.text,
-        lineHeight: 1.15, maxWidth: 920, marginBottom: 20, letterSpacing: '-0.02em',
+        fontSize: 72, fontWeight: 400, color: COLORS.text,
+        lineHeight: 1.1, maxWidth: 920, marginBottom: 28,
+        fontFamily: 'Instrument Serif',
       },
     }, title),
 
@@ -292,9 +275,9 @@ const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
     description && h('div', {
       style: {
         fontSize: 22, fontWeight: 400, color: COLORS.textMuted,
-        lineHeight: 1.5, maxWidth: 800,
+        lineHeight: 1.55, maxWidth: 760,
       },
-    }, truncate(description)),
+    }, truncate(description, 130)),
 
     // Spacer
     h('div', { style: { flex: 1 } }),
@@ -307,21 +290,22 @@ const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
     },
       // Tags
       h('div', {
-        style: { display: 'flex', gap: 8 },
+        style: { display: 'flex', gap: 10 },
       },
         ...tags.slice(0, 3).map(tag =>
           h('div', {
             style: {
               display: 'flex', alignItems: 'center',
-              padding: '6px 14px', borderRadius: 6,
-              backgroundColor: 'rgba(34, 197, 94, 0.1)',
-              border: '1px solid rgba(34, 197, 94, 0.25)',
+              padding: '7px 14px', borderRadius: 5,
+              backgroundColor: 'rgba(34, 197, 94, 0.08)',
+              border: '1px solid rgba(34, 197, 94, 0.18)',
             },
           },
             h('span', {
               style: {
-                fontSize: 13, fontWeight: 600, color: COLORS.accent,
-                textTransform: 'uppercase', letterSpacing: '0.05em',
+                fontSize: 12, fontWeight: 400, color: COLORS.accent,
+                textTransform: 'uppercase', letterSpacing: '0.08em',
+                fontFamily: 'JetBrains Mono',
               },
             }, tag),
           )
@@ -330,7 +314,7 @@ const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
       // URL
       h('span', {
         style: {
-          fontSize: 15, fontWeight: 400, color: COLORS.textMuted,
+          fontSize: 14, fontWeight: 400, color: COLORS.textMuted,
           fontFamily: 'JetBrains Mono', letterSpacing: '0.01em',
         },
       }, 'usetalkie.com/ideas'),
