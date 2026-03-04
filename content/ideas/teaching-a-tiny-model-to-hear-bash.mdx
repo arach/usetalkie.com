@@ -1,0 +1,207 @@
+---
+title: "Teaching a Tiny Model to Hear Bash"
+description: "Fine-tuning a 1.5B model to reconstruct shell commands from voice. 97% accuracy, 3GB of RAM, under a second on a phone."
+date: "2026-03-04"
+tags: ["mlx", "fine-tuning", "on-device-ml", "voice"]
+---
+
+## The Problem
+
+I'm building [Talkie](https://usetalkie.com), a voice-first productivity app. One of its features is keyboard dictation. You speak into your phone, it types into whatever app you're using.
+
+For regular prose, off-the-shelf speech-to-text handles it. For terminal commands, it falls apart completely.
+
+Say "find dot dash name star dot txt" to any transcription engine and you get back a faithful transcription of your words. Not the command you meant. The gap between spoken description and intended syntax is the problem.
+
+| Stage | Output |
+|---|---|
+| **What you say** | `find dot dash name star dot txt` |
+| **What transcription gives** | `find dot dash name star dot text` |
+| **What you meant** | `find . -name *.txt` |
+
+## The Bet: A Tiny Model, On-Device
+
+I wanted to know if a model small enough to run on a phone could learn this mapping end-to-end. Not a rule engine. Not a cloud API call to GPT-4. A model that fits in pocket-sized RAM and returns an answer before the user notices it's thinking.
+
+**Model:** Qwen2.5-1.5B-Instruct, 4-bit quantized via MLX. Fits in ~3GB.
+
+**Method:** LoRA fine-tuning on Apple Silicon. Rank 8, scale 20, no dropout. The whole training run uses under 3GB of memory.
+
+**Data:** 6,304 examples of dictated bash paired with intended syntax — 5,044 train, 630 validation, 630 test. Each example is a simple chat turn:
+
+```json
+{
+  "messages": [
+    {"role": "system", "content": "Reconstruct the intended syntax from the dictated text. Output only the result."},
+    {"role": "user", "content": "find dot dash name star dot txt"},
+    {"role": "assistant", "content": "find . -name *.txt"}
+  ]
+}
+```
+
+The data covers a wide surface of Unix — `find`, `grep`, `ssh`, `tar`, `chmod`, piped chains, quoted arguments, nested subshells, escape sequences. The dictation convention is consistent: symbols are spoken as English words ("dash", "dot", "slash", "pipe") and numbers are spelled digit-by-digit ("one two seven" for `127`).
+
+## Training
+
+```bash
+mlx_lm.lora \
+  --model mlx-community/Qwen2.5-1.5B-Instruct-4bit \
+  --data datasets/finetune/bash-v2/minimal \
+  --batch-size 4 \
+  --lora-layers 16 \
+  --iters 1000 \
+  --learning-rate 1e-4 \
+  --mask-prompt
+```
+
+One flag worth calling out: `--mask-prompt`. The model only learns to predict the assistant response, not the system and user turns. All the training signal goes to the actual reconstruction task.
+
+It converged fast.
+
+| Iter | Train Loss | Val Loss |
+|------|-----------|----------|
+| 200 | 0.337 | 0.213 |
+| 400 | 0.108 | 0.204 |
+| 600 | 0.068 | 0.137 |
+| **800** | **0.049** | **0.109** |
+| 1000 | 0.052 | 0.137 |
+
+Best validation loss at iteration 800. A mild overfit signal by 1000. Final test loss: 0.098, perplexity: 1.103.
+
+<TrainingCurve />
+
+Peak memory during training: 2.95 GB. Total wall time: about 35 minutes on a MacBook.
+
+## Beyond Val Loss: Does It Actually Get Commands Right?
+
+Validation loss says the model is learning. It doesn't say whether it produces correct commands. So I ran the full 630-example test set through inference, compared each output character-for-character against the expected command, and sorted the results into buckets.
+
+| Result | Count | Rate |
+|--------|-------|------|
+| Exact match | 480 / 630 | 76.2% |
+| Near match (&gt;90% similar) | 132 / 630 | 21.0% |
+| Partial (70–90%) | 15 / 630 | 2.4% |
+| Wrong (&lt;70%) | 3 / 630 | 0.5% |
+
+**Effective accuracy: 97.1%**
+
+<AccuracyBar />
+
+Average inference time: 0.69 seconds per command on Apple Silicon.
+
+The "near match" bucket is mostly whitespace and trivial formatting — extra spaces around operators, minor quoting style differences. Functionally identical outputs. The interesting signal is in the failures.
+
+## Anatomy of the 3%
+
+Every failure fell into one of two categories. No exceptions.
+
+### Repeated Digits
+
+When the input contains a long spoken digit sequence — "one zero zero zero zero zero" for `100000` — the model starts generating correctly, then falls into a repetition loop.
+
+| Voice input | Got | Expected |
+|---|---|---|
+| "one zero zero zero zero zero" | `100000000000…` | `100000` |
+| "nine nine nine nine nine nine" | `99999999999…` | `99999999` |
+| "eight dot eight dot eight" | `8.8.8.8.8.…` | `8.8.8.8` |
+
+This is a known weakness of small language models with repeated tokens. The model sees "I just generated a zero" and assigns high probability to the next token also being a zero. The attention pattern becomes self-reinforcing.
+
+All 4 of the "wrong" results in the evaluation were this exact failure mode.
+
+### Casing Ambiguity
+
+| Voice input | Got | Expected |
+|---|---|---|
+| "df dash I H" | `df -iH` | `df -ih` |
+| "diff dash Y A B" | `diff -y A B` | `diff -y a b` |
+| "cp dash R S /mnt/..." | `cp -R s/...` | `cp -rs /...` |
+
+When someone says "dash I H" — should it be `-ih` or `-iH`? Both are valid bash. The model preserves the casing from the spoken input, which is a reasonable default but doesn't always match the expected answer.
+
+21 of 630 examples (3.3%) differed only in letter casing. Score case-insensitively and they're all correct.
+
+The remaining 14 partial matches were structural — a doubled token, a missed path segment, a quoting difference. Real model limitations, but minor ones.
+
+## The Insight
+
+Here's the thing I didn't expect going in.
+
+Looking at the dictation vocabulary across the entire dataset, the mapping from spoken words to symbols is *completely deterministic*:
+
+| Spoken | Symbol | Occurrences |
+|--------|--------|-------------|
+| dash | `-` | 11,207 |
+| quote | `"` | 4,676 |
+| dot | `.` | 4,297 |
+| slash | `/` | 4,079 |
+| pipe | `\|` | 1,791 |
+| star | `*` | 1,730 |
+| backslash | `\\` | 924 |
+| semicolon | `;` | 766 |
+| dollar | `$` | 636 |
+
+Thirty spoken tokens mapping to thirty symbols. No ambiguity. No context-dependence. A lookup table handles it perfectly.
+
+<VocabGrid />
+
+Same for digits: "zero" through "nine" map 1:1 to `0`-`9`, spoken digit-by-digit and concatenated. "One two seven" is always `127`. "Zero six four four" is always `0644`.
+
+The model is spending a huge chunk of its 1.5 billion parameters learning these fixed mappings. Every training example where "dash" becomes `-` is a wasted gradient. The model figured this out after the first hundred examples and then saw it eleven thousand more times.
+
+**The fix isn't more training. It's less work for the model.**
+
+## The Architecture That Emerges
+
+<PipelineFlow />
+
+**Preprocessor** — deterministic code, no model involved:
+- Symbol words to literal characters: `dash` → `-`, `pipe` → `|`, `open brace` → `{`
+- Digit sequences to numbers: `one two seven` → `127`, `zero six four four` → `0644`
+- Compound numbers to digits: `twenty three` → `23`, `twelve` → `12`
+
+**Model** — the only part that requires ML, and now its job is purely structural:
+- Where do spaces go? (`-name` vs `- name`)
+- What gets quoted? (`"*.txt"` vs `*.txt`)
+- How do tokens group? (like `-exec rm -f` as a unit)
+- What's a flag vs. an argument? (`-rs` vs `-R s`)
+
+**Post-processor** — deterministic code again:
+- Repetition detection: same n-gram 3+ times in a row, truncate
+- Structural validation: balanced quotes, balanced braces, no trailing artifacts
+
+The model becomes a structural reasoner instead of a lookup table. It stops memorizing that "dash" means `-` and starts focusing on the actually hard part: how these symbols compose into valid commands.
+
+## What the Numbers Mean
+
+97% accuracy from a model that fits in 3GB and runs in under a second. On a phone. Offline. No API call, no network dependency, no usage fees.
+
+<StatsRow />
+
+The remaining 3% breaks down cleanly:
+
+- **Repeated digits** (~0.6%): eliminated entirely by the preprocessor — digits never reach the model
+- **Casing** (~3.3%): arguably not errors — both casings are valid bash. Case-insensitive accuracy is already ~99%
+- **Structural** (~2.2%): genuine model limitations, mostly minor — a doubled token, a missed path segment
+
+With the preprocessing pipeline handling symbols and digits, the model's effective job shrinks substantially, and I'd expect accuracy above 98% without any retraining.
+
+## Practical Notes
+
+**Training cost.** 35 minutes on a MacBook, 3GB RAM. No GPU cluster. MLX makes LoRA fine-tuning on Apple Silicon feel like running a build.
+
+**Data efficiency.** 5,044 training examples was enough for 97%. The model converged in 800 iterations — 3,200 examples at batch size 4. Small, focused datasets beat large noisy ones when the task is narrow.
+
+**Checkpoint selection.** Best validation loss at iteration 800 (0.109). Iteration 1000 showed mild overfitting (0.137). In practice the difference was small — both produced similar accuracy in full evaluation.
+
+**Inference.** 0.69 seconds average. Fast enough to run between when you stop speaking and when text appears. The user doesn't wait.
+
+## What's Next
+
+Building the preprocessing pipeline is the immediate next step — the deterministic symbol and digit expander that feeds cleaned input to the model.
+
+Beyond that, the approach generalizes to any domain with a consistent spoken-to-written mapping. SQL, regex, file paths, URLs, mathematical notation. The model architecture stays the same. You change the training data and the preprocessor's lookup table.
+
+<DomainGrid />
+
+The broader point: the right role for a small model isn't doing everything. It's doing the one thing that only a model can do, sandwiched between deterministic code that handles the rest.

@@ -1,6 +1,9 @@
-const puppeteer = require('puppeteer');
-const path = require('path');
-const fs = require('fs');
+import puppeteer from 'puppeteer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const html = `
 <!DOCTYPE html>
@@ -171,9 +174,9 @@ const html = `
         <div class="hero-badge-dot"></div>
         <span class="hero-badge-text">Native on iOS & macOS</span>
       </div>
-      <h1>VOICE MEMOS<br/><span class="plus">+</span> <span class="ai">AI.</span></h1>
-      <p class="tagline">Capture on iPhone <span class="sep">|</span> Process on Mac</p>
-      <p class="tagline-sub"><svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> synced via <span class="highlight">your</span> iCloud <svg class="lock-icon lock-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></p>
+      <h1>VOICE <span class="plus">+</span> <span class="ai">AI.</span></h1>
+      <p class="tagline">Dictate anywhere <span class="sep">|</span> Transcribe locally <span class="sep">|</span> Act with AI</p>
+      <p class="tagline-sub">Local-first dictation and voice workflows for Mac</p>
     </div>
     <div class="bottom">
       <span style="letter-spacing: 0.1em;">iOS + macOS</span>

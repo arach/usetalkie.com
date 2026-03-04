@@ -1,10 +1,29 @@
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import { getAllSlugs, getIdeaBySlug } from '../../../lib/ideas'
 import IdeaLayout from '../../../components/IdeaLayout'
 import TranscriptionDiff from '../../../components/TranscriptionDiff'
+import StatsRow from '../../../components/blog/StatsRow'
+import AccuracyBar from '../../../components/blog/AccuracyBar'
+import PipelineFlow from '../../../components/blog/PipelineFlow'
+import VocabGrid from '../../../components/blog/VocabGrid'
+import DomainGrid from '../../../components/blog/DomainGrid'
+import TrainingCurve from '../../../components/blog/TrainingCurve'
 
 const mdxComponents = {
   TranscriptionDiff,
+  StatsRow,
+  AccuracyBar,
+  PipelineFlow,
+  VocabGrid,
+  DomainGrid,
+  TrainingCurve,
+}
+
+const mdxOptions = {
+  mdxOptions: {
+    remarkPlugins: [remarkGfm],
+  },
 }
 
 export function generateStaticParams() {
@@ -47,7 +66,7 @@ export default async function IdeaPost({ params }) {
       date={idea.date}
       tags={idea.tags}
     >
-      <MDXRemote source={idea.content} components={mdxComponents} />
+      <MDXRemote source={idea.content} components={mdxComponents} options={mdxOptions} />
     </IdeaLayout>
   )
 }
