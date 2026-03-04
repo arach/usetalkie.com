@@ -1,0 +1,101 @@
+---
+title: "Your Voice, Available to Agents"
+description: "The Talkie CLI turns your voice memos and dictations into structured data that any script, pipeline, or AI agent can work with."
+date: "2026-03-02"
+tags: ["cli", "agents", "automation"]
+---
+
+## Voice data that goes somewhere
+
+You speak a memo into Talkie. It gets transcribed, summarized, and stored locally. Then what?
+
+In most voice apps, that's where it ends. The data lives inside the app, visible only through the app. If you want to do something with it — feed it to an agent, search it from a script, pipe it into a workflow — you're out of luck.
+
+The Talkie CLI changes that. It turns your voice captures into structured data that anything on your machine can read.
+
+```bash
+npm install -g talkie-cli
+```
+
+No accounts, no API keys. It reads the local SQLite database on your Mac directly.
+
+## What agents see
+
+Every command outputs JSON by default when piped. That means any tool that can call a shell command can query your voice data.
+
+```bash
+talkie memos --since 7d
+```
+
+Returns an array of objects. Each memo has a transcript, summary, extracted tasks, duration, and timestamps. Structured, predictable, parseable.
+
+```bash
+talkie search "product roadmap" --sort relevance
+```
+
+Full-text search across everything you've said. An agent doesn't need to understand audio. It just needs text it can reason about.
+
+```bash
+talkie dictations --since 24h
+```
+
+Every dictation includes metadata about which app received it. An agent can see not just what you said, but where you said it.
+
+## The commands
+
+Five commands cover the full surface:
+
+```bash
+talkie memos                    # voice memos with transcripts and summaries
+talkie dictations               # keyboard dictations with app metadata
+talkie search "query"           # full-text search across everything
+talkie workflows                # workflow execution history
+talkie stats                    # usage numbers and streaks
+```
+
+Filter by time with `--since` and `--until` (accepts `30m`, `24h`, `7d`, or ISO dates). Limit results with `--limit`. Get a specific item by passing its ID prefix.
+
+```bash
+talkie memos --since 7d --limit 5
+talkie memos a3f
+talkie search "standup" --app Slack --type memos
+talkie workflows --status failed
+```
+
+## Why this matters for agents
+
+AI agents are good at reasoning over text. They're bad at navigating GUIs. A voice app with no programmatic interface is invisible to agents — they can't see your memos, can't search your transcripts, can't check on your workflows.
+
+A CLI with structured output changes the equation. An agent that can call shell commands can now:
+
+- Pull your recent voice memos and summarize themes across them
+- Search your dictations for a topic you mentioned last week
+- Check if a workflow ran successfully or needs attention
+- Cross-reference what you said in a memo with what's in your calendar or codebase
+
+Your spoken thoughts become part of the same data layer as your files, your git history, your notes. Agents can connect the dots.
+
+## Piping
+
+The JSON output is designed for composition:
+
+```bash
+# Feed your latest memo to another tool
+talkie memos --limit 1 | jq -r '.[0].text' | pbcopy
+
+# Get all memo transcripts from this week
+talkie memos --since 7d | jq '.[].text'
+
+# Export a month of memos
+talkie memos --since 30d > monthly-memos.json
+```
+
+In a terminal, output defaults to human-readable tables. When piped, it switches to JSON automatically. Override with `--json` or `--pretty`.
+
+## Local and read-only
+
+The CLI never writes to your database. It never makes network calls. It reads local files on your disk, in read-only mode, and prints the result.
+
+This isn't just a privacy feature. It means agents can query your voice data without any risk of modifying it. No auth tokens to leak, no API rate limits to hit, no server to depend on.
+
+Your voice goes in through the app. The CLI is how it comes back out — as data that any tool on your machine can work with.
