@@ -64,7 +64,7 @@ export default function ApiPage() {
       badgeColor="amber"
       sections={sections}
     >
-      <ComingSoonBanner />
+      <ComingSoonBanner topic="API Reference" />
 
       {/* TalkieServer HTTP Endpoints */}
       <h2 id="talkieserver">TalkieServer HTTP Endpoints</h2>

@@ -55,7 +55,7 @@ export default function TailscalePage() {
       badgeColor="blue"
       sections={sections}
     >
-      <ComingSoonBanner />
+      <ComingSoonBanner topic="Tailscale" />
 
       {/* Why Tailscale */}
       <h2 id="why-tailscale">Why Tailscale?</h2>

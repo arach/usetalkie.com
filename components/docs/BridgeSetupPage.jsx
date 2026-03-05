@@ -64,7 +64,7 @@ export default function BridgeSetupPage() {
       badgeColor="emerald"
       sections={sections}
     >
-      <ComingSoonBanner />
+      <ComingSoonBanner topic="TalkieServer" />
 
       {/* What is TalkieServer */}
       <h2 id="what-is-talkieserver">What is TalkieServer?</h2>
