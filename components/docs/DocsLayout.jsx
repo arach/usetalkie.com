@@ -23,6 +23,14 @@ const docsNav = [
       { title: 'Talkie CLI', href: '/docs/cli', icon: Terminal, description: 'Command-line access' },
       { title: 'Extensibility', href: '/docs/extensibility', icon: Puzzle, description: 'Webhooks & integrations' },
     ]
+  },
+  {
+    title: 'Coming Soon',
+    items: [
+      { title: 'API Reference', href: '/docs/api', icon: Code2, description: 'Endpoints & schemes', comingSoon: true },
+      { title: 'TalkieServer', href: '/docs/bridge-setup', icon: Server, description: 'Local bridge service', comingSoon: true },
+      { title: 'Tailscale', href: '/docs/tailscale', icon: Globe, description: 'Secure networking', comingSoon: true },
+    ]
   }
 ]
 
@@ -69,6 +77,16 @@ function DocsSidebar({ isOpen, onClose }) {
                   {group.items.map((item) => {
                     const isActive = pathname === item.href
                     const Icon = item.icon
+                    if (item.comingSoon) {
+                      return (
+                        <li key={item.href}>
+                          <span className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 dark:text-zinc-600 cursor-default">
+                            <Icon className="w-4 h-4 flex-shrink-0 opacity-50" />
+                            <span>{item.title}</span>
+                          </span>
+                        </li>
+                      )
+                    }
                     return (
                       <li key={item.href}>
                         <Link
