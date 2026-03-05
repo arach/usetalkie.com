@@ -347,6 +347,7 @@ export default function CapturePage() {
             <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">Home</Link>
             <Link href="/mac" className="hover:text-black dark:hover:text-white transition-colors">Mac</Link>
             <Link href="/agents" className="hover:text-black dark:hover:text-white transition-colors">Agents</Link>
+            <Link href="/docs" className="hover:text-black dark:hover:text-white transition-colors">Docs</Link>
             <Link href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</Link>
             <Link href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</Link>
           </div>

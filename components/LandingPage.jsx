@@ -120,6 +120,12 @@ export default function LandingPage() {
               Ideas
             </Link>
             <Link
+              href="/docs"
+              className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
+            >
+              Docs
+            </Link>
+            <Link
               href="/security"
               className="cursor-pointer hover:text-black dark:hover:text-white transition-colors"
             >
@@ -180,6 +186,14 @@ export default function LandingPage() {
               >
                 <Lightbulb className="w-4 h-4" />
                 Ideas
+              </Link>
+              <Link
+                href="/docs"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 text-sm font-mono font-medium uppercase tracking-wider text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <Book className="w-4 h-4" />
+                Docs
               </Link>
               <Link
                 href="/security"
@@ -617,6 +631,7 @@ export default function LandingPage() {
             </a>
             <a href="mailto:hello@usetalkie.com" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
             <a href="/about" className="hover:text-black dark:hover:text-white transition-colors">About</a>
+            <a href="/docs" className="hover:text-black dark:hover:text-white transition-colors">Docs</a>
             <a href="/ideas" className="hover:text-black dark:hover:text-white transition-colors">Ideas</a>
             <a href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</a>
             <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>

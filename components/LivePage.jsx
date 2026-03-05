@@ -857,6 +857,7 @@ export default function LivePage() {
             <Link href="/mac" className="hover:text-black dark:hover:text-white transition-colors">Mac</Link>
             <Link href="/mobile" className="hover:text-black dark:hover:text-white transition-colors">Mobile</Link>
             <Link href="/agents" className="hover:text-black dark:hover:text-white transition-colors">Agents</Link>
+            <Link href="/docs" className="hover:text-black dark:hover:text-white transition-colors">Docs</Link>
             <Link href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</Link>
             <Link href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</Link>
             <Link href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</Link>
