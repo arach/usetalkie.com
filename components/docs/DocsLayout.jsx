@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ArrowLeft, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Server, Globe, ChevronRight, Menu, X, Route } from 'lucide-react'
+import { ArrowLeft, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Server, Globe, ChevronRight, Menu, X, Route, Terminal } from 'lucide-react'
 import Container from '../Container'
 
 // Navigation structure for all docs
@@ -17,17 +17,10 @@ const docsNav = [
     ]
   },
   {
-    title: 'Setup',
-    items: [
-      { title: 'TalkieServer', href: '/docs/bridge-setup', icon: Server, description: 'Local bridge service' },
-      { title: 'Tailscale', href: '/docs/tailscale', icon: Globe, description: 'Secure networking' },
-    ]
-  },
-  {
-    title: 'Advanced',
+    title: 'Power Users',
     items: [
       { title: 'Workflows', href: '/docs/workflows', icon: Workflow, description: 'Automation & pipelines' },
-      { title: 'API Reference', href: '/docs/api', icon: Code2, description: 'Endpoints & schemes' },
+      { title: 'Talkie CLI', href: '/docs/cli', icon: Terminal, description: 'Command-line access' },
       { title: 'Extensibility', href: '/docs/extensibility', icon: Puzzle, description: 'Webhooks & integrations' },
     ]
   }
