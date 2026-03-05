@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowRight, Package, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import ComingSoonBanner from './ComingSoonBanner'
 
 const sections = [
   { id: 'what-is-talkieserver', title: 'What is TalkieServer?', level: 2 },
@@ -63,6 +64,8 @@ export default function BridgeSetupPage() {
       badgeColor="emerald"
       sections={sections}
     >
+      <ComingSoonBanner />
+
       {/* What is TalkieServer */}
       <h2 id="what-is-talkieserver">What is TalkieServer?</h2>
       <p>

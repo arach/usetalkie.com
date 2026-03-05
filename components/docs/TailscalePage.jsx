@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Shield, Globe, Smartphone, Laptop, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import ComingSoonBanner from './ComingSoonBanner'
 
 const sections = [
   { id: 'why-tailscale', title: 'Why Tailscale?', level: 2 },
@@ -54,6 +55,8 @@ export default function TailscalePage() {
       badgeColor="blue"
       sections={sections}
     >
+      <ComingSoonBanner />
+
       {/* Why Tailscale */}
       <h2 id="why-tailscale">Why Tailscale?</h2>
       <p>

@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Terminal } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import ComingSoonBanner from './ComingSoonBanner'
 
 const sections = [
   { id: 'talkieserver', title: 'TalkieServer Endpoints', level: 2 },
@@ -63,6 +64,8 @@ export default function ApiPage() {
       badgeColor="amber"
       sections={sections}
     >
+      <ComingSoonBanner />
+
       {/* TalkieServer HTTP Endpoints */}
       <h2 id="talkieserver">TalkieServer HTTP Endpoints</h2>
       <p>
