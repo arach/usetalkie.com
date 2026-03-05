@@ -80,10 +80,14 @@ function DocsSidebar({ isOpen, onClose }) {
                     if (item.comingSoon) {
                       return (
                         <li key={item.href}>
-                          <span className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 dark:text-zinc-600 cursor-default">
+                          <Link
+                            href={item.href}
+                            onClick={onClose}
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 dark:text-zinc-600 hover:text-zinc-500 dark:hover:text-zinc-500 transition-colors"
+                          >
                             <Icon className="w-4 h-4 flex-shrink-0 opacity-50" />
                             <span>{item.title}</span>
-                          </span>
+                          </Link>
                         </li>
                       )
                     }
