@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, Server, Globe, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Route } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Server, Globe, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Route, Terminal, Download, Clock } from 'lucide-react'
 import Container from '../Container'
 import { FEATURES } from '../../shared/config/features'
 
@@ -107,32 +107,6 @@ export default function DocsIndexPage() {
             </div>
           </div>
 
-          {/* Setup Guides */}
-          <div className="mb-16">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-6">
-              Setup Guides
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl">
-              <DocCard
-                href="/docs/bridge-setup"
-                icon={Server}
-                title="TalkieServer Setup"
-                description="Install the local bridge server that enables iPhone connectivity. Learn about Bun, dependencies, and what gets installed."
-                color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-              />
-
-              {SHOW_TAILSCALE_DOCS && (
-                <DocCard
-                  href="/docs/tailscale"
-                  icon={Globe}
-                  title="Tailscale Configuration"
-                  description="Set up secure, peer-to-peer networking between your Mac and iPhone. No port forwarding or cloud relay needed."
-                  color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
-                />
-              )}
-            </div>
-          </div>
-
           {/* Power Users */}
           <div className="mb-16">
             <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-6">
@@ -148,11 +122,11 @@ export default function DocsIndexPage() {
               />
 
               <DocCard
-                href="/docs/api"
-                icon={Code2}
-                title="API Reference"
-                description="TalkieServer endpoints, URL schemes, and how to integrate with external tools."
-                color="bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400"
+                href="/docs/cli"
+                icon={Terminal}
+                title="Talkie CLI"
+                description="Access memos, dictations, search, and workflows from the command line. Built for agents and power users."
+                color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
               />
 
               <DocCard
@@ -162,6 +136,57 @@ export default function DocsIndexPage() {
                 description="Webhooks, custom workflows, and building your own integrations. Talkie is designed to be extended."
                 color="bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400"
               />
+            </div>
+          </div>
+
+          {/* Coming Soon */}
+          <div className="mb-16">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-6">
+              Coming Soon
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl">
+              <div className="block p-6 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50 opacity-60">
+                <div className="inline-flex p-3 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 mb-4">
+                  <Code2 className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">API Reference</h3>
+                <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4">
+                  TalkieServer endpoints, URL schemes, and integration with external tools.
+                </p>
+                <div className="flex items-center gap-1 text-sm font-medium text-zinc-400 dark:text-zinc-600">
+                  <Clock className="w-4 h-4" /> Coming soon
+                </div>
+              </div>
+
+              <div className="block p-6 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50 opacity-60">
+                <div className="inline-flex p-3 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mb-4">
+                  <Server className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">TalkieServer Setup</h3>
+                <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4">
+                  Local bridge server for iPhone connectivity, Bun, and Tailscale networking.
+                </p>
+                <div className="flex items-center gap-1 text-sm font-medium text-zinc-400 dark:text-zinc-600">
+                  <Clock className="w-4 h-4" /> Coming soon
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Capture Intent CTA */}
+          <div className="max-w-3xl">
+            <div className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-500/5 dark:to-zinc-900 text-center">
+              <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">Ready to try it?</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
+                Download Talkie for Mac and start turning voice into action.
+              </p>
+              <Link
+                href="/download"
+                className="inline-flex items-center gap-2 h-11 px-6 rounded-lg bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 dark:hover:bg-emerald-400 hover:scale-105 transition-all shadow-lg shadow-emerald-500/20"
+              >
+                <Download className="w-4 h-4" />
+                Download Talkie
+              </Link>
             </div>
           </div>
         </Container>
