@@ -123,13 +123,14 @@ export default function FeaturesPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative pt-18 pb-12 md:pt-20 md:pb-16 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+      <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
         <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
+        <div className="bg-glow-orange top-[-200px] left-1/2 -translate-x-1/2 z-0" />
         <Container className="relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
               <span className="font-display italic">Voice</span> <span className="text-zinc-400 dark:text-zinc-500">to</span>{' '}
-              <span className="font-bold bg-gradient-to-r from-purple-500 to-violet-400 bg-clip-text text-transparent">Agents.</span>
+              <span className="font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">Agents.</span>
             </h1>
 
             <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
@@ -137,17 +138,17 @@ export default function FeaturesPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="/#pricing" className="h-12 px-8 rounded-lg bg-purple-500 hover:bg-purple-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-purple-500/25">
+              <Link href="/download" className="h-12 px-8 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-orange-500/25">
                 <Bot className="w-4 h-4" />
-                <span>Get Early Access</span>
-              </a>
+                <span>Download for Mac</span>
+              </Link>
               <div className="flex flex-col gap-1 text-left">
                 <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
                   <Monitor className="w-3 h-3" />
                   macOS 26+ • Workflow Editor
                 </div>
                 <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-400 uppercase">
-                  <Terminal className="w-3 h-3 text-purple-500" />
+                  <Terminal className="w-3 h-3 text-orange-500" />
                   Claude CLI • Shell Commands
                 </div>
               </div>
@@ -162,8 +163,8 @@ export default function FeaturesPage() {
             <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 md:p-10 text-white shadow-2xl">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-                    <Layers className="w-4 h-4 text-purple-400" />
+                  <div className="p-2 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                    <Layers className="w-4 h-4 text-orange-400" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie Capture → Claude Code → Feedback</span>
@@ -193,9 +194,9 @@ export default function FeaturesPage() {
                     label="Claude Code"
                     icon={Code}
                     active={activeStep === 1}
-                    activeClass="border-purple-500 bg-zinc-900 shadow-[0_0_25px_rgba(168,85,247,0.35)]"
-                    iconActiveClass="text-purple-400"
-                    pingClass="bg-purple-500"
+                    activeClass="border-orange-500 bg-zinc-900 shadow-[0_0_25px_rgba(249,115,22,0.35)]"
+                    iconActiveClass="text-orange-400"
+                    pingClass="bg-orange-500"
                   />
 
                   <div className="hidden md:block flex-1 h-px border-t border-dashed border-zinc-700" />
@@ -297,7 +298,7 @@ export default function FeaturesPage() {
                     <div className="bg-black/50 p-4 rounded border border-zinc-700">
                       <p className="text-zinc-500 mb-2"># Example: Create GitHub Issue</p>
                       <p className="text-white">
-                        <span className="text-purple-400">gh</span> issue create <br/>
+                        <span className="text-orange-400">gh</span> issue create <br/>
                         <span className="pl-4">--title</span> <span className="text-green-400">{'"{{TITLE}}"'}</span> <br/>
                         <span className="pl-4">--body</span> <span className="text-green-400">{'"{{TRANSCRIPT}}"'}</span> <br/>
                         <span className="pl-4">--label</span> <span className="text-green-400">&quot;voice-memo&quot;</span>

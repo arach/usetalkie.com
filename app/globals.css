@@ -116,3 +116,21 @@ html { scroll-behavior: smooth; }
   border-radius: 9999px;
   filter: blur(100px);
 }
+.bg-glow-blue {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(100px);
+}
+.bg-glow-orange {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(100px);
+}

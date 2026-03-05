@@ -73,22 +73,17 @@ export default function DataPage() {
       </p>
 
       <h3 id="databases">Databases</h3>
-      <CodeBlock title="Database Locations">
+      <CodeBlock title="Database Location">
 {`~/Library/Application Support/Talkie/
-├── talkie_grdb.sqlite      # Memos, settings, workflows
-└── live.sqlite             # Live dictation sessions
+└── talkie_grdb.sqlite      # Unified recordings, settings, workflows
 
-# These are standard SQLite files. You can inspect them with:
+# This is a standard SQLite file. You can inspect it with:
 sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
       </CodeBlock>
 
       <p>
-        <strong>Database ownership:</strong> Each database has a single writer process to prevent corruption:
+        All data lives in a single <strong>unified recordings table</strong> in <code>talkie_grdb.sqlite</code>. Both memos and dictations are stored here, distinguished by a <code>type</code> field. Both Talkie (main app) and TalkieAgent (dictation helper) write to this database.
       </p>
-      <ul>
-        <li><code>talkie_grdb.sqlite</code> — Written by Talkie (main app)</li>
-        <li><code>live.sqlite</code> — Written by TalkieLive (helper process)</li>
-      </ul>
 
       <h3 id="audio-files">Audio Files</h3>
       <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
@@ -100,7 +95,7 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
           Voice recordings are stored as M4A files (AAC codec) for good quality at reasonable file sizes.
         </p>
         <code className="text-xs text-zinc-500 font-mono">
-          ~/Library/Application Support/Talkie/Recordings/
+          ~/Library/Application Support/Talkie/Audio/
         </code>
       </div>
 
@@ -127,7 +122,7 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
 
         <ModelCard
           name="Dictation"
-          description="A live dictation session from TalkieLive"
+          description="A live dictation session from TalkieAgent"
           fields={[
             { name: "id", type: "UUID" },
             { name: "text", type: "String" },

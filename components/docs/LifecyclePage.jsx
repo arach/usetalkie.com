@@ -96,7 +96,7 @@ export default function LifecyclePage() {
       {/* Overview */}
       <h2 id="overview">Overview</h2>
       <p>
-        Talkie processes voice in two main flows: <strong>Dictation</strong> (real-time, handled by TalkieLive) and <strong>Memos</strong> (deliberate recordings, handled by the main app). Both share similar phases but differ in timing and intent.
+        Talkie processes voice in two main flows: <strong>Dictation</strong> (real-time, handled by TalkieAgent) and <strong>Memos</strong> (deliberate recordings, handled by the main app). Both share similar phases but differ in timing and intent.
       </p>
 
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">
@@ -134,7 +134,7 @@ export default function LifecyclePage() {
           <div id="phase-capture" className="space-y-0">
             <Step number="1" label="Hotkey detected" detail="Carbon event handler fires immediately" />
             <Step number="2" label="Context captured" detail="Which app, window, selected text" hookPoint />
-            <Step number="3" label="Audio capture starts" detail="TalkieLive begins recording via AudioCapture" />
+            <Step number="3" label="Audio capture starts" detail="TalkieAgent begins recording via AudioCapture" />
             <Step number="4" label="State broadcast" detail="XPC notifies main app; UI updates" />
           </div>
           <HookPoint

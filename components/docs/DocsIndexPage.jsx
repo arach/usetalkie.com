@@ -85,7 +85,7 @@ export default function DocsIndexPage() {
                 href="/docs/architecture"
                 icon={Boxes}
                 title="Architecture"
-                description="Multi-process design explained. How Talkie, TalkieLive, TalkieEngine, and TalkieServer work together."
+                description="Multi-process design explained. How Talkie, TalkieAgent, TalkieEngine, and TalkieServer work together."
                 color="bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400"
               />
 
@@ -143,7 +143,7 @@ export default function DocsIndexPage() {
                 href="/docs/workflows"
                 icon={Workflow}
                 title="Workflows"
-                description="Build automated pipelines. Triggers, steps, conditions, and the 18 step types available."
+                description="Build automated pipelines with 21 step types, 6 LLM providers, and a template variable system."
                 color="bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
               />
 

@@ -181,8 +181,9 @@ export default function LivePage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-18 pb-12 md:pt-20 md:pb-16 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+      <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
         <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
+        <div className="bg-glow-emerald top-[-200px] left-1/2 -translate-x-1/2 z-0" />
 
         <Container className="relative z-10">
           <div className="max-w-3xl mx-auto text-center">

@@ -10,7 +10,7 @@ const sections = [
   { id: 'system-overview', title: 'System Overview', level: 2 },
   { id: 'components', title: 'Components', level: 2 },
   { id: 'talkie', title: 'Talkie', level: 3 },
-  { id: 'talkielive', title: 'TalkieLive', level: 3 },
+  { id: 'talkieagent', title: 'TalkieAgent', level: 3 },
   { id: 'talkieengine', title: 'TalkieEngine', level: 3 },
   { id: 'talkieserver', title: 'TalkieServer', level: 3 },
   { id: 'xpc', title: 'XPC Communication', level: 2 },
@@ -58,7 +58,7 @@ export default function ArchitecturePage() {
       <ArcDiagram data={architectureDiagram} className="my-8" />
 
       <p>
-        The main Talkie app is the orchestrator—it manages the UI, workflows, and data. The helper processes (TalkieLive, TalkieEngine, TalkieServer) handle specific tasks that benefit from isolation.
+        The main Talkie app is the orchestrator—it manages the UI, workflows, and data. The helper processes (TalkieAgent, TalkieEngine, TalkieServer) handle specific tasks that benefit from isolation.
       </p>
 
       {/* Components */}
@@ -83,15 +83,15 @@ export default function ArchitecturePage() {
         />
 
         <ComponentCard
-          id="talkielive"
+          id="talkieagent"
           icon={Mic}
-          name="TalkieLive"
-          subtitle="Dictation Service (Swift)"
+          name="TalkieAgent"
+          subtitle="Always-On Voice Recorder (Swift)"
           responsibilities={[
             "Microphone capture and audio processing",
-            "Live dictation mode with real-time feedback",
+            "Live dictation with real-time feedback",
             "Keyboard simulation for text insertion",
-            "Audio level monitoring and silence detection",
+            "Hotkey handling and interstitial UI",
           ]}
           color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
         />
@@ -128,7 +128,7 @@ export default function ArchitecturePage() {
       {/* XPC Communication */}
       <h2 id="xpc">XPC Communication</h2>
       <p>
-        XPC (Cross-Process Communication) is Apple's secure mechanism for processes to talk to each other. Talkie uses XPC to communicate with TalkieLive and TalkieEngine.
+        XPC (Cross-Process Communication) is Apple's secure mechanism for processes to talk to each other. Talkie uses XPC to communicate with TalkieAgent and TalkieEngine.
       </p>
 
       <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
@@ -145,7 +145,7 @@ export default function ArchitecturePage() {
       </div>
 
       <p>
-        When you start a dictation, Talkie sends an XPC message to TalkieLive. TalkieLive captures audio, sends it to TalkieEngine for transcription, and simulates keyboard input with the results—all without the main app needing microphone or accessibility permissions.
+        When you start a dictation, Talkie sends an XPC message to TalkieAgent. TalkieAgent captures audio, sends it to TalkieEngine for transcription, and simulates keyboard input with the results—all without the main app needing microphone or accessibility permissions.
       </p>
 
       {/* Process Lifecycle */}
@@ -160,7 +160,7 @@ export default function ArchitecturePage() {
         <li><strong>Clean shutdown</strong> — Helpers terminate when Talkie quits</li>
       </ul>
       <p>
-        You can see the helper processes in Activity Monitor: look for TalkieLive, TalkieEngine, and TalkieServer (when iPhone sync is enabled).
+        You can see the helper processes in Activity Monitor: look for TalkieAgent, TalkieEngine, and TalkieServer (when iPhone sync is enabled).
       </p>
 
       {/* Navigation */}

@@ -178,7 +178,7 @@ export default function OverviewPage() {
       <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
         <div className="flex items-center gap-3 mb-2">
           <Network className="w-5 h-5 text-blue-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Talkie ↔ TalkieLive ↔ TalkieEngine</span>
+          <span className="font-bold text-zinc-900 dark:text-white">Talkie ↔ TalkieAgent ↔ TalkieEngine</span>
         </div>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
           XPC is Apple's secure inter-process communication mechanism. It provides automatic

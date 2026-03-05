@@ -69,12 +69,12 @@ const ProcessBox = ({
 
 // Main Architecture Diagram with SVG curves
 // Layout (three columns, clear hierarchy):
-//   Column 1: Talkie → TalkieLive → TalkieEngine
+//   Column 1: Talkie → TalkieAgent → TalkieEngine
 //   Column 2: TalkieServer (top) + iCloud (lower)
 //   Column 3: iPhone → Watch
 // Connections:
-//   - Talkie → TalkieLive (XPC)
-//   - TalkieLive → TalkieEngine (audio)
+//   - Talkie → TalkieAgent (XPC)
+//   - TalkieAgent → TalkieEngine (audio)
 //   - Talkie → TalkieServer (HTTP)
 //   - TalkieServer → iPhone (Tailscale)
 //   - Talkie → iCloud (CloudKit, dashed)
@@ -93,7 +93,7 @@ export default function ArchitectureDiagram() {
   // Box positions - adjust these to move boxes
   const nodes = {
     talkie:       { x: 25,  y: 15,  size: 'large' },
-    talkieLive:   { x: 25,  y: 125, size: 'normal' },
+    talkieAgent:   { x: 25,  y: 125, size: 'normal' },
     talkieEngine: { x: 25,  y: 220, size: 'normal' },
     talkieServer: { x: 280, y: 15,  size: 'normal' },
     iCloud:       { x: 280, y: 220, size: 'normal' },
@@ -113,8 +113,8 @@ export default function ArchitectureDiagram() {
 
   // === CONNECTORS ===
   const connectors = [
-    { from: 'talkie',       to: 'talkieLive',   fromAnchor: 'bottom', toAnchor: 'top',    style: 'xpc' },
-    { from: 'talkieLive',   to: 'talkieEngine', fromAnchor: 'bottom', toAnchor: 'top',    style: 'audio' },
+    { from: 'talkie',       to: 'talkieAgent',   fromAnchor: 'bottom', toAnchor: 'top',    style: 'xpc' },
+    { from: 'talkieAgent',   to: 'talkieEngine', fromAnchor: 'bottom', toAnchor: 'top',    style: 'audio' },
     { from: 'talkie',       to: 'talkieServer', fromAnchor: 'right',  toAnchor: 'left',   style: 'http' },
     { from: 'talkieServer', to: 'iPhone',       fromAnchor: 'right',  toAnchor: 'left',   style: 'tailscale' },
     { from: 'iPhone',       to: 'watch',        fromAnchor: 'bottom', toAnchor: 'top',    style: 'peer' },
@@ -154,7 +154,7 @@ export default function ArchitectureDiagram() {
 
   // Resolve all nodes
   const talkie = getNode('talkie')
-  const talkieLive = getNode('talkieLive')
+  const talkieAgent = getNode('talkieAgent')
   const talkieEngine = getNode('talkieEngine')
   const talkieServer = getNode('talkieServer')
   const iPhone = getNode('iPhone')
@@ -167,10 +167,10 @@ export default function ArchitectureDiagram() {
   // Compute connector endpoints
   const talkieToLive = {
     start: anchor('talkie', 'bottom'),
-    end: anchor('talkieLive', 'top')
+    end: anchor('talkieAgent', 'top')
   }
   const liveToEngine = {
-    start: anchor('talkieLive', 'bottom'),
+    start: anchor('talkieAgent', 'bottom'),
     end: anchor('talkieEngine', 'top')
   }
   const talkieToServer = {
@@ -264,7 +264,7 @@ export default function ArchitectureDiagram() {
             </marker>
           </defs>
 
-          {/* === Talkie → TalkieLive (XPC) === */}
+          {/* === Talkie → TalkieAgent (XPC) === */}
           <path
             d={`M ${talkieToLive.start.x} ${talkieToLive.start.y} L ${talkieToLive.end.x} ${talkieToLive.end.y}`}
             fill="none"
@@ -281,7 +281,7 @@ export default function ArchitectureDiagram() {
             XPC
           </text>
 
-          {/* === TalkieLive → TalkieEngine (audio) === */}
+          {/* === TalkieAgent → TalkieEngine (audio) === */}
           <path
             d={`M ${liveToEngine.start.x} ${liveToEngine.start.y} L ${liveToEngine.end.x} ${liveToEngine.end.y}`}
             fill="none"
@@ -404,18 +404,18 @@ export default function ArchitectureDiagram() {
 
         {/* === COLUMN 1: Helpers === */}
 
-        {/* TalkieLive - below Talkie */}
-        <div className="absolute" style={{ left: talkieLive.x, top: talkieLive.y }}>
+        {/* TalkieAgent - below Talkie */}
+        <div className="absolute" style={{ left: talkieAgent.x, top: talkieAgent.y }}>
           <ProcessBox
             icon={Mic}
-            name="TalkieLive"
+            name="TalkieAgent"
             subtitle="Swift"
             description="Ears & Hands"
             color="emerald"
           />
         </div>
 
-        {/* TalkieEngine - below TalkieLive */}
+        {/* TalkieEngine - below TalkieAgent */}
         <div className="absolute" style={{ left: talkieEngine.x, top: talkieEngine.y }}>
           <ProcessBox
             icon={Cpu}
@@ -486,12 +486,12 @@ export function SimpleArchitectureDiagram() {
 
         {/* Helper processes with protocol labels inline */}
         <div className="flex items-start justify-center gap-8">
-          {/* TalkieLive */}
+          {/* TalkieAgent */}
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-500/20 dark:to-emerald-500/10 border-2 border-emerald-300 dark:border-emerald-500/40 flex items-center justify-center shadow-sm">
               <Mic className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <span className="mt-1.5 text-xs font-semibold text-zinc-900 dark:text-white">TalkieLive</span>
+            <span className="mt-1.5 text-xs font-semibold text-zinc-900 dark:text-white">TalkieAgent</span>
             <span className="text-[10px] text-zinc-500 dark:text-zinc-400">Ears & Hands</span>
             <span className="mt-2 px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-[10px] font-mono text-zinc-400 dark:text-zinc-500">XPC</span>
           </div>
