@@ -12,12 +12,13 @@ export default function ComingSoonBanner({ topic }) {
     setStatus('loading')
 
     try {
-      const res = await fetch('https://app.usetalkie.com/api/subscribe', {
+      const res = await fetch('https://app.usetalkie.com/api/intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          source: `docs:${topic || 'coming-soon'}`,
+          intent: topic || 'coming-soon',
+          source: 'docs',
         }),
       })
 
