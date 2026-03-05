@@ -301,7 +301,7 @@ export default function CapturePage() {
                 </div>
                 <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 text-center">
                   <Link
-                    href="/dictation"
+                    href="/mac"
                     className="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-600 transition-colors inline-flex items-center gap-2"
                   >
                     Continue on Mac <ArrowRight className="w-3 h-3" />
@@ -345,8 +345,8 @@ export default function CapturePage() {
           </div>
           <div className="flex gap-8 text-[10px] font-mono uppercase text-zinc-500">
             <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">Home</Link>
-            <Link href="/dictation" className="hover:text-black dark:hover:text-white transition-colors">Dictation</Link>
-            <Link href="/workflows" className="hover:text-black dark:hover:text-white transition-colors">Workflows</Link>
+            <Link href="/mac" className="hover:text-black dark:hover:text-white transition-colors">Mac</Link>
+            <Link href="/agents" className="hover:text-black dark:hover:text-white transition-colors">Agents</Link>
             <Link href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</Link>
             <Link href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</Link>
           </div>

@@ -786,7 +786,7 @@ export default function LivePage() {
 
           <div className="mt-10 text-center">
             <Link
-              href="/capture"
+              href="/mobile"
               className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
             >
               Explore on-the-go capture <ArrowRight className="w-3 h-3" />
@@ -854,9 +854,9 @@ export default function LivePage() {
           </div>
           <div className="flex gap-8 text-[10px] font-mono uppercase text-zinc-500">
             <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">Home</Link>
-            <Link href="/dictation" className="hover:text-black dark:hover:text-white transition-colors">Dictation</Link>
-            <Link href="/capture" className="hover:text-black dark:hover:text-white transition-colors">On The Go</Link>
-            <Link href="/workflows" className="hover:text-black dark:hover:text-white transition-colors">Workflows</Link>
+            <Link href="/mac" className="hover:text-black dark:hover:text-white transition-colors">Mac</Link>
+            <Link href="/mobile" className="hover:text-black dark:hover:text-white transition-colors">Mobile</Link>
+            <Link href="/agents" className="hover:text-black dark:hover:text-white transition-colors">Agents</Link>
             <Link href="/security" className="hover:text-black dark:hover:text-white transition-colors">Security</Link>
             <Link href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</Link>
             <Link href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</Link>

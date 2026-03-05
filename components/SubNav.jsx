@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation'
 import { Laptop, Smartphone, Bot } from 'lucide-react'
 
 const navItems = [
-  { href: '/capture', label: 'Mobile', icon: Smartphone, color: 'blue' },
-  { href: '/dictation', label: 'Mac', icon: Laptop, color: 'emerald' },
-  { href: '/workflows', label: 'Agents', icon: Bot, color: 'amber' },
+  { href: '/mobile', label: 'Mobile', icon: Smartphone, color: 'blue' },
+  { href: '/mac', label: 'Mac', icon: Laptop, color: 'emerald' },
+  { href: '/agents', label: 'Agents', icon: Bot, color: 'amber' },
 ]
 
 export default function SubNav() {

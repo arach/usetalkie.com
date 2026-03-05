@@ -235,7 +235,7 @@ export default function LandingPage() {
           </p>
 
           <div className={`mt-8 grid grid-cols-1 gap-4 text-left ${SHOW_AGENTS ? 'sm:grid-cols-3' : 'sm:grid-cols-2 max-w-2xl mx-auto'}`}>
-            <Link href="/dictation" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
+            <Link href="/mac" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
               <div className="flex items-center gap-2 mb-2">
                 <Laptop className="w-4 h-4 text-emerald-500" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 group-hover/triad:text-emerald-600 dark:group-hover/triad:text-emerald-400 transition-colors">Talkie for Mac</span>
@@ -245,7 +245,7 @@ export default function LandingPage() {
                 Voice to action with dictation and workflows.
               </p>
             </Link>
-            <Link href="/capture" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
+            <Link href="/mobile" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
               <div className="flex items-center gap-2 mb-2">
                 <Smartphone className="w-4 h-4 text-emerald-500" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 group-hover/triad:text-emerald-600 dark:group-hover/triad:text-emerald-400 transition-colors">Talkie for Mobile</span>
@@ -256,7 +256,7 @@ export default function LandingPage() {
               </p>
             </Link>
             {SHOW_AGENTS && (
-              <Link href="/workflows" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
+              <Link href="/agents" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
                 <div className="flex items-center gap-2 mb-2">
                   <Bot className="w-4 h-4 text-emerald-500" />
                   <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 group-hover/triad:text-emerald-600 dark:group-hover/triad:text-emerald-400 transition-colors">Talkie for Agents</span>
@@ -417,7 +417,7 @@ export default function LandingPage() {
               <div className="mt-6 text-center">
                 {featureTab === 'mac' && (
                   <Link
-                    href="/dictation"
+                    href="/mac"
                     className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
                   >
                     Explore Talkie for Mac <ArrowRight className="w-3 h-3" />
@@ -425,7 +425,7 @@ export default function LandingPage() {
                 )}
                 {featureTab === 'go' && (
                   <Link
-                    href="/capture"
+                    href="/mobile"
                     className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
                   >
                     Explore Talkie for Mobile <ArrowRight className="w-3 h-3" />
@@ -433,7 +433,7 @@ export default function LandingPage() {
                 )}
                 {SHOW_AGENTS && featureTab === 'agents' && (
                   <Link
-                    href="/workflows"
+                    href="/agents"
                     className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
                   >
                     Explore Automation <ArrowRight className="w-3 h-3" />
