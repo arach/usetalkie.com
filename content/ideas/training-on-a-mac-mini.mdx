@@ -25,6 +25,8 @@ When I switched to Qwen3-1.7B — part of the older Qwen3 series, text-only — 
 
 The base model's architecture shapes your fine-tuning in ways that don't show up on benchmark leaderboards. For a purely textual task, a text-only model gives you more effective capacity per parameter.
 
+<ParameterBudget />
+
 ## Where Does Code End and the Model Begin?
 
 Part 1 ended with a split architecture. Some inputs can be reconstructed with plain string substitution: "git space push space dash u space origin space main" maps mechanically to `git push -u origin main`. Other inputs need language understanding: "okay so the command is git push to origin on main" requires stripping the filler and normalizing the phrasing. A deterministic processor handles the first kind. An LLM handles the second.
@@ -41,11 +43,15 @@ I don't have a clean answer for the middle zone yet. The classifier gate (Part 3
 
 In practice, I err toward the model. A 0.7-second inference pass is better than silently wrong output from a processor that was too confident.
 
+<InputZones />
+
 ## Training on Apple Silicon
 
 The Qwen3-1.7B training happened on a Mac Mini M4 with 16GB of RAM, using MLX and LoRA. The whole run: 1,000 iterations, batch size 4, learning rate 1e-4, LoRA rank 16. Ten minutes.
 
 LoRA rank controls how much new behavior you're adding to the base model — rank 16 means each adapted layer gets a low-rank update through two small matrices (in × 16 and 16 × out) instead of rewriting the full weight matrix. For a task this narrow, a lower rank like 4 or 8 might suffice. I started at 16 as a reasonable default and haven't swept lower yet.
+
+<LoraExplainer />
 
 Loss converged to 0.589 train / 0.589 validation / 0.591 test by iteration 1,000. The three values landing within 0.002 of each other means the model isn't memorizing the training set — it's learning a generalizable mapping. This makes sense for a narrow task: the vocabulary is constrained (about 30 spoken keywords mapping to symbols), the sequences are short, and the patterns are consistent across splits. Overfitting is less of a risk when the function you're learning is simple.
 
@@ -77,7 +83,11 @@ For now: 1.7B parameters, 4-bit quantized to 948MB, trained in 10 minutes using 
 
 A LoRA adapter on its own is useless to end users. It's a set of weight differences that only work when paired with the original base model. To ship something standalone, you merge the adapter into the base weights ("fusing"), then quantize the merged model down to 4-bit precision.
 
-The fused model was 3.2GB at full precision. After 4-bit quantization: 948MB — each weight stored in 4 bits instead of 16, a 70% size reduction. For a task with constrained vocabulary and short sequences, the precision loss from quantization is negligible; the model doesn't need fine-grained weight distinctions to map "dash" to `-`. I pushed it to HuggingFace as [`arach/qwen3-1.7b-bash-v1`](https://huggingface.co/arach/qwen3-1.7b-bash-v1) and registered it in TalkieInference, the on-device inference service that starts when needed and shuts down when idle.
+The fused model was 3.2GB at full precision. After 4-bit quantization: 948MB — each weight stored in 4 bits instead of 16, a 70% size reduction. For a task with constrained vocabulary and short sequences, the precision loss from quantization is negligible; the model doesn't need fine-grained weight distinctions to map "dash" to `-`.
+
+<QuantizationSteps />
+
+I pushed it to HuggingFace as [`arach/qwen3-1.7b-bash-v1`](https://huggingface.co/arach/qwen3-1.7b-bash-v1) and registered it in TalkieInference, the on-device inference service that starts when needed and shuts down when idle.
 
 First model in a new "Talkie" family in the catalog. I planned to ship Qwen3.5-2B. I shipped Qwen3-1.7B.
 

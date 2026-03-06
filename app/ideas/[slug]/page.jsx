@@ -9,6 +9,10 @@ import PipelineFlow from '../../../components/blog/PipelineFlow'
 import VocabGrid from '../../../components/blog/VocabGrid'
 import DomainGrid from '../../../components/blog/DomainGrid'
 import TrainingCurve from '../../../components/blog/TrainingCurve'
+import ParameterBudget from '../../../components/blog/ParameterBudget'
+import InputZones from '../../../components/blog/InputZones'
+import LoraExplainer from '../../../components/blog/LoraExplainer'
+import QuantizationSteps from '../../../components/blog/QuantizationSteps'
 
 const mdxComponents = {
   TranscriptionDiff,
@@ -18,6 +22,10 @@ const mdxComponents = {
   VocabGrid,
   DomainGrid,
   TrainingCurve,
+  ParameterBudget,
+  InputZones,
+  LoraExplainer,
+  QuantizationSteps,
 }
 
 const mdxOptions = {
