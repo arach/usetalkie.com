@@ -13,6 +13,8 @@ import ParameterBudget from '../../../components/blog/ParameterBudget'
 import InputZones from '../../../components/blog/InputZones'
 import LoraExplainer from '../../../components/blog/LoraExplainer'
 import QuantizationSteps from '../../../components/blog/QuantizationSteps'
+import ModelComparison from '../../../components/blog/ModelComparison'
+import Part2Stats from '../../../components/blog/Part2Stats'
 
 const mdxComponents = {
   TranscriptionDiff,
@@ -26,6 +28,8 @@ const mdxComponents = {
   InputZones,
   LoraExplainer,
   QuantizationSteps,
+  ModelComparison,
+  Part2Stats,
 }
 
 const mdxOptions = {

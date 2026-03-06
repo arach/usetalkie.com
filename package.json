@@ -8,6 +8,7 @@
     "dev:all": "./dev.sh",
     "dev:api": "cd api && npm run dev",
     "dev:admin": "cd admin && npm run dev",
+    "prebuild": "node scripts/generate-og.js",
     "build": "next build",
     "build:api": "cd api && npm run build",
     "build:admin": "cd admin && npm run build",

@@ -1,0 +1,111 @@
+---
+title: "How Small Can You Go?"
+description: "A 0.6B model matches the 1.7B on accuracy, runs 2.4x faster, and fits in 350MB. At some point the task stops needing more parameters."
+date: "2026-03-06"
+tags: ["mlx", "fine-tuning", "on-device-ml", "apple-silicon"]
+---
+
+_This is Part 3 of [Teaching a Tiny Model to Hear Bash](/ideas/teaching-a-tiny-model-to-hear-bash). Part 1 fine-tuned a 1.5B model. [Part 2](/ideas/training-on-a-mac-mini) tried a 2B VLM, then shipped a 1.7B text-only model at 93.3% effective accuracy._
+
+## The Question
+
+Part 2 ended with a table that didn't make sense:
+
+| Model | Params | Effective Accuracy |
+|---|---|---|
+| Qwen2.5-1.5B | 1.5B | 97% |
+| Qwen3-1.7B | 1.7B | 93.3% |
+
+More parameters, newer model family, same task. Accuracy went sideways. The 1.7B model worked well enough to ship, but the numbers suggested that parameter count wasn't the bottleneck. If 1.7B didn't improve on 1.5B, maybe the task needs even less.
+
+So I trained Qwen3-0.6B. Same dataset, same config, same Mac Mini.
+
+## The Run
+
+Same setup as Part 2: LoRA rank 16, batch size 4, learning rate 1e-4, 1,000 iterations on a Mac Mini M4. The 0.6B model has 596 million parameters, of which LoRA adapts 2.9 million (0.48%).
+
+Training took about four minutes.
+
+| Iter | Train Loss | Val Loss |
+|---|---|---|
+| 25 | 1.878 | — |
+| 200 | 0.786 | 0.831 |
+| 600 | — | 0.665 |
+| 1000 | 0.625 | 0.644 |
+
+For comparison, the 1.7B converged to 0.589 train / 0.589 val. The 0.6B lands higher at 0.625 / 0.644. It's working harder — the train/val gap (0.019) is wider than the 1.7B's (0.000), meaning the smaller model is fitting the training data slightly more than it generalizes. But the gap is small, and the question is whether it matters for accuracy.
+
+## Results
+
+630 test cases. Same eval as Parts 1 and 2.
+
+| | Qwen3-0.6B | Qwen3-1.7B |
+|---|---|---|
+| Exact match | 67.0% (422/630) | 67.8% (427/630) |
+| Near (>90%) | 27.0% (170/630) | 25.6% (161/630) |
+| Partial | 5.4% (34/630) | 5.9% (37/630) |
+| Wrong (&lt;70%) | 0.6% (4/630) | 0.8% (5/630) |
+| **Effective accuracy** | **94.0%** | **93.3%** |
+| Inference speed | **0.29s/example** | 0.71s/example |
+| Peak training memory | **2.3 GB** | 4.8 GB |
+
+The 0.6B model slightly beats the 1.7B on effective accuracy (94.0% vs 93.3%), with one fewer wrong answer (4 vs 5). It runs 2.4 times faster and trains in half the memory.
+
+Exact match is nearly identical (67.0% vs 67.8%). The 0.6B produces more near matches — outputs that are functionally correct but differ in whitespace or a trailing character. For a keyboard dictation product where the user gets the right command either way, the distinction doesn't matter.
+
+## The Errors
+
+Four wrong answers out of 630. Three of the four are the same failure mode from Part 1: repeated digits.
+
+```
+IN:  ping dash D dash N dash O dash I one dash W one eight dot ei...
+EXP: ping -D -n -O -i1 -W1 8.8.8.8
+GOT: ping -d -n -o -i 1 -w 18.8888888888888888888...
+```
+
+The model sees a digit, generates another digit, and the pattern reinforces itself. This is a known weakness of small language models with repeated tokens, and the deterministic preprocessor from Part 1's architecture handles it — digits never need to reach the model.
+
+The fourth error is structural: a complex SSH command with multiple flags where the model rearranges the arguments. That's a genuine capacity limitation, and it's rare enough (1 in 630) not to worry about.
+
+The casing issue from Part 1 persists — the model lowercases flags that should be uppercase (`-D` becomes `-d`). This accounts for most of the "partial" matches. It's the kind of thing a post-processor could handle by preserving the casing from the original dictation.
+
+## What This Means for Model Selection
+
+Four data points now:
+
+| Model | Params | Type | Effective | Speed | Mem |
+|---|---|---|---|---|---|
+| Qwen2.5-1.5B | 1.5B | text | 97% | — | ~3 GB |
+| Qwen3.5-2B | 2B | VLM | —* | — | — |
+| Qwen3-1.7B | 1.7B | text | 93.3% | 0.71s | 4.8 GB |
+| Qwen3-0.6B | 0.6B | text | 94.0% | 0.29s | 2.3 GB |
+
+\**Incomplete eval*
+
+The pattern: for this task, accuracy is flat from 0.6B to 1.7B. The function being learned — mapping ~30 spoken keywords to symbols, arranging them into valid commands — fits comfortably in 600 million parameters. Adding another billion parameters doesn't give the model anything new to learn. It just makes inference slower and the download bigger.
+
+The Qwen2.5-1.5B outlier at 97% is interesting. It's a different model family with a different tokenizer and different pretraining data. The gap between 94% and 97% might come from the tokenizer being better suited to this task, or from differences in pretraining that happen to help with shell command syntax. I'd need to train Qwen3-0.6B with the Qwen2.5 tokenizer to isolate that, which isn't straightforward.
+
+What I can say: the 0.6B model is the better shipping candidate. It's 94% effective accuracy in a 331MB package ([`arach/qwen3-0.6b-bash-v1`](https://huggingface.co/arach/qwen3-0.6b-bash-v1)), runs inference in under 300 milliseconds, and trains in four minutes on consumer hardware using 2.3GB of memory. For a task that runs on every keystroke in a keyboard extension, speed and memory footprint matter as much as accuracy.
+
+## The Broader Point
+
+There's a bias in ML work toward bigger models. If 1.7B is good, surely 3B is better. The benchmark leaderboards reinforce this — they measure general capability, and general capability scales with parameters.
+
+But fine-tuning isn't general capability. You're teaching a model one specific thing. The capacity it needs depends on the complexity of that thing, not on how many parameters are available. Bash reconstruction from a constrained dictation vocabulary is a narrow function. It maps a few dozen keywords to symbols and arranges short sequences into valid syntax. A 0.6B model learns this just as well as a 1.7B model, because the task doesn't use the extra capacity.
+
+The practical implication: when you're fine-tuning for a specific task, start small and go up only if accuracy demands it. I started at 1.5B because that seemed small. It was three times larger than necessary.
+
+## What's Next
+
+The 0.6B model is fused, quantized to 4-bit (331MB), and [on HuggingFace](https://huggingface.co/arach/qwen3-0.6b-bash-v1). At 331MB it's small enough to consider bundling inside the app instead of downloading on first launch. The model is just there, ready, like a font or a sound effect.
+
+The classifier gate that routes inputs between the deterministic processor and the LLM is still ahead. With inference at 0.29 seconds, the gate matters less for latency than it did at 0.71 seconds, but it still saves unnecessary computation for inputs that don't need the model.
+
+## Concepts
+
+If you're new to some of the ML terms in this post:
+
+- **Effective accuracy** — exact matches plus near matches (>90% string similarity). For this task, near matches are whitespace differences in functionally identical commands.
+- **LoRA (Low-Rank Adaptation)** — fine-tuning by training small adapter matrices instead of rewriting all model weights. [Hugging Face guide](https://huggingface.co/docs/peft/main/en/conceptual_guides/lora)
+- **Quantization** — reducing weight precision (e.g. 16-bit to 4-bit) to shrink model size and speed up inference. [Hugging Face overview](https://huggingface.co/docs/transformers/en/quantization/overview)
