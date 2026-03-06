@@ -13,7 +13,7 @@ Part 1 proved a small model could do the job. The natural next step: try the new
 
 Qwen3.5-2B was the obvious candidate. Latest in the series, benchmarked well against models twice its size, and the 2B parameter count fit my constraint of running on phones and laptops. I set up a Colab notebook, pointed it at a free T4 GPU, and started training.
 
-Colab worked well for this. [5,044 training examples](https://huggingface.co/datasets/arach/training-lab), short sequences, small model. The free tier handled it. After 90 minutes I had 79.2% exact match on 510 of my 630 test cases.
+Colab worked well for this. [5,044 training examples](https://huggingface.co/arach/training-lab), short sequences, small model. The free tier handled it. After 90 minutes I had 79.2% exact match on 510 of my 630 test cases.
 
 But the path there taught me things I didn't expect about model selection.
 
