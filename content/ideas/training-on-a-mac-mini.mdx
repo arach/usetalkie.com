@@ -11,31 +11,25 @@ _This is Part 2 of [Teaching a Tiny Model to Hear Bash](/ideas/teaching-a-tiny-m
 
 Part 1 proved a small model could do the job. The natural next step: try the newest small Qwen and see if I can push accuracy higher.
 
-Qwen3.5-2B was the obvious candidate. Latest in the series, benchmarked well against models twice its size, and the 2B parameter count fit my constraint of running on phones and laptops. I set up a Colab notebook, pointed it at a free T4 GPU, and started training.
+Qwen3.5-2B was the obvious candidate. Latest in the series, benchmarked well against models twice its size, and the 2B parameter count fit my constraint of running on phones and laptops. I set up a Colab notebook with [5,044 training examples](https://huggingface.co/arach/training-lab), pointed it at a free T4 GPU, and started training.
 
-Colab worked well for this. [5,044 training examples](https://huggingface.co/arach/training-lab), short sequences, small model. The free tier handled it. After 90 minutes I had 79.2% exact match on 510 of my 630 test cases.
+After 90 minutes I had 79.2% exact match on 510 of my 630 test cases. But the path there changed how I think about picking a base model.
 
-But the path there taught me things I didn't expect about model selection.
+## Picking the Right Base Model
 
-## VLM vs Text-Only
+The entire Qwen3.5 Small series — 0.8B, 2B, 4B, 9B — are vision-language models. All of them. This isn't obvious from the model cards, and it matters more than I expected for fine-tuning.
 
-The entire Qwen3.5 Small series — 0.8B, 2B, 4B, 9B — are vision-language models. All of them. This isn't obvious from the model cards. If you're looking for a small Qwen to fine-tune on a text task, you might grab Qwen3.5-2B without realizing you've picked up a multimodal architecture.
+A 2B VLM doesn't give you 2B parameters of text capability. Part of that parameter budget is a vision encoder, cross-attention layers, and projection heads — none of which contribute to a text-only task. You're fine-tuning a model where a portion of the architecture is unused. On top of that, the multimodal Processor expects image inputs alongside text, and the default thinking mode burns output tokens on chain-of-thought reasoning your task doesn't need. These aren't bugs — they're design choices for multimodal work that become friction for single-modality fine-tuning.
 
-For me, this caused two problems.
+When I switched to Qwen3-1.7B — part of the older Qwen3 series, text-only — fine-tuning was cleaner. The tokenizer behaved like a tokenizer. The chat template worked without manual formatting. And the full parameter budget went toward learning the task.
 
-A VL model's tokenizer is actually a `Processor` that expects multimodal input. Call `apply_chat_template()` with plain text messages and it crashes with `TypeError: string indices must be integers`. The workaround is to bypass the Processor and talk to the text tokenizer underneath it, then format your prompts by hand using the model's chat markup instead of the template function. It works, but it's fragile and undocumented.
-
-The other issue: Qwen3.5 has a thinking mode that's on by default. If you don't explicitly close the think block in your prompt, the model burns all its output tokens on internal reasoning about your one-line bash command. I ran a full eval pass and got 0/30 exact matches before I realized what was happening. Every response was reasoning tokens. No actual answer.
-
-Both problems have fixes. But they're friction that vanishes with a text-only model. When I later switched to Qwen3-1.7B (part of the older Qwen3 series, text-only), the standard template function worked out of the box and thinking mode had a clean off switch: `enable_thinking=False`.
-
-If your fine-tuning job is text in, text out, start with a text-only model. The multimodal models carry assumptions about input format and generation behavior that you'll spend hours working around for zero benefit.
+The base model's architecture shapes your fine-tuning in ways that don't show up on benchmark leaderboards. For a purely textual task, a text-only model gives you more effective capacity per parameter.
 
 ## Where Does Code End and the Model Begin?
 
 Part 1 ended with a split architecture. Some inputs can be reconstructed with plain string substitution: "git space push space dash u space origin space main" maps mechanically to `git push -u origin main`. Other inputs need language understanding: "okay so the command is git push to origin on main" requires stripping the filler and normalizing the phrasing. A deterministic processor handles the first kind. An LLM handles the second.
 
-The question that kept coming up: where exactly is the boundary?
+The question that kept coming up during training: where exactly is the boundary?
 
 Take "chmod space seven five five space slash etc slash nginx dot conf". Every token maps to a character. A processor handles it perfectly.
 
@@ -43,15 +37,27 @@ Now take "change permissions to seven fifty five on the nginx config in etsy". T
 
 The tricky part is the middle zone. "chmod space seven five five space forward slash etsy forward slash nginx dot conf". The structure is protocol-formatted, so it looks like a processor job. But "etsy" is a transcription error hiding inside clean-looking input. A processor gets most of it right and silently gets one piece wrong.
 
-I don't have a clean answer for the middle zone yet. The classifier gate (Part 3) routes inputs to the right handler, but the boundary between "code can handle this" and "this needs a model" is fuzzier than I expected. Some clean-looking inputs have subtle errors. Some messy-looking inputs have perfect structure underneath the filler words.
+I don't have a clean answer for the middle zone yet. The classifier gate (Part 3) routes inputs to the right handler, but the boundary between "code can handle this" and "this needs a model" is fuzzier than I expected. The gate needs to detect not just structural format but whether the tokens themselves are valid — whether "etsy" is a real token or a transcription artifact. Some clean-looking inputs have subtle errors. Some messy-looking inputs have perfect structure underneath the filler words.
 
 In practice, I err toward the model. A 0.7-second inference pass is better than silently wrong output from a processor that was too confident.
+
+## Training on Apple Silicon
+
+The Qwen3-1.7B training happened on a Mac Mini M4 with 16GB of RAM, using MLX and LoRA. The whole run: 1,000 iterations, batch size 4, learning rate 1e-4, LoRA rank 16. Ten minutes.
+
+LoRA rank controls how much new behavior you're adding to the base model — rank 16 means each adapted layer gets a low-rank update through two small matrices (in × 16 and 16 × out) instead of rewriting the full weight matrix. For a task this narrow, a lower rank like 4 or 8 might suffice. I started at 16 as a reasonable default and haven't swept lower yet.
+
+Loss converged to 0.589 train / 0.589 validation / 0.591 test by iteration 1,000. The three values landing within 0.002 of each other means the model isn't memorizing the training set — it's learning a generalizable mapping. This makes sense for a narrow task: the vocabulary is constrained (about 30 spoken keywords mapping to symbols), the sequences are short, and the patterns are consistent across splits. Overfitting is less of a risk when the function you're learning is simple.
+
+Peak memory during training: 4.8GB. That's on a machine with 16GB of unified memory, leaving plenty of room for the OS and other work. MLX's memory efficiency on Apple Silicon is part of why this is viable on consumer hardware.
+
+For comparison, the Colab T4 run with Qwen3.5-2B took 90 minutes and required managing GPU session limits. The Mac Mini run took 10 minutes with no session management. The hardware difference matters less than it seems — what matters is that both are accessible. A free Colab GPU or a Mac you already own.
 
 ## The Model Size Question
 
 This is the part I'm still figuring out.
 
-First, a quick note on how I measure accuracy. "Exact match" means the model's output is character-for-character identical to the expected command. "Effective accuracy" includes near matches (above 90% string similarity), which in practice are whitespace differences or a trailing newline. The command is functionally correct. For a keyboard dictation product, effective accuracy is what matters: does the user get the right command?
+First, how I measure accuracy. "Exact match" means character-for-character identical to the expected command. "Effective accuracy" includes near matches above 90% string similarity, which in practice are whitespace differences or a trailing newline. The command is functionally correct. For a keyboard dictation product, effective accuracy is what matters: does the user get the right command?
 
 | Model | Params | Type | Exact | Effective | Training |
 |---|---|---|---|---|---|
@@ -61,17 +67,17 @@ First, a quick note on how I measure accuracy. "Exact match" means the model's o
 
 \**Partial eval (510/630 cases, session timed out)*
 
-The 1.7B text-only model outperformed the 2B multimodal model on the cases I could compare. Is that because text-only architectures are better for text tasks? Because the MLX training pipeline produced a cleaner signal than Colab with Unsloth? Because the Qwen3.5-2B eval was incomplete?
+One thing stands out: Qwen2.5-1.5B hit 97% effective accuracy, but the newer Qwen3-1.7B — slightly larger, one generation newer — landed at 93.3%. More parameters and a newer model family didn't translate to better performance on this task. The models differ in too many variables to isolate a cause (architecture, tokenizer, pretraining data mix, training framework), but the pattern is consistent with what you'd expect for a narrow task: once the model has enough capacity to learn the mapping, additional parameters don't help. The gains come from how well the base model's tokenizer and architecture fit the fine-tuning setup.
 
-Probably some combination. I don't have a controlled experiment that isolates one variable. The honest answer is that at this scale, with this dataset, the difference between 1.5B and 2B parameters is small. The choice of architecture and training setup mattered more than I expected.
+The 1.7B text-only model also outperformed the 2B VLM on the cases I could compare, though the VLM eval didn't finish. I'd need to train both through the same pipeline on the same hardware to say anything definitive. That's a future experiment.
 
-What I can say: for a short-sequence, constrained-vocabulary task like bash reconstruction, you don't need a big model. 1.7B parameters, 4-bit quantized to 948MB, trained in 10 minutes on an M4 Mac Mini using 4.8GB of memory. That's a model you can ship to users without asking them to clear disk space or give up their RAM.
+For now: 1.7B parameters, 4-bit quantized to 948MB, trained in 10 minutes using 4.8GB of memory. That's a model I can ship.
 
 ## Getting It Out the Door
 
 A LoRA adapter on its own is useless to end users. It's a set of weight differences that only work when paired with the original base model. To ship something standalone, you merge the adapter into the base weights ("fusing"), then quantize the merged model down to 4-bit precision.
 
-The fused model was 3.2GB. After quantization: 948MB. I pushed it to HuggingFace as [`arach/qwen3-1.7b-bash-v1`](https://huggingface.co/arach/qwen3-1.7b-bash-v1) and registered it in TalkieInference, the on-device inference service that starts when needed and shuts down when idle.
+The fused model was 3.2GB at full precision. After 4-bit quantization: 948MB — each weight stored in 4 bits instead of 16, a 70% size reduction. For a task with constrained vocabulary and short sequences, the precision loss from quantization is negligible; the model doesn't need fine-grained weight distinctions to map "dash" to `-`. I pushed it to HuggingFace as [`arach/qwen3-1.7b-bash-v1`](https://huggingface.co/arach/qwen3-1.7b-bash-v1) and registered it in TalkieInference, the on-device inference service that starts when needed and shuts down when idle.
 
 First model in a new "Talkie" family in the catalog. I planned to ship Qwen3.5-2B. I shipped Qwen3-1.7B.
 
@@ -80,3 +86,22 @@ First model in a new "Talkie" family in the catalog. I planned to ship Qwen3.5-2
 The model works. The inference service works. The next piece is the classifier gate that routes inputs to the right handler: deterministic processor for clean protocol input, on-device LLM for everything else. That's Part 3.
 
 The whole pipeline — Whisper transcription, classifier gate, LLM normalization — runs on-device, offline, in under two seconds.
+
+## Concepts
+
+If you're new to some of the ML terms in this post, these are good starting points:
+
+- **LoRA (Low-Rank Adaptation)** — a method for fine-tuning that trains small adapter matrices instead of rewriting all model weights. [Hugging Face conceptual guide](https://huggingface.co/docs/peft/main/en/conceptual_guides/lora) · [Google ML Glossary: fine-tuning](https://developers.google.com/machine-learning/glossary/generative#fine-tuning)
+- **Quantization** — reducing the precision of model weights (e.g. 16-bit → 4-bit) to shrink model size and speed up inference. [Google ML Glossary: quantization](https://developers.google.com/machine-learning/glossary#quantization) · [Hugging Face guide](https://huggingface.co/docs/transformers/en/quantization/overview)
+- **Chain-of-thought** — a prompting technique where the model generates intermediate reasoning steps before answering. The basis for "thinking mode" in models like Qwen3. [Google ML Glossary: chain-of-thought prompting](https://developers.google.com/machine-learning/glossary/generative#chain-of-thought-prompting)
+- **Vision-language model (VLM)** — a model trained to process both images and text, with additional architecture (vision encoder, projection layers) beyond a text-only model. [Hugging Face VLM guide](https://huggingface.co/learn/computer-vision-course/en/unit4/multimodal-models/vlm-intro)
+
+## Papers & Tools
+
+- Hu et al., [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) (2021)
+- Dettmers et al., [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314) (2023)
+- Wei et al., [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903) (2022)
+- Qwen Team, [Qwen3 Technical Report](https://arxiv.org/abs/2505.09388) (2025)
+- Qwen Team, [Qwen3-VL Technical Report](https://arxiv.org/abs/2511.21631) (2025)
+- Qwen Team, [Qwen2.5 Technical Report](https://arxiv.org/abs/2412.15115) (2024)
+- Apple, [MLX: An array framework for Apple silicon](https://github.com/ml-explore/mlx)
