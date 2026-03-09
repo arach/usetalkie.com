@@ -9,6 +9,7 @@ import {
   Laptop,
   Download,
   ArrowRight,
+  ArrowLeft,
   Cpu,
   Lock,
   Quote,
@@ -25,6 +26,9 @@ import {
   Layers,
   User,
   Lightbulb,
+  ChevronLeft,
+  ChevronRight,
+  Volume2,
 } from 'lucide-react'
 import Container from './Container'
 import HeroBadge from './HeroBadge'
@@ -36,17 +40,96 @@ import { FEATURES } from '../shared/config/features'
 // Feature flags
 const SHOW_AGENTS = FEATURES.SHOW_AGENTS
 
+const MAC_GALLERY = [
+  { src: '/screenshots/mac-home.png', title: 'Home', caption: 'Your dashboard — stats, memos, and activity at a glance.', narration: 'This is your home screen. You can see your recent memos, daily stats, transcription activity, and a heatmap of how often you\'ve been using Talkie. Everything at a glance.', audio: '/audio/tour/mac-home.mp3' },
+  { src: '/screenshots/mac-models.png', title: 'Models', caption: 'Local LLMs, cloud providers, and speech-to-text engines.', narration: 'Talkie supports local models, cloud providers, and multiple speech-to-text engines. You can mix and match — use Whisper locally for privacy, or a cloud provider when you need speed.', audio: '/audio/tour/mac-models.mp3' },
+  { src: '/screenshots/mac-actions.png', title: 'Actions', caption: 'Workflows packaged as one-tap buttons.', narration: 'Actions are like little workflows you can trigger with one tap. Summarize an email, extract key insights from a meeting, or clean up your writing. You can customize them or build your own.', audio: '/audio/tour/mac-actions.mp3' },
+  { src: '/screenshots/mac-appearance.png', title: 'Appearance', caption: 'Themes, accent colors, and typography controls.', narration: 'Talkie has seven built-in themes, accent color customization, and full typography controls. You can make it feel like your own app.', audio: '/audio/tour/mac-appearance.mp3' },
+  { src: '/screenshots/mac-account.png', title: 'Account', caption: 'Private, synced, or connected — you choose.', narration: 'Your data stays yours. Talkie is private by default — everything runs locally. If you want sync, you opt in. And if you want cloud features, you choose the tier that fits.', audio: '/audio/tour/mac-account.mp3' },
+  { src: '/screenshots/mac-recording.png', title: 'Recording', caption: 'The HUD floats over your work, never interrupts.', narration: 'You can capture a memo from anywhere on your Mac. The recording HUD floats on top of whatever you\'re doing, so it never gets in the way.', audio: '/audio/tour/mac-recording.mp3' },
+  { src: '/screenshots/mac-memo-saved.png', title: 'Saved', caption: 'Duration, word count, and a link to view.', narration: 'And just like that, it\'s saved. You get the duration, word count, and a quick link to jump right into the transcript.', audio: '/audio/tour/mac-memo-saved.mp3' },
+  { src: '/screenshots/mac-compose.png', title: 'Compose', caption: 'Write and transform with AI.', narration: 'The compose view lets you write and transform text with AI. Quick actions sit right below, so you can rewrite, expand, or refine without leaving the page.', audio: '/audio/tour/mac-compose.mp3' },
+  { src: '/screenshots/mac-compose-diff.png', title: 'Diff View', caption: 'Accept or reject revisions, word by word.', narration: 'When AI edits your text, you see a clean diff view. Green for additions, red for removals. You can accept or reject each change, word by word.', audio: '/audio/tour/mac-compose-diff.mp3' },
+]
+
+const IPHONE_GALLERY = [
+  { src: '/screenshots/iphone-16-pro-max-6.png', title: 'Memo Detail', caption: 'Transcript and actions from one recording.', narration: 'Here\'s a single memo. You get the full transcript, quick actions to summarize or extract key points, and you can even trigger Mac-side actions right from your phone.', audio: '/audio/tour/iphone-memo-detail.mp3' },
+  { src: '/screenshots/iphone-16-pro-max-7.png', title: 'Library', caption: 'All your memos in one place.', narration: 'Your library holds all your memos. You can search through them, filter by date, and pick up right where you left off.', audio: '/audio/tour/iphone-library.mp3' },
+  { src: '/screenshots/iphone-16-pro-max-4.png', title: 'Ready', caption: 'One tap to start recording.', narration: 'Talkie is ready to go. Just tap the button and start talking.', audio: '/audio/tour/iphone-ready.mp3' },
+  { src: '/screenshots/iphone-16-pro-max-5.png', title: 'Recording', caption: 'Live waveform — speak naturally.', narration: 'You\'re recording. The live waveform shows your voice in real time. Speak naturally, and tap stop when you\'re done.', audio: '/audio/tour/iphone-recording.mp3' },
+  { src: '/screenshots/iphone-16-pro-max-1.png', title: 'Welcome', caption: 'Capture on iPhone, process on Mac.', narration: 'Talkie combines voice memos with AI. Capture a thought on your iPhone, and let your Mac do the heavy lifting — transcription, summarization, and more.', audio: '/audio/tour/iphone-welcome.mp3' },
+  { src: '/screenshots/iphone-16-pro-max-2.png', title: 'Sync', caption: 'Encrypted end-to-end via iCloud.', narration: 'Sync is powered by iCloud. Your data is encrypted end-to-end and stays on your devices. No third-party servers, ever.', audio: '/audio/tour/iphone-sync.mp3' },
+  { src: '/screenshots/iphone-16-pro-max-3.png', title: 'Settings', caption: 'Themes, appearance, and full control.', narration: 'And you get full control over the look and feel. Themes, appearance settings, and even debug info if you want to peek under the hood.', audio: '/audio/tour/iphone-settings.mp3' },
+]
+
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
   const [pricingActive, setPricingActive] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [featureTab, setFeatureTab] = useState('mac')
+  const [gallery, setGallery] = useState(null) // null | { images: string[], index: number }
+  const [audioPlaying, setAudioPlaying] = useState(false)
+  const audioRef = useRef(null)
   const scrollMilestones = useRef(new Set())
 
   // Capture UTM params on mount
   useEffect(() => {
     captureUTMParams()
   }, [])
+
+  // Gallery keyboard navigation
+  useEffect(() => {
+    if (!gallery) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') setGallery(null)
+      if (e.key === 'ArrowRight') setGallery(g => g ? { ...g, index: (g.index + 1) % g.images.length } : null)
+      if (e.key === 'ArrowLeft') setGallery(g => g ? { ...g, index: (g.index - 1 + g.images.length) % g.images.length } : null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [gallery])
+
+  // Gallery audio — preload on slide change, no auto-play
+  useEffect(() => {
+    if (!gallery) {
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
+      setAudioPlaying(false)
+      return
+    }
+
+    const current = gallery.images[gallery.index]
+    if (!current?.audio) {
+      if (audioRef.current) audioRef.current.pause()
+      audioRef.current = null
+      setAudioPlaying(false)
+      return
+    }
+
+    // Stop previous audio
+    if (audioRef.current) {
+      audioRef.current.pause()
+      setAudioPlaying(false)
+    }
+
+    // Preload only — user clicks to play
+    const audio = new Audio(current.audio)
+    audio.preload = 'auto'
+    audioRef.current = audio
+
+    const onEnded = () => setAudioPlaying(false)
+    const onError = () => setAudioPlaying(false)
+    audio.addEventListener('ended', onEnded)
+    audio.addEventListener('error', onError)
+
+    return () => {
+      audio.pause()
+      audio.removeEventListener('ended', onEnded)
+      audio.removeEventListener('error', onError)
+    }
+  }, [gallery?.index, gallery?.images])
 
   // Scroll tracking
   useEffect(() => {
@@ -291,6 +374,49 @@ export default function LandingPage() {
               <Download className="w-4 h-4" />
               <span>Download Talkie</span>
             </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* App Showcase */}
+      <section className="relative py-16 md:py-24 bg-white dark:bg-[#0a0f0d] border-b border-stone-200/70 dark:border-emerald-900/20 overflow-hidden">
+        <Container>
+          <div className="flex flex-col md:flex-row items-end justify-center gap-8 md:gap-12">
+            {/* Mac screenshot */}
+            <div className="relative w-full md:w-[62%] flex-shrink-0">
+              <button
+                onClick={() => setGallery({ images: MAC_GALLERY, index: 0 })}
+                className="block w-full rounded-xl overflow-hidden shadow-2xl shadow-black/20 dark:shadow-black/50 border border-zinc-200/50 dark:border-zinc-700/50 cursor-zoom-in hover:shadow-3xl hover:scale-[1.01] transition-all duration-300"
+              >
+                <img
+                  src="/screenshots/mac-home.png"
+                  alt="Talkie for Mac — dashboard with recordings, transcripts, and activity"
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+              </button>
+              <div className="mt-3 text-center">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie for Mac</span>
+              </div>
+            </div>
+
+            {/* iPhone screenshot */}
+            <div className="relative w-[180px] md:w-[160px] flex-shrink-0">
+              <button
+                onClick={() => setGallery({ images: IPHONE_GALLERY, index: 0 })}
+                className="block w-full rounded-xl overflow-hidden shadow-2xl shadow-black/20 dark:shadow-black/50 border border-zinc-200/50 dark:border-zinc-700/50 cursor-zoom-in hover:shadow-3xl hover:scale-[1.02] transition-all duration-300"
+              >
+                <img
+                  src="/screenshots/iphone-16-pro-max-6.png"
+                  alt="Talkie for iPhone — memo detail with transcript and quick actions"
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+              </button>
+              <div className="mt-3 text-center">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie for iPhone</span>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
@@ -641,6 +767,139 @@ export default function LandingPage() {
           <p className="text-[10px] font-mono uppercase text-zinc-400">© {new Date().getFullYear()} Talkie Systems Inc.</p>
         </Container>
       </footer>
+
+      {/* Gallery Carousel */}
+      {gallery && (() => {
+        const current = gallery.images[gallery.index]
+        return (
+          <div
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 md:p-10"
+            onClick={() => setGallery(null)}
+          >
+            <div className="absolute inset-0 bg-black/85 backdrop-blur-md" />
+
+            {/* Fixed-size slide container — image + narration share the same width */}
+            <div className="relative z-10 w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+              {/* Image with caption overlay */}
+              <div className="relative w-full" style={{ maxWidth: 'min(90vw, calc(60vh * 1.15))' }}>
+                <img
+                  src={current.src}
+                  alt={current.title}
+                  className="w-full h-auto rounded-xl shadow-2xl select-none"
+                  draggable={false}
+                />
+                {/* Caption overlay at bottom of image */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-b-xl px-5 pb-4 pt-10">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/50">{current.title}</span>
+                  <p className="text-xs text-white/90 mt-0.5 leading-relaxed">{current.caption}</p>
+                </div>
+              </div>
+
+              {/* Narration bar — same width as image */}
+              <div className="w-full mt-4 flex items-start gap-3" style={{ maxWidth: 'min(90vw, calc(60vh * 1.15))' }}>
+                <p className="flex-1 text-xs text-white/50 leading-relaxed italic">{current.narration}</p>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {current.audio && (
+                    <button
+                      onClick={() => {
+                        if (!audioRef.current) return
+                        if (audioPlaying) {
+                          audioRef.current.pause()
+                          setAudioPlaying(false)
+                        } else {
+                          audioRef.current.play().then(() => setAudioPlaying(true)).catch(() => {})
+                        }
+                      }}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${
+                        audioPlaying
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                          : 'bg-white/10 text-white/60 border border-white/15 hover:bg-white/15 hover:text-white'
+                      }`}
+                      aria-label={audioPlaying ? 'Pause narration' : 'Listen to narration'}
+                    >
+                      <Volume2 className="w-3 h-3" />
+                      <span>{audioPlaying ? 'Playing' : 'Listen'}</span>
+                    </button>
+                  )}
+                  {gallery.images.length > 1 && gallery.index < gallery.images.length - 1 && (
+                    <button
+                      onClick={() => setGallery(g => ({ ...g, index: g.index + 1 }))}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest bg-white/10 text-white/60 border border-white/15 hover:bg-white/15 hover:text-white transition-all"
+                      aria-label="Next slide"
+                    >
+                      <span>Next</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Nav arrows */}
+            {gallery.images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setGallery(g => ({ ...g, index: (g.index - 1 + g.images.length) % g.images.length }))
+                  }}
+                  className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-colors"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setGallery(g => ({ ...g, index: (g.index + 1) % g.images.length }))
+                  }}
+                  className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-colors"
+                  aria-label="Next"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+
+            {/* Dots */}
+            {gallery.images.length > 1 && (
+              <div className="relative z-20 mt-5 flex items-center gap-2">
+                {gallery.images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setGallery(g => ({ ...g, index: i }))
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      i === gallery.index
+                        ? 'bg-white scale-125'
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
+                    aria-label={`Image ${i + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Close */}
+            <button
+              onClick={() => setGallery(null)}
+              className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Counter */}
+            {gallery.images.length > 1 && (
+              <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20 text-[10px] font-mono uppercase tracking-widest text-white/50">
+                {gallery.index + 1} / {gallery.images.length}
+              </div>
+            )}
+          </div>
+        )
+      })()}
 
     </div>
   )
