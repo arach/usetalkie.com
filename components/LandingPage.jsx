@@ -388,28 +388,30 @@ export default function LandingPage() {
                   className="w-full h-auto"
                   loading="lazy"
                 />
+                <div className="border-t border-zinc-200/50 dark:border-zinc-700/50 bg-zinc-50 dark:bg-black px-10 py-3 text-center">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie for Mac</span>
+                </div>
               </button>
-              <div className="mt-3 text-center">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie for Mac</span>
-              </div>
             </div>
 
             {/* iPhone screenshot */}
-            <div className="relative w-[180px] md:w-[160px] flex-shrink-0">
+            <div className="relative w-[200px] md:w-[185px] flex-shrink-0">
               <button
                 onClick={() => setGallery({ images: IPHONE_GALLERY, index: 0 })}
-                className="block w-full rounded-xl overflow-hidden shadow-2xl shadow-black/20 dark:shadow-black/50 border border-zinc-200/50 dark:border-zinc-700/50 cursor-zoom-in hover:shadow-3xl hover:scale-[1.02] transition-all duration-300"
+                className="block w-full rounded-xl overflow-hidden shadow-2xl shadow-black/20 dark:shadow-black/50 border border-zinc-200/50 dark:border-zinc-700/50 cursor-zoom-in hover:shadow-3xl hover:scale-[1.02] transition-all duration-300 bg-zinc-50 dark:bg-black"
               >
-                <img
-                  src="/screenshots/iphone-16-pro-max-6.png"
-                  alt="Talkie for iPhone — memo detail with transcript and quick actions"
-                  className="w-full h-auto"
-                  loading="lazy"
-                />
+                <div className="px-4 pt-4 pb-10">
+                  <img
+                    src="/screenshots/iphone-16-pro-max-6.png"
+                    alt="Talkie for iPhone — memo detail with transcript and quick actions"
+                    className="w-full h-auto rounded-lg shadow-lg shadow-black/10 dark:shadow-black/30"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="border-t border-zinc-200/50 dark:border-zinc-700/50 bg-zinc-50 dark:bg-black px-4 py-3 text-center">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400 whitespace-nowrap">Talkie for iPhone</span>
+                </div>
               </button>
-              <div className="mt-3 text-center">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie for iPhone</span>
-              </div>
             </div>
           </div>
         </Container>
