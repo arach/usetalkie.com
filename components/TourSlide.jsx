@@ -14,15 +14,11 @@ export default function TourSlide({ slug }) {
   const [copied, setCopied] = useState(false)
   const audioRef = useRef(null)
 
-  const shareSlide = async () => {
+  const copyLink = async () => {
     const url = `${window.location.origin}/tour/${slug}/`
-    if (navigator.share) {
-      try { await navigator.share({ title: `${item?.title} — Talkie Tour`, url }) } catch {}
-    } else {
-      await navigator.clipboard.writeText(url)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
+    await navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   // Stop audio on slug change
@@ -93,14 +89,19 @@ export default function TourSlide({ slug }) {
             <span>Talkie for {isPortrait ? 'iPhone' : 'Mac'}</span>
           </div>
           <button
-            onClick={shareSlide}
-            className={`p-1.5 rounded-full transition-all ${
-              copied ? 'text-emerald-400' : 'text-white/30 hover:text-white/70'
+            onClick={copyLink}
+            className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
+              copied
+                ? 'text-emerald-400 bg-emerald-500/10'
+                : 'text-white/30 hover:text-white/60 hover:bg-white/5'
             }`}
             aria-label="Copy link to this slide"
             title="Copy link"
           >
-            <Link2 className="w-3.5 h-3.5" />
+            <Link2 className="w-3 h-3" />
+            <span className="text-[10px] font-mono tracking-wide">
+              {copied ? 'Copied!' : `usetalkie.com/tour/${slug}`}
+            </span>
           </button>
         </div>
       </div>
