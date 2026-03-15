@@ -6,12 +6,12 @@ const nodes = [
   // Center
   { id: 'voice', label: 'Voice Memos', x: 300, y: 200, size: 'lg', color: 'emerald' },
   // Topics (outer ring)
-  { id: 'engine', label: 'Open Source\nEngine', x: 100, y: 80, size: 'md', color: 'blue' },
-  { id: 'scout', label: 'Open Scout', x: 300, y: 50, size: 'md', color: 'violet' },
+  { id: 'engine', label: 'API\nRedesign', x: 100, y: 80, size: 'md', color: 'blue' },
+  { id: 'scout', label: 'Mobile App', x: 300, y: 50, size: 'md', color: 'violet' },
   { id: 'marketing', label: 'Marketing\nStrategy', x: 500, y: 80, size: 'md', color: 'amber' },
-  { id: 'product', label: 'Product\nRoadmap', x: 530, y: 220, size: 'md', color: 'rose' },
-  { id: 'business', label: 'Business\nModel', x: 480, y: 350, size: 'md', color: 'cyan' },
-  { id: 'workflow', label: 'Workflow\nBuilder', x: 120, y: 340, size: 'md', color: 'orange' },
+  { id: 'product', label: 'Product\nLaunch', x: 530, y: 220, size: 'md', color: 'rose' },
+  { id: 'business', label: 'Pricing\nModel', x: 480, y: 350, size: 'md', color: 'cyan' },
+  { id: 'workflow', label: 'Onboarding\nFlow', x: 120, y: 340, size: 'md', color: 'orange' },
   { id: 'health', label: 'Health &\nSustainability', x: 70, y: 220, size: 'sm', color: 'lime' },
   // Daily notes (small dots)
   { id: 'day1', label: 'Mar 9', x: 200, y: 130, size: 'xs', color: 'zinc' },
