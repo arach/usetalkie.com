@@ -15,6 +15,11 @@ import LoraExplainer from '../../../components/blog/LoraExplainer'
 import QuantizationSteps from '../../../components/blog/QuantizationSteps'
 import ModelComparison from '../../../components/blog/ModelComparison'
 import Part2Stats from '../../../components/blog/Part2Stats'
+import MindMap from '../../../components/blog/MindMap'
+import ObsidianNote from '../../../components/blog/ObsidianNote'
+import PromptShowcase from '../../../components/blog/PromptShowcase'
+import CopyableCode from '../../../components/blog/CopyableCode'
+import { VKNote, VKPrompt, VKCode } from '../../../components/blog/VoiceKnowledgeBlocks'
 
 const mdxComponents = {
   TranscriptionDiff,
@@ -30,6 +35,13 @@ const mdxComponents = {
   QuantizationSteps,
   ModelComparison,
   Part2Stats,
+  MindMap,
+  ObsidianNote,
+  PromptShowcase,
+  CopyableCode,
+  VKNote,
+  VKPrompt,
+  VKCode,
 }
 
 const mdxOptions = {
