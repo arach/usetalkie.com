@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "messages": [
+    {
+      "id": "update-2.5.0",
+      "type": "update",
+      "title": "Talkie 2.5.0 is available",
+      "body": "New audio segmentation, improved dictation, and performance fixes.",
+      "action": {
+        "label": "Update",
+        "url": "https://usetalkie.com/download"
+      },
+      "targeting": {
+        "minVersion": "0.0.0",
+        "maxVersion": "2.4.99",
+        "platform": "macos"
+      },
+      "priority": "normal",
+      "dismissible": true,
+      "publishedAt": "2026-03-16T00:00:00Z",
+      "expiresAt": null
+    },
+    {
+      "id": "welcome-message",
+      "type": "announcement",
+      "title": "Welcome to Talkie",
+      "body": "Voice-first productivity for macOS.",
+      "action": null,
+      "targeting": {
+        "minVersion": "0.0.0",
+        "maxVersion": "99.99.99",
+        "platform": "macos"
+      },
+      "priority": "low",
+      "dismissible": true,
+      "publishedAt": "2026-03-16T00:00:00Z",
+      "expiresAt": null
+    }
+  ]
+}

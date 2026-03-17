@@ -40,7 +40,7 @@ That's an outline. It's just wearing a disguise.
 
 ## Turning memos into a knowledge graph
 
-Here's the process. It takes about ten minutes for a week's worth of memos, and the result is something you can actually navigate. **All of this happens through Talkie's [agentic workflow system](/docs/workflows)** — you write prompts, Talkie runs them across your transcripts, and structured knowledge comes out the other side.
+Here's the process. It takes about ten minutes for a week's worth of memos, and the result is something you can actually navigate.
 
 ### Step 1: Pull your recent memos
 
@@ -90,7 +90,7 @@ Not seven recordings. Seven **ideas**, tracked across time, connected to each ot
 
 ## The prompts: steal these
 
-Here are the exact prompts we used to go from raw transcripts to structured vault. You can use these with Claude, ChatGPT, or any LLM — or wire them up as a [Talkie workflow](/docs/workflows) and automate the whole thing.
+Here are the exact prompts we used to go from raw transcripts to structured vault. You can use these with Claude, ChatGPT, or any LLM. Paste your transcripts alongside the prompt and let it do the work.
 
 ### Prompt 1: Extract topics
 
@@ -116,21 +116,6 @@ Tie it all together with a master file.
 
 <VKPrompt id="generate-index" />
 
-## The full pipeline — one command
-
-With Talkie's [workflow system](/docs/workflows), this entire process chains together. You define the prompts once, and Talkie runs them as an agentic pipeline:
-
-<CopyableCode code="talkie workflow run voice-to-knowledge --days 14 --output ~/obsidian-vault/" />
-
-That single command:
-1. Pulls your last 14 days of transcripts
-2. Runs the thread extraction prompt
-3. Generates topic files with wikilinks
-4. Creates daily notes as navigation anchors
-5. Writes everything to your Obsidian vault
-
-**No manual copy-pasting. No organizing. Just speak and let the prompts do the thinking.**
-
 ### Tips for better results
 
 - **Batch, don't trickle.** Feed 5-10 memos at once. Single-memo summaries miss the cross-cutting threads.
@@ -148,12 +133,10 @@ Voice memos flip this. You capture freely — messy, branching, stream-of-consci
 
 ## What's next
 
-We're building this workflow directly into Talkie. Imagine: every week, your memos automatically distill into topic files, updating your knowledge graph without you lifting a finger.
+We're working on making this a one-command operation — pull transcripts, run the prompts, write the vault. Until then, the manual flow takes ten minutes and the prompts above get you 90% of the way.
 
 Your voice becomes your second brain's input device. Not just a recorder — a *thinker*.
 
 ---
 
 *Talkie is a voice-first productivity suite for macOS and iOS. Your voice memos, transcribed locally, organized intelligently. [Learn more →](/)*
-
-*Want to build your own voice workflows? Check out the [workflow docs →](/docs/workflows)*
