@@ -6,7 +6,7 @@ import { trackDownload, trackAppStoreClick } from '../lib/analytics'
 
 const GITHUB_DMG_URL = 'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
 const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
-const NPM_INSTALL_CMD = 'npm install -g talkie-cli'
+const NPM_INSTALL_CMD = 'bun install -g @talkie/cli'
 const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
 function CopyableCommand({ command, label, id, copiedCmd, onCopy }) {
