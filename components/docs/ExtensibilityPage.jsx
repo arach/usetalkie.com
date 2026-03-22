@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, Webhook, Workflow, Plug, GitBranch, Box } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Webhook, Workflow, Plug, GitBranch, Box, FolderTree } from 'lucide-react'
 import DocsLayout from './DocsLayout'
 
 const sections = [
@@ -10,6 +10,7 @@ const sections = [
   { id: 'events', title: 'Available Events', level: 3 },
   { id: 'payload', title: 'Payload Format', level: 3 },
   { id: 'custom-workflows', title: 'Custom Workflows', level: 2 },
+  { id: 'file-based-context', title: 'File-Based Context', level: 2 },
   { id: 'integrations', title: 'Third-Party Integrations', level: 2 },
   { id: 'navigation', title: 'Continue Reading', level: 2 },
 ]
@@ -80,6 +81,12 @@ export default function ExtensibilityPage() {
           name="AppleScript"
           description="Full AppleScript dictionary for controlling Talkie programmatically from Alfred, Keyboard Maestro, etc."
           color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
+        />
+        <IntegrationCard
+          icon={FolderTree}
+          name="File-Based Context"
+          description="A draft RFC for making Talkie programmable from disk using rules, actions, workflows, and automations."
+          color="bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400"
         />
       </div>
 
@@ -186,6 +193,35 @@ export default function ExtensibilityPage() {
         Share workflows by sharing the JSON file. Import by dropping into the Workflows directory.
       </p>
 
+      <h2 id="file-based-context">File-Based Context</h2>
+      <p>
+        Webhooks and custom workflows are only part of the extensibility story. We are also exploring a file-first
+        model where Talkie discovers behavior from conventional folders such as <code>rules/</code>,
+        <code>actions/</code>, <code>workflows/</code>, and <code>automations/</code>.
+      </p>
+      <p>
+        The goal is to let developers keep Talkie behavior in source control, define project-local rules without
+        waiting on UI support, and still keep Talkie in charge of validation and execution policy.
+      </p>
+      <div className="p-4 rounded-lg border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 my-4 not-prose">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <div className="font-bold text-amber-900 dark:text-amber-200 mb-1">Draft RFC</div>
+            <p className="text-sm text-amber-800 dark:text-amber-300">
+              Read the proposed file-based context system for a deeper look at the directory layout, runtime contract,
+              and guardrails.
+            </p>
+          </div>
+          <Link
+            href="/ideas/file-based-context-system"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-amber-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-amber-700 transition-colors"
+          >
+            Read RFC
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+
       {/* Third-Party Integrations */}
       <h2 id="integrations">Third-Party Integrations</h2>
       <p>
@@ -248,13 +284,13 @@ export default function ExtensibilityPage() {
         </Link>
 
         <Link
-          href="/docs"
+          href="/ideas/file-based-context-system"
           className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Back to</span>
+            <span className="text-xs text-zinc-500">Next</span>
             <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-              Documentation Index
+              File-Based Context
             </span>
           </div>
           <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />

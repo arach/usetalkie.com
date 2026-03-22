@@ -89,6 +89,8 @@ export default async function IdeaPost({ params }) {
       description={idea.description}
       date={idea.date}
       tags={idea.tags}
+      entryType={idea.entryType}
+      status={idea.status}
     >
       <MDXRemote source={idea.content} components={mdxComponents} options={mdxOptions} />
     </IdeaLayout>

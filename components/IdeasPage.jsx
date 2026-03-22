@@ -10,6 +10,28 @@ function formatDate(dateString) {
   })
 }
 
+function getEntryBadge(entryType) {
+  if (entryType === 'rfc') {
+    return {
+      label: 'RFC',
+      className: 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 border-amber-200/70 dark:border-amber-500/20',
+    }
+  }
+
+  return null
+}
+
+function getStatusBadge(status) {
+  if (status === 'draft') {
+    return {
+      label: 'Draft',
+      className: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 border-blue-200/70 dark:border-blue-500/20',
+    }
+  }
+
+  return null
+}
+
 export default function IdeasPage({ ideas }) {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
@@ -63,6 +85,26 @@ export default function IdeasPage({ ideas }) {
                       <time className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono uppercase tracking-wider">
                         {formatDate(idea.date)}
                       </time>
+                      {getEntryBadge(idea.entryType) && (
+                        <>
+                          <span className="text-zinc-200 dark:text-zinc-800">&middot;</span>
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded border text-[10px] font-mono font-bold uppercase tracking-wider ${getEntryBadge(idea.entryType).className}`}
+                          >
+                            {getEntryBadge(idea.entryType).label}
+                          </span>
+                        </>
+                      )}
+                      {getStatusBadge(idea.status) && (
+                        <>
+                          <span className="text-zinc-200 dark:text-zinc-800">&middot;</span>
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded border text-[10px] font-mono font-bold uppercase tracking-wider ${getStatusBadge(idea.status).className}`}
+                          >
+                            {getStatusBadge(idea.status).label}
+                          </span>
+                        </>
+                      )}
                       {idea.tags && idea.tags.length > 0 && (
                         <>
                           <span className="text-zinc-200 dark:text-zinc-800">&middot;</span>

@@ -10,7 +10,32 @@ function formatDate(dateString) {
   })
 }
 
-export default function IdeaLayout({ title, description, date, tags, children }) {
+function getEntryBadge(entryType) {
+  if (entryType === 'rfc') {
+    return {
+      label: 'RFC',
+      className: 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-500/20',
+    }
+  }
+
+  return null
+}
+
+function getStatusBadge(status) {
+  if (status === 'draft') {
+    return {
+      label: 'Draft',
+      className: 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/70 dark:border-blue-500/20',
+    }
+  }
+
+  return null
+}
+
+export default function IdeaLayout({ title, description, date, tags, entryType, status, children }) {
+  const entryBadge = getEntryBadge(entryType)
+  const statusBadge = getStatusBadge(status)
+
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
       {/* Top navigation */}
@@ -42,9 +67,23 @@ export default function IdeaLayout({ title, description, date, tags, children })
         <div className="relative border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-950">
           <div className="absolute inset-0 bg-grid-fade pointer-events-none opacity-30" />
           <div className="relative max-w-3xl mx-auto px-6 pt-10 pb-8">
-            {tags && tags.length > 0 && (
+            {(entryBadge || statusBadge || (tags && tags.length > 0)) && (
               <div className="flex flex-wrap gap-2 mb-6">
-                {tags.map(tag => (
+                {entryBadge && (
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded text-[10px] font-mono font-bold uppercase tracking-wider border ${entryBadge.className}`}
+                  >
+                    {entryBadge.label}
+                  </span>
+                )}
+                {statusBadge && (
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded text-[10px] font-mono font-bold uppercase tracking-wider border ${statusBadge.className}`}
+                  >
+                    {statusBadge.label}
+                  </span>
+                )}
+                {tags && tags.map(tag => (
                   <span
                     key={tag}
                     className="inline-flex items-center px-2.5 py-1 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-500/20"
