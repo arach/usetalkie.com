@@ -85,7 +85,7 @@ export default function ExtensibilityPage() {
         <IntegrationCard
           icon={FolderTree}
           name="File-Based Context"
-          description="A draft RFC for making Talkie programmable from disk using rules, actions, workflows, and automations."
+          description="A draft RFC for making Talkie programmable from disk using rules, tools, workflows, and automations."
           color="bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400"
         />
       </div>
@@ -197,7 +197,7 @@ export default function ExtensibilityPage() {
       <p>
         Webhooks and custom workflows are only part of the extensibility story. We are also exploring a file-first
         model where Talkie discovers behavior from conventional folders such as <code>rules/</code>,
-        <code>actions/</code>, <code>workflows/</code>, and <code>automations/</code>.
+        <code>tools/</code>, <code>workflows/</code>, and <code>automations/</code>.
       </p>
       <p>
         The goal is to let developers keep Talkie behavior in source control, define project-local rules without

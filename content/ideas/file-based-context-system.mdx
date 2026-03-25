@@ -1,6 +1,6 @@
 ---
 title: "File-Based Context System"
-description: "A draft RFC for making Talkie programmable from disk with rules, actions, workflows, and automations."
+description: "A draft RFC for making Talkie programmable from disk with rules, tools, workflows, and automations."
 date: "2026-03-21"
 tags: ["rfc", "extensibility", "developer-tools", "workflows"]
 entryType: "rfc"
@@ -16,7 +16,7 @@ Instead of forcing every advanced use case through the UI, Talkie would discover
 ```text
 .talkie/
   rules/
-  actions/
+  tools/
   workflows/
   automations/
 ```
@@ -50,7 +50,7 @@ That gives us a clean litmus test:
 - if it fixes text, it is a rule
 - if it expands shorthand, it is a rule
 - if it decides what should happen next, it is a rule
-- if it does work, it is a workflow or action
+- if it does work, it is a workflow or tool
 - if it decides when work runs, it is an automation
 
 ## Core concepts
@@ -58,7 +58,7 @@ That gives us a clean litmus test:
 The proposed on-disk model has four top-level concepts:
 
 - `rules/`
-- `actions/`
+- `tools/`
 - `workflows/`
 - `automations/`
 
@@ -121,15 +121,15 @@ produce:
 
 Rules decide. They should not directly execute arbitrary user code.
 
-## Actions
+## Tools
 
-Actions are the developer escape hatch.
+Tools are code-backed capabilities Talkie can invoke.
 
-An action is a folder with metadata plus an executable entrypoint:
+A tool is a folder with metadata plus an executable entrypoint:
 
 ```text
-actions/jira-ticket/
-  action.yaml
+tools/jira-ticket/
+  tool.yaml
   run.ts
   README.md
 ```
@@ -144,15 +144,17 @@ input: talkie/v1
 timeoutMs: 10000
 ```
 
-The key constraint is that Talkie remains the runtime. An action is invoked as a subprocess. It receives JSON over stdin and returns JSON over stdout.
+The key constraint is that Talkie remains the runtime. A tool is invoked as a subprocess. It receives JSON over stdin and returns JSON over stdout.
 
 That means developers can use Node, Python, shell, or a compiled binary without Talkie having to become a custom host for every runtime.
+
+Tools are not the primary place to model user-facing behavior. Workflows remain the preferred place to express Talkie-native behavior and multi-step execution. Tools exist for capabilities that are better implemented in external code while still staying structured, observable, and validated by Talkie.
 
 ## Workflows and automations
 
 Workflows stay Talkie-native. They remain the preferred place for expressing multi-step behavior and side effects.
 
-Automations stay separate. They decide when a workflow or action runs:
+Automations stay separate. They decide when a workflow or tool runs:
 
 - on a schedule
 - from an event
@@ -174,9 +176,9 @@ Here’s the v1 shape:
     summarize-for-slack/
       rule.yaml
 
-  actions/
+  tools/
     jira-ticket/
-      action.yaml
+      tool.yaml
       run.ts
 
   workflows/
@@ -203,7 +205,7 @@ That makes each item self-contained and versionable.
 
 The stdin/stdout contract is what keeps this system coherent.
 
-Example action input:
+Example tool input:
 
 ```json
 {
@@ -223,11 +225,11 @@ Example action input:
 }
 ```
 
-Example action output:
+Example tool output:
 
 ```json
 {
-  "actions": [
+  "effects": [
     {
       "type": "runWorkflow",
       "workflow": "create-jira-ticket",
@@ -239,7 +241,7 @@ Example action output:
 }
 ```
 
-This is the crucial boundary: actions do not get to mutate Talkie in-process. They return structured outcomes that Talkie validates and executes.
+This is the crucial boundary: tools do not get to mutate Talkie in-process. They return structured outcomes that Talkie validates and executes.
 
 ## Guardrails
 
@@ -247,10 +249,10 @@ If this becomes “execute arbitrary scripts and hope for the best,” it is not
 
 The runtime needs guardrails:
 
-- actions run out-of-process
-- actions are time-limited
+- tools run out-of-process
+- tools are time-limited
 - Talkie captures stdout and stderr
-- returned action types are validated before execution
+- returned effect types are validated before execution
 - Talkie never loads arbitrary user code in-process
 
 Those constraints are what make the system viable.
@@ -269,7 +271,7 @@ It also gives us a better long-term way to organize the whole family of “conte
 - rules shape meaning
 - workflows do work
 - automations decide when work runs
-- actions are escape hatches for developers
+- tools provide code-backed capabilities
 
 That feels like the right center of gravity.
 
@@ -278,11 +280,11 @@ That feels like the right center of gravity.
 The first version should stay narrow:
 
 1. add configurable roots
-2. discover `rules/`, `actions/`, `workflows/`, and `automations/`
+2. discover `rules/`, `tools/`, `workflows/`, and `automations/`
 3. validate and log discovered items
 4. support declarative rules
-5. support actions via stdin/stdout JSON
-6. let rules reference workflows and actions by ID
+5. support tools via stdin/stdout JSON
+6. let rules reference workflows and tools by ID
 
 Later phases can add:
 
@@ -294,6 +296,6 @@ Later phases can add:
 
 ## The principle
 
-Rules decide. Workflows do work. Automations decide when work runs. Actions provide escape hatches for developers.
+Rules decide. Workflows do work. Automations decide when work runs. Tools provide code-backed capabilities.
 
 That is the shape I want Talkie to grow into.
