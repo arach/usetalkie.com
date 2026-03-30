@@ -319,10 +319,10 @@ export default function LandingPage() {
           </h1>
 
           <p className="mx-auto max-w-xl text-xl md:text-2xl text-zinc-700 dark:text-zinc-300 mb-4 leading-snug font-display">
-            Your unified voice system.
+            A selfie for your thoughts.
           </p>
           <p className="mx-auto max-w-2xl text-base text-zinc-500 dark:text-zinc-400 mb-10 leading-relaxed">
-            Drive all your Mac apps when you&apos;re working. Capture memos on iPhone and Watch when you&apos;re on the go.
+            Capture voice memos, dictation, notes, and quick jots without breaking flow. Talkie keeps the transcript, surrounding context, and next step together.
           </p>
 
           <div className={`mt-8 grid grid-cols-1 gap-4 text-left ${SHOW_AGENTS ? 'sm:grid-cols-3' : 'sm:grid-cols-2 max-w-2xl mx-auto'}`}>
@@ -333,7 +333,7 @@ export default function LandingPage() {
                 <ArrowRight className="w-3 h-3 text-zinc-400 ml-auto opacity-0 -translate-x-2 group-hover/triad:opacity-100 group-hover/triad:translate-x-0 transition-all" />
               </div>
               <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                Voice to action with dictation and workflows.
+                Context-aware capture on desktop, with dictation, transcripts, workflows, and tools.
               </p>
             </Link>
             <Link href="/mobile" className="group/triad rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/60 p-4 backdrop-blur-xl transition-all duration-300 hover:backdrop-blur-2xl hover:bg-white/80 dark:hover:bg-zinc-900/70 hover:border-emerald-400/70 hover:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_12px_30px_rgba(16,185,129,0.16)] cursor-pointer">
@@ -343,7 +343,7 @@ export default function LandingPage() {
                 <ArrowRight className="w-3 h-3 text-zinc-400 ml-auto opacity-0 -translate-x-2 group-hover/triad:opacity-100 group-hover/triad:translate-x-0 transition-all" />
               </div>
               <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                Capture on iPhone and Watch, synced to Mac.
+                Voice memos and quick captures on iPhone and Watch, ready on Mac when you are.
               </p>
             </Link>
             {SHOW_AGENTS && (
@@ -354,7 +354,7 @@ export default function LandingPage() {
                   <ArrowRight className="w-3 h-3 text-zinc-400 ml-auto opacity-0 -translate-x-2 group-hover/triad:opacity-100 group-hover/triad:translate-x-0 transition-all" />
                 </div>
                 <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                  Voice-initiated workflows for tasks and documents.
+                  Turn captured thoughts into summaries, files, actions, and structured output.
                 </p>
               </Link>
             )}
@@ -422,10 +422,10 @@ export default function LandingPage() {
         <Container>
           <div className="text-center mb-8">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-zinc-900 dark:text-white leading-tight">
-              <span className="font-display italic font-medium">Voice</span> to Everything, <span className="bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">Instantly.</span>
+              Capture in the mode that <span className="font-display italic font-medium">costs you the least.</span>
             </h2>
             <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-              Talkie is the connective tissue - driving your favorite tools with the right context, then pinging you when it's done.
+              Talkie helps knowledge workers externalize thoughts without breaking flow, then recover, search, transform, and act on them later.
             </p>
           </div>
 
@@ -461,23 +461,23 @@ export default function LandingPage() {
                   {[
                     {
                       icon: Terminal,
-                      title: 'Universal Voice Input',
-                      body: 'Dictate into any app. Talkie types wherever your cursor is, no plugins required.',
+                      title: 'Context-Aware Capture',
+                      body: 'Capture while you work and keep the surrounding app, window, and project context attached to the thought.',
                     },
                     {
                       icon: Wand2,
-                      title: 'Blazing-Fast & Accurate',
-                      body: 'Real-time transcription that keeps up with your thoughts, powered by a state-of-the-art audio engine.',
+                      title: 'Keyboard-First Flow',
+                      body: 'Built for people who live in shortcuts, search, terminals, and fast context switches.',
                     },
                     {
                       icon: Book,
-                      title: 'Teach It Your Language',
-                      body: 'Ensure near-perfect accuracy for your specific jargon with Personal Dictionaries.',
+                      title: 'More Than Dictation',
+                      body: 'Voice memos, dictation, notes, scratchpad captures, and transcripts all live in one system.',
                     },
                     {
                       icon: Cpu,
-                      title: 'Local-First Engine',
-                      body: 'Process speech on-device by default, with privacy built into every step.',
+                      title: 'AI As Amplifier',
+                      body: 'Use AI to summarize, route, and transform captured thoughts without making prompting the product.',
                     },
                   ].map(({ icon: Icon, title, body }) => (
                     <div key={title} className="rounded-lg border border-zinc-200/70 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/50 p-5 backdrop-blur-lg transition-all hover:backdrop-blur-2xl hover:border-emerald-400/70 hover:shadow-[0_10px_30px_rgba(16,185,129,0.14)]">
@@ -494,18 +494,18 @@ export default function LandingPage() {
                   {[
                     {
                       icon: Zap,
-                      title: 'Instant Capture',
-                      body: 'Open, speak, done. Capture ideas anywhere with iPhone or Apple Watch.',
+                      title: 'Fastest Path Wins',
+                      body: 'Open, speak, done. Capture ideas wherever they appear with iPhone or Apple Watch.',
                     },
                     {
                       icon: ShieldCheck,
-                      title: 'On-Device Transcription',
-                      body: 'Get a high-quality, private transcript immediately - no internet required.',
+                      title: 'Voice Memos, Not Just Dictation',
+                      body: 'Keep longer recordings, quick thoughts, and transcripts in the same personal capture system.',
                     },
                     {
                       icon: Cloud,
-                      title: 'Seamless iCloud Sync',
-                      body: 'Your notes show up on your Mac moments later, ready for the next step.',
+                      title: 'Ready on Mac',
+                      body: 'Your captures arrive on Mac with transcript, context, and workflows ready for the next step.',
                     },
                   ].map(({ icon: Icon, title, body }) => (
                     <div key={title} className="rounded-lg border border-zinc-200/70 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/50 p-5 backdrop-blur-lg transition-all hover:backdrop-blur-2xl hover:border-emerald-400/70 hover:shadow-[0_10px_30px_rgba(16,185,129,0.14)]">

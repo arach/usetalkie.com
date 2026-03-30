@@ -192,8 +192,8 @@ export default function LivePage() {
               <span className="font-bold bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">Action.</span>
             </h1>
 
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
-              Speak and Talkie types, transcribes, or runs workflows. Local-first, private.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-8">
+              Capture thoughts from wherever you&apos;re working. Talkie can type, transcribe, search, and trigger workflows with context intact.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

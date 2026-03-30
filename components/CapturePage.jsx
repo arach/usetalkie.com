@@ -115,8 +115,8 @@ export default function CapturePage() {
               <span className="font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">on the Go.</span>
             </h1>
 
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
-              Speak anywhere - iPhone, Watch, iPad, Mac. Everything syncs, stays private.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-8">
+              Capture voice memos and quick thoughts wherever they happen, then pick them up later on Mac with transcript and context intact.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -187,17 +187,17 @@ export default function CapturePage() {
             <CaptureCard
               icon={Smartphone}
               title="iPhone App"
-              description="Open, speak, done. Designed for quick capture with clean, readable transcripts."
+              description="Open, speak, done. Designed for fast captures that stay readable, searchable, and useful later."
             />
             <CaptureCard
               icon={Watch}
               title="Apple Watch"
-              description="Tap the wrist, speak a thought, and keep moving. Perfect for walks and commutes."
+              description="Tap the wrist, catch the thought, and keep moving. Perfect for walks, commutes, and in-between moments."
             />
             <CaptureCard
               icon={Zap}
               title="Widgets + Shortcuts"
-              description="Launch capture from your Home Screen, Lock Screen, or a shortcut gesture."
+              description="Launch capture from your Home Screen, Lock Screen, or a shortcut so the friction stays low."
             />
           </div>
         </Container>
@@ -213,7 +213,7 @@ export default function CapturePage() {
               Capture anywhere, continue on Mac.
             </h2>
             <p className="mt-3 text-zinc-400 leading-relaxed">
-              Capture on the go, then continue on your Mac with dictation and workflows ready to go.
+              Capture on the go, then continue on your Mac with transcript, context, and workflows ready to go.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">

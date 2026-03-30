@@ -1,12 +1,12 @@
 import LivePage from '../../components/LivePage'
 
 export const metadata = {
-  title: 'Talkie for Mac — Voice to action',
-  description: 'Talk to Talkie on Mac. Dictate anywhere and turn speech into tasks, summaries, and actions - local-first and private.',
+  title: 'Talkie for Mac — Context-aware capture on desktop',
+  description: 'Talkie for Mac is a keyboard-first capture system for knowledge workers. Dictate anywhere, keep transcripts searchable, and turn captured thoughts into workflows, files, and actions.',
   keywords: ['dictation', 'voice to text', 'macos', 'workflow', 'local', 'privacy', 'productivity'],
   openGraph: {
-    title: 'Talkie for Mac — Voice to action',
-    description: 'Talk to Talkie on Mac. Dictate anywhere and turn speech into tasks, summaries, and actions - local-first and private.',
+    title: 'Talkie for Mac — Context-aware capture on desktop',
+    description: 'Talkie for Mac is a keyboard-first capture system for knowledge workers. Dictate anywhere, keep transcripts searchable, and turn captured thoughts into workflows, files, and actions.',
     url: 'https://usetalkie.com/mac',
     siteName: 'Talkie',
     images: [
@@ -22,8 +22,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie for Mac — Voice to action',
-    description: 'Talk to Talkie on Mac. Dictate anywhere and turn speech into tasks, summaries, and actions - local-first and private.',
+    title: 'Talkie for Mac — Context-aware capture on desktop',
+    description: 'Talkie for Mac is a keyboard-first capture system for knowledge workers. Dictate anywhere, keep transcripts searchable, and turn captured thoughts into workflows, files, and actions.',
     images: ['/og-live.png'],
   },
 }
