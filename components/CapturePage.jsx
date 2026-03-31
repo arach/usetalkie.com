@@ -115,6 +115,10 @@ export default function CapturePage() {
               <span className="font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">on the Go.</span>
             </h1>
 
+            <p className="mx-auto max-w-xl text-xl text-zinc-700 dark:text-zinc-200 md:text-2xl font-display mb-4">
+              Like a selfie for your thoughts.
+            </p>
+
             <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-8">
               Capture voice memos and quick thoughts wherever they happen, then pick them up later on Mac with transcript and context intact.
             </p>

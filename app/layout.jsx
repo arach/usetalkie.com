@@ -9,15 +9,15 @@ const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', di
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', display: 'swap' })
 
 export const metadata = {
-  title: 'Talkie - Multi-modal capture for knowledge workers',
+  title: 'Talkie - Private capture for people who think in motion',
   description:
-    'Talkie is a context-aware capture tool for knowledge workers. Use voice memos, dictation, notes, and quick captures without breaking flow, then search, transform, and act on them later.',
+    'Talk it into action, with the moment attached. Turn memos and dictation into summaries, drafts, and next steps on your devices.',
   applicationName: 'Talkie',
   metadataBase: new URL('https://usetalkie.com'),
   openGraph: {
-    title: 'Talkie - Multi-modal capture for knowledge workers',
+    title: 'Talkie - Private capture for people who think in motion',
     description:
-      'Talkie is a context-aware capture tool for knowledge workers. Use voice memos, dictation, notes, and quick captures without breaking flow, then search, transform, and act on them later.',
+      'Talk it into action, with the moment attached. Turn memos and dictation into summaries, drafts, and next steps on your devices.',
     url: 'https://usetalkie.com',
     siteName: 'Talkie',
     locale: 'en_US',
@@ -27,7 +27,7 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Talkie - Multi-modal capture for knowledge workers',
+        alt: 'Talkie - Private capture for people who think in motion',
       },
     ],
   },
@@ -43,9 +43,9 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie - Multi-modal capture for knowledge workers',
+    title: 'Talkie - Private capture for people who think in motion',
     description:
-      'Talkie is a context-aware capture tool for knowledge workers. Use voice memos, dictation, notes, and quick captures without breaking flow, then search, transform, and act on them later.',
+      'Talk it into action, with the moment attached. Turn memos and dictation into summaries, drafts, and next steps on your devices.',
     images: ['/og-image.png'],
   },
 }

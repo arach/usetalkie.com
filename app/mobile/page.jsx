@@ -2,7 +2,7 @@ import CapturePage from '../../components/CapturePage'
 
 export const metadata = {
   title: 'Talkie for Mobile — Voice, on the Go.',
-  description: 'Capture voice memos and quick thoughts on iPhone and Apple Watch, then pick them up on your Mac with transcripts, context, and workflows ready to go.',
+  description: 'Like a selfie for your thoughts. Capture voice memos on iPhone and Apple Watch, then pick them up on your Mac with transcript and context attached.',
 }
 
 export default function Page() {
