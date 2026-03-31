@@ -256,7 +256,7 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-stone-50 text-zinc-900 font-sans selection:bg-emerald-600 selection:text-white dark:bg-[#0a0f0d] dark:text-zinc-100 dark:selection:bg-emerald-500 dark:selection:text-black">
+    <div className="min-h-screen bg-stone-50 text-zinc-900 font-sans selection:bg-emerald-600 selection:text-white dark:bg-[#0a0f0d] dark:text-zinc-100 dark:selection:bg-white dark:selection:text-black">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] btn-ghost">
         Skip to content
       </a>
@@ -296,7 +296,7 @@ export default function LandingPage() {
               <ThemeToggle floating={false} />
               <Link
                 href="/download"
-                className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-4 text-[10px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-emerald-400"
+                className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-4 text-[10px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
               >
                 <Download className="h-3.5 w-3.5" />
                 Download
@@ -351,20 +351,19 @@ export default function LandingPage() {
       </nav>
 
       <main id="main">
-        <section className="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-stone-100 via-stone-50 to-white pt-24 pb-20 dark:border-emerald-900/20 dark:from-[#0d1210] dark:via-[#0b100e] dark:to-[#0a0f0d] md:pt-32 md:pb-24">
+        <section className="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-stone-100 via-stone-50 to-white pt-24 pb-20 dark:border-zinc-800/70 dark:from-[#111519] dark:via-[#0d1115] dark:to-[#090c10] md:pt-32 md:pb-24">
           <div className="absolute inset-0 bg-grid-fade opacity-45 pointer-events-none" />
-          <div className="absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_62%)] pointer-events-none" />
-          <div className="bg-glow-emerald left-1/2 top-[-280px] -translate-x-1/2 z-0" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.12),transparent_62%)] opacity-0 dark:opacity-100" />
 
           <Container className="relative z-10">
             <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-white/85 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-700 shadow-[0_12px_40px_rgba(16,185,129,0.08)] dark:bg-emerald-950/25 dark:text-emerald-300">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-white/85 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-700 shadow-[0_12px_40px_rgba(2,6,23,0.06)] dark:border-white/10 dark:bg-zinc-900/55 dark:text-zinc-200">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse dark:bg-zinc-200" />
                 Mac, iPhone, and Apple Watch
               </div>
 
               <h1 className="mt-8 text-5xl font-bold tracking-[-0.06em] text-zinc-950 dark:text-white md:text-7xl lg:text-[5.5rem]">
-                Talk it into <span className="font-display italic text-emerald-500 dark:text-emerald-400">action.</span>
+                Talk it into <span className="font-display italic text-emerald-500 dark:text-zinc-100">action.</span>
               </h1>
 
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-300 md:text-xl">
@@ -374,7 +373,7 @@ export default function LandingPage() {
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
                   href="/download"
-                  className="inline-flex h-12 items-center gap-2 rounded-full bg-emerald-600 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
+                  className="inline-flex h-12 items-center gap-2 rounded-full bg-emerald-600 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
                 >
                   <Download className="h-4 w-4" />
                   Download Talkie
@@ -405,27 +404,30 @@ export default function LandingPage() {
             </div>
 
             <div className="relative mx-auto mt-16 max-w-5xl">
-              <div className="absolute inset-x-8 top-5 hidden h-full rounded-[32px] bg-emerald-500/10 blur-3xl md:block" />
+              <div className="absolute inset-x-8 top-5 hidden h-full rounded-[32px] bg-black/5 blur-3xl md:block dark:bg-white/10 dark:opacity-90" />
+              <div className="absolute inset-x-14 top-10 hidden h-[78%] rounded-[36px] bg-white/[0.08] blur-[90px] md:block dark:opacity-100" />
 
-              <div className="relative rounded-[32px] border border-zinc-200/70 bg-white/72 p-4 shadow-[0_36px_120px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-zinc-800/70 dark:bg-zinc-950/62 md:p-6">
+              <div className="relative rounded-[32px] border border-zinc-200/70 bg-white/72 p-4 shadow-[0_36px_120px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-white/12 dark:bg-white/[0.045] dark:shadow-[0_44px_140px_rgba(0,0,0,0.48)] md:p-6">
+                <div className="pointer-events-none absolute inset-[1px] rounded-[30px] border border-white/50 opacity-0 dark:opacity-100" />
                 <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_220px] md:items-end lg:grid-cols-[minmax(0,1fr)_260px]">
                   <button
                     type="button"
                     onClick={() => setGallery({ images: MAC_GALLERY, index: 0 })}
-                    className="group block overflow-hidden rounded-[24px] border border-zinc-200/80 bg-white shadow-2xl transition-transform hover:scale-[1.01] dark:border-zinc-800/70 dark:bg-black"
+                    className="group relative block overflow-hidden rounded-[24px] border border-zinc-200/80 bg-white shadow-2xl transition-transform hover:scale-[1.01] dark:border-white/12 dark:bg-[#0b0e12] dark:shadow-[0_28px_80px_rgba(0,0,0,0.46)]"
                   >
+                    <div className="pointer-events-none absolute inset-x-10 top-0 h-20 bg-white/0 opacity-0 blur-3xl dark:bg-white/10 dark:opacity-100" />
                     <img
                       src="/screenshots/mac-home.png"
                       alt="Talkie for Mac dashboard"
                       className="w-full h-auto"
                       loading="lazy"
                     />
-                    <div className="flex items-center justify-between border-t border-zinc-200/70 bg-stone-50 px-5 py-3 dark:border-zinc-800/70 dark:bg-zinc-950">
+                    <div className="flex items-center justify-between border-t border-zinc-200/70 bg-stone-50 px-5 py-3 dark:border-white/10 dark:bg-white/[0.04]">
                       <div className="text-left">
                         <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500">Mac</p>
                         <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">Dashboard, search, actions, compose</p>
                       </div>
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
+                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-300">
                         Open tour
                       </span>
                     </div>
@@ -434,23 +436,30 @@ export default function LandingPage() {
                   <button
                     type="button"
                     onClick={() => setGallery({ images: IPHONE_GALLERY, index: 0 })}
-                    className="group mx-auto block w-full max-w-[240px] overflow-hidden rounded-[28px] border border-zinc-200/80 bg-stone-50 shadow-2xl transition-transform hover:scale-[1.02] dark:border-zinc-800/70 dark:bg-black"
+                    className="group relative mx-auto flex w-full max-w-[240px] flex-col overflow-hidden rounded-[28px] border border-zinc-200/80 bg-stone-100 shadow-2xl transition-transform hover:scale-[1.02] dark:border-white/12 dark:bg-[#0f1419] dark:shadow-[0_28px_80px_rgba(0,0,0,0.5)]"
                   >
-                    <div className="px-5 pt-5 pb-8">
+                    <div className="pointer-events-none absolute inset-x-6 top-2 h-16 rounded-full bg-white/0 opacity-0 blur-3xl dark:bg-white/10 dark:opacity-100" />
+                    <div className="flex min-h-[430px] items-center justify-center px-5 pt-5 pb-8">
                       <img
-                        src="/screenshots/iphone-16-pro-max-6.png"
-                        alt="Talkie for iPhone memo detail"
-                        className="w-full h-auto rounded-[22px] shadow-lg shadow-black/10 dark:shadow-black/40"
+                        src="/screenshots/iphone-16-pro-max-3.png"
+                        alt="Talkie for iPhone terminal view"
+                        className="h-auto w-full rounded-[22px] bg-transparent shadow-lg shadow-black/10 dark:hidden"
+                        loading="lazy"
+                      />
+                      <img
+                        src="/screenshots/iphone-dark-3.png"
+                        alt="Talkie for iPhone terminal keyboard"
+                        className="hidden h-auto w-full rounded-[22px] bg-transparent shadow-lg shadow-black/40 dark:block"
                         loading="lazy"
                       />
                     </div>
-                    <div className="flex items-center justify-between border-t border-zinc-200/70 bg-stone-50 px-4 py-3 dark:border-zinc-800/70 dark:bg-zinc-950">
+                    <div className="flex min-h-[68px] items-center justify-between border-t border-zinc-200/70 bg-stone-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.04]">
                       <div className="text-left">
                         <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500">iPhone</p>
-                        <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">Capture on the move</p>
+                        <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">On the go</p>
                       </div>
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
-                        Open tour
+                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-300">
+                        Tour
                       </span>
                     </div>
                   </button>
@@ -476,7 +485,7 @@ export default function LandingPage() {
                     key={item.title}
                     className="rounded-2xl border border-zinc-200/70 bg-white/75 p-4 shadow-[0_20px_50px_rgba(15,23,42,0.06)] backdrop-blur dark:border-zinc-800/70 dark:bg-zinc-950/55"
                   >
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
+                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-600 dark:text-zinc-300">
                       {item.title}
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
@@ -489,10 +498,10 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        <section id="capture" className="border-b border-stone-200/70 bg-white py-20 dark:border-emerald-900/20 dark:bg-[#0a0f0d] md:py-24">
+        <section id="capture" className="border-b border-stone-200/70 bg-white py-20 dark:border-zinc-800/70 dark:bg-[#0a0f0d] md:py-24">
           <Container>
             <div className="mx-auto max-w-3xl text-center">
-              <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-emerald-600 dark:text-emerald-400">
+              <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-emerald-600 dark:text-zinc-300">
                 Every fast path, one system
               </p>
               <h2 className="mt-4 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
@@ -508,10 +517,10 @@ export default function LandingPage() {
                 <Link
                   key={title}
                   href={href}
-                  className="group rounded-[24px] border border-zinc-200/70 bg-stone-50/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/60 hover:bg-white hover:shadow-[0_24px_60px_rgba(16,185,129,0.12)] dark:border-zinc-800/70 dark:bg-zinc-950/55 dark:hover:bg-zinc-950/80"
+                  className="group rounded-[24px] border border-zinc-200/70 bg-stone-50/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/60 hover:bg-white hover:shadow-[0_24px_60px_rgba(16,185,129,0.12)] dark:border-zinc-800/70 dark:bg-zinc-950/55 dark:hover:border-zinc-700 dark:hover:bg-zinc-950/80 dark:hover:shadow-[0_24px_60px_rgba(255,255,255,0.04)]"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 transition-colors group-hover:bg-emerald-500/15 dark:text-emerald-400">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 transition-colors group-hover:bg-emerald-500/15 dark:bg-white/5 dark:text-zinc-100 dark:group-hover:bg-white/10">
                       <Icon className="h-5 w-5" />
                     </div>
                     <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400">
@@ -524,7 +533,7 @@ export default function LandingPage() {
                   <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                     {body}
                   </p>
-                  <div className="mt-5 inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500 transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                  <div className="mt-5 inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500 transition-colors group-hover:text-emerald-600 dark:group-hover:text-white">
                     Explore
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                   </div>
@@ -534,12 +543,12 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        <section id="context" className="border-b border-stone-200/70 bg-stone-50 py-20 dark:border-emerald-900/20 dark:bg-[#0d1210] md:py-24">
+        <section id="context" className="border-b border-stone-200/70 bg-stone-50 py-20 dark:border-zinc-800/70 dark:bg-[#0d1012] md:py-24">
           <Container>
             <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white/75 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-600 dark:border-zinc-800/70 dark:bg-zinc-950/50 dark:text-zinc-300">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400" />
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-500 dark:text-zinc-200" />
                   Context that survives the moment
                 </div>
 
@@ -557,7 +566,7 @@ export default function LandingPage() {
                       key={step.id}
                       className="flex gap-4 rounded-[24px] border border-zinc-200/70 bg-white/80 p-5 dark:border-zinc-800/70 dark:bg-zinc-950/55"
                     >
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-emerald-600 dark:text-emerald-400">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-emerald-600 dark:bg-white/5 dark:text-zinc-100">
                         {step.id}
                       </div>
                       <div>
@@ -596,7 +605,7 @@ export default function LandingPage() {
                     <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500">Recent captures</p>
                     <p className="mt-1 text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">The idea keeps its surroundings.</p>
                   </div>
-                  <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-400">
+                  <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-600 dark:bg-white/5 dark:text-zinc-200">
                     Search-ready
                   </div>
                 </div>
@@ -630,7 +639,7 @@ export default function LandingPage() {
 
                 <div className="mt-5 grid gap-3 md:grid-cols-2">
                   <div className="rounded-[22px] border border-zinc-200/70 bg-zinc-950 p-4 text-white dark:border-zinc-800">
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-400">
+                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-400 dark:text-zinc-300">
                       CLI example
                     </p>
                     <code className="mt-3 block text-sm leading-relaxed text-zinc-200">
@@ -651,13 +660,13 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        <section id="ownership" className="relative overflow-hidden border-b border-emerald-900/20 bg-[#08110f] py-20 md:py-24">
+        <section id="ownership" className="relative overflow-hidden border-b border-zinc-800/70 bg-[#0a0d11] py-20 md:py-24">
           <div className="absolute inset-0 bg-tactical-grid-dark opacity-20 pointer-events-none" />
-          <div className="absolute inset-x-0 top-0 h-[460px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.12),transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-[460px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_65%)] pointer-events-none" />
 
           <Container className="relative z-10">
             <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-950/30 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-200">
                 <Lock className="h-3.5 w-3.5" />
                 Private by default
               </div>
@@ -675,9 +684,9 @@ export default function LandingPage() {
               {OWNERSHIP_CARDS.map(({ body, icon: Icon, title }) => (
                 <div
                   key={title}
-                  className="rounded-[26px] border border-emerald-900/30 bg-emerald-950/18 p-6 backdrop-blur-sm"
+                  className="rounded-[26px] border border-zinc-800/70 bg-white/[0.03] p-6 backdrop-blur-sm"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 text-zinc-100">
                     <Icon className="h-5 w-5" />
                   </div>
                   <h3 className="mt-5 text-xl font-semibold tracking-tight text-white">{title}</h3>
@@ -690,9 +699,9 @@ export default function LandingPage() {
               {OWNERSHIP_PILLS.map((item) => (
                 <div
                   key={item}
-                  className="inline-flex items-center gap-2 rounded-full border border-emerald-900/30 bg-black/20 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-200"
+                  className="inline-flex items-center gap-2 rounded-full border border-zinc-800/70 bg-black/20 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-200"
                 >
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                  <ShieldCheck className="h-3.5 w-3.5 text-zinc-300" />
                   {item}
                 </div>
               ))}
@@ -702,7 +711,7 @@ export default function LandingPage() {
 
         <PricingSection />
 
-        <section id="get" className="border-b border-stone-200/70 bg-white py-20 dark:border-emerald-900/20 dark:bg-[#0a0f0d] md:py-24">
+        <section id="get" className="border-b border-stone-200/70 bg-white py-20 dark:border-zinc-800/70 dark:bg-[#0a0f0d] md:py-24">
           <Container>
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
@@ -718,7 +727,7 @@ export default function LandingPage() {
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
                   href="/download"
-                  className="inline-flex h-12 items-center gap-2 rounded-full bg-zinc-900 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-emerald-400"
+                  className="inline-flex h-12 items-center gap-2 rounded-full bg-zinc-900 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
                 >
                   <Download className="h-4 w-4" />
                   Download Talkie
@@ -814,8 +823,8 @@ export default function LandingPage() {
                         }}
                         className={`inline-flex flex-shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest transition-all ${
                           audioPlaying
-                            ? 'border-emerald-500/30 bg-emerald-500/20 text-emerald-400'
-                            : 'border-white/15 bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'
+                        ? 'border-emerald-500/30 bg-emerald-500/20 text-emerald-400 dark:border-white/15 dark:bg-white/10 dark:text-zinc-100'
+                        : 'border-white/15 bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'
                         }`}
                         aria-label={audioPlaying ? 'Pause narration' : 'Listen to narration'}
                       >
@@ -888,7 +897,7 @@ export default function LandingPage() {
                   shareTourSlide(current)
                 }}
                 className={`rounded-full p-2 backdrop-blur-sm transition-colors ${
-                  copied ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-white hover:bg-white/20'
+                  copied ? 'bg-emerald-500/20 text-emerald-400 dark:bg-white/10 dark:text-zinc-100' : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
                 aria-label={copied ? 'Link copied' : 'Copy link to this slide'}
                 title="Copy link"
