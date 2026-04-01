@@ -9,15 +9,15 @@ const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', di
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', display: 'swap' })
 
 export const metadata = {
-  title: 'Talkie - Private capture for people who think in motion',
+  title: 'Talkie - Talk to your Mac',
   description:
-    'Talk it into action, with the moment attached. Turn memos and dictation into summaries, drafts, and next steps on your devices.',
+    'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
   applicationName: 'Talkie',
   metadataBase: new URL('https://usetalkie.com'),
   openGraph: {
-    title: 'Talkie - Private capture for people who think in motion',
+    title: 'Talkie - Talk to your Mac',
     description:
-      'Talk it into action, with the moment attached. Turn memos and dictation into summaries, drafts, and next steps on your devices.',
+      'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
     url: 'https://usetalkie.com',
     siteName: 'Talkie',
     locale: 'en_US',
@@ -27,7 +27,7 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Talkie - Private capture for people who think in motion',
+        alt: 'Talkie - Talk to your Mac',
       },
     ],
   },
@@ -43,9 +43,9 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie - Private capture for people who think in motion',
+    title: 'Talkie - Talk to your Mac',
     description:
-      'Talk it into action, with the moment attached. Turn memos and dictation into summaries, drafts, and next steps on your devices.',
+      'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
     images: ['/og-image.png'],
   },
 }

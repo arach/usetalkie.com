@@ -2,12 +2,12 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Laptop, Smartphone, Bot } from 'lucide-react'
+import { Laptop, ShieldCheck, Smartphone } from 'lucide-react'
 
 const navItems = [
   { href: '/mobile', label: 'Mobile', icon: Smartphone, color: 'blue' },
   { href: '/mac', label: 'Mac', icon: Laptop, color: 'emerald' },
-  { href: '/agents', label: 'Agents', icon: Bot, color: 'amber' },
+  { href: '/security', label: 'Security', icon: ShieldCheck, color: 'slate' },
 ]
 
 export default function SubNav() {
@@ -23,6 +23,7 @@ export default function SubNav() {
           blue: 'bg-blue-500 text-white shadow-lg shadow-blue-500/25',
           purple: 'bg-purple-500 text-white shadow-lg shadow-purple-500/25',
           amber: 'bg-amber-500 text-white shadow-lg shadow-amber-500/25',
+          slate: 'bg-zinc-900 text-white shadow-lg shadow-black/20 dark:bg-zinc-100 dark:text-black',
         }
 
         return (

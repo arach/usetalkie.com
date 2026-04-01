@@ -39,10 +39,34 @@ const NAV_LINKS = [
   { label: 'Pricing', href: '#pricing' },
 ]
 
+const USE_CASES = {
+  Mac: [
+    { action: 'Voice a rough draft', outcome: 'Your cleanup rule runs automatically' },
+    { action: 'Record the meeting', outcome: 'Your summary format, every time' },
+    { action: 'Describe the bug while it\'s fresh', outcome: 'GitHub issue filed, not forgotten' },
+  ],
+  Phone: [
+    { action: 'Ramble for five minutes', outcome: 'Researches, pings you back' },
+    { action: 'Snap a photo, voice your idea', outcome: 'Spec ready at your desk' },
+    { action: 'Describe the problem out loud', outcome: 'Mac investigates, notifies you' },
+  ],
+  Watch: [
+    { action: 'Tap mid-thought', outcome: 'Searchable by tonight' },
+    { action: 'Capture without breaking stride', outcome: "It's waiting on your Mac" },
+    { action: 'The 3am idea', outcome: 'Still there in the morning' },
+  ],
+}
+
+const HERO_STORIES = [
+  { surface: 'Mac' },
+  { surface: 'Phone' },
+  { surface: 'Watch' },
+]
+
 const CAPTURE_MODES = [
   {
     icon: Mic,
-    eyebrow: 'Voice Memos',
+    eyebrow: 'Capture',
     title: 'Catch the thought before it mutates.',
     body: 'Record on iPhone, Apple Watch, or Mac and keep the full transcript in the same system.',
     href: '/mobile',
@@ -57,14 +81,14 @@ const CAPTURE_MODES = [
   {
     icon: Wand2,
     eyebrow: 'Compose',
-    title: 'Clean it up after capture, not during it.',
+    title: 'Structure it after the moment.',
     body: 'Rewrite, expand, summarize, and compare edits once the raw idea is safely recorded.',
     href: '/mac',
   },
   {
     icon: Search,
     eyebrow: 'Recovery',
-    title: 'Find it by what you said or where you said it.',
+    title: 'Recover the full thread later.',
     body: 'Search across memos and dictations, with app context attached when capture starts on desktop.',
     href: '/docs/cli',
   },
@@ -78,7 +102,7 @@ const CAPTURE_MODES = [
   {
     icon: Terminal,
     eyebrow: 'CLI',
-    title: 'Keep the system open.',
+    title: 'Keep the advanced layer open.',
     body: 'Query your voice data from scripts and tools instead of trapping it inside a single interface.',
     href: '/docs/cli',
   },
@@ -136,8 +160,8 @@ const OWNERSHIP_CARDS = [
   },
   {
     icon: Cpu,
-    title: 'AI on your terms',
-    body: 'Use local models, bring your own provider, or keep workflows fully offline when privacy matters more than convenience.',
+    title: 'Models on your terms',
+    body: 'Use on-device models, bring your own provider, or keep workflows fully offline when privacy matters more than convenience.',
   },
 ]
 
@@ -154,8 +178,26 @@ export default function LandingPage() {
   const [gallery, setGallery] = useState(null)
   const [audioPlaying, setAudioPlaying] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [heroSurfaceIndex, setHeroSurfaceIndex] = useState(0)
+  const [flipPhase, setFlipPhase] = useState('idle') // 'idle' | 'out' | 'in'
+  const [useCaseVisible, setUseCaseVisible] = useState(true)
+  const [heroPaused, setHeroPaused] = useState(false)
+  const [heroEntered, setHeroEntered] = useState(false)
   const audioRef = useRef(null)
   const scrollMilestones = useRef(new Set())
+  const currentHeroStory = HERO_STORIES[heroSurfaceIndex]
+
+  const jumpToSurface = (targetIndex) => {
+    if (targetIndex === heroSurfaceIndex || flipPhase !== 'idle') return
+    setFlipPhase('out')
+    setUseCaseVisible(false)
+    window.setTimeout(() => {
+      setHeroSurfaceIndex(targetIndex)
+      setFlipPhase('in')
+      setUseCaseVisible(true)
+    }, 150)
+    window.setTimeout(() => setFlipPhase('idle'), 370)
+  }
 
   const shareTourSlide = async (item) => {
     const slug = item.audio.replace('/audio/tour/', '').replace('.mp3', '')
@@ -176,6 +218,43 @@ export default function LandingPage() {
   useEffect(() => {
     captureUTMParams()
   }, [])
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setHeroEntered(true))
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
+  useEffect(() => {
+    if (heroPaused) {
+      setFlipPhase('idle')
+      setUseCaseVisible(true)
+      return
+    }
+
+    let t1, t2
+
+    const interval = window.setInterval(() => {
+      // Flap starts rotating out; use cases fade out simultaneously
+      setFlipPhase('out')
+      setUseCaseVisible(false)
+
+      // At ~140ms the card is edge-on (-90°) — invisible — swap content then start flip-in
+      t1 = window.setTimeout(() => {
+        setHeroSurfaceIndex((current) => (current + 1) % HERO_STORIES.length)
+        setFlipPhase('in')
+        setUseCaseVisible(true)
+      }, 150)
+
+      // After flip-in animation completes, back to idle
+      t2 = window.setTimeout(() => setFlipPhase('idle'), 150 + 220)
+    }, 4000)
+
+    return () => {
+      window.clearInterval(interval)
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+    }
+  }, [heroPaused])
 
   useEffect(() => {
     if (!gallery) return
@@ -351,24 +430,79 @@ export default function LandingPage() {
       </nav>
 
       <main id="main">
-        <section className="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-stone-100 via-stone-50 to-white pt-24 pb-20 dark:border-zinc-800/70 dark:from-[#111519] dark:via-[#0d1115] dark:to-[#090c10] md:pt-32 md:pb-24">
+        <section
+          className="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-stone-100 via-stone-50 to-white pt-24 pb-20 dark:border-zinc-800/70 dark:from-[#111519] dark:via-[#0d1115] dark:to-[#090c10] md:pt-32 md:pb-24"
+          onMouseEnter={() => setHeroPaused(true)}
+          onMouseLeave={() => setHeroPaused(false)}
+        >
           <div className="absolute inset-0 bg-grid-fade opacity-45 pointer-events-none" />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.12),transparent_62%)] opacity-0 dark:opacity-100" />
 
           <Container className="relative z-10">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-white/85 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-700 shadow-[0_12px_40px_rgba(2,6,23,0.06)] dark:border-white/10 dark:bg-zinc-900/55 dark:text-zinc-200">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse dark:bg-zinc-200" />
-                Mac, iPhone, and Apple Watch
+            <div className={`mx-auto max-w-4xl text-center transition-[opacity,transform] duration-700 ease-out ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white/90 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] shadow-[0_12px_40px_rgba(2,6,23,0.06)] dark:border-white/10 dark:bg-zinc-900/70">
+                {[{ label: 'Mac', idx: 0 }, { label: 'iPhone', idx: 1 }, { label: 'Watch', idx: 2 }].map(({ label, idx }, i, arr) => (
+                  <React.Fragment key={label}>
+                    <button
+                      onClick={() => jumpToSurface(idx)}
+                      className={`transition-colors duration-200 ${heroSurfaceIndex === idx ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
+                    >
+                      {label}
+                    </button>
+                    {i < arr.length - 1 && (
+                      <span className="text-zinc-300 dark:text-zinc-600">,</span>
+                    )}
+                  </React.Fragment>
+                ))}
               </div>
 
-              <h1 className="mt-8 text-5xl font-bold tracking-[-0.06em] text-zinc-950 dark:text-white md:text-7xl lg:text-[5.5rem]">
-                Talk it into <span className="font-display italic text-emerald-500 dark:text-zinc-100">action.</span>
+              <h1
+                className="mt-8 flex items-end justify-center gap-x-[0.28em] font-display text-[clamp(2.8rem,9vw,5.6rem)] font-normal tracking-[-0.025em] leading-[0.92] text-zinc-950 dark:text-white"
+                aria-label={`Talk to your ${currentHeroStory.surface}`}
+              >
+                <span className="shrink-0">Talk to your</span>
+                <span className="shrink-0" style={{ perspective: '600px' }}>
+                  <span
+                    onClick={() => jumpToSurface((heroSurfaceIndex + 1) % HERO_STORIES.length)}
+                    className="relative mb-[-0.18em] inline-flex min-w-[3.8em] cursor-pointer items-center justify-center overflow-hidden rounded-[0.18em] border border-zinc-700/50 bg-zinc-900 px-[0.28em] py-[0.18em] font-display text-[1em] font-normal tracking-[-0.01em] text-zinc-50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_40px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-zinc-800"
+                    style={{
+                      animation:
+                        flipPhase === 'out' ? 'flap-out 140ms ease-in forwards' :
+                        flipPhase === 'in'  ? 'flap-in 200ms cubic-bezier(0.22, 1.2, 0.36, 1) forwards' :
+                        undefined,
+                    }}
+                  >
+                    <span className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/10 dark:bg-white/10" />
+                    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),transparent)]" />
+                    <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.18))]" />
+                    <span className="relative inline-block w-full text-center">
+                      {currentHeroStory.surface}
+                    </span>
+                  </span>
+                </span>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-300 md:text-xl">
-                Talkie is a private system for turning talking into usable output. Talk on iPhone, dictate on Mac, and turn raw thoughts into summaries, drafts, and next steps with the moment attached.
-              </p>
+              <div className="mx-auto mt-9 grid w-full max-w-[38rem] grid-cols-[1fr_2.5rem_1fr] items-center gap-y-3" aria-live="polite">
+                {USE_CASES[currentHeroStory.surface].map((item, i) => (
+                  <React.Fragment key={item.action}>
+                    <span
+                      className={`text-right text-sm text-zinc-500 dark:text-zinc-400 transition-all duration-300 ${useCaseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                      style={{ transitionDelay: useCaseVisible ? `${i * 60}ms` : '0ms' }}
+                    >
+                      {item.action}
+                    </span>
+                    <span className="select-none text-center text-zinc-400 dark:text-zinc-500">
+                      →
+                    </span>
+                    <span
+                      className={`text-left text-sm text-emerald-600 dark:text-emerald-400 transition-all duration-300 ${useCaseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                      style={{ transitionDelay: useCaseVisible ? `${i * 60}ms` : '0ms' }}
+                    >
+                      {item.outcome}
+                    </span>
+                  </React.Fragment>
+                ))}
+              </div>
 
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
@@ -387,33 +521,19 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
-                {[
-                  'Dictate anywhere',
-                  'Workflows with context',
-                  'Private by default',
-                ].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-zinc-200/80 bg-white/75 px-3 py-1.5 dark:border-zinc-800/80 dark:bg-zinc-950/55"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
             </div>
 
-            <div className="relative mx-auto mt-16 max-w-5xl">
+            <div className={`relative mx-auto mt-16 max-w-5xl transition-[opacity,transform] duration-700 ease-out delay-200 ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               <div className="absolute inset-x-8 top-5 hidden h-full rounded-[32px] bg-black/5 blur-3xl md:block dark:bg-white/10 dark:opacity-90" />
               <div className="absolute inset-x-14 top-10 hidden h-[78%] rounded-[36px] bg-white/[0.08] blur-[90px] md:block dark:opacity-100" />
 
-              <div className="relative rounded-[32px] border border-zinc-200/70 bg-white/72 p-4 shadow-[0_36px_120px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-white/12 dark:bg-white/[0.045] dark:shadow-[0_44px_140px_rgba(0,0,0,0.48)] md:p-6">
+              <div className="relative rounded-[32px] border border-zinc-200/70 bg-white/72 p-4 shadow-[0_36px_120px_rgba(15,23,42,0.12)] backdrop-blur-xl dark:border-white/5 dark:bg-white/[0.045] dark:shadow-[0_44px_140px_rgba(0,0,0,0.48)] md:p-6">
                 <div className="pointer-events-none absolute inset-[1px] rounded-[30px] border border-white/50 opacity-0 dark:opacity-100" />
                 <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_220px] md:items-end lg:grid-cols-[minmax(0,1fr)_260px]">
                   <button
                     type="button"
                     onClick={() => setGallery({ images: MAC_GALLERY, index: 0 })}
-                    className="group relative block overflow-hidden rounded-[24px] border border-zinc-200/80 bg-white shadow-2xl transition-transform hover:scale-[1.01] dark:border-white/12 dark:bg-[#0b0e12] dark:shadow-[0_28px_80px_rgba(0,0,0,0.46)]"
+                    className="group relative block overflow-hidden rounded-[24px] border border-zinc-200/80 bg-white shadow-2xl transition-transform hover:scale-[1.01] dark:border-white/5 dark:bg-[#0b0e12] dark:shadow-[0_28px_80px_rgba(0,0,0,0.46)]"
                   >
                     <div className="pointer-events-none absolute inset-x-10 top-0 h-20 bg-white/0 opacity-0 blur-3xl dark:bg-white/10 dark:opacity-100" />
                     <img
@@ -436,20 +556,14 @@ export default function LandingPage() {
                   <button
                     type="button"
                     onClick={() => setGallery({ images: IPHONE_GALLERY, index: 0 })}
-                    className="group relative mx-auto flex w-full max-w-[240px] flex-col overflow-hidden rounded-[28px] border border-zinc-200/80 bg-stone-100 shadow-2xl transition-transform hover:scale-[1.02] dark:border-white/12 dark:bg-[#0f1419] dark:shadow-[0_28px_80px_rgba(0,0,0,0.5)]"
+                    className="group relative mx-auto flex w-full max-w-[240px] flex-col overflow-hidden rounded-[28px] border border-zinc-200/80 bg-stone-100 shadow-2xl transition-transform hover:scale-[1.02] dark:border-white/5 dark:bg-[#0f1419] dark:shadow-[0_28px_80px_rgba(0,0,0,0.5)]"
                   >
                     <div className="pointer-events-none absolute inset-x-6 top-2 h-16 rounded-full bg-white/0 opacity-0 blur-3xl dark:bg-white/10 dark:opacity-100" />
                     <div className="flex min-h-[430px] items-center justify-center px-5 pt-5 pb-8">
                       <img
                         src="/screenshots/iphone-16-pro-max-3.png"
                         alt="Talkie for iPhone terminal view"
-                        className="h-auto w-full rounded-[22px] bg-transparent shadow-lg shadow-black/10 dark:hidden"
-                        loading="lazy"
-                      />
-                      <img
-                        src="/screenshots/iphone-dark-3.png"
-                        alt="Talkie for iPhone terminal keyboard"
-                        className="hidden h-auto w-full rounded-[22px] bg-transparent shadow-lg shadow-black/40 dark:block"
+                        className="h-auto w-full rounded-[22px] bg-transparent shadow-lg shadow-black/10 dark:shadow-black/40"
                         loading="lazy"
                       />
                     </div>
@@ -469,16 +583,16 @@ export default function LandingPage() {
               <div className="mt-5 grid gap-3 md:grid-cols-3">
                 {[
                   {
-                    title: 'Context attached',
-                    body: 'Know which app or moment the thought came from instead of storing anonymous text blobs.',
+                    title: 'Talk through the work',
+                    body: 'Use your voice to get a thought, draft, or instruction into motion without breaking focus.',
                   },
                   {
-                    title: 'Search later',
-                    body: 'Recover ideas by transcript, app, type, or project when you finally have time to act.',
+                    title: 'Pick the thread back up',
+                    body: 'Search what you said later with the transcript, timing, and context still attached.',
                   },
                   {
-                    title: 'Act when ready',
-                    body: 'Use compose, workflows, and exports after capture instead of adding friction up front.',
+                    title: 'Let your Mac run with it',
+                    body: 'Turn speech into a draft, task list, export, or workflow when it is time to do real work.',
                   },
                 ].map((item) => (
                   <div
@@ -488,7 +602,7 @@ export default function LandingPage() {
                     <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-600 dark:text-zinc-300">
                       {item.title}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+                    <p className="mt-2 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300">
                       {item.body}
                     </p>
                   </div>
@@ -505,10 +619,10 @@ export default function LandingPage() {
                 Every fast path, one system
               </p>
               <h2 className="mt-4 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
-                Capture however the moment allows.
+                One voice path. More than one use.
               </h2>
               <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                The point is not to make voice the product. The point is to make sure there is always a low-friction path from passing thought to something you can recover and use.
+                Talkie can start as a quick note, a dictated paragraph, a search query, or the start of a workflow. The point is not voice for its own sake. The point is moving work forward.
               </p>
             </div>
 
@@ -530,7 +644,7 @@ export default function LandingPage() {
                   <h3 className="mt-5 text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
                     {title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  <p className="mt-3 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
                     {body}
                   </p>
                   <div className="mt-5 inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500 transition-colors group-hover:text-emerald-600 dark:group-hover:text-white">
@@ -553,11 +667,11 @@ export default function LandingPage() {
                 </div>
 
                 <h2 className="mt-6 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
-                  Remember what you were doing, not just what you said.
+                  Voice notes are easy to save. Harder to use.
                 </h2>
 
                 <p className="mt-5 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  A raw transcript is better than a lost idea, but it still leaves work to your future self. Talkie keeps the thread intact so a capture can turn back into action later.
+                  Talkie keeps enough of the moment intact that coming back later feels less like archaeology and more like picking work back up.
                 </p>
 
                 <div className="mt-8 space-y-5">
@@ -573,7 +687,7 @@ export default function LandingPage() {
                         <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
                           {step.title}
                         </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                        <p className="mt-2 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
                           {step.body}
                         </p>
                       </div>
@@ -630,7 +744,7 @@ export default function LandingPage() {
                           {item.time}
                         </p>
                       </div>
-                      <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                      <p className="mt-3 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
                         {item.note}
                       </p>
                     </div>
@@ -650,7 +764,7 @@ export default function LandingPage() {
                     <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500">
                       Next step
                     </p>
-                    <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    <p className="mt-3 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
                       Turn the memo into a summary, export, or task list once you are back at your desk.
                     </p>
                   </div>
@@ -668,15 +782,15 @@ export default function LandingPage() {
             <div className="mx-auto max-w-3xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-200">
                 <Lock className="h-3.5 w-3.5" />
-                Private by default
+                Private by architecture
               </div>
 
               <h2 className="mt-6 text-4xl font-bold tracking-[-0.05em] text-white md:text-5xl">
-                Keep the whole chain on your side.
+                Your voice stays on your side.
               </h2>
 
               <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-300">
-                Talkie is meant to be a system you trust with unfinished thoughts. That means capture, storage, sync, and AI all stay legible, configurable, and as close to your devices as possible.
+                Your library lives on your devices. Sync runs through your iCloud. On-device transcription is available. External providers are opt-in and use your keys.
               </p>
             </div>
 
@@ -690,7 +804,7 @@ export default function LandingPage() {
                     <Icon className="h-5 w-5" />
                   </div>
                   <h3 className="mt-5 text-xl font-semibold tracking-tight text-white">{title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-300">{body}</p>
+                  <p className="mt-3 text-[15px] leading-relaxed text-zinc-300">{body}</p>
                 </div>
               ))}
             </div>
@@ -718,10 +832,10 @@ export default function LandingPage() {
                 Ready when you are
               </p>
               <h2 className="mt-4 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
-                Build a capture system your future self can actually use.
+                Start with your Mac.
               </h2>
               <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                Start with Mac, add iPhone when you want it, and keep your thoughts in a system that does not disappear the moment you stop looking at it.
+                iPhone and Watch help you catch the thought. Mac is where Talkie earns its keep.
               </p>
 
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -753,7 +867,7 @@ export default function LandingPage() {
               <span className="text-sm font-bold uppercase tracking-[0.24em] text-zinc-900 dark:text-white">Talkie</span>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Private capture for people who think in motion.
+              Talk to your Mac. A mic is all you need.
             </p>
           </div>
 
