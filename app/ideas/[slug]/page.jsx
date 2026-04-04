@@ -22,6 +22,11 @@ import PromptShowcase from '../../../components/blog/PromptShowcase'
 import CopyableCode from '../../../components/blog/CopyableCode'
 import { VKNote, VKPrompt, VKCode } from '../../../components/blog/VoiceKnowledgeBlocks'
 import VersionCompare from '../../../components/blog/VersionCompare'
+import {
+  LocalIntelligenceCard,
+  LocalIntelligenceCards,
+  LocalIntelligencePromotedCards,
+} from '../../../components/blog/LocalIntelligenceCards'
 
 const mdxComponents = {
   VersionCompare,
@@ -45,6 +50,9 @@ const mdxComponents = {
   VKNote,
   VKPrompt,
   VKCode,
+  LocalIntelligenceCard,
+  LocalIntelligenceCards,
+  LocalIntelligencePromotedCards,
 }
 
 const mdxOptions = {

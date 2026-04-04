@@ -1,0 +1,81 @@
+---
+title: "What Apple's On-Device Model Actually Does"
+description: "We tested Apple's Foundation Models against 24 real Talkie use cases. Here's what works, what needs a prompt, and what stays free forever."
+date: "2026-04-04"
+tags: ["apple-intelligence", "foundation-models", "on-device-ml", "benchmarks", "privacy"]
+---
+
+macOS 26 puts a language model on every Apple Silicon Mac — no download, no API key, no token cost. `SystemLanguageModel.default` is just there, ready, the way a font is there.
+
+The question we wanted to answer: what can it actually do with voice notes?
+
+We ran 24 use cases against the on-device model and split them into three groups: things that work well enough to ship now, things that work but need more care, and things that are worth trying even if they don't always land.
+
+---
+
+## Tier 1 — Ship now
+
+These eight primitives produce reliable structured output from short transcripts. Latency is under a second. The prompts are tight and testable.
+
+<LocalIntelligencePromotedCards
+  ids={[
+    'memo-auto-title',
+    'memo-type-detection',
+    'action-item-extraction',
+    'transcript-cleanup-presets',
+    'what-matters-summary',
+    'calendar-intent-detection',
+    'reminder-normalization',
+    'private-redaction-pass',
+  ]}
+/>
+
+A few patterns that matter across all of them:
+
+**The 3,000 character limit is a real constraint.** The session API accepts longer inputs but we trim at 3k. For short voice notes — which is most of what Talkie captures — this is fine. For meeting recordings or extended rambles, you need to chunk first or accept that the model works from a window.
+
+**Confidence scores are worth keeping.** Every output schema includes a `confidence` field. The on-device model hedges accurately — when it's unsure, the number drops. Low-confidence outputs go into a review queue rather than being applied silently. That's the right design. A wrong auto-title is annoying; a wrong action item extraction that creates a task is worse.
+
+**Fact preservation needs an explicit constraint.** Transcript cleanup works well but will happily paraphrase numbers and names if you don't instruct it not to. The system prompt includes a hard rule: never change numbers, names, or dates. With that in place, `"from 19 to 6"` stays `"from 19 to 6"`.
+
+---
+
+## Tier 2 — Local-first workflows
+
+These eight go further. They're not just extraction — they need memory, routing logic, or multi-turn behavior. The on-device model handles them, but the surrounding plumbing matters as much as the model call.
+
+<LocalIntelligenceCards tier="local-first" />
+
+The most interesting one here is the **hybrid model router**. The idea: try local first, escalate to cloud only when the input is long, complex, or returns low-confidence output. For Talkie users who have Apple Intelligence enabled, most day-to-day processing never touches a cloud API. For the cases that need it — long reasoning chains, structured extraction from messy audio — we fall back gracefully.
+
+**Similar memo recall** depends on local embeddings, not just generation. We run a small embedding model alongside the Foundation Model to build a semantic index of captured memos. When a new capture comes in, we surface the three most relevant past memos before running the generation step. This costs essentially nothing and dramatically improves context.
+
+---
+
+## Tier 3 — Big swings
+
+These eight are harder. Some need persistent state across sessions. Some need multi-step local agent loops. Some are genuinely speculative. We're including them because the building blocks are there and the results, when they work, are notable.
+
+<LocalIntelligenceCards tier="big-swings" />
+
+**Contradiction and drift detection** is the one we're most interested in. The premise: as you capture over time, the model checks new decisions against old ones and flags when something conflicts. "We deferred the referral program until after analytics" followed three weeks later by "let's scope out the referral program" — that conflict should surface. This is hard because it requires a compact, queryable representation of past decisions, not just raw transcripts.
+
+**The daily brief** is simpler than it sounds: at the start or end of the day, the model reads the last 24 hours of captures and produces a one-paragraph narrative of what you said, decided, and deferred. Everything local, everything private, and genuinely useful.
+
+---
+
+## The cost picture
+
+Each of the Tier 1 primitives fires on every capture. For a user who records 10 memos a day, that's ~300 model calls a month just for auto-title and type detection. At cloud API rates, that's real money. At on-device rates, it's zero.
+
+Privacy is the other side of the same coin. The private redaction primitive — masking names, account numbers, health identifiers before anything leaves the device — only makes sense as a local operation. Sending the unredacted transcript to a cloud API to redact it would defeat the purpose.
+
+The routing principle we're landing on: **local by default, cloud as an intentional escalation**. Users who never connect an API key get a capable, private, free processing layer. Users who want deeper reasoning or larger context windows can opt into cloud providers without changing how the rest of the system works.
+
+---
+
+## What's next
+
+The Tier 1 set ships in the next build. We'll benchmark each one against a fixed test suite as we go — the test cases in each card above are the starting fixtures.
+
+The hybrid router is the Tier 2 piece we're building next. Getting the confidence threshold right — when does local output quality warrant escalation — is the interesting engineering problem. We'll write that up separately.
