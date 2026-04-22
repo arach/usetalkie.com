@@ -360,7 +360,7 @@ export default function LandingPage() {
             )}
           </div>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col items-center gap-3">
             <Link
               href="/download"
               className="h-12 px-8 rounded bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 dark:hover:bg-emerald-400 hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl"
@@ -368,6 +368,11 @@ export default function LandingPage() {
               <Download className="w-4 h-4" />
               <span>Download Talkie</span>
             </Link>
+            <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-400">
+              <Terminal className="w-3 h-3" />
+              <span>or</span>
+              <code className="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-2 py-0.5 text-zinc-600 dark:text-zinc-300">bun install -g @talkie/app</code>
+            </div>
           </div>
         </Container>
       </section>

@@ -5,8 +5,9 @@ import Link from 'next/link'
 import { trackDownload, trackAppStoreClick } from '../lib/analytics'
 
 const GITHUB_DMG_URL = 'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
+const APP_INSTALL_CMD = 'bun install -g @talkie/app'
 const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
-const NPM_INSTALL_CMD = 'bun install -g @talkie/cli'
+const CLI_ONLY_CMD = 'bun install -g @talkie/cli'
 const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
 function CopyableCommand({ command, label, id, copiedCmd, onCopy }) {
@@ -83,22 +84,42 @@ export default function DownloadAllPage() {
             </div>
 
             <div className="p-6 space-y-4">
-              {/* DMG download */}
+              {/* Terminal install — primary */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Terminal className="w-3.5 h-3.5 text-emerald-500" />
+                  <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                    Install via terminal
+                  </p>
+                </div>
+                <CopyableCommand
+                  command={APP_INSTALL_CMD}
+                  label="bun"
+                  id="app"
+                  copiedCmd={copiedCmd}
+                  onCopy={handleCopy}
+                />
+                <p className="text-[10px] font-mono text-zinc-400 mt-1.5">
+                  Installs the app, CLI, and launches Talkie.
+                </p>
+              </div>
+
+              {/* DMG download — secondary */}
               <button
                 onClick={handleDownload}
                 disabled={downloading}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-3 px-4 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 py-3 px-4 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] border border-zinc-200 dark:border-zinc-700"
               >
                 <Download className="w-4 h-4" />
                 <span>{downloading ? 'Downloading...' : 'Download DMG'}</span>
               </button>
 
-              {/* CLI install */}
+              {/* curl — alternative */}
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Terminal className="w-3.5 h-3.5 text-zinc-400" />
                   <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                    Install via terminal
+                    Or via curl
                   </p>
                 </div>
                 <CopyableCommand
@@ -108,41 +129,27 @@ export default function DownloadAllPage() {
                   copiedCmd={copiedCmd}
                   onCopy={handleCopy}
                 />
-                <p className="text-[10px] font-mono text-zinc-400 mt-1.5">
-                  Installs the CLI, downloads the app, and launches it.
-                </p>
               </div>
 
-              {/* npm install */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Terminal className="w-3.5 h-3.5 text-zinc-400" />
-                  <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                    CLI only
-                  </p>
+              {/* Trust badges + CLI-only link */}
+              <div className="pt-2 flex items-center justify-between">
+                <div className="flex items-center gap-4 text-[10px] font-mono uppercase text-zinc-400">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                    <span>Signed & Notarized</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3 h-3 text-emerald-500" />
+                    <span>Local-first</span>
+                  </div>
                 </div>
-                <CopyableCommand
-                  command={NPM_INSTALL_CMD}
-                  label="npm"
-                  id="npm"
-                  copiedCmd={copiedCmd}
-                  onCopy={handleCopy}
-                />
-                <p className="text-[10px] font-mono text-zinc-400 mt-1.5">
-                  Query memos, dictations, and workflows from the terminal.
-                </p>
-              </div>
-
-              {/* Trust badges */}
-              <div className="pt-2 flex items-center gap-4 text-[10px] font-mono uppercase text-zinc-400">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                  <span>Signed & Notarized</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                  <span>Local-first</span>
-                </div>
+                <button
+                  onClick={() => handleCopy(CLI_ONLY_CMD, 'cli')}
+                  className="text-[10px] font-mono text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                  title="Copy CLI-only install command"
+                >
+                  {copiedCmd === 'cli' ? '✓ copied' : 'CLI only →'}
+                </button>
               </div>
             </div>
           </div>
