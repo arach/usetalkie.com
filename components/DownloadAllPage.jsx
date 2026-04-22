@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import { Download, Terminal, Laptop, CheckCircle2, Smartphone, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { trackDownload, trackAppStoreClick } from '../lib/analytics'
+import PackageManagerTabs from './PackageManagerTabs'
 
 const GITHUB_DMG_URL = 'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
-const APP_INSTALL_CMD = 'bun install -g @talkie/app'
 const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
-const CLI_ONLY_CMD = 'bun install -g @talkie/cli'
+const CLI_ONLY_CMD = 'bun add -g @talkie/cli'
 const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
 function CopyableCommand({ command, label, id, copiedCmd, onCopy }) {
@@ -92,13 +92,7 @@ export default function DownloadAllPage() {
                     Install via terminal
                   </p>
                 </div>
-                <CopyableCommand
-                  command={APP_INSTALL_CMD}
-                  label="bun"
-                  id="app"
-                  copiedCmd={copiedCmd}
-                  onCopy={handleCopy}
-                />
+                <PackageManagerTabs />
                 <p className="text-[10px] font-mono text-zinc-400 mt-1.5">
                   Installs the app, CLI, and launches Talkie.
                 </p>

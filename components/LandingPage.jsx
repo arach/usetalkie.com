@@ -523,7 +523,7 @@ export default function LandingPage() {
               <div className="mt-3 flex items-center justify-center gap-2 text-[11px] font-mono text-zinc-400">
                 <Terminal className="h-3 w-3" />
                 <span>or</span>
-                <code className="rounded border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">bun install -g @talkie/app</code>
+                <code className="rounded border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">bun add -g @talkie/app</code>
               </div>
 
             </div>
