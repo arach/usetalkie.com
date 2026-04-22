@@ -2,6 +2,9 @@ Video Shot List
 
 Scenes to capture for usetalkie.com. Organized by platform, then by feature.
 
+Default story lane for the next hero pass: `Walk-to-Spec`.
+Capture runbook: [docs/marketing/talkie-website-video-production-runbook.md](/Users/arach/dev/usetalkie.com/docs/marketing/talkie-website-video-production-runbook.md)
+
 ## File Naming
 
 Drop finished videos into `public/videos/`:
@@ -120,5 +123,4 @@ Polished, edited videos for the landing page and `/demo`:
 - **Workflow prep**: Set up path aliases and a working `gh` CLI before Orchestrate clips
 - **iPhone**: Use screen recording + device footage where helpful
 - **Watch**: Film externally (phone camera pointed at wrist) or use screen mirroring
-
 

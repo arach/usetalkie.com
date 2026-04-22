@@ -110,13 +110,15 @@ export default function CapturePage() {
         <div className="bg-glow-blue top-[-200px] left-1/2 -translate-x-1/2 z-0" />
         <Container className="relative z-10">
           <div className="max-w-3xl mx-auto text-center">
+            <p className="mx-auto mb-4 inline-flex items-center rounded-full border border-blue-500/20 bg-white/80 px-4 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-blue-600 dark:border-blue-400/20 dark:bg-zinc-900/60 dark:text-blue-300">
+              When you are away from your Mac
+            </p>
             <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
-              <span className="font-display italic">Voice,</span>{' '}
-              <span className="font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">on the Go.</span>
+              Catch it while it is <span className="font-display italic bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">live.</span>
             </h1>
 
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
-              Speak anywhere - iPhone, Watch, iPad, Mac. Everything syncs, stays private.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-8">
+              iPhone and Apple Watch are the fast path back into Talkie. Grab the thought now, then pick it back up on your Mac when it is time to do something with it.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -177,27 +179,27 @@ export default function CapturePage() {
         <Container>
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl text-zinc-900 dark:text-white tracking-tight">
-              <span className="font-display italic">Capture,</span> <span className="font-bold">no friction.</span>
+              <span className="font-display italic">Built to catch the thought,</span> <span className="font-bold">not become another inbox.</span>
             </h2>
             <p className="mt-3 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Choose the fastest path in the moment, then let Talkie bring it home.
+              The mobile app is there for the moment you do not have your desk, not to replace it.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <CaptureCard
               icon={Smartphone}
               title="iPhone App"
-              description="Open, speak, done. Designed for quick capture with clean, readable transcripts."
+              description="Open, speak, done. Designed for fast captures that stay readable, searchable, and useful later."
             />
             <CaptureCard
               icon={Watch}
               title="Apple Watch"
-              description="Tap the wrist, speak a thought, and keep moving. Perfect for walks and commutes."
+              description="Tap the wrist, catch the thought, and keep moving. Perfect for walks, commutes, and in-between moments."
             />
             <CaptureCard
               icon={Zap}
               title="Widgets + Shortcuts"
-              description="Launch capture from your Home Screen, Lock Screen, or a shortcut gesture."
+              description="Launch capture from your Home Screen, Lock Screen, or a shortcut so the friction stays low."
             />
           </div>
         </Container>
@@ -210,10 +212,10 @@ export default function CapturePage() {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-blue-500">One continuous thread</span>
             <h2 className="mt-4 text-3xl md:text-4xl font-bold text-white uppercase tracking-tight">
-              Capture anywhere, continue on Mac.
+              Catch it on the move. Finish it on Mac.
             </h2>
             <p className="mt-3 text-zinc-400 leading-relaxed">
-              Capture on the go, then continue on your Mac with dictation and workflows ready to go.
+              Phone and Watch are for capture. Mac is where you search it, shape it, and turn it into useful output.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -229,8 +231,8 @@ export default function CapturePage() {
             />
             <FlowStep
               icon={Laptop}
-              title="Act"
-              description="Turn it into tasks, summaries, or documents with one click."
+              title="Resolve"
+              description="Search it, clean it up, and turn it into tasks, summaries, or documents on Mac."
             />
           </div>
         </Container>
@@ -320,10 +322,10 @@ export default function CapturePage() {
             <Mic className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-4">
-            Capture now, build later.
+            Catch it now. Work from it later.
           </h2>
           <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-lg mx-auto">
-            Every idea, connected to your Mac.
+            Every mobile capture drops back into the same library on your Mac.
           </p>
           <div className="flex justify-center">
             <Link

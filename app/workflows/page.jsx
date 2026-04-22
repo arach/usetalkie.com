@@ -2,7 +2,7 @@ import FeaturesPage from '../../components/FeaturesPage'
 
 export const metadata = {
   title: 'Workflows — Talkie',
-  description: 'Talkie with agents. Build voice-initiated agents on Mac that turn speech into structured output.',
+  description: 'Turn captured speech into drafts, tasks, files, and follow-up actions with private workflows on Mac.',
 }
 
 export default function Page() {

@@ -187,13 +187,19 @@ export default function LivePage() {
 
         <Container className="relative z-10">
           <div className="max-w-3xl mx-auto text-center">
+            <p className="mx-auto mb-4 inline-flex items-center rounded-full border border-emerald-500/20 bg-white/80 px-4 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-emerald-700 dark:border-white/10 dark:bg-zinc-900/60 dark:text-zinc-200">
+              Built for daily Mac work
+            </p>
             <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
-              <span className="font-display italic">Voice</span> <span className="text-zinc-400 dark:text-zinc-500">to</span>{' '}
-              <span className="font-bold bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">Action.</span>
+              Talk to your <span className="font-display italic bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">Mac.</span>
             </h1>
 
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
-              Speak and Talkie types, transcribes, or runs workflows. Local-first, private.
+            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto mb-8">
+              Capture a thought, shape a draft, search what you said, or kick off a workflow without leaving the app in front of you.
+            </p>
+
+            <p className="mb-8 text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-emerald-600 dark:text-zinc-300">
+              A mic is all you need.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -237,10 +243,10 @@ export default function LivePage() {
         <Container>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl text-white tracking-tight mb-3">
-              <span className="font-display italic">One app.</span> <span className="font-bold">Everywhere.</span>
+              <span className="font-display italic">One voice layer.</span> <span className="font-bold">Right on your Mac.</span>
             </h2>
             <p className="text-zinc-500 leading-relaxed max-w-xl mx-auto">
-              Talkie connects your voice to everything - apps, devices, services, and AI.
+              Draft, search, route, and trigger follow-up work from the machine where you already spend your day.
             </p>
           </div>
 
@@ -255,15 +261,15 @@ export default function LivePage() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
               <Zap className="w-3.5 h-3.5 text-emerald-500" />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">Why Voice?</span>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">Why It Works</span>
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tight mb-6">
-              Execute at the<br /><span className="text-emerald-500">speed of thought.</span>
+              Speak once.<br /><span className="text-emerald-500">Keep moving.</span>
             </h2>
 
             <p className="text-zinc-400 leading-relaxed max-w-2xl mx-auto">
-              Speaking is the most natural way to express complex thoughts. Talkie turns your voice into text instantly, so you can capture ideas at the speed you think them.
+              Talkie is useful because it lives close to the work. You talk, your Mac keeps going.
             </p>
           </div>
 
@@ -308,13 +314,13 @@ export default function LivePage() {
                   <Eye className="w-5 h-5 text-emerald-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Rest Your Eyes</h3>
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Stay in Flow</h3>
                 </div>
               </div>
               <p className="text-sm text-zinc-400 leading-relaxed mb-4">
-                Look away from the screen while you speak. Mid-length thoughts flow better when you're not staring at a cursor waiting for words.
+                Speak without opening another app or losing your place. The capture stays attached to the work already on screen.
               </p>
-              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">Natural Expression</p>
+              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">Context Preserved</p>
             </div>
 
             {/* Ecosystem */}
@@ -324,13 +330,13 @@ export default function LivePage() {
                   <Sparkles className="w-5 h-5 text-emerald-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Ecosystem</h3>
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wide">Continuity</h3>
                 </div>
               </div>
               <p className="text-sm text-zinc-400 leading-relaxed mb-4">
-                Capture on iPhone or Watch, then continue on Mac with workflows that turn speech into action.
+                Capture on iPhone or Watch, then continue on Mac with search, cleanup, workflows, and CLI access ready when you need them.
               </p>
-              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">Memo → Workflow → Action</p>
+              <p className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500">Capture → Recover → Action</p>
             </div>
           </div>
 
@@ -369,22 +375,21 @@ export default function LivePage() {
             <div>
               <div className="flex items-center gap-2 mb-6">
                 <Lightbulb className="w-5 h-5 text-emerald-400" />
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">Philosophy</span>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">Continuity</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-tight mb-6 leading-tight">
-                Work is changing fast,<br/>
-                <span className="text-emerald-400">and we're leaning</span><br/>
-                into it.
+                Your Mac already runs<br/>
+                <span className="text-emerald-400">your day.</span>
               </h2>
               <div className="space-y-6 text-zinc-400 leading-relaxed">
                 <p>
-                  For the first time in our careers, we can turn ideas into action at the speed of the tools around us.
+                  Talkie fits that reality instead of fighting it.
                 </p>
                 <p>
-                  <span className="text-white font-medium">It's the age of AI.</span> Typing every idea by hand is no longer required.
+                  It is not just dictation. It is a way to drive drafts, search, workflows, and follow-up work with your voice.
                 </p>
                 <p>
-                  You get to talk, move faster, and actually enjoy the upgrade.
+                  Then, if something occurs away from your desk, iPhone and Watch feed the same thread back into your Mac.
                 </p>
               </div>
             </div>
@@ -692,36 +697,36 @@ export default function LivePage() {
       {/* Privacy Section */}
       <section className="py-20 md:py-28 bg-zinc-900">
         <Container>
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <HardDrive className="w-5 h-5 text-emerald-500" />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500">100% Local Processing</span>
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <HardDrive className="w-5 h-5 text-emerald-500" />
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500">Ownership Stays Legible</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tight leading-tight mb-6">
+                Keep the full chain on your side.
+              </h2>
+              <p className="text-zinc-400 leading-relaxed mb-10 max-w-xl mx-auto">
+                Your library lives locally, sync can run through iCloud, transcription can stay on device, and external providers are optional with your own keys.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
+                <p className="text-xs text-zinc-400">Local SQLite<br/>Library</p>
+                </div>
+                <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
+                <p className="text-xs text-zinc-400">iCloud / CloudKit<br/>Sync</p>
+                </div>
+                <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
+                <p className="text-xs text-zinc-400">On-device<br/>Transcription</p>
+                </div>
+                <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
+                <p className="text-xs text-zinc-400">BYO Providers<br/>and Keys</p>
+                </div>
+              </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white uppercase tracking-tight leading-tight mb-6">
-              Your voice stays on your Mac.
-            </h2>
-            <p className="text-zinc-400 leading-relaxed mb-10 max-w-xl mx-auto">
-              No audio leaves your computer. No cloud processing. No API keys. No cloud accounts.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
-                <p className="text-xs text-zinc-400">Neural Engine<br/>Processing</p>
-              </div>
-              <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
-                <p className="text-xs text-zinc-400">48h Auto<br/>Cleanup</p>
-              </div>
-              <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
-                <p className="text-xs text-zinc-400">Zero<br/>Telemetry</p>
-              </div>
-              <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 mx-auto mb-2" />
-                <p className="text-xs text-zinc-400">Works<br/>Offline</p>
-              </div>
-            </div>
-          </div>
         </Container>
       </section>
 
@@ -730,10 +735,10 @@ export default function LivePage() {
         <Container>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-4">
-              One product, three surfaces.
+              One product. Three ways in.
             </h2>
             <p className="text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">
-              Dictate on Mac, capture on iPhone and Watch, and keep everything in one local-first library.
+              Mac is the main event. iPhone and Watch make sure a good thought still lands where it counts.
             </p>
           </div>
 
@@ -745,11 +750,11 @@ export default function LivePage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase">Mac</h3>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Dictation + workflows</span>
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Action surface</span>
                 </div>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Talk to Talkie, then turn speech into structured tasks, summaries, and output.
+                Search, clean up, transform, and route captured speech into useful work.
               </p>
             </div>
 
@@ -760,11 +765,11 @@ export default function LivePage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase">iPhone</h3>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Quick capture</span>
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Capture surface</span>
                 </div>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Grab a thought in seconds, sync it to Mac, and keep moving.
+                Catch ideas away from the desk and send them back to the Mac you already use.
               </p>
             </div>
 
@@ -775,11 +780,11 @@ export default function LivePage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase">Watch</h3>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Hands-free moments</span>
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Lightweight capture</span>
                 </div>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Tap once, speak once, and let the rest happen when you&apos;re back at the Mac.
+                The quickest way to save a thought without stopping what you&apos;re doing.
               </p>
             </div>
           </div>
@@ -802,10 +807,10 @@ export default function LivePage() {
             <Zap className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-4">
-            Accelerate thoughts<br/>to action.
+            Talk to your Mac.
           </h2>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-10 max-w-lg mx-auto">
-            Download Talkie for Mac and turn voice into action with dictation and workflows.
+            A mic is all you need.
           </p>
           <button onClick={() => setDownloadModalOpen(true)} className="inline-flex h-14 px-10 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all items-center gap-3 shadow-xl shadow-emerald-500/25">
             <Download className="w-5 h-5" />

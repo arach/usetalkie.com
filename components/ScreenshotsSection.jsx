@@ -3,14 +3,16 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Smartphone, Tablet, X } from 'lucide-react'
 
-const screenshots = [
-  { src: '/screenshots/iphone-16-pro-max-1.png', alt: 'Talkie on iPhone' },
-  { src: '/screenshots/iphone-16-pro-max-2.png', alt: 'Talkie on iPhone' },
-  { src: '/screenshots/iphone-16-pro-max-3.png', alt: 'Talkie on iPhone' },
-  { src: '/screenshots/iphone-16-pro-max-4.png', alt: 'Talkie on iPhone' },
-  { src: '/screenshots/iphone-16-pro-max-5.png', alt: 'Talkie on iPhone' },
-  { src: '/screenshots/iphone-16-pro-max-6.png', alt: 'Talkie on iPhone' },
-  { src: '/screenshots/iphone-16-pro-max-7.png', alt: 'Talkie on iPhone' },
+const LIGHT_SCREENSHOTS = [
+  { src: '/screenshots/iphone-light-1.png', alt: 'Talkie on iPhone memos list' },
+  { src: '/screenshots/iphone-light-2.png', alt: 'Talkie on iPhone terminal setup' },
+  { src: '/screenshots/iphone-light-3.png', alt: 'Talkie on iPhone appearance settings' },
+]
+
+const DARK_SCREENSHOTS = [
+  { src: '/screenshots/iphone-dark-1.png', alt: 'Talkie on iPhone dictations list' },
+  { src: '/screenshots/iphone-dark-2.png', alt: 'Talkie on iPhone search' },
+  { src: '/screenshots/iphone-dark-3.png', alt: 'Talkie on iPhone terminal keyboard' },
 ]
 
 const ipadScreenshots = [
@@ -25,8 +27,26 @@ export default function ScreenshotsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [device, setDevice] = useState('iPhone')
   const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [isDark, setIsDark] = useState(false)
 
-  const currentScreenshots = device === 'iPhone' ? screenshots : ipadScreenshots
+  useEffect(() => {
+    const root = document.documentElement
+    const syncTheme = () => setIsDark(root.classList.contains('dark'))
+    syncTheme()
+
+    const observer = new MutationObserver(syncTheme)
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] })
+
+    return () => observer.disconnect()
+  }, [])
+
+  const currentScreenshots = device === 'iPhone'
+    ? (isDark ? DARK_SCREENSHOTS : LIGHT_SCREENSHOTS)
+    : ipadScreenshots
+
+  useEffect(() => {
+    setCurrentIndex(0)
+  }, [device, isDark])
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % currentScreenshots.length)
@@ -38,7 +58,6 @@ export default function ScreenshotsSection() {
 
   const switchDevice = (newDevice) => {
     setDevice(newDevice)
-    setCurrentIndex(0)
   }
 
   // Keyboard navigation for lightbox
@@ -117,12 +136,12 @@ export default function ScreenshotsSection() {
           >
             {device === 'iPhone' ? (
               <div className="w-56 transition-all duration-300 group-hover:scale-[1.02]">
-                <div className="relative aspect-[9/19.5] rounded-[1.5rem] overflow-hidden shadow-xl border-2 border-zinc-800 bg-black">
+                <div className="relative aspect-[9/19.5] rounded-[1.5rem] overflow-hidden border-2 border-zinc-800 bg-stone-100 shadow-xl dark:bg-zinc-900">
                   <Image
                     src={currentScreenshots[currentIndex].src}
                     alt={currentScreenshots[currentIndex].alt}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="224px"
                   />
                 </div>

@@ -1,10 +1,10 @@
 "use client"
-import React, { useState, useEffect, useRef } from 'react'
-import { Check, Clock, ChevronDown } from 'lucide-react'
+import React, { useState, useRef } from 'react'
+import { Check, ChevronDown } from 'lucide-react'
 import { trackSignup, getStoredUTMParams } from '../lib/analytics'
 
 const USE_CASES = [
-  { value: '', label: 'What will you use Talkie for?' },
+  { value: '', label: 'How do you want to use Talkie?' },
   { value: 'dictation', label: 'Dictation & writing' },
   { value: 'notes', label: 'Voice memos & notes' },
   { value: 'workflows', label: 'Automating workflows' },
@@ -19,34 +19,7 @@ export default function PricingSection() {
   const [status, setStatus] = useState('idle') // idle | sending | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [trap, setTrap] = useState('') // honeypot
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   const formLoadTime = useRef(Date.now())
-
-  // Countdown to end of January 2026
-  useEffect(() => {
-    const launchDate = new Date('2026-03-21T23:59:59')
-
-    const updateCountdown = () => {
-      const now = new Date()
-      const diff = launchDate - now
-
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-        return
-      }
-
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((diff % (1000 * 60)) / 1000)
-      })
-    }
-
-    updateCountdown()
-    const interval = setInterval(updateCountdown, 1000)
-    return () => clearInterval(interval)
-  }, [])
 
   // API endpoint - api.usetalkie.com
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://app.usetalkie.com/api'
@@ -111,21 +84,21 @@ export default function PricingSection() {
             <div className="group/value">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse transition-transform group-hover/value:scale-150"></div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Launch Access</span>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Get Talkie</span>
               </div>
               <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4 tracking-tight uppercase transition-transform origin-left group-hover/value:scale-[1.02]">
-                You own <br/> the tool.
+                Keep the system <br/> close.
               </h2>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-                No subscription. Buy once. Your recordings, your workflows, your devices.
+                Talkie is designed to stay on your side: capture on Mac today, add iPhone and Apple Watch when you want the fastest path from passing thought to usable text.
               </p>
 
               <ul className="space-y-3 mb-6">
                 {[
                   "Mac app + iPhone + Watch companion",
-                  "Encrypted iCloud Sync",
-                  "Unlimited Local Transcription",
-                  "Zero Vendor Lock-in"
+                  "Searchable memos + dictations",
+                  "Encrypted iCloud sync",
+                  "Compose, workflows, and CLI access"
                 ].map((item, i) => (
                   <li key={i} className="group/item flex items-center gap-3 text-xs font-mono text-zinc-700 dark:text-zinc-300 cursor-default transition-colors hover:text-zinc-900 dark:hover:text-white">
                     <Check className="w-3 h-3 text-zinc-400 transition-all group-hover/item:text-emerald-500 group-hover/item:scale-110" />
@@ -134,13 +107,12 @@ export default function PricingSection() {
                 ))}
               </ul>
 
-              {/* Early access note */}
               <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-500/20 rounded">
                 <p className="text-xs text-zinc-900 dark:text-white font-semibold mb-1">
-                  Join before April 1st.
+                  What the email gets you
                 </p>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Early supporters get preferential access to pricing and future launches. No commitment — just a head start.
+                  A download link, iPhone/TestFlight details, and occasional product updates when something meaningful ships. No drip campaign.
                 </p>
               </div>
             </div>
@@ -155,26 +127,17 @@ export default function PricingSection() {
 
               <div className="text-center mb-6">
                 <p className="text-[10px] font-mono uppercase text-zinc-400 mb-2">Mac + iPhone + Watch</p>
-                <p className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-3">Public Launch 2026</p>
-
-                {/* Countdown Timer */}
-                <div className="flex items-center justify-center gap-1 text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mb-3">
-                  <Clock className="w-3 h-3" />
-                  <span className="text-zinc-900 dark:text-white font-bold">{timeLeft.days}d</span>
-                  <span className="text-zinc-900 dark:text-white font-bold">{timeLeft.hours}h</span>
-                  <span className="text-zinc-900 dark:text-white font-bold">{timeLeft.minutes}m</span>
-                  <span className="text-zinc-900 dark:text-white font-bold">{timeLeft.seconds}s</span>
-                </div>
+                <p className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-3">Download + updates</p>
 
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Get early access now.
+                  Enter your email and we&apos;ll send the current setup details.
                 </p>
               </div>
 
               {!isSubmitted ? (
                 <form onSubmit={handleEmailSubmit} className="space-y-3">
                   <p className="text-[10px] font-mono uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 inline-block px-2 py-1 rounded w-full text-center tracking-wider">
-                    Get Early Access
+                    Send the Link
                   </p>
                   <input
                     type="email"
@@ -205,13 +168,13 @@ export default function PricingSection() {
                     className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-3 text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50"
                     disabled={status === 'sending'}
                   >
-                    {status === 'sending' ? 'Sending…' : 'Join Early Testers'}
+                    {status === 'sending' ? 'Sending...' : 'Send Download Link'}
                   </button>
                   {errorMsg && (
                     <p className="text-[10px] text-center text-red-500 mt-1">{errorMsg}</p>
                   )}
                   <p className="text-[10px] text-center text-zinc-400 mt-2">
-                    Early testers get launch discounts.
+                    We only email when there is something worth shipping.
                   </p>
                 </form>
               ) : (
@@ -219,7 +182,7 @@ export default function PricingSection() {
                   <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <p className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide">You&apos;re on the list.</p>
+                  <p className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide">Link sent.</p>
                   <div className="mt-4 space-y-3">
                     <a
                       href="/dl?ref=pricing"
@@ -234,7 +197,7 @@ export default function PricingSection() {
                       Get iPhone TestFlight
                     </a>
                   </div>
-                  <p className="text-[10px] text-zinc-400 mt-3">Check your email for setup instructions.</p>
+                  <p className="text-[10px] text-zinc-400 mt-3">Check your email for setup instructions, or download now.</p>
                 </div>
               )}
             </div>

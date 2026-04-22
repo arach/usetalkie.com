@@ -65,6 +65,16 @@ html { scroll-behavior: smooth; }
   .reveal-in { opacity: 1; transform: translateY(0); }
 }
 
+/* Split-flap (Solari board) keyframes */
+@keyframes flap-out {
+  from { transform: rotateX(0deg); }
+  to   { transform: rotateX(-90deg); }
+}
+@keyframes flap-in {
+  from { transform: rotateX(90deg); }
+  to   { transform: rotateX(0deg); }
+}
+
 /* Design tokens for radii/spacing - applied via utilities in code */
 :root {
   --radius: 8px;

@@ -63,7 +63,7 @@ export default function SecurityPage() {
               It&apos;s the architecture.
             </h1>
             <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl border-l-2 border-emerald-500 pl-6">
-              Talkie is built on a &quot;Local-First&quot; doctrine. We do not own servers that store your data. We do not train on your ideas. You own the keys, the database, and the AI models.
+              Talkie is built so unfinished thoughts stay on your devices by default. Your library lives locally, sync can run through your iCloud, transcription can stay on device, and external providers are opt-in with your own keys.
             </p>
           </div>
 
@@ -91,16 +91,16 @@ export default function SecurityPage() {
 
             <SecurityFeature
               icon={Cpu}
-              title="On-Device Intelligence"
-              subtitle="CoreML & MLX"
-              description="Transcriptions occur 100% on-device using the Neural Engine. You can also download local LLMs (Llama 3, Mistral) to run full AI workflows without a single packet leaving your Mac."
+              title="On-Device Transcription"
+              subtitle="Neural Engine Path"
+              description="Transcription can stay 100% on device using Apple silicon. For later transformations, you can keep using local models or opt into external providers only when you choose to."
             />
 
             <SecurityFeature
               icon={Lock}
-              title="Sanitization Barrier"
+              title="External Providers Are Opt-In"
               subtitle="Selective Disclosure"
-              description="When using external models (like GPT-4), audio never leaves your device. Only the specific text prompt you construct is sent. You can redact PII before dispatch."
+              description="When you use an external provider, audio can stay on your device and only the text you choose to send leaves the machine. That keeps the trust boundary clear."
             />
 
             <SecurityFeature
@@ -110,11 +110,11 @@ export default function SecurityPage() {
               description="Every network request initiated by a workflow is logged in a local, immutable audit trail. You can inspect exactly what text was sent to which API and when."
             />
 
-             <SecurityFeature
+            <SecurityFeature
               icon={Key}
               title="BYO API Keys"
               subtitle="Secure Keychain Storage"
-              description="If you use OpenAI or Anthropic, you bring your own keys. They are stored in the macOS Keychain/Secure Enclave and are only accessed at runtime to sign requests."
+              description="If you use OpenAI, Anthropic, or another provider, you bring your own keys. They are stored in the macOS Keychain and accessed only at runtime to sign requests."
             />
 
           </div>
@@ -290,8 +290,8 @@ export default function SecurityPage() {
           <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 rounded-sm overflow-hidden">
              <div className="grid grid-cols-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 p-4">
                 <div>Feature</div>
-                <div>Talkie OS</div>
-                <div>Standard AI Apps</div>
+                <div>Talkie</div>
+                <div>Hosted AI Apps</div>
              </div>
 
              {[
@@ -313,10 +313,10 @@ export default function SecurityPage() {
 
           <div className="mt-24 text-center">
              <div className="inline-flex flex-col items-center p-8 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-sm">
-                <Server className="w-8 h-8 text-zinc-400 mb-4" />
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white uppercase mb-2">We don&apos;t want your data.</h3>
+               <Server className="w-8 h-8 text-zinc-400 mb-4" />
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-white uppercase mb-2">We don&apos;t run a cloud that stores your library.</h3>
                 <p className="text-sm text-zinc-500 max-w-md mx-auto">
-                  Running a secure cloud is hard. We chose not to. By architecture, we cannot see your memos, your transcripts, or your thoughts.
+                  By design, Talkie is built around local storage, iCloud custody, and provider choice. That keeps your memos, transcripts, and unfinished thoughts on your side of the line.
                 </p>
              </div>
           </div>
