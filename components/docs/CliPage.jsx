@@ -78,7 +78,10 @@ export default function CliPage() {
       </p>
 
       <CodeBlock title="Install via npm">
-{`bun install -g @talkie/cli
+{`bun add -g @talkie/app
+
+# Or CLI only
+bun add -g @talkie/cli
 
 # Or with the one-liner (installs CLI + app)
 curl -fsSL go.usetalkie.com/install | bash`}

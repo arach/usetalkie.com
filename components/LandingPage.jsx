@@ -849,15 +849,30 @@ export default function LandingPage() {
                   className="inline-flex h-12 items-center gap-2 rounded-full bg-zinc-900 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
                 >
                   <Download className="h-4 w-4" />
-                  Download Talkie
+                  Download for Mac
                 </Link>
-                <Link
-                  href="/philosophy"
+                <a
+                  href="https://apps.apple.com/us/app/talkie-mobile/id6755734109"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex h-12 items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-700 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-950/55 dark:text-zinc-300 dark:hover:text-white"
                 >
-                  Read the philosophy
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+                  <Smartphone className="h-4 w-4" />
+                  iPhone &amp; iPad
+                </a>
+              </div>
+
+              <div className="mt-8 flex flex-col items-center gap-3">
+                <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+                  Scan for mobile
+                </p>
+                <div className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                  <img
+                    src="/qr-app-store.svg"
+                    alt="QR code to download Talkie on the App Store"
+                    className="h-28 w-28"
+                  />
+                </div>
               </div>
             </div>
           </Container>
