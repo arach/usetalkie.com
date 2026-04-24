@@ -16,7 +16,6 @@ import {
   Lock,
   Menu,
   Mic,
-  Play,
   Search,
   ShieldCheck,
   Smartphone,
@@ -31,6 +30,10 @@ import PricingSection from './PricingSection'
 import ThemeToggle from './ThemeToggle'
 import { trackScrollDepth, captureUTMParams } from '../lib/analytics'
 import { MAC_GALLERY, IPHONE_GALLERY } from '../lib/tour'
+
+const HERO_QR_SIZE = 80
+const HERO_QR_EXPANDED_SIZE = 288
+const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
 const NAV_LINKS = [
   { label: 'Capture', href: '#capture' },
@@ -176,6 +179,7 @@ export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [gallery, setGallery] = useState(null)
+  const [qrExpanded, setQrExpanded] = useState(false)
   const [audioPlaying, setAudioPlaying] = useState(false)
   const [copied, setCopied] = useState(false)
   const [heroSurfaceIndex, setHeroSurfaceIndex] = useState(0)
@@ -272,6 +276,15 @@ export default function LandingPage() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [gallery])
+
+  useEffect(() => {
+    if (!qrExpanded) return
+    const onKey = (event) => {
+      if (event.key === 'Escape') setQrExpanded(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [qrExpanded])
 
   useEffect(() => {
     if (!gallery) {
@@ -375,7 +388,7 @@ export default function LandingPage() {
               <ThemeToggle floating={false} />
               <Link
                 href="/download"
-                className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-4 text-[10px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-4 text-[10px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
               >
                 <Download className="h-3.5 w-3.5" />
                 Download
@@ -495,7 +508,7 @@ export default function LandingPage() {
                       →
                     </span>
                     <span
-                      className={`text-left text-sm text-emerald-600 dark:text-emerald-400 transition-all duration-300 ${useCaseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                      className={`text-left text-sm text-zinc-900 dark:text-zinc-100 transition-all duration-300 ${useCaseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
                       style={{ transitionDelay: useCaseVisible ? `${i * 60}ms` : '0ms' }}
                     >
                       {item.outcome}
@@ -504,26 +517,68 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Link
-                  href="/download"
-                  className="inline-flex h-12 items-center gap-2 rounded-full bg-emerald-600 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
-                >
-                  <Download className="h-4 w-4" />
-                  Download Talkie
-                </Link>
-                <Link
-                  href="/demo"
-                  className="inline-flex h-12 items-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-700 transition-all hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950/60 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-white"
-                >
-                  <Play className="h-4 w-4" />
-                  Watch Demo
-                </Link>
-              </div>
-              <div className="mt-3 flex items-center justify-center gap-2 text-[11px] font-mono text-zinc-400">
-                <Terminal className="h-3 w-3" />
-                <span>or</span>
-                <code className="rounded border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">bun add -g @talkie/app</code>
+              <div className="mx-auto mt-10 w-full max-w-[30rem]">
+                <div className="relative rounded-2xl border border-zinc-200/60 bg-white/70 shadow-[0_20px_60px_-20px_rgba(15,23,42,0.14)] backdrop-blur-sm dark:border-zinc-800/60 dark:bg-zinc-900/40 dark:shadow-[0_24px_70px_-20px_rgba(0,0,0,0.55)]">
+                  <span className="absolute -top-2 left-5 bg-stone-50 px-2 text-[9px] font-mono font-bold uppercase tracking-[0.24em] text-zinc-500 dark:bg-[#0d1115] dark:text-zinc-400">
+                    Install
+                  </span>
+
+                  <div className="grid grid-cols-2 gap-2 p-2">
+                    <Link
+                      href="/download"
+                      className="group flex h-[7.25rem] flex-col items-center justify-center gap-2 rounded-xl px-4 py-4 text-center transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
+                    >
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-900 text-white transition-transform group-hover:scale-105 dark:bg-white dark:text-black">
+                        <Download className="h-4 w-4" />
+                      </span>
+                      <span className="flex flex-col items-center leading-tight">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
+                          For Mac
+                        </span>
+                        <span className="mt-1 text-[13px] font-medium text-zinc-900 dark:text-zinc-100">
+                          Download .dmg
+                        </span>
+                      </span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => setQrExpanded(true)}
+                      aria-label="Expand QR code to install Talkie on iPhone"
+                      className="group flex h-[7.25rem] items-center gap-3 rounded-xl px-4 py-4 text-left transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
+                    >
+                      <span className="shrink-0 rounded-md bg-white p-1">
+                        <img
+                          src="/qr-app-store.svg"
+                          alt="QR code to open Talkie on the App Store"
+                          style={{ width: HERO_QR_SIZE, height: HERO_QR_SIZE }}
+                        />
+                      </span>
+                      <span className="flex flex-col leading-tight">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
+                          For iPhone
+                        </span>
+                        <span className="mt-1 text-[13px] font-medium text-zinc-900 dark:text-zinc-100">
+                          Scan or tap
+                        </span>
+                        <span className="mt-1 flex items-center gap-1 text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
+                          Expand
+                          <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-3 rounded-b-2xl bg-zinc-50/40 px-4 py-2.5 dark:bg-zinc-950/30">
+                    <span className="flex items-center gap-1.5 text-[9px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
+                      <Terminal className="h-3 w-3" />
+                      Developers
+                    </span>
+                    <code className="flex-1 truncate rounded-md bg-zinc-100/60 px-2 py-1 text-left text-[11px] font-mono text-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300">
+                      bun add -g @talkie/app
+                    </code>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -846,7 +901,7 @@ export default function LandingPage() {
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
                   href="/download"
-                  className="inline-flex h-12 items-center gap-2 rounded-full bg-zinc-900 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-emerald-600 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                  className="inline-flex h-12 items-center gap-2 rounded-full bg-zinc-900 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
                 >
                   <Download className="h-4 w-4" />
                   Download for Mac
@@ -866,11 +921,11 @@ export default function LandingPage() {
                 <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
                   Scan for mobile
                 </p>
-                <div className="rounded-xl border border-zinc-200 bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
                   <img
                     src="/qr-app-store.svg"
                     alt="QR code to download Talkie on the App Store"
-                    className="h-28 w-28"
+                    className="h-44 w-44"
                   />
                 </div>
               </div>
@@ -1056,6 +1111,55 @@ export default function LandingPage() {
           </div>
         )
       })()}
+
+      {qrExpanded && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
+          onClick={() => setQrExpanded(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Install Talkie via App Store QR code"
+        >
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+
+          <div
+            className="relative z-10 flex flex-col items-center rounded-2xl border border-white/15 bg-zinc-950/80 p-6 shadow-2xl md:p-8"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-white/60">
+              Scan with your iPhone camera
+            </p>
+            <div className="mt-4 rounded-xl bg-white p-4">
+              <img
+                src="/qr-app-store.svg"
+                alt="QR code to open Talkie on the App Store"
+                style={{ width: HERO_QR_EXPANDED_SIZE, height: HERO_QR_EXPANDED_SIZE }}
+              />
+            </div>
+            <a
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-white transition-colors hover:bg-white/20"
+            >
+              Open in App Store
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+            <p className="mt-3 text-[10px] font-mono text-white/40">
+              Press Esc or tap outside to close
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setQrExpanded(false)}
+              className="absolute top-3 right-3 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              aria-label="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

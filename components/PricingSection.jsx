@@ -127,7 +127,7 @@ export default function PricingSection() {
 
               <div className="text-center mb-6">
                 <p className="text-[10px] font-mono uppercase text-zinc-400 mb-2">Mac + iPhone + Watch</p>
-                <p className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-3">Download + updates</p>
+                <p className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-3">Stay in touch</p>
 
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Enter your email and we&apos;ll send the current setup details.
