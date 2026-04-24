@@ -25,6 +25,8 @@ export default {
         'canvas-overlay':'var(--canvas-overlay)',
         surface:        'var(--surface)',
         trace:          'var(--trace)',
+        'trace-dim':    'var(--trace-dim)',
+        'trace-faint':  'var(--trace-faint)',
         amber:          'var(--amber)',
         ink:            'var(--ink)',
         'ink-dim':      'var(--ink-dim)',
