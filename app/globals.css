@@ -6,6 +6,56 @@
 html, body { height: 100%; }
 html { scroll-behavior: smooth; }
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * Oscilloscope theme tokens.
+ * Light  = cream-paper scanner printout (charcoal trace).
+ * Dark   = dark chassis with P31 phosphor (green trace).
+ * Pre-paint script in <head> toggles html.dark before first frame, so
+ * variables flip atomically — no flash, no JS hook required at runtime.
+ * Consumed via semantic Tailwind tokens declared in tailwind.config.js.
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  --canvas:         #f0ede4;
+  --canvas-alt:     #ebe7dc;
+  --canvas-overlay: rgba(240, 237, 228, 0.85);
+  --surface:        #e6e2d6;
+  --trace:          #2a2e2d;
+  --trace-glow:     rgba(42, 46, 45, 0.18);
+  --trace-dim:      rgba(42, 46, 45, 0.28);
+  --trace-faint:    rgba(42, 46, 45, 0.08);
+  --amber:          #c47d1c;
+  --ink:            #1a1d1c;
+  --ink-dim:        #2a2e2d;
+  --ink-muted:      #3a4441;
+  --ink-faint:      #5a6560;
+  --ink-subtle:     #6b7670;
+  --edge:           rgba(42, 46, 45, 0.30);
+  --edge-dim:       rgba(42, 46, 45, 0.20);
+  --edge-faint:     rgba(42, 46, 45, 0.14);
+  --edge-subtle:    rgba(42, 46, 45, 0.08);
+}
+
+html.dark {
+  --canvas:         #06090a;
+  --canvas-alt:     #05080a;
+  --canvas-overlay: rgba(6, 9, 10, 0.82);
+  --surface:        #050708;
+  --trace:          #4dff9e;
+  --trace-glow:     rgba(77, 255, 158, 0.50);
+  --trace-dim:      rgba(77, 255, 158, 0.18);
+  --trace-faint:    rgba(77, 255, 158, 0.06);
+  --amber:          #ffb84d;
+  --ink:            #f1f5f2;
+  --ink-dim:        #d7e3de;
+  --ink-muted:      #a0b5ac;
+  --ink-faint:      #7a8b85;
+  --ink-subtle:     #6b8a7f;
+  --edge:           rgba(77, 255, 158, 0.22);
+  --edge-dim:       rgba(77, 255, 158, 0.14);
+  --edge-faint:     rgba(77, 255, 158, 0.10);
+  --edge-subtle:    rgba(77, 255, 158, 0.06);
+}
+
 /* Utilities */
 .btn-primary { @apply rounded-md bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:bg-primary-700; }
 .btn-outline { @apply rounded-md border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50; }
