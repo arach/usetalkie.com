@@ -7,6 +7,7 @@ import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
 import CinematicCaption from './CinematicCaption'
 import KeypressCue from './KeypressCue'
+import TranscribingOverlay from './TranscribingOverlay'
 
 /**
  * SignalTable — the navigatable, audio-driven hero player.
@@ -40,18 +41,28 @@ const WINDOW_SIZE = 3
 // Choreography timings — each beat of the capture flow gets just
 // enough breathing room to register as its own event:
 //
-//   PRESS → audio (live caption) → RELEASE → caption freezes →
-//   row transcribe-scan → paste lands in row → breath → next
+//   PRESS → audio + live caption → RELEASE → caption hides + trace
+//   freezes + TRANSCRIBING overlay → engine "finishes" → paste fires
+//   on the row (selection-band sweep + text settle + row halo + tick)
+//   → trace returns to idle waveform → breath → next clip
 //
 // The caption is purely narrative scenery for the viewer; the engine
-// writes the transcription into the row via the scan beat (NOT by
-// flying the caption text into the row, which would conflate the
-// viewer's view with the engine's output). Total post-audio runway
-// is intentionally short — real transcription is fast, the demo
-// should feel that way too.
+// writes the transcription into the row via the paste beat. The
+// transcribe duration is dynamic per clip — short clips finish
+// quickly, long clips take a beat longer — clamped to 250–800ms so
+// it always reads as "fast enough to feel local."
 const BREATH_PRESS_TO_AUDIO_MS         = 240  // ⌘⇧A pressed → audio starts
-const BREATH_RELEASE_TO_TRANSCRIBE_MS  = 200  // audio ended → row scan begins
-const TRANSCRIBE_DURATION_MS           = 420  // phosphor write-head sweeps the row
+// Small breath between audio END and the TRANSCRIBING overlay
+// fading in — lets the eye register "audio just stopped" before the
+// engine cue appears, so the two read as discrete events.
+const BREATH_RELEASE_TO_TRANSCRIBING_MS = 150
+// Transcribe duration is computed dynamically from audio.duration:
+//   clamp(audio.duration * 100, 250, 800)
+// (audio.duration is seconds → *100 = "1/10 of duration" in ms.)
+// Falls back to ~420ms if audio.duration is unavailable.
+const TRANSCRIBE_MIN_MS                = 250
+const TRANSCRIBE_MAX_MS                = 800
+const TRANSCRIBE_FALLBACK_MS           = 420
 const BREATH_PASTE_TO_NEXT_MS          = 720  // paste landed → next capture begins
 
 export default function SignalTable({ catalog }) {
@@ -74,22 +85,32 @@ export default function SignalTable({ catalog }) {
   // surface the hotkey that bookends a recording. The `at` timestamp
   // is the React key on <KeypressCue/> so each fire replays the keyframe.
   const [keypressCue, setKeypressCue] = useState(null)
-  // captionPhase: drives the CinematicCaption render mode.
-  //   live      — per-word karaoke fill (audio playing)
-  //   finalize  — all words promoted to "spoken" + soft border-glow
-  //               pulse (the live view has frozen into a still frame).
-  //               No scan-line on the caption — engine output happens
-  //               on the row, not here.
-  //   idle      — caption hides between clips.
-  // finalizeKey — bumped per clip so the border pulse replays.
+  // captionPhase: drives the CinematicCaption + trace freeze + the
+  // TRANSCRIBING overlay visibility.
+  //   live         — per-word karaoke fill (audio playing). Caption
+  //                  visible; trace painting live.
+  //   transcribing — audio has ended. Caption hidden, trace frozen
+  //                  on its last waveform, TRANSCRIBING overlay
+  //                  pulsing centered over the trace area. Beat
+  //                  ends when the dynamic transcribe-duration timer
+  //                  fires, at which point we transition straight to
+  //                  'idle' and trigger the row paste choreography.
+  //   idle         — caption hides between clips, trace returns to
+  //                  the idle HeroWaveform.
+  //
+  // (The earlier 'finalize' phase — caption border-glow pulse over
+  // the still-frame — has been retired in favor of the cleaner
+  // hide-caption + transcribing-overlay sequence. finalizeKey is
+  // kept as a no-op stub for any straggler refs.)
   const [captionPhase, setCaptionPhase] = useState('idle')
-  const [finalizeKey, setFinalizeKey] = useState(0)
-  // transcribeKey: per-slug timestamp captured when the engine writes
-  // the transcription for that row. Passed to <SignalTableRow/> as a
-  // key on its scan overlay so the row-transcribe-scan keyframe
-  // replays each time. Distinct from activationKey (which marks
-  // "row activated / data deposited"); transcribeKey marks "engine
-  // currently writing this output."
+  const [finalizeKey] = useState(0)
+  // transcribeKey: per-slug timestamp captured when the engine
+  // "pastes" its transcription into the row. Passed to
+  // <SignalTableRow/> as a key on its paste-band + paste-text
+  // overlays so the typing keyframes replay each time. Distinct
+  // from activationKey (which marks "row activated / data
+  // deposited and halo settles"); transcribeKey marks "engine
+  // typed its output here."
   const [transcribeKey, setTranscribeKey] = useState({})
 
   // -------------------------------------------------------------------
@@ -295,40 +316,48 @@ export default function SignalTable({ catalog }) {
       setIsPlaying(false)
       setCaptionText('')
 
-      // RELEASE pill + caption freezes immediately. Caption stays as
-      // the viewer's narrative scenery; karaoke cursor snaps off so
-      // it doesn't sit stuck on the last word.
+      // RELEASE pill fires immediately. Caption hides during the
+      // small breath before the TRANSCRIBING overlay appears (no
+      // finalize border-glow on the caption pill — that beat has
+      // been retired in favor of the cleaner hide + overlay).
       setKeypressCue({ kind: 'end', at: Date.now() })
-      setCaptionPhase('finalize')
-      setFinalizeKey((k) => k + 1)
 
       const currentSlug = catalog[activeIndex]?.slug
 
-      // Beat A — short breath, then the engine "writes" the
-      // transcription into the active row via a phosphor write-head
-      // sweep. The trace is already in passive (frozen, dimmed) state
-      // from the existing isPlaying=false logic; the scan provides
-      // the distinct "transcription mode" UX.
-      const tScan = setTimeout(() => {
+      // Compute dynamic transcribe duration from the clip length.
+      // audio.duration is in seconds; *100 maps "1/10 of duration"
+      // into milliseconds. Clamp 250–800ms so it always feels
+      // local-fast. Defensive fallback if duration is unavailable
+      // (some browsers report Infinity / NaN until metadata loads,
+      // though by `ended` it's reliably populated).
+      const audioDur = audioRef.current?.duration
+      const dynamicMs =
+        Number.isFinite(audioDur) && audioDur > 0
+          ? Math.max(TRANSCRIBE_MIN_MS, Math.min(TRANSCRIBE_MAX_MS, audioDur * 100))
+          : TRANSCRIBE_FALLBACK_MS
+
+      // Beat A — short breath, then enter the transcribing state:
+      // caption disappears, trace freezes (LiveTrace `freeze` prop
+      // gates the swap-back to HeroWaveform), TRANSCRIBING overlay
+      // fades in.
+      const tEnter = setTimeout(() => {
+        setCaptionPhase('transcribing')
+      }, BREATH_RELEASE_TO_TRANSCRIBING_MS)
+      choreographyTimeoutsRef.current.push(tEnter)
+
+      // Beat B — the engine "finishes." Hide overlay (captionPhase
+      // → idle), unfreeze trace (HeroWaveform returns), fire the
+      // paste tick + the typing-paste animation on the row +
+      // row-settle halo replay.
+      const tPaste = setTimeout(() => {
+        setCaptionPhase('idle')
         if (currentSlug) {
           setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
-        }
-      }, BREATH_RELEASE_TO_TRANSCRIBE_MS)
-      choreographyTimeoutsRef.current.push(tScan)
-
-      // Beat B — the scan completes; data lands in the row. Paste
-      // tick fires in the same frame as the row-settle replay (the
-      // phosphor "spill" from the top of the row, reading as
-      // "deposited into the buffer"). Caption fades to idle now that
-      // its narrative job is done.
-      const tLand = setTimeout(() => {
-        if (currentSlug) {
           setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
         }
         playPasteTick(ctxRef.current)
-        setCaptionPhase('idle')
 
-        // Beat C — breath, then advance to next capture.
+        // Beat C — breath, then advance to the next non-missing clip.
         if (AUTO_ADVANCE) {
           const tNext = setTimeout(() => {
             for (let step = 1; step <= catalog.length; step++) {
@@ -341,8 +370,8 @@ export default function SignalTable({ catalog }) {
           }, BREATH_PASTE_TO_NEXT_MS)
           choreographyTimeoutsRef.current.push(tNext)
         }
-      }, BREATH_RELEASE_TO_TRANSCRIBE_MS + TRANSCRIBE_DURATION_MS)
-      choreographyTimeoutsRef.current.push(tLand)
+      }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs)
+      choreographyTimeoutsRef.current.push(tPaste)
     }
     const onError = () => {
       const cur = catalog[activeIndex]
@@ -548,6 +577,7 @@ export default function SignalTable({ catalog }) {
           <LiveTrace
             analyserRef={analyserRef}
             playing={isPlaying}
+            freeze={captionPhase === 'transcribing'}
             channelLabel="CH-01"
             scaleLabel="32.1kHz · MAC · iPHONE · WATCH"
             hideLabels
@@ -572,23 +602,28 @@ export default function SignalTable({ catalog }) {
           )}
 
           {/* Cinematic caption — subtitle pill with per-word fill while
-              audio plays, freezes into a still-frame on finalize.
-              Purely narrative scenery for the viewer; the engine writes
-              the transcription into the row, not here. Hidden in idle
-              (between clips) so it doesn't pop back into view after
-              the data has landed in the buffer. */}
-          {captionsOn && (isPlaying || captionPhase === 'finalize') && (
+              audio plays. Purely narrative scenery for the viewer; the
+              engine writes the transcription into the row, not here.
+              Hidden the moment audio ends so the TRANSCRIBING overlay
+              (below) gets the stage cleanly. */}
+          {captionsOn && isPlaying && (
             <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center px-6 sm:bottom-6">
               <CinematicCaption
                 audioRef={audioRef}
                 alignSrc={activeCapture?.audio?.replace(/\.mp3$/, '.alignment.json')}
                 playing={isPlaying}
-                phase={isPlaying ? 'live' : captionPhase}
+                phase="live"
                 finalizeKey={finalizeKey}
                 className="text-base sm:text-lg"
               />
             </div>
           )}
+
+          {/* TRANSCRIBING overlay — engine "working" indicator that
+              sits centered over the frozen trace area between audio
+              end and paste. Self-fades on opacity transition driven
+              by the captionPhase === 'transcribing' guard. */}
+          <TranscribingOverlay show={captionPhase === 'transcribing'} />
 
           {/* Keypress cue — pops the hotkey HUD at the start and end
               of each clip, like a screencast tool. Inside the trace's

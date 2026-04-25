@@ -30,6 +30,7 @@ export default function LiveTrace({
   viewH = 220,
   compact = false,
   hideLabels = false,
+  freeze = false,
 }) {
   // Compact = the dock variant. Drops corner ticks + instrument labels and
   // halves graticule density so the trace reads cleanly at ~80px tall.
@@ -56,13 +57,14 @@ export default function LiveTrace({
   useEffect(() => {
     if (!playing) {
       cancelAnimationFrame(rafRef.current)
-      // Swap back to the decorative idle HeroWaveform when not playing.
-      // Earlier we kept the live polyline frozen on screen as a "captured
-      // signal at rest" but it reads as a flat dim line, which is less
-      // beautiful than the idle wave's deliberately authored shape. The
-      // canonical "captured" feel is now carried by the row-settle +
-      // row-transcribe-scan animations on the active row instead.
-      setShowLive(false)
+      // When `freeze` is true, the parent wants the live polyline held
+      // on screen at its last shape (e.g., during the post-audio
+      // TRANSCRIBING beat, where the trace acts as a still-frame
+      // backdrop for the engine indicator). Without freeze, fall back
+      // to the decorative idle HeroWaveform — the dimmed frozen
+      // polyline alone reads as flat, less beautiful than the
+      // authored idle shape.
+      if (!freeze) setShowLive(false)
       return
     }
 
@@ -103,7 +105,7 @@ export default function LiveTrace({
     return () => {
       cancelAnimationFrame(rafRef.current)
     }
-  }, [playing, analyserRef])
+  }, [playing, freeze, analyserRef])
 
   return (
     <div className="relative">

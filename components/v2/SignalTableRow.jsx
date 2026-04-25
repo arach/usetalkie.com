@@ -69,20 +69,6 @@ export default function SignalTableRow({
       style={activeStyle}
       aria-current={active ? 'true' : undefined}
     >
-      {/* Transcribe-scan overlay — phosphor "write head" that walks
-          L→R across the row content the moment the engine produces a
-          transcription for this row. Distinct from row-settle: this
-          one fires *before* the data is "deposited", reading as the
-          engine writing into the buffer. Keyed by transcribeKey so
-          the keyframe replays on each fire. */}
-      {active && transcribeKey != null && (
-        <span
-          key={`scan-${transcribeKey}`}
-          aria-hidden
-          className="row-transcribe-scan pointer-events-none absolute inset-y-0 -left-[12%] w-[18%]"
-        />
-      )}
-
       {/* Settle-from-trace overlay — phosphor "spill" that drops in from
           the top of the row each time it freshly becomes active OR each
           time the engine deposits a fresh transcription into it. The
@@ -146,8 +132,37 @@ export default function SignalTableRow({
           )}
         </div>
 
-        <p className={`mt-1.5 text-[13px] italic leading-snug ${active ? 'text-ink' : 'text-ink-muted'}`}>
-          &ldquo;{capture.input}&rdquo;
+        {/* Input quote — the row's "transcription". When the engine
+            finishes its transcribing beat, the parent bumps
+            transcribeKey, which fires two keyed overlays here:
+              1. row-paste-type — phosphor selection band sweeping
+                 L→R across the text width (~280ms). Reads as a
+                 cursor writing decisively.
+              2. row-paste-text — the text behind briefly turns
+                 trace + soft glow, then settles back to ink
+                 (~520ms total color transition).
+            The two combine into "engine just typed this here." Both
+            are keyed by `transcribeKey` so each fire replays cleanly. */}
+        <p className={`relative mt-1.5 overflow-hidden text-[13px] italic leading-snug ${active ? 'text-ink' : 'text-ink-muted'}`}>
+          {active && transcribeKey != null && (
+            <span
+              key={`paste-band-${transcribeKey}`}
+              aria-hidden
+              className="row-paste-type pointer-events-none absolute inset-y-0 -left-[8%] w-[24%]"
+            />
+          )}
+          {active && transcribeKey != null ? (
+            <span
+              key={`paste-text-${transcribeKey}`}
+              className="row-paste-text relative"
+            >
+              &ldquo;{capture.input}&rdquo;
+            </span>
+          ) : (
+            <span className="relative">
+              &ldquo;{capture.input}&rdquo;
+            </span>
+          )}
         </p>
 
         <p className="mt-1.5 flex items-center gap-2 text-[12px] text-ink-dim">

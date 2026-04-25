@@ -176,33 +176,73 @@ html.dark {
   animation: caption-finalize 0.5s ease-out forwards;
 }
 
-/* row-transcribe-scan → "the engine wrote this into the buffer"
- * Fast phosphor wedge that walks L→R across the active row's content
- * area, reading as a CRT write-head depositing the transcription. The
- * host row container sets overflow:hidden so the wedge stays clipped
- * to the row rectangle. Deliberately short (~400ms) — real Talkie
- * transcription is fast, the demo should feel that way too. */
-@keyframes row-transcribe-scan {
-  0%   { transform: translateX(-12%); opacity: 0; }
-  12%  { opacity: 0.95; }
-  85%  { opacity: 0.95; }
-  100% { transform: translateX(100%); opacity: 0; }
+/* row-paste-type → "the engine just pasted the transcription here"
+ * Fires AFTER the TRANSCRIBING beat completes — the engine has done
+ * its work, and the result is now landing in the row. Phosphor
+ * "selection band" sweeps L→R across the row's input quote text;
+ * as it crosses, the text behind briefly turns text-trace + soft
+ * glow, then settles back to text-ink (color transition handled in
+ * the row component on a sibling overlay).
+ *
+ * This replaces the older row-transcribe-scan metaphor. The old
+ * sweep happened during transcription and read as the engine
+ * scanning the input — wrong frame: real transcription is invisible
+ * compute, what the user notices is the output appearing. So the
+ * sweep now happens at paste time, not transcribe time, and reads
+ * as a fast cursor writing the text into the buffer.
+ *
+ * Total sweep ~280ms (faster than the old 420ms scan) so the typing
+ * feel is decisive. Host row sets overflow:hidden to clip. */
+@keyframes row-paste-type {
+  0%   { transform: translateX(-8%);  opacity: 0; }
+  10%  { opacity: 0.95; }
+  90%  { opacity: 0.95; }
+  100% { transform: translateX(108%); opacity: 0; }
 }
-.row-transcribe-scan {
-  /* Vertical phosphor wedge — narrower + brighter at the leading edge,
-     tapering trailing. The bright spike is the "write head"; the soft
-     tail is the after-glow of the just-written character span. */
+.row-paste-type {
+  /* Selection-band gradient — soft phosphor field with a brighter
+     leading edge (the "cursor"). Narrower than the old scan wedge
+     so it reads as a typed selection, not a wash. */
   background: linear-gradient(
     to right,
     transparent 0%,
-    color-mix(in oklab, var(--trace) 14%, transparent) 35%,
-    color-mix(in oklab, var(--trace) 38%, transparent) 48%,
-    color-mix(in oklab, var(--trace-glow) 90%, transparent) 52%,
-    color-mix(in oklab, var(--trace) 22%, transparent) 60%,
+    color-mix(in oklab, var(--trace) 10%, transparent) 30%,
+    color-mix(in oklab, var(--trace) 32%, transparent) 55%,
+    color-mix(in oklab, var(--trace-glow) 85%, transparent) 70%,
+    color-mix(in oklab, var(--trace) 18%, transparent) 82%,
     transparent 100%
   );
-  filter: blur(0.5px);
-  animation: row-transcribe-scan 0.42s ease-out forwards;
+  filter: blur(0.4px);
+  animation: row-paste-type 0.28s ease-out forwards;
+}
+
+/* row-paste-text → text behind the band briefly lights up trace,
+ * then settles to ink as the band passes. Applied to the input-text
+ * span; the keyframe drives color + textShadow over ~520ms (band
+ * crosses in ~280ms, the trailing afterglow lingers another ~240ms
+ * before the text relaxes to ink). */
+@keyframes row-paste-text {
+  0%   { color: var(--ink-muted); text-shadow: none; }
+  20%  { color: var(--trace);     text-shadow: 0 0 4px var(--trace-glow); }
+  60%  { color: var(--trace);     text-shadow: 0 0 4px var(--trace-glow); }
+  100% { color: var(--ink);       text-shadow: none; }
+}
+.row-paste-text {
+  animation: row-paste-text 0.52s ease-out forwards;
+}
+
+/* transcribing-pulse → 3-dot typing-indicator phosphor pulse used by
+ * <TranscribingOverlay/>. Each dot opacity-cycles offset from the
+ * others (the staggering is set inline via animationDelay on each
+ * span), creating a left-to-right typing feel. Slow tempo (1.05s
+ * loop) so it reads as "engine working" rather than nervous. */
+@keyframes transcribing-pulse {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  35%      { opacity: 1;    transform: scale(1); }
+  60%      { opacity: 0.55; transform: scale(0.95); }
+}
+.transcribing-dot {
+  animation: transcribing-pulse 1.05s ease-in-out infinite;
 }
 
 /* RETIRED: caption-memorialize was a FLIP flight that misrepresented
@@ -286,11 +326,19 @@ html.dark {
   .narrator-anchor-flash,
   .tagline-fade-in,
   .row-settle,
-  .row-transcribe-scan,
+  .row-paste-type,
+  .row-paste-text,
   .caption-finalize,
   .keypress-cue {
     animation: none;
     opacity: 1; /* keep cues visible without motion */
+  }
+  /* TranscribingOverlay: still appears, just without the dot pulse.
+     The engine-state cue (and its timing beat + paste tick) is still
+     useful with motion off. */
+  .transcribing-dot {
+    animation: none;
+    opacity: 0.7;
   }
   /* (no-op block kept so any tail rules below stay aligned) */
   .caption-memorialize {
