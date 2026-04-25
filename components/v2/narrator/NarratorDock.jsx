@@ -139,7 +139,9 @@ export default function NarratorDock() {
         )}
       </div>
 
-      {/* Bottom status bar — mirrors the top header */}
+      {/* Bottom status bar — mirrors the top header. Only the phosphor
+          dot subtly signals active/idle; the label stays calm to avoid
+          nervous state-flipping between clips. */}
       <div className="flex items-center justify-between gap-3 border-t border-edge-faint px-3 py-1.5 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
         {missing ? (
           <span className="truncate">no audio yet · row stays visible</span>
@@ -148,13 +150,13 @@ export default function NarratorDock() {
             <span className="flex items-center gap-1.5">
               <span
                 aria-hidden
-                className="inline-block h-1 w-1 rounded-full"
+                className="inline-block h-1 w-1 rounded-full transition-all duration-500"
                 style={{
                   background: isPlaying ? 'var(--trace)' : 'var(--ink-faint)',
                   boxShadow: isPlaying ? '0 0 4px var(--trace)' : 'none',
                 }}
               />
-              {isPlaying ? 'TRIG · LIVE' : captionText ? 'TRIG · HOLD' : 'TRIG · ARMED'}
+              TRIG · LIVE
             </span>
             <span>32.1kHz · MONO</span>
           </>

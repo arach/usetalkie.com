@@ -540,21 +540,20 @@ export default function SignalTable({ catalog }) {
           )}
         </div>
 
-        {/* Status bar — mirrors the top header for visual balance. */}
+        {/* Status bar — mirrors the top header for visual balance.
+            Only the phosphor dot subtly signals active/idle so the UI
+            doesn't feel nervous between clips. The label stays calm. */}
         <div className="flex items-center justify-between gap-3 border-t border-edge-faint px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
           <span className="flex items-center gap-2">
             <span
               aria-hidden
-              className="inline-block h-1 w-1 rounded-full"
+              className="inline-block h-1 w-1 rounded-full transition-all duration-500"
               style={{
                 background: isPlaying ? 'var(--trace)' : 'var(--ink-faint)',
                 boxShadow: isPlaying ? '0 0 4px var(--trace)' : 'none',
               }}
             />
-            {isPlaying ? 'TRIG · LIVE' : captionText ? 'TRIG · HOLD' : 'TRIG · ARMED'}
-          </span>
-          <span className="hidden text-ink-faint sm:inline">
-            {isPlaying ? 'capturing from world' : 'play any row to hear it'}
+            TRIG · LIVE
           </span>
           <span>{activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}</span>
         </div>
