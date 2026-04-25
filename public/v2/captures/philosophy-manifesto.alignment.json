@@ -1,0 +1,859 @@
+{
+  "duration": 54.334,
+  "phrases": [
+    {
+      "text": "Your best ideas don't wait for you to sit down.",
+      "start": 0,
+      "end": 2.682,
+      "words": [
+        {
+          "word": "Your",
+          "start": 0,
+          "end": 0.232
+        },
+        {
+          "word": "best",
+          "start": 0.232,
+          "end": 0.557
+        },
+        {
+          "word": "ideas",
+          "start": 0.557,
+          "end": 1.022
+        },
+        {
+          "word": "don't",
+          "start": 1.022,
+          "end": 1.312
+        },
+        {
+          "word": "wait",
+          "start": 1.312,
+          "end": 1.568
+        },
+        {
+          "word": "for",
+          "start": 1.568,
+          "end": 1.719
+        },
+        {
+          "word": "you",
+          "start": 1.719,
+          "end": 1.858
+        },
+        {
+          "word": "to",
+          "start": 1.858,
+          "end": 1.974
+        },
+        {
+          "word": "sit",
+          "start": 1.974,
+          "end": 2.171
+        },
+        {
+          "word": "down.",
+          "start": 2.171,
+          "end": 2.682
+        }
+      ]
+    },
+    {
+      "text": "They arrive on a walk.",
+      "start": 3.007,
+      "end": 4.389,
+      "words": [
+        {
+          "word": "\n\nThey",
+          "start": 3.007,
+          "end": 3.216
+        },
+        {
+          "word": "arrive",
+          "start": 3.216,
+          "end": 3.588
+        },
+        {
+          "word": "on",
+          "start": 3.588,
+          "end": 3.704
+        },
+        {
+          "word": "a",
+          "start": 3.704,
+          "end": 3.797
+        },
+        {
+          "word": "walk.",
+          "start": 3.797,
+          "end": 4.389
+        }
+      ]
+    },
+    {
+      "text": "Between meetings.",
+      "start": 4.772,
+      "end": 5.805,
+      "words": [
+        {
+          "word": " Between",
+          "start": 4.772,
+          "end": 5.19
+        },
+        {
+          "word": "meetings.",
+          "start": 5.19,
+          "end": 5.805
+        }
+      ]
+    },
+    {
+      "text": "While you're holding something else in your head.",
+      "start": 6.13,
+      "end": 8.162,
+      "words": [
+        {
+          "word": " While",
+          "start": 6.13,
+          "end": 6.362
+        },
+        {
+          "word": "you're",
+          "start": 6.362,
+          "end": 6.571
+        },
+        {
+          "word": "holding",
+          "start": 6.571,
+          "end": 6.896
+        },
+        {
+          "word": "something",
+          "start": 6.896,
+          "end": 7.233
+        },
+        {
+          "word": "else",
+          "start": 7.233,
+          "end": 7.477
+        },
+        {
+          "word": "in",
+          "start": 7.477,
+          "end": 7.581
+        },
+        {
+          "word": "your",
+          "start": 7.581,
+          "end": 7.755
+        },
+        {
+          "word": "head.",
+          "start": 7.755,
+          "end": 8.162
+        }
+      ]
+    },
+    {
+      "text": "The question isn't where they come from —",
+      "start": 8.766,
+      "end": 10.565,
+      "words": [
+        {
+          "word": " The",
+          "start": 8.766,
+          "end": 8.94
+        },
+        {
+          "word": "question",
+          "start": 8.94,
+          "end": 9.392
+        },
+        {
+          "word": "isn't",
+          "start": 9.392,
+          "end": 9.613
+        },
+        {
+          "word": "where",
+          "start": 9.613,
+          "end": 9.776
+        },
+        {
+          "word": "they",
+          "start": 9.776,
+          "end": 9.927
+        },
+        {
+          "word": "come",
+          "start": 9.927,
+          "end": 10.147
+        },
+        {
+          "word": "from",
+          "start": 10.147,
+          "end": 10.495
+        },
+        {
+          "word": "—",
+          "start": 10.495,
+          "end": 10.565
+        }
+      ]
+    },
+    {
+      "text": "it's whether you can catch them before they slip.",
+      "start": 11.006,
+      "end": 13.201,
+      "words": [
+        {
+          "word": " it's",
+          "start": 11.006,
+          "end": 11.215
+        },
+        {
+          "word": "whether",
+          "start": 11.215,
+          "end": 11.506
+        },
+        {
+          "word": "you",
+          "start": 11.506,
+          "end": 11.633
+        },
+        {
+          "word": "can",
+          "start": 11.633,
+          "end": 11.796
+        },
+        {
+          "word": "catch",
+          "start": 11.796,
+          "end": 12.063
+        },
+        {
+          "word": "them",
+          "start": 12.063,
+          "end": 12.225
+        },
+        {
+          "word": "before",
+          "start": 12.225,
+          "end": 12.527
+        },
+        {
+          "word": "they",
+          "start": 12.527,
+          "end": 12.701
+        },
+        {
+          "word": "slip.",
+          "start": 12.701,
+          "end": 13.201
+        }
+      ]
+    },
+    {
+      "text": "That's what Talkie is for.",
+      "start": 13.804,
+      "end": 15.221,
+      "words": [
+        {
+          "word": "\n\nThat's",
+          "start": 13.804,
+          "end": 14.071
+        },
+        {
+          "word": "what",
+          "start": 14.071,
+          "end": 14.234
+        },
+        {
+          "word": "Talkie",
+          "start": 14.234,
+          "end": 14.605
+        },
+        {
+          "word": "is",
+          "start": 14.605,
+          "end": 14.756
+        },
+        {
+          "word": "for.",
+          "start": 14.756,
+          "end": 15.221
+        }
+      ]
+    },
+    {
+      "text": "Three principles.",
+      "start": 15.917,
+      "end": 17.009,
+      "words": [
+        {
+          "word": " Three",
+          "start": 15.917,
+          "end": 16.254
+        },
+        {
+          "word": "principles.",
+          "start": 16.254,
+          "end": 17.009
+        }
+      ]
+    },
+    {
+      "text": "Velocity.",
+      "start": 17.961,
+      "end": 18.762,
+      "words": [
+        {
+          "word": "\n\nVelocity.",
+          "start": 17.961,
+          "end": 18.762
+        }
+      ]
+    },
+    {
+      "text": "Your voice is the fastest path from thought to action.",
+      "start": 19.574,
+      "end": 22.604,
+      "words": [
+        {
+          "word": " Your",
+          "start": 19.574,
+          "end": 19.865
+        },
+        {
+          "word": "voice",
+          "start": 19.865,
+          "end": 20.225
+        },
+        {
+          "word": "is",
+          "start": 20.225,
+          "end": 20.364
+        },
+        {
+          "word": "the",
+          "start": 20.364,
+          "end": 20.526
+        },
+        {
+          "word": "fastest",
+          "start": 20.526,
+          "end": 21.037
+        },
+        {
+          "word": "path",
+          "start": 21.037,
+          "end": 21.374
+        },
+        {
+          "word": "from",
+          "start": 21.374,
+          "end": 21.606
+        },
+        {
+          "word": "thought",
+          "start": 21.606,
+          "end": 21.92
+        },
+        {
+          "word": "to",
+          "start": 21.92,
+          "end": 22.013
+        },
+        {
+          "word": "action.",
+          "start": 22.013,
+          "end": 22.604
+        }
+      ]
+    },
+    {
+      "text": "Speak it, and it lands — in your draft,",
+      "start": 23.417,
+      "end": 26.424,
+      "words": [
+        {
+          "word": " Speak",
+          "start": 23.417,
+          "end": 23.823
+        },
+        {
+          "word": "it,",
+          "start": 23.823,
+          "end": 24.113
+        },
+        {
+          "word": "and",
+          "start": 24.113,
+          "end": 24.346
+        },
+        {
+          "word": "it",
+          "start": 24.346,
+          "end": 24.473
+        },
+        {
+          "word": "lands",
+          "start": 24.473,
+          "end": 25.007
+        },
+        {
+          "word": "—",
+          "start": 25.007,
+          "end": 25.541
+        },
+        {
+          "word": "in",
+          "start": 25.541,
+          "end": 25.704
+        },
+        {
+          "word": "your",
+          "start": 25.704,
+          "end": 25.901
+        },
+        {
+          "word": "draft,",
+          "start": 25.901,
+          "end": 26.424
+        }
+      ]
+    },
+    {
+      "text": "your task list, your terminal, wherever you were already going.",
+      "start": 26.505,
+      "end": 30.197,
+      "words": [
+        {
+          "word": " your",
+          "start": 26.505,
+          "end": 26.714
+        },
+        {
+          "word": "task",
+          "start": 26.714,
+          "end": 27.109
+        },
+        {
+          "word": "list,",
+          "start": 27.109,
+          "end": 27.631
+        },
+        {
+          "word": "your",
+          "start": 27.631,
+          "end": 27.829
+        },
+        {
+          "word": "terminal,",
+          "start": 27.829,
+          "end": 28.49
+        },
+        {
+          "word": "wherever",
+          "start": 28.49,
+          "end": 28.978
+        },
+        {
+          "word": "you",
+          "start": 28.978,
+          "end": 29.117
+        },
+        {
+          "word": "were",
+          "start": 29.117,
+          "end": 29.303
+        },
+        {
+          "word": "already",
+          "start": 29.303,
+          "end": 29.686
+        },
+        {
+          "word": "going.",
+          "start": 29.686,
+          "end": 30.197
+        }
+      ]
+    },
+    {
+      "text": "Sovereignty.",
+      "start": 30.894,
+      "end": 31.799,
+      "words": [
+        {
+          "word": "\n\nSovereignty.",
+          "start": 30.894,
+          "end": 31.799
+        }
+      ]
+    },
+    {
+      "text": "Your words stay on your devices.",
+      "start": 32.24,
+      "end": 34.261,
+      "words": [
+        {
+          "word": " Your",
+          "start": 32.24,
+          "end": 32.554
+        },
+        {
+          "word": "words",
+          "start": 32.554,
+          "end": 32.949
+        },
+        {
+          "word": "stay",
+          "start": 32.949,
+          "end": 33.25
+        },
+        {
+          "word": "on",
+          "start": 33.25,
+          "end": 33.378
+        },
+        {
+          "word": "your",
+          "start": 33.378,
+          "end": 33.541
+        },
+        {
+          "word": "devices.",
+          "start": 33.541,
+          "end": 34.261
+        }
+      ]
+    },
+    {
+      "text": "We don't ship them to a cloud to be useful.",
+      "start": 34.957,
+      "end": 37.314,
+      "words": [
+        {
+          "word": " We",
+          "start": 34.957,
+          "end": 35.143
+        },
+        {
+          "word": "don't",
+          "start": 35.143,
+          "end": 35.375
+        },
+        {
+          "word": "ship",
+          "start": 35.375,
+          "end": 35.631
+        },
+        {
+          "word": "them",
+          "start": 35.631,
+          "end": 35.805
+        },
+        {
+          "word": "to",
+          "start": 35.805,
+          "end": 35.956
+        },
+        {
+          "word": "a",
+          "start": 35.956,
+          "end": 36.06
+        },
+        {
+          "word": "cloud",
+          "start": 36.06,
+          "end": 36.478
+        },
+        {
+          "word": "to",
+          "start": 36.478,
+          "end": 36.594
+        },
+        {
+          "word": "be",
+          "start": 36.594,
+          "end": 36.722
+        },
+        {
+          "word": "useful.",
+          "start": 36.722,
+          "end": 37.314
+        }
+      ]
+    },
+    {
+      "text": "The signal path is short, and it's yours.",
+      "start": 37.825,
+      "end": 40.507,
+      "words": [
+        {
+          "word": " The",
+          "start": 37.825,
+          "end": 38.011
+        },
+        {
+          "word": "signal",
+          "start": 38.011,
+          "end": 38.394
+        },
+        {
+          "word": "path",
+          "start": 38.394,
+          "end": 38.73
+        },
+        {
+          "word": "is",
+          "start": 38.73,
+          "end": 38.87
+        },
+        {
+          "word": "short,",
+          "start": 38.87,
+          "end": 39.555
+        },
+        {
+          "word": "and",
+          "start": 39.555,
+          "end": 39.764
+        },
+        {
+          "word": "it's",
+          "start": 39.764,
+          "end": 39.949
+        },
+        {
+          "word": "yours.",
+          "start": 39.949,
+          "end": 40.507
+        }
+      ]
+    },
+    {
+      "text": "Flow.",
+      "start": 41.203,
+      "end": 41.842,
+      "words": [
+        {
+          "word": "\n\nFlow.",
+          "start": 41.203,
+          "end": 41.842
+        }
+      ]
+    },
+    {
+      "text": "The cursor returns to where it started.",
+      "start": 42.225,
+      "end": 44.466,
+      "words": [
+        {
+          "word": " The",
+          "start": 42.225,
+          "end": 42.399
+        },
+        {
+          "word": "cursor",
+          "start": 42.399,
+          "end": 42.829
+        },
+        {
+          "word": "returns",
+          "start": 42.829,
+          "end": 43.316
+        },
+        {
+          "word": "to",
+          "start": 43.316,
+          "end": 43.444
+        },
+        {
+          "word": "where",
+          "start": 43.444,
+          "end": 43.665
+        },
+        {
+          "word": "it",
+          "start": 43.665,
+          "end": 43.792
+        },
+        {
+          "word": "started.",
+          "start": 43.792,
+          "end": 44.466
+        }
+      ]
+    },
+    {
+      "text": "Your hands stay where they were.",
+      "start": 45.162,
+      "end": 47.032,
+      "words": [
+        {
+          "word": " Your",
+          "start": 45.162,
+          "end": 45.464
+        },
+        {
+          "word": "hands",
+          "start": 45.464,
+          "end": 45.987
+        },
+        {
+          "word": "stay",
+          "start": 45.987,
+          "end": 46.3
+        },
+        {
+          "word": "where",
+          "start": 46.3,
+          "end": 46.486
+        },
+        {
+          "word": "they",
+          "start": 46.486,
+          "end": 46.672
+        },
+        {
+          "word": "were.",
+          "start": 46.672,
+          "end": 47.032
+        }
+      ]
+    },
+    {
+      "text": "Talkie doesn't ask you to leave what you're doing.",
+      "start": 47.728,
+      "end": 49.771,
+      "words": [
+        {
+          "word": " Talkie",
+          "start": 47.728,
+          "end": 48.1
+        },
+        {
+          "word": "doesn't",
+          "start": 48.1,
+          "end": 48.367
+        },
+        {
+          "word": "ask",
+          "start": 48.367,
+          "end": 48.552
+        },
+        {
+          "word": "you",
+          "start": 48.552,
+          "end": 48.669
+        },
+        {
+          "word": "to",
+          "start": 48.669,
+          "end": 48.773
+        },
+        {
+          "word": "leave",
+          "start": 48.773,
+          "end": 48.982
+        },
+        {
+          "word": "what",
+          "start": 48.982,
+          "end": 49.121
+        },
+        {
+          "word": "you're",
+          "start": 49.121,
+          "end": 49.33
+        },
+        {
+          "word": "doing.",
+          "start": 49.33,
+          "end": 49.771
+        }
+      ]
+    },
+    {
+      "text": "Your voice is the fastest path.",
+      "start": 49.922,
+      "end": 51.815,
+      "words": [
+        {
+          "word": "\n\nYour",
+          "start": 49.922,
+          "end": 50.131
+        },
+        {
+          "word": "voice",
+          "start": 50.131,
+          "end": 50.456
+        },
+        {
+          "word": "is",
+          "start": 50.456,
+          "end": 50.584
+        },
+        {
+          "word": "the",
+          "start": 50.584,
+          "end": 50.712
+        },
+        {
+          "word": "fastest",
+          "start": 50.712,
+          "end": 51.199
+        },
+        {
+          "word": "path.",
+          "start": 51.199,
+          "end": 51.815
+        }
+      ]
+    },
+    {
+      "text": "Don't let the tools slow you down.",
+      "start": 52.418,
+      "end": 54.334,
+      "words": [
+        {
+          "word": " Don't",
+          "start": 52.418,
+          "end": 52.651
+        },
+        {
+          "word": "let",
+          "start": 52.651,
+          "end": 52.802
+        },
+        {
+          "word": "the",
+          "start": 52.802,
+          "end": 52.918
+        },
+        {
+          "word": "tools",
+          "start": 52.918,
+          "end": 53.254
+        },
+        {
+          "word": "slow",
+          "start": 53.254,
+          "end": 53.533
+        },
+        {
+          "word": "you",
+          "start": 53.533,
+          "end": 53.684
+        },
+        {
+          "word": "down.",
+          "start": 53.684,
+          "end": 54.334
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "duration": 2.647,
+  "phrases": [
+    {
+      "text": "Tell Sarah I'll be ten late but bringing coffee.",
+      "start": 0,
+      "end": 2.647,
+      "words": [
+        {
+          "word": "Tell",
+          "start": 0,
+          "end": 0.267
+        },
+        {
+          "word": "Sarah",
+          "start": 0.267,
+          "end": 0.604
+        },
+        {
+          "word": "I'll",
+          "start": 0.604,
+          "end": 0.801
+        },
+        {
+          "word": "be",
+          "start": 0.801,
+          "end": 0.952
+        },
+        {
+          "word": "ten",
+          "start": 0.952,
+          "end": 1.289
+        },
+        {
+          "word": "late",
+          "start": 1.289,
+          "end": 1.567
+        },
+        {
+          "word": "but",
+          "start": 1.567,
+          "end": 1.73
+        },
+        {
+          "word": "bringing",
+          "start": 1.73,
+          "end": 2.055
+        },
+        {
+          "word": "coffee.",
+          "start": 2.055,
+          "end": 2.647
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "duration": 5.387,
+  "phrases": [
+    {
+      "text": "Third tab click doesn't update the URL —",
+      "start": 0,
+      "end": 2.728,
+      "words": [
+        {
+          "word": "Third",
+          "start": 0,
+          "end": 0.348
+        },
+        {
+          "word": "tab",
+          "start": 0.348,
+          "end": 0.685
+        },
+        {
+          "word": "click",
+          "start": 0.685,
+          "end": 1.01
+        },
+        {
+          "word": "doesn't",
+          "start": 1.01,
+          "end": 1.393
+        },
+        {
+          "word": "update",
+          "start": 1.393,
+          "end": 1.858
+        },
+        {
+          "word": "the",
+          "start": 1.858,
+          "end": 2.008
+        },
+        {
+          "word": "URL",
+          "start": 2.008,
+          "end": 2.659
+        },
+        {
+          "word": "—",
+          "start": 2.659,
+          "end": 2.728
+        }
+      ]
+    },
+    {
+      "text": "probably the router.",
+      "start": 2.879,
+      "end": 3.924,
+      "words": [
+        {
+          "word": " probably",
+          "start": 2.879,
+          "end": 3.367
+        },
+        {
+          "word": "the",
+          "start": 3.367,
+          "end": 3.495
+        },
+        {
+          "word": "router.",
+          "start": 3.495,
+          "end": 3.924
+        }
+      ]
+    },
+    {
+      "text": "Tag it for Friday.",
+      "start": 4.133,
+      "end": 5.387,
+      "words": [
+        {
+          "word": " Tag",
+          "start": 4.133,
+          "end": 4.435
+        },
+        {
+          "word": "it",
+          "start": 4.435,
+          "end": 4.539
+        },
+        {
+          "word": "for",
+          "start": 4.539,
+          "end": 4.69
+        },
+        {
+          "word": "Friday.",
+          "start": 4.69,
+          "end": 5.387
+        }
+      ]
+    }
+  ]
+}

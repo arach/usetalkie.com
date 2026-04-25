@@ -1,0 +1,109 @@
+{
+  "duration": 6.038,
+  "phrases": [
+    {
+      "text": "Okay so the thing about local-first that keeps coming back is —",
+      "start": 0,
+      "end": 3.228,
+      "words": [
+        {
+          "word": "Okay",
+          "start": 0,
+          "end": 0.337
+        },
+        {
+          "word": "so",
+          "start": 0.337,
+          "end": 0.511
+        },
+        {
+          "word": "the",
+          "start": 0.511,
+          "end": 0.639
+        },
+        {
+          "word": "thing",
+          "start": 0.639,
+          "end": 0.882
+        },
+        {
+          "word": "about",
+          "start": 0.882,
+          "end": 1.173
+        },
+        {
+          "word": "local-first",
+          "start": 1.173,
+          "end": 1.858
+        },
+        {
+          "word": "that",
+          "start": 1.858,
+          "end": 2.02
+        },
+        {
+          "word": "keeps",
+          "start": 2.02,
+          "end": 2.287
+        },
+        {
+          "word": "coming",
+          "start": 2.287,
+          "end": 2.578
+        },
+        {
+          "word": "back",
+          "start": 2.578,
+          "end": 2.845
+        },
+        {
+          "word": "is",
+          "start": 2.845,
+          "end": 3.158
+        },
+        {
+          "word": "—",
+          "start": 3.158,
+          "end": 3.228
+        }
+      ]
+    },
+    {
+      "text": "you stop performing for the cloud.",
+      "start": 4.041,
+      "end": 6.038,
+      "words": [
+        {
+          "word": " you",
+          "start": 4.041,
+          "end": 4.192
+        },
+        {
+          "word": "stop",
+          "start": 4.192,
+          "end": 4.517
+        },
+        {
+          "word": "performing",
+          "start": 4.517,
+          "end": 5.051
+        },
+        {
+          "word": "for",
+          "start": 5.051,
+          "end": 5.19
+        },
+        {
+          "word": "the",
+          "start": 5.19,
+          "end": 5.318
+        },
+        {
+          "word": "cloud.",
+          "start": 5.318,
+          "end": 6.038
+        }
+      ]
+    }
+  ]
+}

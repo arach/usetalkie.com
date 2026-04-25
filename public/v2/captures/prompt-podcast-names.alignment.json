@@ -1,0 +1,64 @@
+{
+  "duration": 5.526,
+  "phrases": [
+    {
+      "text": "Brainstorm three podcast names about productivity tools.",
+      "start": 0,
+      "end": 3.61,
+      "words": [
+        {
+          "word": "Brainstorm",
+          "start": 0,
+          "end": 0.708
+        },
+        {
+          "word": "three",
+          "start": 0.708,
+          "end": 1.056
+        },
+        {
+          "word": "podcast",
+          "start": 1.056,
+          "end": 1.683
+        },
+        {
+          "word": "names",
+          "start": 1.683,
+          "end": 1.985
+        },
+        {
+          "word": "about",
+          "start": 1.985,
+          "end": 2.275
+        },
+        {
+          "word": "productivity",
+          "start": 2.275,
+          "end": 3.018
+        },
+        {
+          "word": "tools.",
+          "start": 3.018,
+          "end": 3.61
+        }
+      ]
+    },
+    {
+      "text": "No cringe.",
+      "start": 4.423,
+      "end": 5.526,
+      "words": [
+        {
+          "word": " No",
+          "start": 4.423,
+          "end": 4.702
+        },
+        {
+          "word": "cringe.",
+          "start": 4.702,
+          "end": 5.526
+        }
+      ]
+    }
+  ]
+}

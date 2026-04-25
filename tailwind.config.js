@@ -17,6 +17,27 @@ export default {
         '3xl': '1680px',
       },
       colors: {
+        // Oscilloscope theme — semantic tokens backed by CSS vars in globals.css.
+        // Vars flip atomically with the `html.dark` class set by the pre-paint
+        // theme script in app/layout.jsx, so first-paint is correct in both modes.
+        canvas:         'var(--canvas)',
+        'canvas-alt':   'var(--canvas-alt)',
+        'canvas-overlay':'var(--canvas-overlay)',
+        surface:        'var(--surface)',
+        trace:          'var(--trace)',
+        'trace-dim':    'var(--trace-dim)',
+        'trace-faint':  'var(--trace-faint)',
+        amber:          'var(--amber)',
+        ink:            'var(--ink)',
+        'ink-dim':      'var(--ink-dim)',
+        'ink-muted':    'var(--ink-muted)',
+        'ink-faint':    'var(--ink-faint)',
+        'ink-subtle':   'var(--ink-subtle)',
+        edge:           'var(--edge)',
+        'edge-dim':     'var(--edge-dim)',
+        'edge-faint':   'var(--edge-faint)',
+        'edge-subtle':  'var(--edge-subtle)',
+
         // Primary Tailwind-like shades ("Tailwind Shades")
         primary: {
           50:  '#eff6ff',

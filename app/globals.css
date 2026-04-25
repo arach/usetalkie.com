@@ -6,6 +6,367 @@
 html, body { height: 100%; }
 html { scroll-behavior: smooth; }
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * Oscilloscope theme tokens.
+ * Light  = cream-paper scanner printout (charcoal trace).
+ * Dark   = dark chassis with P31 phosphor (green trace).
+ * Pre-paint script in <head> toggles html.dark before first frame, so
+ * variables flip atomically — no flash, no JS hook required at runtime.
+ * Consumed via semantic Tailwind tokens declared in tailwind.config.js.
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  --canvas:         #f0ede4;
+  --canvas-alt:     #ebe7dc;
+  --canvas-overlay: rgba(240, 237, 228, 0.85);
+  --surface:        #e6e2d6;
+  --trace:          #2a2e2d;
+  --trace-glow:     rgba(42, 46, 45, 0.18);
+  --trace-dim:      rgba(42, 46, 45, 0.28);
+  --trace-faint:    rgba(42, 46, 45, 0.08);
+  --amber:          #c47d1c;
+  --ink:            #1a1d1c;
+  --ink-dim:        #2a2e2d;
+  --ink-muted:      #3a4441;
+  --ink-faint:      #5a6560;
+  --ink-subtle:     #6b7670;
+  --edge:           rgba(42, 46, 45, 0.30);
+  --edge-dim:       rgba(42, 46, 45, 0.20);
+  --edge-faint:     rgba(42, 46, 45, 0.14);
+  --edge-subtle:    rgba(42, 46, 45, 0.08);
+}
+
+html.dark {
+  --canvas:         #06090a;
+  --canvas-alt:     #05080a;
+  --canvas-overlay: rgba(6, 9, 10, 0.82);
+  --surface:        #050708;
+  --trace:          #4dff9e;
+  --trace-glow:     rgba(77, 255, 158, 0.50);
+  --trace-dim:      rgba(77, 255, 158, 0.18);
+  --trace-faint:    rgba(77, 255, 158, 0.06);
+  --amber:          #ffb84d;
+  --ink:            #f1f5f2;
+  --ink-dim:        #d7e3de;
+  --ink-muted:      #a0b5ac;
+  --ink-faint:      #7a8b85;
+  --ink-subtle:     #6b8a7f;
+  --edge:           rgba(77, 255, 158, 0.22);
+  --edge-dim:       rgba(77, 255, 158, 0.14);
+  --edge-faint:     rgba(77, 255, 158, 0.10);
+  --edge-subtle:    rgba(77, 255, 158, 0.06);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Animation vocabulary — motion as message.
+ * Each utility maps to a specific thing the site is telling the user.
+ * Apply deliberately, not decoratively. Slow tempos by default; under-acting
+ * reads more confident than over-acting. All classes are no-op'd under
+ * prefers-reduced-motion (block at the bottom of this section).
+ *
+ * The Tailwind built-in `animate-pulse` already covers "live · standing by"
+ * (slow opacity breathing on indicator dots). The classes below are for
+ * concepts Tailwind doesn't ship.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* osc-sweep → "voice → trace · your signal is here"
+ * Apply to a <g> inside SVG containing two stitched copies of the
+ * waveform side by side (each 50% of viewBox width). The translate
+ * walks the host left by one cycle so the loop is seamless. */
+@keyframes osc-sweep {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* osc-chase → "your data path · stays on your devices"
+ * Apply to a <path> that declares pathLength="1" and a tiny visible
+ * dasharray segment + a long invisible gap (e.g. stroke-dasharray:
+ * "0.04 0.96"). Animation walks dashoffset across the full path. */
+@keyframes osc-chase {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -1; }
+}
+
+/* osc-hop → "catch on the surface you're holding, land on your Mac"
+ * Brief one-shot per cycle with a long pause between bursts so it
+ * reads as a discrete event, not a continuous stream. Host element
+ * sets --osc-hop-distance to control the travel. */
+@keyframes osc-hop {
+  0%, 70%, 100% { transform: translateX(0);                          opacity: 0; }
+  10%           { transform: translateX(0);                          opacity: 1; }
+  60%           { transform: translateX(var(--osc-hop-distance, 100%)); opacity: 1; }
+}
+
+.osc-sweep      { animation: osc-sweep 8s linear infinite; }
+.osc-chase      { animation: osc-chase 4s linear infinite; }   /* solid trace · primary, confident */
+.osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
+.osc-hop        { animation: osc-hop   3s ease-out infinite; }
+
+/* keypress-cue → screencast-style hotkey HUD that fires at the start
+ * and end of a capture playback. Pops in, holds, fades out — total
+ * lifecycle 1.6s. The phosphor textShadow on the label and the soft
+ * trace-glow boxShadow on the container keep it on-brand with the
+ * oscilloscope aesthetic without needing a heavy backdrop. */
+@keyframes keypress-cue {
+  0%   { opacity: 0;    transform: translateY(4px)  scale(0.96); }
+  15%  { opacity: 1;    transform: translateY(0)    scale(1); }
+  78%  { opacity: 1;    transform: translateY(0)    scale(1); }
+  100% { opacity: 0;    transform: translateY(-2px) scale(0.98); }
+}
+.keypress-cue {
+  animation: keypress-cue 1.6s ease-out forwards;
+}
+
+/* row-settle → "we just captured this from the world (the trace) and
+ * stored it here in the table." Applied to an absolute-positioned
+ * overlay span on the active SignalTableRow. The `key={activationKey}`
+ * trick on that span forces a remount per activation so the keyframe
+ * replays — without it, browsers consume the animation once and the
+ * subsequent auto-advances feel static. */
+@keyframes row-settle {
+  0%   {
+    opacity: 0.95;
+    transform: translateY(-6px);
+    background: linear-gradient(to bottom,
+      color-mix(in oklab, var(--trace) 22%, transparent),
+      transparent 70%);
+    box-shadow: 0 -10px 22px color-mix(in oklab, var(--trace-glow) 55%, transparent);
+  }
+  55%  {
+    opacity: 0.55;
+    transform: translateY(0);
+    background: linear-gradient(to bottom,
+      color-mix(in oklab, var(--trace) 10%, transparent),
+      transparent 80%);
+    box-shadow: 0 -4px 14px color-mix(in oklab, var(--trace-glow) 30%, transparent);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+    background: transparent;
+    box-shadow: none;
+  }
+}
+.row-settle {
+  animation: row-settle 0.7s ease-out forwards;
+}
+
+/* tagline-fade-in → soft phosphor settle for rotating tagline variants.
+ * Applied via React key remount in <RotatingTagline/>. The slight blur
+ * mimics phosphor letting go of the previous letterforms before the
+ * new ones materialize — on-brand with the oscilloscope canvas. */
+@keyframes tagline-fade-in {
+  from { opacity: 0.18; filter: blur(0.6px); }
+  to   { opacity: 1;    filter: blur(0); }
+}
+.tagline-fade-in {
+  animation: tagline-fade-in 0.5s ease-out;
+}
+
+/* CaptureIsland morph keyframes — Dynamic-Island-style indicator at
+ * the top of the trace area. Three small animations cooperate:
+ *
+ *   capture-island-label-fade  fires on phase change (key remount)
+ *                              for a soft scale + opacity beat as the
+ *                              label morphs from one state to the next.
+ *   capture-island-dot-pulse   the 3-dot transcribing rhythm — a
+ *                              fast opacity breathe so the dot reads
+ *                              as "actively processing."
+ *   capture-island-stored-flash brief phosphor halo on the pill the
+ *                              moment we enter the STORED state.
+ *                              Coincides with the row's paste-type
+ *                              animation so the two read as one event.
+ */
+@keyframes capture-island-label-fade {
+  0%   { opacity: 0.32; transform: scale(0.96); filter: blur(0.4px); }
+  100% { opacity: 1;    transform: scale(1);    filter: blur(0); }
+}
+.capture-island-label-fade {
+  animation: capture-island-label-fade 0.32s ease-out;
+}
+
+@keyframes capture-island-dot-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50%      { opacity: 1;    transform: scale(1.05); }
+}
+.capture-island-dot-pulse {
+  animation: capture-island-dot-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes capture-island-stored-flash {
+  0%   { box-shadow: 0 0 14px color-mix(in oklab, var(--trace-glow) 32%, transparent); }
+  25%  { box-shadow: 0 0 26px 2px color-mix(in oklab, var(--trace-glow) 75%, transparent); }
+  100% { box-shadow: 0 0 14px color-mix(in oklab, var(--trace-glow) 32%, transparent); }
+}
+.capture-island-stored-flash {
+  animation: capture-island-stored-flash 0.55s ease-out forwards;
+}
+
+/* caption-finalize → "the live view has frozen"
+ * Soft border-glow pulse on the CinematicCaption pill the moment audio
+ * stops. The caption is narrative scenery for the viewer (not engine
+ * input), so this is purely a "live view → still frame" cue. Brief —
+ * the eye should move on to the row transcription beat that follows. */
+@keyframes caption-finalize {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--trace-glow) 0%, transparent); }
+  40%  { box-shadow: 0 0 18px 1px color-mix(in oklab, var(--trace-glow) 50%, transparent); }
+  100% { box-shadow: 0 0 10px 0 color-mix(in oklab, var(--trace-glow) 22%, transparent); }
+}
+.caption-finalize {
+  animation: caption-finalize 0.5s ease-out forwards;
+}
+
+/* row-paste-type → "the engine just pasted the transcription here"
+ * Fires AFTER the TRANSCRIBING beat completes — the engine has done
+ * its work, and the result is now landing in the row. Phosphor
+ * "selection band" sweeps L→R across the row's input quote text;
+ * as it crosses, the text behind briefly turns text-trace + soft
+ * glow, then settles back to text-ink (color transition handled in
+ * the row component on a sibling overlay).
+ *
+ * This replaces the older row-transcribe-scan metaphor. The old
+ * sweep happened during transcription and read as the engine
+ * scanning the input — wrong frame: real transcription is invisible
+ * compute, what the user notices is the output appearing. So the
+ * sweep now happens at paste time, not transcribe time, and reads
+ * as a fast cursor writing the text into the buffer.
+ *
+ * Total sweep ~280ms (faster than the old 420ms scan) so the typing
+ * feel is decisive. Host row sets overflow:hidden to clip. */
+@keyframes row-paste-type {
+  0%   { transform: translateX(-8%);  opacity: 0; }
+  10%  { opacity: 0.95; }
+  90%  { opacity: 0.95; }
+  100% { transform: translateX(108%); opacity: 0; }
+}
+.row-paste-type {
+  /* Selection-band gradient — soft phosphor field with a brighter
+     leading edge (the "cursor"). Narrower than the old scan wedge
+     so it reads as a typed selection, not a wash. */
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    color-mix(in oklab, var(--trace) 10%, transparent) 30%,
+    color-mix(in oklab, var(--trace) 32%, transparent) 55%,
+    color-mix(in oklab, var(--trace-glow) 85%, transparent) 70%,
+    color-mix(in oklab, var(--trace) 18%, transparent) 82%,
+    transparent 100%
+  );
+  filter: blur(0.4px);
+  animation: row-paste-type 0.28s ease-out forwards;
+}
+
+/* row-paste-text → text behind the band briefly lights up trace,
+ * then settles to ink as the band passes. Applied to the input-text
+ * span; the keyframe drives color + textShadow over ~520ms (band
+ * crosses in ~280ms, the trailing afterglow lingers another ~240ms
+ * before the text relaxes to ink). */
+@keyframes row-paste-text {
+  0%   { color: var(--ink-muted); text-shadow: none; }
+  20%  { color: var(--trace);     text-shadow: 0 0 4px var(--trace-glow); }
+  60%  { color: var(--trace);     text-shadow: 0 0 4px var(--trace-glow); }
+  100% { color: var(--ink);       text-shadow: none; }
+}
+.row-paste-text {
+  animation: row-paste-text 0.52s ease-out forwards;
+}
+
+/* RETIRED: caption-memorialize was a FLIP flight that misrepresented
+ * the caption pill as engine input. The caption is narrative scenery
+ * for the viewer — the engine writes the transcription into the row
+ * directly via row-transcribe-scan above. Keyframe block below kept
+ * temporarily as a no-op so any stale references don't 404; should be
+ * dropped in a later cleanup once we've verified nothing depends on it.
+ *
+ * caption-memorialize → FLIP-style flight from the trace caption pill
+ * down to the active row in the signal table. The parent measures the
+ * source and target bounding rects, sets --mem-dx / --mem-dy /
+ * --mem-scale on the cloned ghost, and lets the keyframe drive the
+ * actual transform. We use a single keyframe so cancellation is
+ * trivially "remove the element."
+ *
+ * The small intermediate "lift" at 35% (translateY -2px on top of the
+ * dy travel) gives the ghost a soft arc — the data lifts off, sails
+ * down, lands. Opacity holds high through 80% so the eye can track
+ * the package, then drops fast at the landing. */
+@keyframes caption-memorialize {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  35% {
+    transform:
+      translate(calc(var(--mem-dx, 0px) * 0.45), calc(var(--mem-dy, 0px) * 0.2 - 2px))
+      scale(calc((1 + var(--mem-scale, 0.92)) / 2));
+    opacity: 1;
+    filter: blur(0);
+  }
+  80% {
+    transform:
+      translate(calc(var(--mem-dx, 0px) * 0.96), calc(var(--mem-dy, 0px) * 0.96))
+      scale(var(--mem-scale, 0.92));
+    opacity: 0.85;
+    filter: blur(0.2px);
+  }
+  100% {
+    transform:
+      translate(var(--mem-dx, 0px), var(--mem-dy, 0px))
+      scale(calc(var(--mem-scale, 0.92) * 0.86));
+    opacity: 0;
+    filter: blur(0.6px);
+  }
+}
+.caption-memorialize {
+  animation: caption-memorialize 0.52s cubic-bezier(0.32, 0.72, 0.24, 1) forwards;
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
+
+/* narrator-anchor-flash → "this is what's being narrated"
+ * One-shot phosphor halo applied imperatively by NarratorProvider when a
+ * clip with an `anchor` selector starts playing. Self-contained: no inline
+ * style, no JS-driven keyframes — the provider just adds/removes the class. */
+@keyframes narrator-anchor-flash {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 color-mix(in oklab, var(--trace) 0%, transparent),
+      0 0 0 0 color-mix(in oklab, var(--trace-glow) 0%, transparent);
+  }
+  18% {
+    box-shadow:
+      0 0 0 6px color-mix(in oklab, var(--trace) 32%, transparent),
+      0 0 24px 4px color-mix(in oklab, var(--trace-glow) 55%, transparent);
+  }
+}
+.narrator-anchor-flash {
+  animation: narrator-anchor-flash 2.4s ease-out;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .osc-sweep,
+  .osc-chase,
+  .osc-chase-slow,
+  .osc-hop,
+  .narrator-anchor-flash,
+  .tagline-fade-in,
+  .row-settle,
+  .row-paste-type,
+  .row-paste-text,
+  .caption-finalize,
+  .keypress-cue,
+  .capture-island-label-fade,
+  .capture-island-dot-pulse,
+  .capture-island-stored-flash {
+    animation: none;
+    opacity: 1; /* keep cues visible without motion */
+  }
+  /* (no-op block kept so any tail rules below stay aligned) */
+  .caption-memorialize {
+    opacity: 0;
+  }
+}
+
 /* Utilities */
 .btn-primary { @apply rounded-md bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:bg-primary-700; }
 .btn-outline { @apply rounded-md border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50; }
