@@ -207,6 +207,33 @@ export function NarratorProvider({ children }) {
   }, [clip, close])
 
   // -------------------------------------------------------------------
+  // Anchor scroll: when a clip carries an `anchor` selector (CSS or
+  // '#id'), smooth-scroll the matching element into view and flash a
+  // phosphor halo class on it. Runs once on clip change — fires whether
+  // the audio starts or the missing-audio fallback does, so the visual
+  // "this is what's being narrated" beat is consistent either way.
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    if (!clip?.anchor || typeof document === 'undefined') return
+    let el
+    try {
+      el = document.querySelector(clip.anchor)
+    } catch {
+      // eslint-disable-next-line no-console
+      console.warn(`[Narrator] invalid anchor selector: "${clip.anchor}"`)
+      return
+    }
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    el.classList.add('narrator-anchor-flash')
+    const t = setTimeout(() => el.classList.remove('narrator-anchor-flash'), 2400)
+    return () => {
+      clearTimeout(t)
+      el.classList.remove('narrator-anchor-flash')
+    }
+  }, [clip])
+
+  // -------------------------------------------------------------------
   // Cleanup on unmount.
   // -------------------------------------------------------------------
   useEffect(

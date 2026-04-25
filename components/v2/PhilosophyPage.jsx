@@ -147,7 +147,7 @@ export default function PhilosophyPage() {
       </section>
 
       {/* ========== PULL QUOTE ========== */}
-      <section className="relative border-t border-edge-faint bg-canvas-alt">
+      <section id="philosophy-pull-quote" className="relative scroll-mt-20 border-t border-edge-faint bg-canvas-alt">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-24 md:px-6 md:py-32">
@@ -199,6 +199,7 @@ export default function PhilosophyPage() {
                   audio: '/v2/captures/philosophy-manifesto.mp3',
                   vtt: '/v2/captures/philosophy-manifesto.vtt',
                   caption: 'VELOCITY · SOVEREIGNTY · FLOW',
+                  anchor: '#philosophy-pull-quote',
                 }}
               >
                 Hear the manifesto

@@ -101,11 +101,33 @@ html.dark {
 .osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
 .osc-hop        { animation: osc-hop   3s ease-out infinite; }
 
+/* narrator-anchor-flash → "this is what's being narrated"
+ * One-shot phosphor halo applied imperatively by NarratorProvider when a
+ * clip with an `anchor` selector starts playing. Self-contained: no inline
+ * style, no JS-driven keyframes — the provider just adds/removes the class. */
+@keyframes narrator-anchor-flash {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 color-mix(in oklab, var(--trace) 0%, transparent),
+      0 0 0 0 color-mix(in oklab, var(--trace-glow) 0%, transparent);
+  }
+  18% {
+    box-shadow:
+      0 0 0 6px color-mix(in oklab, var(--trace) 32%, transparent),
+      0 0 24px 4px color-mix(in oklab, var(--trace-glow) 55%, transparent);
+  }
+}
+.narrator-anchor-flash {
+  animation: narrator-anchor-flash 2.4s ease-out;
+  border-radius: 6px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .osc-sweep,
   .osc-chase,
   .osc-chase-slow,
-  .osc-hop {
+  .osc-hop,
+  .narrator-anchor-flash {
     animation: none;
   }
 }
