@@ -1,0 +1,42 @@
+{
+  "duration": 2.368,
+  "phrases": [
+    {
+      "text": "Talkie search reconnect from last Tuesday.",
+      "start": 0,
+      "end": 2.368,
+      "words": [
+        {
+          "word": "Talkie",
+          "start": 0,
+          "end": 0.395
+        },
+        {
+          "word": "search",
+          "start": 0.395,
+          "end": 0.755
+        },
+        {
+          "word": "reconnect",
+          "start": 0.755,
+          "end": 1.195
+        },
+        {
+          "word": "from",
+          "start": 1.195,
+          "end": 1.393
+        },
+        {
+          "word": "last",
+          "start": 1.393,
+          "end": 1.66
+        },
+        {
+          "word": "Tuesday.",
+          "start": 1.66,
+          "end": 2.368
+        }
+      ]
+    }
+  ]
+}

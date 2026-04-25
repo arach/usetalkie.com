@@ -56,7 +56,11 @@ export default function LiveTrace({
   useEffect(() => {
     if (!playing) {
       cancelAnimationFrame(rafRef.current)
-      setShowLive(false)
+      // Intentionally NOT resetting showLive here. Once a clip has been
+      // played, the polyline retains its last `points` attr and stays
+      // on screen as a frozen "captured signal" — just dimmed (passive)
+      // via the strokeOpacity logic below. Flipping back to the idle
+      // HeroWaveform on every pause would erase that captured state.
       return
     }
 
@@ -163,25 +167,33 @@ export default function LiveTrace({
 
           {/* Live trace — soft glow underlay then crisp top stroke.
               Both polylines share the same `points` attr, written
-              imperatively in the RAF loop above. */}
+              imperatively in the RAF loop above. When not playing, the
+              opacities + glow get smoothly dialed down to a "passive"
+              state — the trace stays visible (so a paused mid-clip
+              keeps its frozen waveform on screen) but reads as not-
+              currently-active, freeing the eye to look elsewhere. */}
           <polyline
             ref={polyGlowRef}
             fill="none"
             stroke="var(--trace)"
-            strokeOpacity={0.4}
-            strokeWidth={4}
+            strokeOpacity={playing ? 0.4 : 0.12}
+            strokeWidth={playing ? 4 : 2}
             strokeLinejoin="round"
             strokeLinecap="round"
-            style={{ filter: 'drop-shadow(0 0 6px var(--trace))' }}
+            style={{
+              filter: playing ? 'drop-shadow(0 0 6px var(--trace))' : 'none',
+              transition: 'stroke-opacity 0.4s ease-out, stroke-width 0.4s ease-out, filter 0.4s ease-out',
+            }}
           />
           <polyline
             ref={polyTopRef}
             fill="none"
-            stroke="var(--trace)"
-            strokeOpacity={0.95}
+            stroke={playing ? 'var(--trace)' : 'var(--ink-faint)'}
+            strokeOpacity={playing ? 0.95 : 0.45}
             strokeWidth={1.4}
             strokeLinejoin="round"
             strokeLinecap="round"
+            style={{ transition: 'stroke 0.4s ease-out, stroke-opacity 0.4s ease-out' }}
           />
 
           {/* Instrument labels — hero-only; the dock has its own header. */}

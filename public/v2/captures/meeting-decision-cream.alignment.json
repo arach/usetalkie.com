@@ -1,0 +1,94 @@
+{
+  "duration": 4.551,
+  "phrases": [
+    {
+      "text": "Decision — we ship the cream theme on the home,",
+      "start": 0,
+      "end": 2.775,
+      "words": [
+        {
+          "word": "Decision",
+          "start": 0,
+          "end": 0.534
+        },
+        {
+          "word": "—",
+          "start": 0.534,
+          "end": 0.952
+        },
+        {
+          "word": "we",
+          "start": 0.952,
+          "end": 1.126
+        },
+        {
+          "word": "ship",
+          "start": 1.126,
+          "end": 1.382
+        },
+        {
+          "word": "the",
+          "start": 1.382,
+          "end": 1.532
+        },
+        {
+          "word": "cream",
+          "start": 1.532,
+          "end": 1.834
+        },
+        {
+          "word": "theme",
+          "start": 1.834,
+          "end": 2.09
+        },
+        {
+          "word": "on",
+          "start": 2.09,
+          "end": 2.206
+        },
+        {
+          "word": "the",
+          "start": 2.206,
+          "end": 2.334
+        },
+        {
+          "word": "home,",
+          "start": 2.334,
+          "end": 2.775
+        }
+      ]
+    },
+    {
+      "text": "but keep dark on docs.",
+      "start": 2.868,
+      "end": 4.551,
+      "words": [
+        {
+          "word": " but",
+          "start": 2.868,
+          "end": 3.077
+        },
+        {
+          "word": "keep",
+          "start": 3.077,
+          "end": 3.332
+        },
+        {
+          "word": "dark",
+          "start": 3.332,
+          "end": 3.645
+        },
+        {
+          "word": "on",
+          "start": 3.645,
+          "end": 3.796
+        },
+        {
+          "word": "docs.",
+          "start": 3.796,
+          "end": 4.551
+        }
+      ]
+    }
+  ]
+}

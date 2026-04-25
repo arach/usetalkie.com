@@ -2,6 +2,7 @@
 
 import { Pause, Play, X } from 'lucide-react'
 import LiveTrace from '../LiveTrace'
+import CinematicCaption from '../CinematicCaption'
 import { useNarrator } from './NarratorProvider'
 
 /**
@@ -19,7 +20,7 @@ import { useNarrator } from './NarratorProvider'
  *                    the right (or the missing-audio fallback message).
  */
 export default function NarratorDock() {
-  const { clip, isPlaying, captionText, missing, analyserRef, play, pause, close } = useNarrator()
+  const { clip, isPlaying, captionText, missing, analyserRef, audioRef, play, pause, close } = useNarrator()
 
   if (!clip) return null
 
@@ -68,8 +69,29 @@ export default function NarratorDock() {
         </div>
       </div>
 
-      {/* Trace + cinematic caption overlay */}
-      <div className="relative bg-canvas-alt p-2">
+      {/* Trace area — clickable to toggle play, with hover invitation. */}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={togglePlay}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            togglePlay()
+          }
+        }}
+        aria-label={isPlaying ? 'Pause' : 'Play'}
+        className="group relative cursor-pointer bg-canvas-alt p-2 transition-shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+        onMouseEnter={(e) => {
+          if (!isPlaying && !missing) {
+            e.currentTarget.style.boxShadow =
+              'inset 0 0 0 1px color-mix(in oklab, var(--trace) 28%, transparent), inset 0 0 18px color-mix(in oklab, var(--trace-glow) 14%, transparent)'
+          }
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = 'none'
+        }}
+      >
         <LiveTrace
           analyserRef={analyserRef}
           playing={isPlaying}
@@ -78,18 +100,32 @@ export default function NarratorDock() {
           compact
         />
 
-        {/* Caption — film-subtitle style, no background, text-shadow stroke */}
-        {!missing && captionText && (
-          <p
-            aria-live="polite"
-            className="pointer-events-none absolute inset-x-4 bottom-3 text-center text-sm font-sans font-medium leading-snug text-ink"
-            style={{
-              textShadow:
-                '0 0 4px var(--canvas-alt), 0 0 8px var(--canvas-alt), 0 0 12px var(--canvas-alt), 0 1px 2px var(--canvas-alt)',
-            }}
-          >
-            {captionText}
-          </p>
+        {/* Hover invitation — only when paused / not yet playing. */}
+        {!isPlaying && !missing && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div
+              className="flex items-center gap-1.5 rounded-sm border border-edge bg-canvas-overlay/85 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.24em] text-trace backdrop-blur-md"
+              style={{
+                textShadow: '0 0 4px var(--trace-glow)',
+                boxShadow: '0 0 12px color-mix(in oklab, var(--trace-glow) 30%, transparent)',
+              }}
+            >
+              <Play className="h-2.5 w-2.5" />
+              <span>PLAY</span>
+            </div>
+          </div>
+        )}
+
+        {/* Cinematic caption with per-word fill */}
+        {!missing && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-3">
+            <CinematicCaption
+              audioRef={audioRef}
+              alignSrc={clip.audio?.replace(/\.mp3$/, '.alignment.json')}
+              playing={isPlaying}
+              className="text-sm"
+            />
+          </div>
         )}
       </div>
 

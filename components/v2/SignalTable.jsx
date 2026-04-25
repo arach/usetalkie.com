@@ -1,8 +1,10 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Play } from 'lucide-react'
 import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
+import CinematicCaption from './CinematicCaption'
 
 /**
  * SignalTable — the navigatable, audio-driven hero player.
@@ -391,11 +393,35 @@ export default function SignalTable({ catalog }) {
           </div>
         </div>
 
-        {/* Trace + cinematic caption overlay. Trace fills the area;
-            captions are absolute-positioned over the lower portion like
-            a film subtitle, with a text-shadow that paints the canvas
-            color around the glyphs so they punch through any trace line. */}
-        <div className="relative bg-canvas-alt p-2 sm:p-4">
+        {/* Trace area — clickable, with a hover invitation that says
+            "this is gonna be cool" when not playing. Clicking anywhere
+            in the trace toggles play/pause for the active row. */}
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => togglePlay(activeIndex)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              togglePlay(activeIndex)
+            }
+          }}
+          aria-label={isPlaying ? `Pause ${activeCapture?.eyebrow ?? ''}` : `Play ${activeCapture?.eyebrow ?? ''}`}
+          className="group relative cursor-pointer bg-canvas-alt p-2 transition-shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-trace sm:p-4"
+          style={{
+            // Inset phosphor border on hover — appears like the screen
+            // is "warming up" when you approach it.
+            transition: 'box-shadow 0.32s ease-out',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = isPlaying
+              ? 'none'
+              : 'inset 0 0 0 1px color-mix(in oklab, var(--trace) 32%, transparent), inset 0 0 24px color-mix(in oklab, var(--trace-glow) 18%, transparent)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = 'none'
+          }}
+        >
           <LiveTrace
             analyserRef={analyserRef}
             playing={isPlaying}
@@ -404,17 +430,36 @@ export default function SignalTable({ catalog }) {
             hideLabels
           />
 
-          {captionsOn && captionText && (
-            <p
-              aria-live="polite"
-              className="pointer-events-none absolute inset-x-6 bottom-5 text-center text-base font-sans font-medium leading-snug text-ink sm:text-lg"
-              style={{
-                textShadow:
-                  '0 0 6px var(--canvas-alt), 0 0 12px var(--canvas-alt), 0 0 18px var(--canvas-alt), 0 1px 2px var(--canvas-alt)',
-              }}
-            >
-              {captionText}
-            </p>
+          {/* Hover affordance — fades in when not playing so the trace
+              area reads as "press here to play this." Hidden during
+              playback (cinematic captions take that role). */}
+          {!isPlaying && (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <div
+                className="flex items-center gap-2 rounded-sm border border-edge bg-canvas-overlay/80 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.26em] text-trace backdrop-blur-md"
+                style={{
+                  textShadow: '0 0 4px var(--trace-glow)',
+                  boxShadow: '0 0 18px color-mix(in oklab, var(--trace-glow) 35%, transparent)',
+                }}
+              >
+                <Play className="h-3 w-3" />
+                <span>PLAY · {activeCapture?.eyebrow ?? 'CH-01'}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Cinematic caption — subtitle pill with per-word fill,
+              positioned over the bottom of the trace. Pure decorative;
+              the VTT TextTrack still drives screen-reader output. */}
+          {captionsOn && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center px-6 sm:bottom-6">
+              <CinematicCaption
+                audioRef={audioRef}
+                alignSrc={activeCapture?.audio?.replace(/\.mp3$/, '.alignment.json')}
+                playing={isPlaying}
+                className="text-base sm:text-lg"
+              />
+            </div>
           )}
         </div>
 

@@ -16,6 +16,13 @@
  * alignment array. We use that to chunk into VTT cues at natural cue
  * boundaries (sentence ends, em-dash clauses, max-length wraps) — no
  * hand-timing, no Whisper round-trip.
+ *
+ * We also emit a parallel `<slug>.alignment.json` with per-word timing
+ * + per-phrase grouping. Components use this for the "karaoke" word-
+ * fill effect on captions: as audio plays, each word lights up at its
+ * exact start, then settles into the spoken (filled) style at its end.
+ * The VTT still drives screen-reader announcements (one source of truth
+ * for accessibility); alignment.json is the visual-only complement.
  */
 
 import fs from 'node:fs'
@@ -71,13 +78,18 @@ const mp3Path = path.join(outDir, `${opts.slug}.mp3`)
 const audioBytes = Buffer.from(data.audio_base64, 'base64')
 fs.writeFileSync(mp3Path, audioBytes)
 
-// ---------- VTT ----------
+// ---------- VTT + alignment.json ----------
+const alignment = data.alignment ?? data.normalized_alignment
 const vttPath = path.join(outDir, `${opts.slug}.vtt`)
-const vtt = alignmentToVtt(data.alignment ?? data.normalized_alignment)
+const vtt = alignmentToVtt(alignment)
 fs.writeFileSync(vttPath, vtt)
 
+const alignPath = path.join(outDir, `${opts.slug}.alignment.json`)
+const alignJson = alignmentToWordPhrases(alignment)
+fs.writeFileSync(alignPath, JSON.stringify(alignJson, null, 2))
+
 const dur = (Date.now() - t0) / 1000
-console.log(`done in ${dur.toFixed(1)}s · ${(audioBytes.length / 1024).toFixed(0)} KB`)
+console.log(`done in ${dur.toFixed(1)}s · ${(audioBytes.length / 1024).toFixed(0)} KB · ${alignJson.phrases.length} phrases · ${alignJson.phrases.reduce((s, p) => s + p.words.length, 0)} words`)
 
 // ---------- Helpers ----------
 function alignmentToVtt(alignment) {
@@ -133,4 +145,92 @@ function fmtTime(s) {
   const m = Math.floor((s % 3600) / 60)
   const ss = (s % 60).toFixed(3).padStart(6, '0')
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${ss}`
+}
+
+/**
+ * alignmentToWordPhrases — same character-walk as alignmentToVtt, but
+ * emits structured data for the visual word-fill renderer. Each phrase
+ * matches a VTT cue 1:1; each phrase carries its constituent words with
+ * their exact start/end timings drawn from the character alignment.
+ *
+ * Whitespace + punctuation are attached to the trailing word so that
+ * naive `words.join(' ')` reconstructs readable text without orphan
+ * commas. Each word's `start` is the first non-whitespace char's start;
+ * its `end` is the last char's end (whitespace or otherwise) so the
+ * "active" highlight lingers slightly through the trailing space —
+ * which reads as more natural than abrupt word-jumps.
+ */
+function alignmentToWordPhrases(alignment) {
+  if (!alignment) return { phrases: [] }
+  const chars = alignment.characters
+  const starts = alignment.character_start_times_seconds
+  const ends = alignment.character_end_times_seconds
+
+  const phrases = []
+  let phraseWords = []
+  let phraseStart = null
+  let wordBuf = ''
+  let wordStart = null
+  let charsInPhrase = 0
+
+  const flushWord = (lastIndex) => {
+    if (!wordBuf) return
+    phraseWords.push({
+      word: wordBuf,
+      start: wordStart,
+      end: ends[lastIndex],
+    })
+    wordBuf = ''
+    wordStart = null
+  }
+
+  const flushPhrase = (lastIndex) => {
+    flushWord(lastIndex)
+    if (phraseWords.length > 0) {
+      phrases.push({
+        text: phraseWords.map((w) => w.word).join('').trim(),
+        start: phraseStart,
+        end: ends[lastIndex],
+        words: phraseWords.map((w) => ({ ...w, word: w.word.replace(/\s+$/, '') })),
+      })
+    }
+    phraseWords = []
+    phraseStart = null
+    charsInPhrase = 0
+  }
+
+  for (let i = 0; i < chars.length; i++) {
+    const c = chars[i]
+    const isWhitespace = /\s/.test(c)
+
+    // Track phrase start on first non-whitespace char
+    if (!isWhitespace && phraseStart === null) phraseStart = starts[i]
+    // Track word start on first non-whitespace char of current word
+    if (!isWhitespace && wordStart === null) wordStart = starts[i]
+    wordBuf += c
+    charsInPhrase++
+
+    // Word boundary: whitespace ends the current word
+    if (isWhitespace && wordStart !== null) {
+      flushWord(i)
+    }
+
+    // Phrase boundary: same rules as alignmentToVtt
+    const next = chars[i + 1]
+    const isSentenceEnd = /[.!?]/.test(c) && (i + 1 >= chars.length || /\s/.test(next))
+    const isClauseEnd = /[—,;:]/.test(c) && charsInPhrase >= 35
+    const isHardCap = charsInPhrase >= 90 && /\s/.test(c)
+    if (isSentenceEnd || isClauseEnd || isHardCap) {
+      flushPhrase(i)
+    }
+  }
+  // Flush any tail
+  if (phraseWords.length > 0 || wordBuf.trim()) {
+    flushPhrase(ends.length - 1)
+  }
+
+  return {
+    duration: ends[ends.length - 1] ?? 0,
+    phrases,
+  }
 }
