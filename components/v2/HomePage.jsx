@@ -16,6 +16,7 @@ import {
 import InstallCard from './InstallCard'
 import SignalTable from './SignalTable'
 import RotatingTagline from './RotatingTagline'
+import RotatingDevices from './RotatingDevices'
 import capturesCatalog from '../../content/v2/captures.json'
 
 /**
@@ -184,7 +185,7 @@ export default function HomePage() {
               · TALKIE / SIGNAL · LIVE
             </p>
             <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-              REV A.1 · MAC · iPHONE · WATCH
+              REV A.1 · <RotatingDevices devices={['MAC', 'iPHONE', 'WATCH']} intervalMs={6000} />
             </p>
           </div>
 
