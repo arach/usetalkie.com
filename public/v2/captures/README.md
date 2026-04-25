@@ -16,68 +16,64 @@ files in, add a row to `captures.json`, ship.
 
 | File          | Required | Notes                                              |
 | ------------- | -------- | -------------------------------------------------- |
-| `{slug}.mp3`  | yes\*    | mono, 44.1k or 48k, 96–128 kbps is plenty.         |
+| `{slug}.mp3`  | yes\*    | mono, 44.1k, ~128 kbps from ElevenLabs flash.      |
 | `{slug}.vtt`  | no       | If absent, captions just don't render.             |
 
 \* If `{slug}.mp3` is missing, the row stays visible but the play button
 shows `· no audio yet` and clicks no-op (with a single console.warn for
 dev visibility — no thrown errors, no broken UI).
 
-## Generating audio (ElevenLabs)
+## Generating audio (the canonical pipeline)
 
-1. Pick a stable voice (the same voice across every row sells the
-   "single user dictating" illusion). Save the voice ID somewhere.
-2. For each row in `content/v2/captures.json`, render the `input` string
-   with the chosen voice. Defaults are fine (stability ~0.5, similarity
-   ~0.75). Aim for natural pacing — these are dictations, not narration.
-3. Export as 44.1 kHz mono MP3 at ~96 kbps.
-4. Save as `public/v2/captures/{slug}.mp3`.
-5. Update `durationMs` in the catalog to match the actual audio length
-   (run `ffprobe -i {slug}.mp3 -show_format` to read it). The player
-   uses the real `<audio>.duration` at runtime — `durationMs` is only
-   for the SSR shell so the static fallback can hint at length.
-
-## Authoring the WebVTT
-
-Minimum viable VTT for a single-line capture:
-
-```vtt
-WEBVTT
-
-00:00:00.000 --> 00:00:05.500
-Tell Sarah I'll be ten late but bringing coffee.
-```
-
-For multi-cue captions, split at natural pauses (commas, em-dashes):
-
-```vtt
-WEBVTT
-
-00:00:00.000 --> 00:00:02.100
-Reply to David —
-
-00:00:02.100 --> 00:00:05.400
-thanks for the spec,
-
-00:00:05.400 --> 00:00:09.800
-two questions on the auth flow before I sign off.
-```
-
-### Auto-aligning with Whisper
-
-If you have `whisper` (openai-whisper) installed locally:
+A reusable Node script lives at `scripts/render-clip.mjs`. It calls
+ElevenLabs' `/v1/text-to-speech/{voice_id}/with-timestamps` endpoint
+and produces both the MP3 *and* a character-aligned VTT in one shot —
+no Whisper round-trip, no hand-timing.
 
 ```bash
-whisper sms-coffee.mp3 --output_format vtt --model base.en
+# Single clip from a literal text
+node scripts/render-clip.mjs \
+  --text "Tell Sarah I'll be ten late but bringing coffee." \
+  --slug sms-coffee
+
+# Single clip from a script file
+node scripts/render-clip.mjs \
+  --text-file content/v2/scripts/philosophy-manifesto.txt \
+  --slug philosophy-manifesto
+
+# Re-render the entire 8-row catalog from captures.json
+jq -c '.[]' content/v2/captures.json | while read row; do
+  SLUG=$(echo "$row" | jq -r '.slug')
+  TEXT=$(echo "$row" | jq -r '.input')
+  node scripts/render-clip.mjs --text "$TEXT" --slug "$SLUG"
+done
 ```
 
-The output `sms-coffee.vtt` is usually good enough as-is for the player.
-Hand-tweak cue boundaries if a phrase splits awkwardly.
+The script reads voice ID, model ID, and API key from
+`~/.config/speakeasy/settings.json` (the speakeasy CLI's config file).
+Override via env vars: `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`,
+`ELEVENLABS_MODEL_ID`.
 
-## Why no audio is checked in
+## VTT generation
 
-These files are best generated in a controlled, repeatable way (consistent
-voice, consistent leveling) and live cleanly with the static export. The
-dir is committed via `.gitkeep` so the build doesn't 404 on the parent
-path; actual MP3s land here either via a one-off rendering script or
-manually.
+The script's `alignmentToVtt()` walks the character-level alignment
+returned by the with-timestamps endpoint and groups characters into
+cues at natural breakpoints:
+
+- **Sentence ends** (`.`, `!`, `?` followed by whitespace or end) — always.
+- **Clause ends** (`—`, `,`, `;`, `:`) — only if the cue is already 35+
+  chars long, so we don't fragment too aggressively on commas.
+- **Hard length cap** at 90 chars on a whitespace boundary, so a long
+  comma-free run still wraps.
+
+The result reads like sentence-level subtitles but with millisecond-
+accurate boundaries from the actual TTS render.
+
+## Why audio IS now checked in
+
+The original convention was to keep MP3s out of the repo (regenerate
+on demand). For the v2 launch we flipped that: the GitHub Pages
+static export needs the audio in `out/`, so the files live in
+`public/v2/captures/` and ship with the site. `scripts/render-clip.mjs`
+is the audit trail — a single command can regenerate any clip from
+the original text + the locked voice/model config.
