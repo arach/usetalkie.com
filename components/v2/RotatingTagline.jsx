@@ -17,7 +17,7 @@ import { useRotation } from '../../lib/useRotation'
  * "attention" is also a real mechanism, not a vibe.
  *
  *   mic      → the device
- *   breath   → smallest possible sound
+ *   word     → atomic verbal unit
  *   whisper  → soft voice mode
  *   memo     → recorded artifact (the resulting object)
  *
@@ -37,7 +37,7 @@ import { useRotation } from '../../lib/useRotation'
  * compressing even further. Recording, keystroke, narration → break it.
  */
 export default function RotatingTagline({
-  variants = ['mic', 'breath', 'whisper', 'memo'],
+  variants = ['mic', 'word', 'whisper', 'memo'],
   intervalMs = 6000,
   className = '',
 }) {
