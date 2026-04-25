@@ -355,7 +355,7 @@ export default function HomePage() {
               Free while we build.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Talkie is free during the open build. Paid plans will follow once the surface area settles &mdash; and the local-first promise will not.
+              Talkie is free. No plans to change that for the basic utilities &mdash; and the local-first promise stays non-negotiable either way.
             </p>
           </div>
 
@@ -445,13 +445,13 @@ export default function HomePage() {
                 Honest pricing, when the time comes.
               </h3>
               <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
-                Future paid tiers will be focused on team and pro workflows. Single-seat use will always have a generous free path. The local-first architecture is non-negotiable, regardless of plan.
+                No plans to charge today. If that changes, it&rsquo;ll be for advanced and power-user features &mdash; never the basic utilities. Local-first stays non-negotiable, regardless.
               </p>
 
               <ul className="mt-6 space-y-3 text-[12px] text-ink-muted">
                 {[
-                  ['NEXT', 'Personal Pro · power user features'],
-                  ['LATER', 'Teams · shared workflows + audit'],
+                  ['ALWAYS', 'Basic utilities · free, no exceptions'],
+                  ['MAYBE', 'Pro tier · advanced + power-user features'],
                   ['NEVER', 'Selling your voice or transcripts'],
                 ].map(([tag, desc]) => (
                   <li key={tag} className="flex items-start gap-3">
