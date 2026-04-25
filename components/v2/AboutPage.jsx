@@ -301,7 +301,7 @@ export default function AboutPage() {
                 </p>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                   A selfie. For your brain.<br />
-                  <span className="italic text-ink-muted">A signal is all you need.</span>
+                  <span className="text-base italic text-ink-muted md:text-lg">A signal is all you need.</span>
                 </h3>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
                   Voice capture, local-first, auditable signal path. Your words stay on your devices.
