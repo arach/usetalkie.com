@@ -19,7 +19,7 @@ import { useRotation } from '../../lib/useRotation'
  *   mic      → the device
  *   breath   → smallest possible sound
  *   whisper  → soft voice mode
- *   rant     → extended speech (the "5-minute selfie of your mind")
+ *   memo     → recorded artifact (the resulting object)
  *
  * Behavior
  * --------
@@ -37,7 +37,7 @@ import { useRotation } from '../../lib/useRotation'
  * compressing even further. Recording, keystroke, narration → break it.
  */
 export default function RotatingTagline({
-  variants = ['mic', 'breath', 'whisper', 'rant'],
+  variants = ['mic', 'breath', 'whisper', 'memo'],
   intervalMs = 6000,
   className = '',
 }) {
