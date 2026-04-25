@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Building2, MapPin, Sparkles, Github, Linkedin, Mail } from 'lucide-react'
+import { supportingLine, TAGLINE_ABOUT } from '../../content/v2/tagline'
 
 /**
  * About — v2 oscilloscope canvas.
@@ -301,7 +302,7 @@ export default function AboutPage() {
                 </p>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                   A selfie. For your mind.<br />
-                  <span className="text-base italic text-ink-muted md:text-lg">A memo is all you need.</span>
+                  <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_ABOUT)}</span>
                 </h3>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
                   Voice capture, local-first, auditable signal path. Your words stay on your devices.
