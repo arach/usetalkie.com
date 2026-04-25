@@ -5,6 +5,7 @@ const PRIMARY_NAV = [
   { label: 'Surfaces',   href: '/v2/surfaces' },
   { label: 'Workflows',  href: '/v2/workflows' },
   { label: 'Philosophy', href: '/v2/philosophy' },
+  { label: 'Ideas',      href: '/v2/ideas' },
   { label: 'Docs',       href: '/v2/docs' },
 ]
 
