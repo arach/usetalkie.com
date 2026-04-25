@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 
 /**
  * CinematicCaption — subtitle pill with per-word "karaoke" fill.
@@ -21,12 +21,25 @@ import { useEffect, useRef, useState } from 'react'
  * component stays `aria-hidden`.
  *
  * Props:
- *   audioRef   ref to the <audio> element (used for currentTime)
- *   alignSrc   URL of the .alignment.json for the current clip
- *   playing    whether to spin the RAF loop (no-op when false)
- *   className  size + extra styling (caller controls font-size)
+ *   audioRef    ref to the <audio> element (used for currentTime)
+ *   alignSrc    URL of the .alignment.json for the current clip
+ *   playing     whether to spin the RAF loop (no-op when false)
+ *   className   size + extra styling (caller controls font-size)
+ *   phase       'live' | 'finalize' | 'idle'
+ *               live      — per-word karaoke fill (audio playing)
+ *               finalize  — all words promoted to "spoken" + scan-line
+ *                           sweep across the pill (post-audio
+ *                           transcription beat)
+ *               idle      — same as live but RAF paused
+ *   finalizeKey changes once per finalize fire so the scan-line keyframe
+ *               replays cleanly on each clip.
+ *   ref         forwarded to the outer span so the parent can measure
+ *               its bounding rect for the FLIP transition.
  */
-export default function CinematicCaption({ audioRef, alignSrc, playing, className = '' }) {
+const CinematicCaption = forwardRef(function CinematicCaption(
+  { audioRef, alignSrc, playing, className = '', phase = 'live', finalizeKey },
+  ref
+) {
   const [alignment, setAlignment] = useState(null)
   const [currentTime, setCurrentTime] = useState(0)
   const cacheRef = useRef(new Map())
@@ -88,14 +101,27 @@ export default function CinematicCaption({ audioRef, alignSrc, playing, classNam
   }
   if (!phrase) phrase = alignment.phrases[0]
 
+  const isFinalize = phase === 'finalize'
+
   return (
     <span
+      ref={ref}
       aria-hidden
-      className={`inline-block rounded-sm border border-edge-faint bg-canvas-overlay/75 px-3 py-1 font-mono leading-snug backdrop-blur-md ${className}`}
+      className={`relative inline-block overflow-hidden rounded-sm border bg-canvas-overlay/75 px-3 py-1 font-mono leading-snug backdrop-blur-md ${className} ${
+        isFinalize ? 'border-edge caption-finalize' : 'border-edge-faint'
+      }`}
     >
       {phrase.words.map((w, i) => {
-        const state =
-          currentTime < w.start ? 'upcoming' : currentTime < w.end ? 'active' : 'spoken'
+        // During finalize, everything is "spoken" — the transcription
+        // has settled, no live cursor. During live playback we render
+        // the karaoke classification.
+        const state = isFinalize
+          ? 'spoken'
+          : currentTime < w.start
+          ? 'upcoming'
+          : currentTime < w.end
+          ? 'active'
+          : 'spoken'
         const colorClass =
           state === 'active' ? 'text-trace' : state === 'spoken' ? 'text-ink' : 'text-ink-faint'
         return (
@@ -104,8 +130,8 @@ export default function CinematicCaption({ audioRef, alignSrc, playing, classNam
             className={colorClass}
             style={
               state === 'active'
-                ? { textShadow: '0 0 6px var(--trace-glow)', transition: 'color 0.18s ease-out' }
-                : { transition: 'color 0.32s ease-out' }
+                ? { textShadow: '0 0 4px var(--trace-glow)', transition: 'color 0.18s ease-out' }
+                : { transition: 'color 0.36s ease-out' }
             }
           >
             {w.word}
@@ -113,6 +139,23 @@ export default function CinematicCaption({ audioRef, alignSrc, playing, classNam
           </span>
         )
       })}
+
+      {/* Scan-line sweep — the "transcribing" ambient cue. Gated on
+          a non-zero finalizeKey so the very first phase=finalize
+          render doesn't fire it spuriously; the parent bumps
+          finalizeKey at the precise moment we want the scan to run.
+          Keyed by finalizeKey so the keyframe replays per clip.
+          Pure decoration: the layout (and width measurement for
+          FLIP) is unchanged. */}
+      {isFinalize && finalizeKey > 0 && (
+        <span
+          key={finalizeKey}
+          aria-hidden
+          className="caption-scanline pointer-events-none absolute inset-y-0 -left-8 w-8"
+        />
+      )}
     </span>
   )
-}
+})
+
+export default CinematicCaption

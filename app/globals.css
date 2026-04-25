@@ -162,6 +162,90 @@ html.dark {
   animation: tagline-fade-in 0.5s ease-out;
 }
 
+/* caption-finalize / caption-scanline → "transcription has settled"
+ * Two-part finishing beat that fires on the CinematicCaption pill once
+ * the audio ends, before the FLIP transport. The pill itself does a
+ * subtle border-glow pulse (caption-finalize). A separate inner span
+ * does a phosphor scan-line sweep across the pill's width
+ * (caption-scanline) — reads as "post-processing the buffer." Ambient,
+ * not literal: no spinner, no text. The host pill sets overflow:hidden
+ * so the scan-line stays clipped to the pill's rectangle. */
+@keyframes caption-finalize {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--trace-glow) 0%, transparent); }
+  35%  { box-shadow: 0 0 22px 1px color-mix(in oklab, var(--trace-glow) 60%, transparent); }
+  100% { box-shadow: 0 0 14px 0 color-mix(in oklab, var(--trace-glow) 28%, transparent); }
+}
+.caption-finalize {
+  animation: caption-finalize 0.72s ease-out forwards;
+}
+
+@keyframes caption-scanline {
+  0%   { transform: translateX(0);     opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(var(--scan-distance, 1200%)); opacity: 0; }
+}
+.caption-scanline {
+  /* Vertical phosphor wedge that walks left→right across the pill.
+     The huge translate target relies on the host pill's overflow:hidden
+     to clip the wedge once it's past the right edge. */
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    color-mix(in oklab, var(--trace) 28%, transparent) 45%,
+    color-mix(in oklab, var(--trace-glow) 80%, transparent) 50%,
+    color-mix(in oklab, var(--trace) 28%, transparent) 55%,
+    transparent 100%
+  );
+  filter: blur(0.4px);
+  animation: caption-scanline 0.7s ease-out forwards;
+}
+
+/* caption-memorialize → FLIP-style flight from the trace caption pill
+ * down to the active row in the signal table. The parent measures the
+ * source and target bounding rects, sets --mem-dx / --mem-dy /
+ * --mem-scale on the cloned ghost, and lets the keyframe drive the
+ * actual transform. We use a single keyframe so cancellation is
+ * trivially "remove the element."
+ *
+ * The small intermediate "lift" at 35% (translateY -2px on top of the
+ * dy travel) gives the ghost a soft arc — the data lifts off, sails
+ * down, lands. Opacity holds high through 80% so the eye can track
+ * the package, then drops fast at the landing. */
+@keyframes caption-memorialize {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  35% {
+    transform:
+      translate(calc(var(--mem-dx, 0px) * 0.45), calc(var(--mem-dy, 0px) * 0.2 - 2px))
+      scale(calc((1 + var(--mem-scale, 0.92)) / 2));
+    opacity: 1;
+    filter: blur(0);
+  }
+  80% {
+    transform:
+      translate(calc(var(--mem-dx, 0px) * 0.96), calc(var(--mem-dy, 0px) * 0.96))
+      scale(var(--mem-scale, 0.92));
+    opacity: 0.85;
+    filter: blur(0.2px);
+  }
+  100% {
+    transform:
+      translate(var(--mem-dx, 0px), var(--mem-dy, 0px))
+      scale(calc(var(--mem-scale, 0.92) * 0.86));
+    opacity: 0;
+    filter: blur(0.6px);
+  }
+}
+.caption-memorialize {
+  animation: caption-memorialize 0.52s cubic-bezier(0.32, 0.72, 0.24, 1) forwards;
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
+
 /* narrator-anchor-flash → "this is what's being narrated"
  * One-shot phosphor halo applied imperatively by NarratorProvider when a
  * clip with an `anchor` selector starts playing. Self-contained: no inline
@@ -191,9 +275,18 @@ html.dark {
   .narrator-anchor-flash,
   .tagline-fade-in,
   .row-settle,
-  .keypress-cue {
+  .keypress-cue,
+  .caption-finalize,
+  .caption-scanline,
+  .caption-memorialize {
     animation: none;
     opacity: 1; /* keep keypress-cue visible without motion */
+  }
+  /* The memorialize ghost has no role without animation — hide it so
+     it doesn't sit awkwardly between the trace and the table. The
+     timing beats and sound effects still fire. */
+  .caption-memorialize {
+    opacity: 0;
   }
 }
 

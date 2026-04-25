@@ -38,11 +38,20 @@ const AUTO_ADVANCE = true
 const WINDOW_SIZE = 3
 
 // Choreography timings — give each beat of the capture flow some
-// breathing room so it reads as a deliberate sequence (PRESS → audio →
-// RELEASE → paste → next), not a back-to-back run.
-const BREATH_PRESS_TO_AUDIO_MS = 240   // user pressed ⌘⇧A → audio starts
-const BREATH_RELEASE_TO_PASTE_MS = 620 // audio ended → captured signal lands in buffer
-const BREATH_PASTE_TO_NEXT_MS = 480    // paste settled → next capture begins
+// breathing room so it reads as a deliberate sequence:
+//
+//   PRESS → audio → RELEASE → finalize → memorialize → paste → next
+//
+// The post-audio beats are split into two distinct moments so the eye
+// reads "the system is finishing the transcription" and then "the
+// transcription is being memorialized into the table" as separate
+// events, not one continuous gesture.
+const BREATH_PRESS_TO_AUDIO_MS         = 240  // ⌘⇧A pressed → audio starts
+const BREATH_RELEASE_TO_FINALIZE_MS    = 220  // RELEASE pill → caption finalize starts
+const FINALIZE_DURATION_MS             = 720  // length of the scan-line / settle beat
+const BREATH_FINALIZE_TO_TRANSPORT_MS  = 160  // settled caption → flight begins
+const TRANSPORT_DURATION_MS            = 520  // FLIP-style flight to the row
+const BREATH_PASTE_TO_NEXT_MS          = 820  // paste landed → next capture begins
 
 export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
@@ -64,6 +73,21 @@ export default function SignalTable({ catalog }) {
   // surface the hotkey that bookends a recording. The `at` timestamp
   // is the React key on <KeypressCue/> so each fire replays the keyframe.
   const [keypressCue, setKeypressCue] = useState(null)
+  // captionPhase: drives the CinematicCaption render mode.
+  //   live      — per-word karaoke fill (audio playing)
+  //   finalize  — all words promoted to "spoken" + scan-line sweep
+  //               across the pill (the post-audio "transcription has
+  //               settled" beat).
+  //   idle      — same render as live, RAF paused, used between clips.
+  // finalizeKey — bumped per clip so the scan-line keyframe replays.
+  const [captionPhase, setCaptionPhase] = useState('idle')
+  const [finalizeKey, setFinalizeKey] = useState(0)
+  // memorializeFlight: { id, text, fromRect, toRect } | null
+  //   When non-null, a portal ghost renders the caption text and FLIPs
+  //   from fromRect → toRect. Cleared when the flight is cancelled or
+  //   completes. Cancellation is just "set this to null" since the
+  //   ghost is purely React-rendered.
+  const [memorializeFlight, setMemorializeFlight] = useState(null)
 
   // -------------------------------------------------------------------
   // Refs (Web Audio + DOM)
@@ -73,6 +97,9 @@ export default function SignalTable({ catalog }) {
   const analyserRef = useRef(null)
   const sourceMapRef = useRef(new Map()) // slug → MediaElementAudioSourceNode
   const tableRef = useRef(null)
+  // Source rect for the FLIP transition — the CinematicCaption pill,
+  // measured at the moment audio ends. Null when no caption is showing.
+  const captionRef = useRef(null)
   // Pending choreography timeouts — cleared on user interruption (manual
   // play/pause, row click) and on unmount, so we never fire a paste-tick
   // for a clip the user has already moved past.
@@ -80,6 +107,12 @@ export default function SignalTable({ catalog }) {
   const clearChoreography = useCallback(() => {
     choreographyTimeoutsRef.current.forEach(clearTimeout)
     choreographyTimeoutsRef.current = []
+    // Also tear down any in-flight post-audio visuals. The finalize
+    // scan-line and the memorialize ghost are both pure React state,
+    // so clearing them here is enough — no orphan DOM, no orphan
+    // animations. Caption phase falls back to whatever the audio
+    // state implies (the next playIndex / pause path will set it).
+    setMemorializeFlight(null)
   }, [])
 
   const activeCapture = catalog[activeIndex]
@@ -197,7 +230,10 @@ export default function SignalTable({ catalog }) {
         setKeypressCue({ kind: 'start', at: Date.now() })
         playPressTick(ctxRef.current)
 
-        // Beat 2 — breath, then audio
+        // Beat 2 — breath, then audio. Reset caption to live mode so
+        // any leftover finalize visuals from a previous clip are gone
+        // before the new karaoke fill starts.
+        setCaptionPhase('live')
         await new Promise((resolve) => setTimeout(resolve, BREATH_PRESS_TO_AUDIO_MS))
         await audio.play()
         setActiveIndex(idx)
@@ -226,6 +262,9 @@ export default function SignalTable({ catalog }) {
         clearChoreography()
         audio.pause()
         setIsPlaying(false)
+        // Manual pause — drop any post-audio caption visuals so the
+        // user isn't surprised by a finalize sweep that shouldn't fire.
+        setCaptionPhase('idle')
         return
       }
       playIndex(idx)
@@ -258,22 +297,71 @@ export default function SignalTable({ catalog }) {
       setIsPlaying(false)
       setCaptionText('')
 
-      // Beat 3 — release cue (PRESS pill flips to RELEASE label)
+      // Beat 3 — release cue (PRESS pill flips to RELEASE label).
+      // Promote the caption to "finalize" immediately so the karaoke
+      // cursor doesn't stay stuck on the last word while we wait for
+      // the scan-line beat — visually the pill freezes into final
+      // form the moment audio stops, which is what the user expects.
+      // The visible scan-line / border pulse fires later via
+      // finalizeKey on the BREATH_RELEASE_TO_FINALIZE_MS timeout.
       setKeypressCue({ kind: 'end', at: Date.now() })
+      setCaptionPhase('finalize')
 
       const currentSlug = catalog[activeIndex]?.slug
 
-      // Beat 4 — after a breath, paste lands in the buffer:
-      //   • re-bump activationKey on the just-played row → row-settle
-      //     fires again, reading as "deposited into the table"
-      //   • paste tick plays
-      const tPaste = setTimeout(() => {
+      // Beat 4 — after a small breath, the scan-line sweeps across
+      // the pill. Reads as "the system is post-processing the
+      // transcription." The phase is already 'finalize', we just
+      // re-key the scan-line span to replay its keyframe.
+      const tFinalize = setTimeout(() => {
+        setFinalizeKey((k) => k + 1)
+      }, BREATH_RELEASE_TO_FINALIZE_MS)
+      choreographyTimeoutsRef.current.push(tFinalize)
+
+      // Beat 5 — once the finalize beat has had room to read, kick
+      // off the FLIP-style flight from the caption pill down to the
+      // active row. We measure both rects at the moment of launch
+      // (not at audio-end) so any layout shifts that happened during
+      // the finalize beat are accounted for.
+      const tTransport = setTimeout(() => {
+        const fromEl = captionRef.current
+        const toEl = currentSlug
+          ? tableRef.current?.querySelector(`#signal-row-${activeIndex}`)
+          : null
+
+        if (fromEl && toEl) {
+          const fromRect = fromEl.getBoundingClientRect()
+          const toRect = toEl.getBoundingClientRect()
+          // Capture the resolved text so the ghost matches the pill
+          // even if the source unmounts mid-flight (it shouldn't, but
+          // defensive — and it removes the ghost's dependency on the
+          // alignment cache once airborne).
+          const text = fromEl.innerText || ''
+          setMemorializeFlight({
+            id: Date.now(),
+            text,
+            fromRect,
+            toRect,
+            fontSize: parseFloat(getComputedStyle(fromEl).fontSize) || 16,
+          })
+        }
+        // The original caption pill fades out as the ghost takes over.
+        setCaptionPhase('idle')
+      }, BREATH_RELEASE_TO_FINALIZE_MS + FINALIZE_DURATION_MS + BREATH_FINALIZE_TO_TRANSPORT_MS)
+      choreographyTimeoutsRef.current.push(tTransport)
+
+      // Beat 6 — landing. The ghost arrives at the row; we re-bump
+      // activationKey (row-settle replays, reading as "data
+      // deposited") and fire the paste tick in the same frame the
+      // FLIP keyframe ends. Then clear the ghost.
+      const tLand = setTimeout(() => {
         if (currentSlug) {
           setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
         }
         playPasteTick(ctxRef.current)
+        setMemorializeFlight(null)
 
-        // Beat 5 — after another breath, advance to next capture.
+        // Beat 7 — after a longer breath, advance to next capture.
         if (AUTO_ADVANCE) {
           const tNext = setTimeout(() => {
             for (let step = 1; step <= catalog.length; step++) {
@@ -286,8 +374,8 @@ export default function SignalTable({ catalog }) {
           }, BREATH_PASTE_TO_NEXT_MS)
           choreographyTimeoutsRef.current.push(tNext)
         }
-      }, BREATH_RELEASE_TO_PASTE_MS)
-      choreographyTimeoutsRef.current.push(tPaste)
+      }, BREATH_RELEASE_TO_FINALIZE_MS + FINALIZE_DURATION_MS + BREATH_FINALIZE_TO_TRANSPORT_MS + TRANSPORT_DURATION_MS)
+      choreographyTimeoutsRef.current.push(tLand)
     }
     const onError = () => {
       const cur = catalog[activeIndex]
@@ -301,6 +389,9 @@ export default function SignalTable({ catalog }) {
         return next
       })
       setIsPlaying(false)
+      // Drop any post-audio visuals — error path skips the choreography.
+      clearChoreography()
+      setCaptionPhase('idle')
     }
 
     audio.addEventListener('play', onPlay)
@@ -313,7 +404,7 @@ export default function SignalTable({ catalog }) {
       audio.removeEventListener('ended', onEnded)
       audio.removeEventListener('error', onError)
     }
-  }, [activeIndex, catalog, missingSet, playIndex])
+  }, [activeIndex, catalog, missingSet, playIndex, clearChoreography])
 
   // -------------------------------------------------------------------
   // Captions via TextTrack `cuechange`. Re-bind when the track set
@@ -515,13 +606,19 @@ export default function SignalTable({ catalog }) {
 
           {/* Cinematic caption — subtitle pill with per-word fill,
               positioned over the bottom of the trace. Pure decorative;
-              the VTT TextTrack still drives screen-reader output. */}
-          {captionsOn && (
+              the VTT TextTrack still drives screen-reader output.
+              Hidden during the FLIP flight (the ghost takes the visual
+              lead) and during idle (so the pill doesn't pop back into
+              view between clips after the memorialize beat). */}
+          {captionsOn && !memorializeFlight && (isPlaying || captionPhase === 'finalize') && (
             <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center px-6 sm:bottom-6">
               <CinematicCaption
+                ref={captionRef}
                 audioRef={audioRef}
                 alignSrc={activeCapture?.audio?.replace(/\.mp3$/, '.alignment.json')}
                 playing={isPlaying}
+                phase={isPlaying ? 'live' : captionPhase}
+                finalizeKey={finalizeKey}
                 className="text-base sm:text-lg"
               />
             </div>
@@ -633,6 +730,64 @@ export default function SignalTable({ catalog }) {
           />
         )}
       </audio>
+
+      {/* FLIP ghost — the "memorialize" flight. Rendered in viewport
+          coordinates (position:fixed) at the source rect, animated via
+          a CSS keyframe driven by --mem-dx / --mem-dy / --mem-scale.
+          Cancellation is just unmounting (clearChoreography sets
+          memorializeFlight to null). aria-hidden because this is a
+          purely visual restatement of the caption text the live region
+          already announced. */}
+      {memorializeFlight && (
+        <MemorializeGhost flight={memorializeFlight} />
+      )}
     </div>
+  )
+}
+
+/**
+ * MemorializeGhost — a single-purpose portal-style element that flies
+ * the caption text from the trace area down to the active row in the
+ * signal table. Receives a `flight` snapshot containing source/target
+ * rects (in viewport space) and the resolved caption text.
+ *
+ * Positioned with position:fixed at fromRect, then a CSS keyframe
+ * (`caption-memorialize` in globals.css) interpolates a single
+ * transform from (0,0) → (dx,dy) with a soft scale-down at landing.
+ *
+ * Why fixed instead of a true React portal: we already render inside
+ * the main React tree (no z-index conflicts here), and fixed
+ * positioning gives us free coordinate-space alignment with
+ * getBoundingClientRect() readings without bringing in createPortal.
+ */
+function MemorializeGhost({ flight }) {
+  const { text, fromRect, toRect, fontSize } = flight
+  // Travel deltas: aim the ghost's center at the row's vertical center.
+  const dx = (toRect.left + toRect.width / 2) - (fromRect.left + fromRect.width / 2)
+  const dy = (toRect.top + toRect.height / 2) - (fromRect.top + fromRect.height / 2)
+  // Scale: the row is wider than the caption pill but visually we want
+  // the ghost to "compact" as it lands (it's becoming a row entry, not
+  // covering the whole row). Capped to avoid over-shrinking on narrow
+  // captions where the ratio could go silly.
+  const scale = Math.max(0.78, Math.min(0.98, toRect.width > 0 ? Math.min(fromRect.width, toRect.width * 0.62) / fromRect.width : 0.9))
+
+  return (
+    <span
+      aria-hidden
+      className="caption-memorialize pointer-events-none fixed z-50 inline-block rounded-sm border border-edge bg-canvas-overlay/85 px-3 py-1 font-mono leading-snug text-ink backdrop-blur-md"
+      style={{
+        top: fromRect.top,
+        left: fromRect.left,
+        width: fromRect.width,
+        fontSize: fontSize ? `${fontSize}px` : undefined,
+        boxShadow: '0 0 18px color-mix(in oklab, var(--trace-glow) 50%, transparent)',
+        // CSS custom properties consumed by the keyframe.
+        '--mem-dx': `${dx}px`,
+        '--mem-dy': `${dy}px`,
+        '--mem-scale': scale,
+      }}
+    >
+      {text}
+    </span>
   )
 }
