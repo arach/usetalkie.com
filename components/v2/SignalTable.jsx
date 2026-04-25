@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { playPressTick, playPasteTick } from '../../lib/sfx'
 import { Play } from 'lucide-react'
 import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
@@ -36,6 +37,13 @@ import KeypressCue from './KeypressCue'
 const AUTO_ADVANCE = true
 const WINDOW_SIZE = 3
 
+// Choreography timings — give each beat of the capture flow some
+// breathing room so it reads as a deliberate sequence (PRESS → audio →
+// RELEASE → paste → next), not a back-to-back run.
+const BREATH_PRESS_TO_AUDIO_MS = 240   // user pressed ⌘⇧A → audio starts
+const BREATH_RELEASE_TO_PASTE_MS = 620 // audio ended → captured signal lands in buffer
+const BREATH_PASTE_TO_NEXT_MS = 480    // paste settled → next capture begins
+
 export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
   // State
@@ -65,6 +73,14 @@ export default function SignalTable({ catalog }) {
   const analyserRef = useRef(null)
   const sourceMapRef = useRef(new Map()) // slug → MediaElementAudioSourceNode
   const tableRef = useRef(null)
+  // Pending choreography timeouts — cleared on user interruption (manual
+  // play/pause, row click) and on unmount, so we never fire a paste-tick
+  // for a clip the user has already moved past.
+  const choreographyTimeoutsRef = useRef([])
+  const clearChoreography = useCallback(() => {
+    choreographyTimeoutsRef.current.forEach(clearTimeout)
+    choreographyTimeoutsRef.current = []
+  }, [])
 
   const activeCapture = catalog[activeIndex]
 
@@ -136,7 +152,14 @@ export default function SignalTable({ catalog }) {
   }, [activeIndex, isPlaying, catalog.length])
 
   // -------------------------------------------------------------------
-  // Play a specific row. Handles src swap + missing-audio + autoplay.
+  // Play a specific row — with capture-flow choreography:
+  //   1. PRESS keypress cue + tick (key-down feel)
+  //   2. ~240ms breath
+  //   3. audio.play() begins
+  //   4. caption fills, trace lights up
+  //
+  // Cancels any pending end-of-clip choreography from the previous clip
+  // (so re-clicking a row doesn't double-fire paste ticks).
   // -------------------------------------------------------------------
   const playIndex = useCallback(
     async (idx) => {
@@ -150,6 +173,9 @@ export default function SignalTable({ catalog }) {
 
       const audio = audioRef.current
       if (!audio) return
+
+      // Clear any pending paste/auto-advance from a previous clip.
+      clearChoreography()
 
       ensureAudioGraph()
 
@@ -166,21 +192,30 @@ export default function SignalTable({ catalog }) {
         if (ctxRef.current && ctxRef.current.state === 'suspended') {
           await ctxRef.current.resume()
         }
+
+        // Beat 1 — press cue + tick
+        setKeypressCue({ kind: 'start', at: Date.now() })
+        playPressTick(ctxRef.current)
+
+        // Beat 2 — breath, then audio
+        await new Promise((resolve) => setTimeout(resolve, BREATH_PRESS_TO_AUDIO_MS))
         await audio.play()
         setActiveIndex(idx)
         setIsPlaying(true)
-        setKeypressCue({ kind: 'start', at: Date.now() })
       } catch (err) {
         // Autoplay rejection or 404 — surface for dev, soft-fail for user.
         // eslint-disable-next-line no-console
         console.warn(`[SignalTable] play failed for "${next.slug}":`, err)
       }
     },
-    [catalog, missingSet, ensureAudioGraph]
+    [catalog, missingSet, ensureAudioGraph, clearChoreography]
   )
 
   // -------------------------------------------------------------------
   // Toggle play for a specific row (used by row buttons).
+  // Manual pause cancels any pending paste/auto-advance choreography
+  // so the user isn't surprised by a tick or auto-advance arriving
+  // after they explicitly pressed pause.
   // -------------------------------------------------------------------
   const togglePlay = useCallback(
     (idx) => {
@@ -188,13 +223,14 @@ export default function SignalTable({ catalog }) {
       if (!audio) return
 
       if (idx === activeIndex && isPlaying) {
+        clearChoreography()
         audio.pause()
         setIsPlaying(false)
         return
       }
       playIndex(idx)
     },
-    [activeIndex, isPlaying, playIndex]
+    [activeIndex, isPlaying, playIndex, clearChoreography]
   )
 
   // -------------------------------------------------------------------
@@ -221,17 +257,37 @@ export default function SignalTable({ catalog }) {
     const onEnded = () => {
       setIsPlaying(false)
       setCaptionText('')
+
+      // Beat 3 — release cue (PRESS pill flips to RELEASE label)
       setKeypressCue({ kind: 'end', at: Date.now() })
-      if (AUTO_ADVANCE) {
-        // Advance to next non-missing row, wrapping.
-        for (let step = 1; step <= catalog.length; step++) {
-          const nextIdx = (activeIndex + step) % catalog.length
-          if (!missingSet.has(catalog[nextIdx].slug)) {
-            playIndex(nextIdx)
-            return
-          }
+
+      const currentSlug = catalog[activeIndex]?.slug
+
+      // Beat 4 — after a breath, paste lands in the buffer:
+      //   • re-bump activationKey on the just-played row → row-settle
+      //     fires again, reading as "deposited into the table"
+      //   • paste tick plays
+      const tPaste = setTimeout(() => {
+        if (currentSlug) {
+          setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
         }
-      }
+        playPasteTick(ctxRef.current)
+
+        // Beat 5 — after another breath, advance to next capture.
+        if (AUTO_ADVANCE) {
+          const tNext = setTimeout(() => {
+            for (let step = 1; step <= catalog.length; step++) {
+              const nextIdx = (activeIndex + step) % catalog.length
+              if (!missingSet.has(catalog[nextIdx].slug)) {
+                playIndex(nextIdx)
+                return
+              }
+            }
+          }, BREATH_PASTE_TO_NEXT_MS)
+          choreographyTimeoutsRef.current.push(tNext)
+        }
+      }, BREATH_RELEASE_TO_PASTE_MS)
+      choreographyTimeoutsRef.current.push(tPaste)
     }
     const onError = () => {
       const cur = catalog[activeIndex]
@@ -352,6 +408,7 @@ export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
   useEffect(() => {
     return () => {
+      clearChoreography()
       if (ctxRef.current) {
         ctxRef.current.close().catch(() => {})
         ctxRef.current = null
@@ -359,7 +416,7 @@ export default function SignalTable({ catalog }) {
       analyserRef.current = null
       sourceMapRef.current.clear()
     }
-  }, [])
+  }, [clearChoreography])
 
   // -------------------------------------------------------------------
   // Derived: visible window.

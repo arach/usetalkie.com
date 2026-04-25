@@ -123,8 +123,13 @@ export function NarratorProvider({ children }) {
         if (ctxRef.current && ctxRef.current.state === 'suspended') {
           await ctxRef.current.resume()
         }
-        await audio.play()
+        // PRESS keypress cue + tick fire just before audio starts so the
+        // gesture cause precedes the auditory effect by ~240ms (same
+        // pacing as SignalTable).
         setKeypressCue({ kind: 'start', at: Date.now() })
+        playPressTick(ctxRef.current)
+        await new Promise((resolve) => setTimeout(resolve, 240))
+        await audio.play()
       } catch (err) {
         // eslint-disable-next-line no-console
         console.warn(`[Narrator] play failed for "${next.slug}":`, err)
