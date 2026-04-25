@@ -58,7 +58,7 @@ export default function InstallCard() {
       {/* Two primary jacks: DMG + App Store */}
       <div className="grid grid-cols-1 gap-px bg-edge-faint sm:grid-cols-2">
         <Link
-          href="/v2/download"
+          href="/v2/downloads"
           className="group flex items-center gap-4 bg-canvas-alt p-5 transition-colors hover:bg-canvas"
         >
           <span

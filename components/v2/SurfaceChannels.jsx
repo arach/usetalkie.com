@@ -58,7 +58,7 @@ const CHANNELS = [
     sublabel: 'TERMINAL',
     freq: '9.6kHz',
     freqKHz: 9.6,
-    href: '/v2/download',
+    href: '/v2/downloads',
     tagline: 'Pipe voice through any tool. Scriptable surface.',
   },
 ]

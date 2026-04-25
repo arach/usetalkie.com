@@ -455,7 +455,7 @@ export default function FeaturesPage() {
                 </p>
               </div>
               <Link
-                href="/v2/download"
+                href="/v2/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import CopyCommand from './CopyCommand'
 import PackageManagerTabs from './PackageManagerTabs'
+import QRExpand from './QRExpand'
 import TrackedAnchor from './TrackedAnchor'
 
 /**
@@ -233,18 +234,12 @@ export default function DownloadAllPage() {
                   <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
                     · OR · SCAN
                   </p>
-                  <div className="mt-3 flex items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt p-5">
-                    <div className="rounded-sm border border-edge-faint bg-white p-3">
-                      <img
-                        src="/qr-app-store.svg"
-                        alt="QR code to download Talkie on the App Store"
-                        className="block h-36 w-36"
-                      />
-                    </div>
-                  </div>
-                  <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
-                    Point your camera · open in App Store
-                  </p>
+                  <QRExpand
+                    src="/qr-app-store.svg"
+                    alt="QR code to download Talkie on the App Store"
+                    caption="Point camera · open App Store"
+                    className="mt-3"
+                  />
                 </div>
 
                 {/* Cross-channel note */}
@@ -280,7 +275,7 @@ export default function DownloadAllPage() {
 
           {/* Cross-link to canonical */}
           <Link
-            href="/v2/download"
+            href="/v2/downloads"
             className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-trace"
           >
             <div>
