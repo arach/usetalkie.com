@@ -11,12 +11,15 @@ import { useRotation } from '../../lib/useRotation'
  * "A mic is all you need" is a direct callback to "Attention Is All You
  * Need" (Vaswani et al., 2017). Rotating through fills keeps the joke
  * alive across visits — anticipation is a brand-loyalty signal — while
- * each fill lands a slightly different positioning angle:
+ * each fill lands a different concrete input. Hard rule: every fill
+ * must be an actual thing the user can produce or use. No abstractions
+ * (thought, signal, moment) — those break the joke because the original
+ * "attention" is also a real mechanism, not a vibe.
  *
- *   mic      → the literal product
- *   thought  → most reduced form, the actual core
- *   whisper  → intimacy + voice
- *   signal   → on-brand for the oscilloscope canvas
+ *   mic      → the device
+ *   breath   → smallest possible sound
+ *   whisper  → soft voice mode
+ *   rant     → extended speech (the "5-minute selfie of your mind")
  *
  * Behavior
  * --------
@@ -34,7 +37,7 @@ import { useRotation } from '../../lib/useRotation'
  * compressing even further. Recording, keystroke, narration → break it.
  */
 export default function RotatingTagline({
-  variants = ['mic', 'thought', 'whisper', 'signal'],
+  variants = ['mic', 'breath', 'whisper', 'rant'],
   intervalMs = 6000,
   className = '',
 }) {

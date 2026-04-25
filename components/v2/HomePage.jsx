@@ -195,7 +195,7 @@ export default function HomePage() {
             <br />
             <RotatingTagline
               className="mt-2 inline-block text-3xl italic leading-tight text-ink-muted md:text-5xl"
-              variants={['mic', 'thought', 'whisper', 'signal']}
+              variants={['mic', 'breath', 'whisper', 'rant']}
               intervalMs={6000}
             />
           </h1>
