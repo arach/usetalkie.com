@@ -15,6 +15,16 @@ import Link from 'next/link'
  * canvas. Custom MDX components from components/blog/* render under
  * `prose-img:my-0` etc. and use their own neutral palettes — they sit
  * inside the prose container but visually carry their own surface.
+ *
+ * Page framing
+ * ------------
+ * The three sections (header / article / footer tie-back) are wrapped
+ * in a max-w-5xl "page" — a thin border + subtle shadow that anchors
+ * the 3xl prose column inside a visible container, so the article
+ * reads as an object in space rather than a floating 768px column
+ * inside the viewport-wide SiteShell (which is 6xl). The outer margin
+ * on desktop is where the page's canvas bg becomes visible, signaling
+ * "there is a page, and there is a margin around it."
  */
 
 const GRATICULE = {
@@ -47,7 +57,9 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
   const statusBadge = getStatusBadge(status)
 
   return (
-    <>
+    <div className="bg-canvas">
+      <div className="mx-auto max-w-5xl px-3 py-8 md:px-6 md:py-12">
+        <div className="overflow-hidden rounded-md border border-edge-faint shadow-sm">
       {/* ========== HEADER ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
@@ -168,6 +180,8 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
           </div>
         </div>
       </section>
-    </>
+        </div>
+      </div>
+    </div>
   )
 }
