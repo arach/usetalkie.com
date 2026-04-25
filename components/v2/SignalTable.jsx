@@ -43,6 +43,11 @@ export default function SignalTable({ catalog }) {
   const [missingSet, setMissingSet] = useState(() => new Set())
   const [captionText, setCaptionText] = useState('')
   const [captionsOn, setCaptionsOn] = useState(true)
+  // activationKey: per-slug timestamp captured when a row becomes active.
+  // Passed to <SignalTableRow/> as a `key`-prop on its overlay span so the
+  // settle-from-trace animation replays on every fresh activation
+  // (not just on the first one).
+  const [activationKey, setActivationKey] = useState({})
 
   // -------------------------------------------------------------------
   // Refs (Web Audio + DOM)
@@ -94,6 +99,17 @@ export default function SignalTable({ catalog }) {
 
     return ctxRef.current
   }, [])
+
+  // -------------------------------------------------------------------
+  // Activation timestamping: each time activeIndex changes, stamp the
+  // new active slug with the current time. The row uses this as a `key`
+  // for its settle-overlay so the spawn animation replays.
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    const slug = catalog[activeIndex]?.slug
+    if (!slug) return
+    setActivationKey((prev) => ({ ...prev, [slug]: Date.now() }))
+  }, [activeIndex, catalog])
 
   // -------------------------------------------------------------------
   // Window pinning: while playing, keep the active row at the top.
@@ -350,7 +366,7 @@ export default function SignalTable({ catalog }) {
   const visibleStart = Math.max(0, Math.min(windowStart, catalog.length - WINDOW_SIZE))
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {/* Trace + caption rail */}
       <div className="relative overflow-hidden rounded-md border border-edge bg-surface">
         <div className="flex items-center justify-between border-b border-edge-dim px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-faint">
@@ -375,27 +391,51 @@ export default function SignalTable({ catalog }) {
           </div>
         </div>
 
-        <div className="bg-canvas-alt p-2 sm:p-4">
+        {/* Trace + cinematic caption overlay. Trace fills the area;
+            captions are absolute-positioned over the lower portion like
+            a film subtitle, with a text-shadow that paints the canvas
+            color around the glyphs so they punch through any trace line. */}
+        <div className="relative bg-canvas-alt p-2 sm:p-4">
           <LiveTrace
             analyserRef={analyserRef}
             playing={isPlaying}
             channelLabel="CH-01"
             scaleLabel="32.1kHz · MAC · iPHONE · WATCH"
+            hideLabels
           />
+
+          {captionsOn && captionText && (
+            <p
+              aria-live="polite"
+              className="pointer-events-none absolute inset-x-6 bottom-5 text-center text-base font-sans font-medium leading-snug text-ink sm:text-lg"
+              style={{
+                textShadow:
+                  '0 0 6px var(--canvas-alt), 0 0 12px var(--canvas-alt), 0 0 18px var(--canvas-alt), 0 1px 2px var(--canvas-alt)',
+              }}
+            >
+              {captionText}
+            </p>
+          )}
         </div>
 
-        {/* Caption rail — always reserves space so layout doesn't jump. */}
-        {captionsOn && (
-          <div className="border-t border-edge-faint px-4 py-2.5 min-h-[34px]">
-            <p className="text-[12px] italic text-ink-muted">
-              {captionText || (
-                <span className="not-italic text-ink-subtle text-[10px] uppercase tracking-[0.22em]">
-                  {isPlaying ? '— transcribing —' : 'play any row to hear it'}
-                </span>
-              )}
-            </p>
-          </div>
-        )}
+        {/* Status bar — mirrors the top header for visual balance. */}
+        <div className="flex items-center justify-between gap-3 border-t border-edge-faint px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+          <span className="flex items-center gap-2">
+            <span
+              aria-hidden
+              className="inline-block h-1 w-1 rounded-full"
+              style={{
+                background: isPlaying ? 'var(--trace)' : 'var(--ink-faint)',
+                boxShadow: isPlaying ? '0 0 4px var(--trace)' : 'none',
+              }}
+            />
+            {isPlaying ? 'TRIG · LIVE' : captionText ? 'TRIG · HOLD' : 'TRIG · ARMED'}
+          </span>
+          <span className="hidden text-ink-faint sm:inline">
+            {isPlaying ? 'capturing from world' : 'play any row to hear it'}
+          </span>
+          <span>{activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}</span>
+        </div>
       </div>
 
       {/* Table */}
@@ -423,6 +463,7 @@ export default function SignalTable({ catalog }) {
                 active={index === activeIndex}
                 playing={index === activeIndex && isPlaying}
                 missing={missingSet.has(capture.slug)}
+                activationKey={activationKey[capture.slug]}
                 onActivate={activate}
                 onTogglePlay={togglePlay}
               />

@@ -101,6 +101,40 @@ html.dark {
 .osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
 .osc-hop        { animation: osc-hop   3s ease-out infinite; }
 
+/* row-settle → "we just captured this from the world (the trace) and
+ * stored it here in the table." Applied to an absolute-positioned
+ * overlay span on the active SignalTableRow. The `key={activationKey}`
+ * trick on that span forces a remount per activation so the keyframe
+ * replays — without it, browsers consume the animation once and the
+ * subsequent auto-advances feel static. */
+@keyframes row-settle {
+  0%   {
+    opacity: 0.95;
+    transform: translateY(-6px);
+    background: linear-gradient(to bottom,
+      color-mix(in oklab, var(--trace) 22%, transparent),
+      transparent 70%);
+    box-shadow: 0 -10px 22px color-mix(in oklab, var(--trace-glow) 55%, transparent);
+  }
+  55%  {
+    opacity: 0.55;
+    transform: translateY(0);
+    background: linear-gradient(to bottom,
+      color-mix(in oklab, var(--trace) 10%, transparent),
+      transparent 80%);
+    box-shadow: 0 -4px 14px color-mix(in oklab, var(--trace-glow) 30%, transparent);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+    background: transparent;
+    box-shadow: none;
+  }
+}
+.row-settle {
+  animation: row-settle 0.7s ease-out forwards;
+}
+
 /* tagline-fade-in → soft phosphor settle for rotating tagline variants.
  * Applied via React key remount in <RotatingTagline/>. The slight blur
  * mimics phosphor letting go of the previous letterforms before the
@@ -140,7 +174,8 @@ html.dark {
   .osc-chase-slow,
   .osc-hop,
   .narrator-anchor-flash,
-  .tagline-fade-in {
+  .tagline-fade-in,
+  .row-settle {
     animation: none;
   }
 }

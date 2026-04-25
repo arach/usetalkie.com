@@ -29,13 +29,19 @@ export default function LiveTrace({
   viewW = 1200,
   viewH = 220,
   compact = false,
+  hideLabels = false,
 }) {
   // Compact = the dock variant. Drops corner ticks + instrument labels and
   // halves graticule density so the trace reads cleanly at ~80px tall.
+  // hideLabels = the parent wants to render labels externally (e.g. as a
+  // proper top/bottom status bar around the trace, with cinematic caption
+  // overlay sitting on top). Skips just the SVG <text> elements but keeps
+  // graticules + corner ticks at the non-compact density.
   const VIEW_W = viewW
   const VIEW_H = viewH
   const gridX = compact ? 4 : 7
   const gridY = compact ? 1 : 3
+  const showLabels = !compact && !hideLabels
   const svgRef = useRef(null)
   const polyTopRef = useRef(null)
   const polyGlowRef = useRef(null)
@@ -179,7 +185,7 @@ export default function LiveTrace({
           />
 
           {/* Instrument labels — hero-only; the dock has its own header. */}
-          {!compact && (
+          {showLabels && (
             <>
               <text x={14} y={20} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="10" fill="var(--ink-subtle)" letterSpacing="2">
                 {channelLabel}

@@ -21,6 +21,7 @@ export default function SignalTableRow({
   active = false,
   playing = false,
   missing = false,
+  activationKey,
   onActivate,
   onTogglePlay,
 }) {
@@ -59,7 +60,7 @@ export default function SignalTableRow({
             }
           : undefined
       }
-      className={`grid grid-cols-[28px_64px_1fr] items-start gap-3 px-4 py-3.5 transition-colors ${
+      className={`relative grid grid-cols-[28px_64px_1fr] items-start gap-3 px-4 py-3.5 transition-colors ${
         index % 2 === 0 ? 'bg-canvas' : 'bg-canvas-alt'
       } ${index > 0 ? 'border-t border-edge-subtle' : ''} ${
         onActivate ? 'cursor-pointer hover:bg-surface focus:outline-none focus-visible:ring-1 focus-visible:ring-trace' : ''
@@ -67,6 +68,19 @@ export default function SignalTableRow({
       style={activeStyle}
       aria-current={active ? 'true' : undefined}
     >
+      {/* Settle-from-trace overlay — phosphor "spill" that drops in from
+          the top of the row each time it freshly becomes active. The
+          `key={activationKey}` forces a remount on each activation so
+          the keyframe replays. Conceptually: "we just captured this
+          from the world (the trace above) and stored it here." */}
+      {active && activationKey != null && (
+        <span
+          key={activationKey}
+          aria-hidden
+          className="row-settle pointer-events-none absolute inset-0"
+        />
+      )}
+
       {/* Transport */}
       <button
         type="button"

@@ -5,17 +5,18 @@ import LiveTrace from '../LiveTrace'
 import { useNarrator } from './NarratorProvider'
 
 /**
- * NarratorDock — floating mini-oscillator + caption rail.
+ * NarratorDock — floating mini-oscilloscope + cinematic caption.
  *
- * Renders nothing when no clip is active. When a clip is set, slides into
- * the bottom-right corner; pressing Esc or the X closes. Reuses the same
- * LiveTrace component as the homepage hero, just in compact mode.
- *
- * The dock intentionally has zero clip-specific logic — every behaviour
- * (play, pause, missing-fallback, captions) is owned by NarratorProvider
- * and consumed via context. This keeps the dock as a pure render surface
- * that we can later swap for a different shape (drawer, popover, etc.)
- * without touching the audio graph.
+ * Layout (top → bottom):
+ *   1. Header        status pill + transport buttons
+ *   2. Trace + caption    the trace fills the area; the caption is
+ *                         absolute-positioned over the lower portion,
+ *                         like a film subtitle. No background block —
+ *                         the text-shadow paints canvas color around the
+ *                         glyphs so they punch through any trace line.
+ *   3. Status bar    mirrors the header bar at the bottom for visual
+ *                    balance. Shows trig state on the left + format on
+ *                    the right (or the missing-audio fallback message).
  */
 export default function NarratorDock() {
   const { clip, isPlaying, captionText, missing, analyserRef, play, pause, close } = useNarrator()
@@ -67,33 +68,50 @@ export default function NarratorDock() {
         </div>
       </div>
 
-      {/* Mini live trace */}
-      <div className="bg-canvas-alt p-2">
+      {/* Trace + cinematic caption overlay */}
+      <div className="relative bg-canvas-alt p-2">
         <LiveTrace
           analyserRef={analyserRef}
           playing={isPlaying}
           viewW={600}
-          viewH={80}
+          viewH={88}
           compact
         />
+
+        {/* Caption — film-subtitle style, no background, text-shadow stroke */}
+        {!missing && captionText && (
+          <p
+            aria-live="polite"
+            className="pointer-events-none absolute inset-x-4 bottom-3 text-center text-sm font-sans font-medium leading-snug text-ink"
+            style={{
+              textShadow:
+                '0 0 4px var(--canvas-alt), 0 0 8px var(--canvas-alt), 0 0 12px var(--canvas-alt), 0 1px 2px var(--canvas-alt)',
+            }}
+          >
+            {captionText}
+          </p>
+        )}
       </div>
 
-      {/* Caption rail. aria-live so screen readers get the text. min-height
-          so the dock doesn't bounce in size between cues. */}
-      <div
-        aria-live="polite"
-        className="min-h-[30px] border-t border-edge-faint px-3 py-2"
-      >
+      {/* Bottom status bar — mirrors the top header */}
+      <div className="flex items-center justify-between gap-3 border-t border-edge-faint px-3 py-1.5 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
         {missing ? (
-          <p className="text-[10px] uppercase tracking-[0.22em] text-ink-subtle">
-            no audio yet · catalog row visible without sound
-          </p>
-        ) : captionText ? (
-          <p className="text-[11px] italic leading-snug text-ink-muted">{captionText}</p>
+          <span className="truncate">no audio yet · row stays visible</span>
         ) : (
-          <p className="text-[10px] uppercase tracking-[0.22em] text-ink-subtle">
-            {isPlaying ? '— transcribing —' : 'paused'}
-          </p>
+          <>
+            <span className="flex items-center gap-1.5">
+              <span
+                aria-hidden
+                className="inline-block h-1 w-1 rounded-full"
+                style={{
+                  background: isPlaying ? 'var(--trace)' : 'var(--ink-faint)',
+                  boxShadow: isPlaying ? '0 0 4px var(--trace)' : 'none',
+                }}
+              />
+              {isPlaying ? 'TRIG · LIVE' : captionText ? 'TRIG · HOLD' : 'TRIG · ARMED'}
+            </span>
+            <span>32.1kHz · MONO</span>
+          </>
         )}
       </div>
     </div>
