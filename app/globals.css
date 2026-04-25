@@ -56,6 +56,60 @@ html.dark {
   --edge-subtle:    rgba(77, 255, 158, 0.06);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * Animation vocabulary — motion as message.
+ * Each utility maps to a specific thing the site is telling the user.
+ * Apply deliberately, not decoratively. Slow tempos by default; under-acting
+ * reads more confident than over-acting. All classes are no-op'd under
+ * prefers-reduced-motion (block at the bottom of this section).
+ *
+ * The Tailwind built-in `animate-pulse` already covers "live · standing by"
+ * (slow opacity breathing on indicator dots). The classes below are for
+ * concepts Tailwind doesn't ship.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* osc-sweep → "voice → trace · your signal is here"
+ * Apply to a <g> inside SVG containing two stitched copies of the
+ * waveform side by side (each 50% of viewBox width). The translate
+ * walks the host left by one cycle so the loop is seamless. */
+@keyframes osc-sweep {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* osc-chase → "your data path · stays on your devices"
+ * Apply to a <path> that declares pathLength="1" and a tiny visible
+ * dasharray segment + a long invisible gap (e.g. stroke-dasharray:
+ * "0.04 0.96"). Animation walks dashoffset across the full path. */
+@keyframes osc-chase {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -1; }
+}
+
+/* osc-hop → "catch on the surface you're holding, land on your Mac"
+ * Brief one-shot per cycle with a long pause between bursts so it
+ * reads as a discrete event, not a continuous stream. Host element
+ * sets --osc-hop-distance to control the travel. */
+@keyframes osc-hop {
+  0%, 70%, 100% { transform: translateX(0);                          opacity: 0; }
+  10%           { transform: translateX(0);                          opacity: 1; }
+  60%           { transform: translateX(var(--osc-hop-distance, 100%)); opacity: 1; }
+}
+
+.osc-sweep      { animation: osc-sweep 8s linear infinite; }
+.osc-chase      { animation: osc-chase 4s linear infinite; }   /* solid trace · primary, confident */
+.osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
+.osc-hop        { animation: osc-hop   3s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .osc-sweep,
+  .osc-chase,
+  .osc-chase-slow,
+  .osc-hop {
+    animation: none;
+  }
+}
+
 /* Utilities */
 .btn-primary { @apply rounded-md bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:bg-primary-700; }
 .btn-outline { @apply rounded-md border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50; }
