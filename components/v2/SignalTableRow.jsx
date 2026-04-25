@@ -22,6 +22,7 @@ export default function SignalTableRow({
   playing = false,
   missing = false,
   activationKey,
+  transcribeKey,
   onActivate,
   onTogglePlay,
 }) {
@@ -68,14 +69,29 @@ export default function SignalTableRow({
       style={activeStyle}
       aria-current={active ? 'true' : undefined}
     >
+      {/* Transcribe-scan overlay — phosphor "write head" that walks
+          L→R across the row content the moment the engine produces a
+          transcription for this row. Distinct from row-settle: this
+          one fires *before* the data is "deposited", reading as the
+          engine writing into the buffer. Keyed by transcribeKey so
+          the keyframe replays on each fire. */}
+      {active && transcribeKey != null && (
+        <span
+          key={`scan-${transcribeKey}`}
+          aria-hidden
+          className="row-transcribe-scan pointer-events-none absolute inset-y-0 -left-[12%] w-[18%]"
+        />
+      )}
+
       {/* Settle-from-trace overlay — phosphor "spill" that drops in from
-          the top of the row each time it freshly becomes active. The
+          the top of the row each time it freshly becomes active OR each
+          time the engine deposits a fresh transcription into it. The
           `key={activationKey}` forces a remount on each activation so
-          the keyframe replays. Conceptually: "we just captured this
-          from the world (the trace above) and stored it here." */}
+          the keyframe replays. Conceptually: "the data is now stored
+          in the dictation buffer." */}
       {active && activationKey != null && (
         <span
-          key={activationKey}
+          key={`settle-${activationKey}`}
           aria-hidden
           className="row-settle pointer-events-none absolute inset-0"
         />

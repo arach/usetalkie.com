@@ -56,11 +56,13 @@ export default function LiveTrace({
   useEffect(() => {
     if (!playing) {
       cancelAnimationFrame(rafRef.current)
-      // Intentionally NOT resetting showLive here. Once a clip has been
-      // played, the polyline retains its last `points` attr and stays
-      // on screen as a frozen "captured signal" — just dimmed (passive)
-      // via the strokeOpacity logic below. Flipping back to the idle
-      // HeroWaveform on every pause would erase that captured state.
+      // Swap back to the decorative idle HeroWaveform when not playing.
+      // Earlier we kept the live polyline frozen on screen as a "captured
+      // signal at rest" but it reads as a flat dim line, which is less
+      // beautiful than the idle wave's deliberately authored shape. The
+      // canonical "captured" feel is now carried by the row-settle +
+      // row-transcribe-scan animations on the active row instead.
+      setShowLive(false)
       return
     }
 

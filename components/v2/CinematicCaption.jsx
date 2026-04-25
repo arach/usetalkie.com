@@ -107,14 +107,17 @@ const CinematicCaption = forwardRef(function CinematicCaption(
     <span
       ref={ref}
       aria-hidden
-      className={`relative inline-block overflow-hidden rounded-sm border bg-canvas-overlay/75 px-3 py-1 font-mono leading-snug backdrop-blur-md ${className} ${
+      key={isFinalize ? `finalize-${finalizeKey}` : 'live'}
+      className={`relative inline-block rounded-sm border bg-canvas-overlay/75 px-3 py-1 font-mono leading-snug backdrop-blur-md ${className} ${
         isFinalize ? 'border-edge caption-finalize' : 'border-edge-faint'
       }`}
     >
       {phrase.words.map((w, i) => {
-        // During finalize, everything is "spoken" — the transcription
-        // has settled, no live cursor. During live playback we render
-        // the karaoke classification.
+        // During finalize, everything is "spoken" — the live view has
+        // frozen into a still frame for the viewer. The transcription
+        // itself happens separately on the active row (the engine
+        // writes there, not here). The caption pill stays purely as
+        // narrative scenery.
         const state = isFinalize
           ? 'spoken'
           : currentTime < w.start
@@ -139,21 +142,6 @@ const CinematicCaption = forwardRef(function CinematicCaption(
           </span>
         )
       })}
-
-      {/* Scan-line sweep — the "transcribing" ambient cue. Gated on
-          a non-zero finalizeKey so the very first phase=finalize
-          render doesn't fire it spuriously; the parent bumps
-          finalizeKey at the precise moment we want the scan to run.
-          Keyed by finalizeKey so the keyframe replays per clip.
-          Pure decoration: the layout (and width measurement for
-          FLIP) is unchanged. */}
-      {isFinalize && finalizeKey > 0 && (
-        <span
-          key={finalizeKey}
-          aria-hidden
-          className="caption-scanline pointer-events-none absolute inset-y-0 -left-8 w-8"
-        />
-      )}
     </span>
   )
 })

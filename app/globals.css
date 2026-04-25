@@ -162,46 +162,57 @@ html.dark {
   animation: tagline-fade-in 0.5s ease-out;
 }
 
-/* caption-finalize / caption-scanline → "transcription has settled"
- * Two-part finishing beat that fires on the CinematicCaption pill once
- * the audio ends, before the FLIP transport. The pill itself does a
- * subtle border-glow pulse (caption-finalize). A separate inner span
- * does a phosphor scan-line sweep across the pill's width
- * (caption-scanline) — reads as "post-processing the buffer." Ambient,
- * not literal: no spinner, no text. The host pill sets overflow:hidden
- * so the scan-line stays clipped to the pill's rectangle. */
+/* caption-finalize → "the live view has frozen"
+ * Soft border-glow pulse on the CinematicCaption pill the moment audio
+ * stops. The caption is narrative scenery for the viewer (not engine
+ * input), so this is purely a "live view → still frame" cue. Brief —
+ * the eye should move on to the row transcription beat that follows. */
 @keyframes caption-finalize {
   0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--trace-glow) 0%, transparent); }
-  35%  { box-shadow: 0 0 22px 1px color-mix(in oklab, var(--trace-glow) 60%, transparent); }
-  100% { box-shadow: 0 0 14px 0 color-mix(in oklab, var(--trace-glow) 28%, transparent); }
+  40%  { box-shadow: 0 0 18px 1px color-mix(in oklab, var(--trace-glow) 50%, transparent); }
+  100% { box-shadow: 0 0 10px 0 color-mix(in oklab, var(--trace-glow) 22%, transparent); }
 }
 .caption-finalize {
-  animation: caption-finalize 0.72s ease-out forwards;
+  animation: caption-finalize 0.5s ease-out forwards;
 }
 
-@keyframes caption-scanline {
-  0%   { transform: translateX(0);     opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateX(var(--scan-distance, 1200%)); opacity: 0; }
+/* row-transcribe-scan → "the engine wrote this into the buffer"
+ * Fast phosphor wedge that walks L→R across the active row's content
+ * area, reading as a CRT write-head depositing the transcription. The
+ * host row container sets overflow:hidden so the wedge stays clipped
+ * to the row rectangle. Deliberately short (~400ms) — real Talkie
+ * transcription is fast, the demo should feel that way too. */
+@keyframes row-transcribe-scan {
+  0%   { transform: translateX(-12%); opacity: 0; }
+  12%  { opacity: 0.95; }
+  85%  { opacity: 0.95; }
+  100% { transform: translateX(100%); opacity: 0; }
 }
-.caption-scanline {
-  /* Vertical phosphor wedge that walks left→right across the pill.
-     The huge translate target relies on the host pill's overflow:hidden
-     to clip the wedge once it's past the right edge. */
+.row-transcribe-scan {
+  /* Vertical phosphor wedge — narrower + brighter at the leading edge,
+     tapering trailing. The bright spike is the "write head"; the soft
+     tail is the after-glow of the just-written character span. */
   background: linear-gradient(
     to right,
     transparent 0%,
-    color-mix(in oklab, var(--trace) 28%, transparent) 45%,
-    color-mix(in oklab, var(--trace-glow) 80%, transparent) 50%,
-    color-mix(in oklab, var(--trace) 28%, transparent) 55%,
+    color-mix(in oklab, var(--trace) 14%, transparent) 35%,
+    color-mix(in oklab, var(--trace) 38%, transparent) 48%,
+    color-mix(in oklab, var(--trace-glow) 90%, transparent) 52%,
+    color-mix(in oklab, var(--trace) 22%, transparent) 60%,
     transparent 100%
   );
-  filter: blur(0.4px);
-  animation: caption-scanline 0.7s ease-out forwards;
+  filter: blur(0.5px);
+  animation: row-transcribe-scan 0.42s ease-out forwards;
 }
 
-/* caption-memorialize → FLIP-style flight from the trace caption pill
+/* RETIRED: caption-memorialize was a FLIP flight that misrepresented
+ * the caption pill as engine input. The caption is narrative scenery
+ * for the viewer — the engine writes the transcription into the row
+ * directly via row-transcribe-scan above. Keyframe block below kept
+ * temporarily as a no-op so any stale references don't 404; should be
+ * dropped in a later cleanup once we've verified nothing depends on it.
+ *
+ * caption-memorialize → FLIP-style flight from the trace caption pill
  * down to the active row in the signal table. The parent measures the
  * source and target bounding rects, sets --mem-dx / --mem-dy /
  * --mem-scale on the cloned ghost, and lets the keyframe drive the
@@ -275,16 +286,13 @@ html.dark {
   .narrator-anchor-flash,
   .tagline-fade-in,
   .row-settle,
-  .keypress-cue,
+  .row-transcribe-scan,
   .caption-finalize,
-  .caption-scanline,
-  .caption-memorialize {
+  .keypress-cue {
     animation: none;
-    opacity: 1; /* keep keypress-cue visible without motion */
+    opacity: 1; /* keep cues visible without motion */
   }
-  /* The memorialize ghost has no role without animation — hide it so
-     it doesn't sit awkwardly between the trace and the table. The
-     timing beats and sound effects still fire. */
+  /* (no-op block kept so any tail rules below stay aligned) */
   .caption-memorialize {
     opacity: 0;
   }
