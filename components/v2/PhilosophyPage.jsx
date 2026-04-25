@@ -224,7 +224,7 @@ export default function PhilosophyPage() {
                   · THIS IS TALKIE
                 </p>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  A selfie. For your mind.<br />
+                  A selfie. For your thoughts.<br />
                   <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_PHILOSOPHY)}</span>
                 </h3>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">

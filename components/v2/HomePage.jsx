@@ -191,7 +191,7 @@ export default function HomePage() {
 
           {/* Headline */}
           <h1 className="mt-8 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-7xl">
-            A selfie. For your mind.
+            A selfie. For your thoughts.
             <br />
             <RotatingTagline
               className="mt-2 inline-block text-3xl italic leading-tight text-ink-muted md:text-5xl"
