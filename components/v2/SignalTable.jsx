@@ -7,7 +7,7 @@ import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
 import CinematicCaption from './CinematicCaption'
 import KeypressCue from './KeypressCue'
-import TranscribingOverlay from './TranscribingOverlay'
+import CaptureIsland from './CaptureIsland'
 
 /**
  * SignalTable — the navigatable, audio-driven hero player.
@@ -63,7 +63,15 @@ const BREATH_RELEASE_TO_TRANSCRIBING_MS = 150
 const TRANSCRIBE_MIN_MS                = 250
 const TRANSCRIBE_MAX_MS                = 800
 const TRANSCRIBE_FALLBACK_MS           = 420
-const BREATH_PASTE_TO_NEXT_MS          = 720  // paste landed → next capture begins
+// STORED_DURATION_MS — how long the CaptureIsland holds "STORED" while
+// the row's paste-type animation plays. Calibrated to cover the full
+// row-paste-text color settle (~520ms) plus a small breath. The
+// island fades out when this expires and the trace returns to idle.
+const STORED_DURATION_MS               = 550
+// Short breath between STORED ending and the next capture starting.
+// Most of the post-paste pacing is now carried by the stored beat
+// itself, so this can be tight.
+const BREATH_PASTE_TO_NEXT_MS          = 240  // paste landed → next capture begins
 
 export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
@@ -85,23 +93,23 @@ export default function SignalTable({ catalog }) {
   // surface the hotkey that bookends a recording. The `at` timestamp
   // is the React key on <KeypressCue/> so each fire replays the keyframe.
   const [keypressCue, setKeypressCue] = useState(null)
-  // captionPhase: drives the CinematicCaption + trace freeze + the
-  // TRANSCRIBING overlay visibility.
-  //   live         — per-word karaoke fill (audio playing). Caption
-  //                  visible; trace painting live.
-  //   transcribing — audio has ended. Caption hidden, trace frozen
-  //                  on its last waveform, TRANSCRIBING overlay
-  //                  pulsing centered over the trace area. Beat
-  //                  ends when the dynamic transcribe-duration timer
-  //                  fires, at which point we transition straight to
-  //                  'idle' and trigger the row paste choreography.
-  //   idle         — caption hides between clips, trace returns to
-  //                  the idle HeroWaveform.
+  // captionPhase: the central state machine for the capture lifecycle.
+  // Drives CinematicCaption visibility, LiveTrace freeze, AND the
+  // CaptureIsland morph (recording → transcribing → stored → idle).
   //
-  // (The earlier 'finalize' phase — caption border-glow pulse over
-  // the still-frame — has been retired in favor of the cleaner
-  // hide-caption + transcribing-overlay sequence. finalizeKey is
-  // kept as a no-op stub for any straggler refs.)
+  //   recording    — audio playing. Caption visible; trace live;
+  //                  island shows "● REC · {eyebrow}".
+  //   transcribing — audio ended. Caption hidden, trace frozen,
+  //                  island morphs to "TRANSCRIBING · · ·".
+  //   stored       — engine "finished." Trace still frozen (until
+  //                  this beat ends), row paste typing animation
+  //                  fires, paste tick fires, island morphs to
+  //                  "● STORED" with a brief halo flash.
+  //   idle         — between captures. Caption hidden, trace returns
+  //                  to the idle HeroWaveform, island fades out.
+  //
+  // (The earlier 'finalize' / 'live' values are retired. finalizeKey
+  // is kept as a no-op stub for any straggler refs.)
   const [captionPhase, setCaptionPhase] = useState('idle')
   const [finalizeKey] = useState(0)
   // transcribeKey: per-slug timestamp captured when the engine
@@ -249,14 +257,14 @@ export default function SignalTable({ catalog }) {
         setKeypressCue({ kind: 'start', at: Date.now() })
         playPressTick(ctxRef.current)
 
-        // Beat 2 — breath, then audio. Reset caption to live mode so
-        // any leftover finalize visuals from a previous clip are gone
-        // before the new karaoke fill starts.
-        setCaptionPhase('live')
+        // Beat 2 — breath, then audio. Phase becomes 'recording' the
+        // moment audio actually begins so the CaptureIsland morphs
+        // from idle into "● REC · {eyebrow}" in sync with the audio.
         await new Promise((resolve) => setTimeout(resolve, BREATH_PRESS_TO_AUDIO_MS))
         await audio.play()
         setActiveIndex(idx)
         setIsPlaying(true)
+        setCaptionPhase('recording')
       } catch (err) {
         // Autoplay rejection or 404 — surface for dev, soft-fail for user.
         // eslint-disable-next-line no-console
@@ -338,26 +346,37 @@ export default function SignalTable({ catalog }) {
 
       // Beat A — short breath, then enter the transcribing state:
       // caption disappears, trace freezes (LiveTrace `freeze` prop
-      // gates the swap-back to HeroWaveform), TRANSCRIBING overlay
-      // fades in.
+      // gates the swap-back to HeroWaveform), CaptureIsland morphs
+      // from "● REC" to "TRANSCRIBING · · ·".
       const tEnter = setTimeout(() => {
         setCaptionPhase('transcribing')
       }, BREATH_RELEASE_TO_TRANSCRIBING_MS)
       choreographyTimeoutsRef.current.push(tEnter)
 
-      // Beat B — the engine "finishes." Hide overlay (captionPhase
-      // → idle), unfreeze trace (HeroWaveform returns), fire the
-      // paste tick + the typing-paste animation on the row +
-      // row-settle halo replay.
-      const tPaste = setTimeout(() => {
-        setCaptionPhase('idle')
+      // Beat B — the engine "finishes." Phase morphs to 'stored':
+      // CaptureIsland flips to "● STORED" with a brief halo flash,
+      // row paste typing fires (transcribeKey + activationKey
+      // bumps), paste tick plays. Trace is still frozen through this
+      // beat — we want the island's "STORED" pulse and the row's
+      // paste typing to read as a single coordinated event.
+      const tStored = setTimeout(() => {
+        setCaptionPhase('stored')
         if (currentSlug) {
           setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
           setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
         }
         playPasteTick(ctxRef.current)
+      }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs)
+      choreographyTimeoutsRef.current.push(tStored)
 
-        // Beat C — breath, then advance to the next non-missing clip.
+      // Beat C — STORED held long enough for the row's paste-type
+      // animation to complete (~520ms total), then phase → idle:
+      // island fades out, trace unfreezes and returns to the idle
+      // HeroWaveform.
+      const tIdle = setTimeout(() => {
+        setCaptionPhase('idle')
+
+        // Beat D — short breath, then advance to the next clip.
         if (AUTO_ADVANCE) {
           const tNext = setTimeout(() => {
             for (let step = 1; step <= catalog.length; step++) {
@@ -370,8 +389,8 @@ export default function SignalTable({ catalog }) {
           }, BREATH_PASTE_TO_NEXT_MS)
           choreographyTimeoutsRef.current.push(tNext)
         }
-      }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs)
-      choreographyTimeoutsRef.current.push(tPaste)
+      }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs + STORED_DURATION_MS)
+      choreographyTimeoutsRef.current.push(tIdle)
     }
     const onError = () => {
       const cur = catalog[activeIndex]
@@ -577,7 +596,7 @@ export default function SignalTable({ catalog }) {
           <LiveTrace
             analyserRef={analyserRef}
             playing={isPlaying}
-            freeze={captionPhase === 'transcribing'}
+            freeze={captionPhase === 'transcribing' || captionPhase === 'stored'}
             channelLabel="CH-01"
             scaleLabel="32.1kHz · MAC · iPHONE · WATCH"
             hideLabels
@@ -619,11 +638,16 @@ export default function SignalTable({ catalog }) {
             </div>
           )}
 
-          {/* TRANSCRIBING overlay — engine "working" indicator that
-              sits centered over the frozen trace area between audio
-              end and paste. Self-fades on opacity transition driven
-              by the captionPhase === 'transcribing' guard. */}
-          <TranscribingOverlay show={captionPhase === 'transcribing'} />
+          {/* CaptureIsland — Dynamic-Island-style morph that runs as
+              a single persistent indicator across the whole capture
+              lifecycle. recording → transcribing → stored → fade.
+              Mirrors the floating-bubble UI in the actual Talkie app
+              and bridges the previously-elusive transition between
+              "engine done transcribing" and "data landed in the row." */}
+          <CaptureIsland
+            phase={captionPhase}
+            eyebrow={activeCapture?.eyebrow}
+          />
 
           {/* Keypress cue — pops the hotkey HUD at the start and end
               of each clip, like a screencast tool. Inside the trace's

@@ -162,6 +162,45 @@ html.dark {
   animation: tagline-fade-in 0.5s ease-out;
 }
 
+/* CaptureIsland morph keyframes — Dynamic-Island-style indicator at
+ * the top of the trace area. Three small animations cooperate:
+ *
+ *   capture-island-label-fade  fires on phase change (key remount)
+ *                              for a soft scale + opacity beat as the
+ *                              label morphs from one state to the next.
+ *   capture-island-dot-pulse   the 3-dot transcribing rhythm — a
+ *                              fast opacity breathe so the dot reads
+ *                              as "actively processing."
+ *   capture-island-stored-flash brief phosphor halo on the pill the
+ *                              moment we enter the STORED state.
+ *                              Coincides with the row's paste-type
+ *                              animation so the two read as one event.
+ */
+@keyframes capture-island-label-fade {
+  0%   { opacity: 0.32; transform: scale(0.96); filter: blur(0.4px); }
+  100% { opacity: 1;    transform: scale(1);    filter: blur(0); }
+}
+.capture-island-label-fade {
+  animation: capture-island-label-fade 0.32s ease-out;
+}
+
+@keyframes capture-island-dot-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50%      { opacity: 1;    transform: scale(1.05); }
+}
+.capture-island-dot-pulse {
+  animation: capture-island-dot-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes capture-island-stored-flash {
+  0%   { box-shadow: 0 0 14px color-mix(in oklab, var(--trace-glow) 32%, transparent); }
+  25%  { box-shadow: 0 0 26px 2px color-mix(in oklab, var(--trace-glow) 75%, transparent); }
+  100% { box-shadow: 0 0 14px color-mix(in oklab, var(--trace-glow) 32%, transparent); }
+}
+.capture-island-stored-flash {
+  animation: capture-island-stored-flash 0.55s ease-out forwards;
+}
+
 /* caption-finalize → "the live view has frozen"
  * Soft border-glow pulse on the CinematicCaption pill the moment audio
  * stops. The caption is narrative scenery for the viewer (not engine
@@ -229,20 +268,6 @@ html.dark {
 }
 .row-paste-text {
   animation: row-paste-text 0.52s ease-out forwards;
-}
-
-/* transcribing-pulse → 3-dot typing-indicator phosphor pulse used by
- * <TranscribingOverlay/>. Each dot opacity-cycles offset from the
- * others (the staggering is set inline via animationDelay on each
- * span), creating a left-to-right typing feel. Slow tempo (1.05s
- * loop) so it reads as "engine working" rather than nervous. */
-@keyframes transcribing-pulse {
-  0%, 100% { opacity: 0.25; transform: scale(0.85); }
-  35%      { opacity: 1;    transform: scale(1); }
-  60%      { opacity: 0.55; transform: scale(0.95); }
-}
-.transcribing-dot {
-  animation: transcribing-pulse 1.05s ease-in-out infinite;
 }
 
 /* RETIRED: caption-memorialize was a FLIP flight that misrepresented
@@ -329,16 +354,12 @@ html.dark {
   .row-paste-type,
   .row-paste-text,
   .caption-finalize,
-  .keypress-cue {
+  .keypress-cue,
+  .capture-island-label-fade,
+  .capture-island-dot-pulse,
+  .capture-island-stored-flash {
     animation: none;
     opacity: 1; /* keep cues visible without motion */
-  }
-  /* TranscribingOverlay: still appears, just without the dot pulse.
-     The engine-state cue (and its timing beat + paste tick) is still
-     useful with motion off. */
-  .transcribing-dot {
-    animation: none;
-    opacity: 0.7;
   }
   /* (no-op block kept so any tail rules below stay aligned) */
   .caption-memorialize {
