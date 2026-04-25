@@ -20,10 +20,22 @@ import HeroWaveform from './HeroWaveform'
  */
 
 const SAMPLE_COUNT = 512
-const VIEW_W = 1200
-const VIEW_H = 220
 
-export default function LiveTrace({ analyserRef, playing, channelLabel = 'CH-01', scaleLabel }) {
+export default function LiveTrace({
+  analyserRef,
+  playing,
+  channelLabel = 'CH-01',
+  scaleLabel,
+  viewW = 1200,
+  viewH = 220,
+  compact = false,
+}) {
+  // Compact = the dock variant. Drops corner ticks + instrument labels and
+  // halves graticule density so the trace reads cleanly at ~80px tall.
+  const VIEW_W = viewW
+  const VIEW_H = viewH
+  const gridX = compact ? 4 : 7
+  const gridY = compact ? 1 : 3
   const svgRef = useRef(null)
   const polyTopRef = useRef(null)
   const polyGlowRef = useRef(null)
@@ -83,13 +95,18 @@ export default function LiveTrace({ analyserRef, playing, channelLabel = 'CH-01'
 
   return (
     <div className="relative">
-      {/* Idle layer — always rendered for SSR + reduced-motion safety. */}
-      <div style={{ display: showLive ? 'none' : 'block' }}>
-        <HeroWaveform channelLabel={channelLabel} scaleLabel={scaleLabel} />
-      </div>
+      {/* Idle layer — only the hero variant renders the full HeroWaveform.
+          The compact (dock) variant skips it: dimensions don't scale and
+          the dock only ever appears once a clip is active anyway. */}
+      {!compact && (
+        <div style={{ display: showLive ? 'none' : 'block' }}>
+          <HeroWaveform channelLabel={channelLabel} scaleLabel={scaleLabel} />
+        </div>
+      )}
 
-      {/* Live layer — same shell as HeroWaveform but with mutable polylines. */}
-      <div style={{ display: showLive ? 'block' : 'none' }} aria-hidden>
+      {/* Live layer — same shell as HeroWaveform but with mutable polylines.
+          Compact variant always shows this; non-compact toggles. */}
+      <div style={{ display: compact || showLive ? 'block' : 'none' }} aria-hidden>
         <svg
           ref={svgRef}
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
@@ -98,13 +115,13 @@ export default function LiveTrace({ analyserRef, playing, channelLabel = 'CH-01'
           preserveAspectRatio="none"
           className="block"
         >
-          {/* Major graticule lines */}
-          {Array.from({ length: 7 }, (_, i) => {
-            const x = ((i + 1) * VIEW_W) / 8
+          {/* Major graticule lines (density derived from compact flag). */}
+          {Array.from({ length: gridX }, (_, i) => {
+            const x = ((i + 1) * VIEW_W) / (gridX + 1)
             return <line key={`v-${i}`} x1={x} x2={x} y1={0} y2={VIEW_H} stroke="var(--trace-faint)" strokeWidth={1} />
           })}
-          {Array.from({ length: 3 }, (_, i) => {
-            const y = ((i + 1) * VIEW_H) / 4
+          {Array.from({ length: gridY }, (_, i) => {
+            const y = ((i + 1) * VIEW_H) / (gridY + 1)
             return <line key={`h-${i}`} x1={0} x2={VIEW_W} y1={y} y2={y} stroke="var(--trace-faint)" strokeWidth={1} />
           })}
 
@@ -119,22 +136,24 @@ export default function LiveTrace({ analyserRef, playing, channelLabel = 'CH-01'
             strokeDasharray="3 4"
           />
 
-          {/* Corner ticks */}
-          {[
-            [0, 0],
-            [VIEW_W, 0],
-            [0, VIEW_H],
-            [VIEW_W, VIEW_H],
-          ].map(([cx, cy], i) => {
-            const xSign = cx === 0 ? 1 : -1
-            const ySign = cy === 0 ? 1 : -1
-            return (
-              <g key={`tick-${i}`} stroke="var(--trace)" strokeWidth={1.5}>
-                <line x1={cx} y1={cy} x2={cx + xSign * 12} y2={cy} />
-                <line x1={cx} y1={cy} x2={cx} y2={cy + ySign * 12} />
-              </g>
-            )
-          })}
+          {/* Corner ticks — instrument-style framing. Compact mode drops
+              these because at small heights they read as visual noise. */}
+          {!compact &&
+            [
+              [0, 0],
+              [VIEW_W, 0],
+              [0, VIEW_H],
+              [VIEW_W, VIEW_H],
+            ].map(([cx, cy], i) => {
+              const xSign = cx === 0 ? 1 : -1
+              const ySign = cy === 0 ? 1 : -1
+              return (
+                <g key={`tick-${i}`} stroke="var(--trace)" strokeWidth={1.5}>
+                  <line x1={cx} y1={cy} x2={cx + xSign * 12} y2={cy} />
+                  <line x1={cx} y1={cy} x2={cx} y2={cy + ySign * 12} />
+                </g>
+              )
+            })}
 
           {/* Live trace — soft glow underlay then crisp top stroke.
               Both polylines share the same `points` attr, written
@@ -159,30 +178,34 @@ export default function LiveTrace({ analyserRef, playing, channelLabel = 'CH-01'
             strokeLinecap="round"
           />
 
-          {/* Instrument labels */}
-          <text x={14} y={20} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="10" fill="var(--ink-subtle)" letterSpacing="2">
-            {channelLabel}
-          </text>
-          {scaleLabel && (
-            <text x={VIEW_W - 14} y={20} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="10" fill="var(--ink-subtle)" letterSpacing="2" textAnchor="end">
-              {scaleLabel}
-            </text>
+          {/* Instrument labels — hero-only; the dock has its own header. */}
+          {!compact && (
+            <>
+              <text x={14} y={20} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="10" fill="var(--ink-subtle)" letterSpacing="2">
+                {channelLabel}
+              </text>
+              {scaleLabel && (
+                <text x={VIEW_W - 14} y={20} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="10" fill="var(--ink-subtle)" letterSpacing="2" textAnchor="end">
+                  {scaleLabel}
+                </text>
+              )}
+              <text x={14} y={VIEW_H - 10} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="9" fill="var(--ink-subtle)" letterSpacing="2">
+                TRIG · LIVE
+              </text>
+              <text
+                x={VIEW_W - 14}
+                y={VIEW_H - 10}
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                fontSize="9"
+                fill="var(--trace)"
+                letterSpacing="2"
+                textAnchor="end"
+                style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
+              >
+                ● PLAYING
+              </text>
+            </>
           )}
-          <text x={14} y={VIEW_H - 10} fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" fontSize="9" fill="var(--ink-subtle)" letterSpacing="2">
-            TRIG · LIVE
-          </text>
-          <text
-            x={VIEW_W - 14}
-            y={VIEW_H - 10}
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-            fontSize="9"
-            fill="var(--trace)"
-            letterSpacing="2"
-            textAnchor="end"
-            style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
-          >
-            ● PLAYING
-          </text>
         </svg>
       </div>
     </div>

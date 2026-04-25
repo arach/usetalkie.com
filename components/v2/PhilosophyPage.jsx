@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Mic, Lock, Layers } from 'lucide-react'
+import { NarrateTrigger } from './narrator'
 
 /**
  * Philosophy — v2 oscilloscope canvas.
@@ -184,6 +185,24 @@ export default function PhilosophyPage() {
                 style={TRACE_GLOW_DOT}
               />
               <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
+            </div>
+
+            {/* Narrator demo — pill variant. Audio TBD; until the file
+                lands the dock will surface "no audio yet" and the missing
+                slug gets cached so retries no-op. Other variants
+                (speaker, inline) are documented in NarrateTrigger.jsx. */}
+            <div className="mt-10 flex justify-center">
+              <NarrateTrigger
+                variant="pill"
+                clip={{
+                  slug: 'philosophy-manifesto',
+                  audio: '/v2/captures/philosophy-manifesto.mp3',
+                  vtt: '/v2/captures/philosophy-manifesto.vtt',
+                  caption: 'VELOCITY · SOVEREIGNTY · FLOW',
+                }}
+              >
+                Hear the manifesto
+              </NarrateTrigger>
             </div>
           </div>
         </div>
