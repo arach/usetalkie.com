@@ -301,7 +301,7 @@ export default function SupportPage() {
 
                   <div className="mt-6 flex flex-wrap items-center gap-3">
                     <Link
-                      href="/docs"
+                      href="/v2/docs"
                       className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                     >
                       DOCUMENTATION <span aria-hidden>↗</span>

@@ -76,7 +76,7 @@ const CAPTURE_MODES = [
     eyebrow: 'RECOVERY',
     title: 'Recover the full thread later.',
     body: 'Search across memos and dictations, with app context attached when capture starts on desktop.',
-    href: '/docs/cli',
+    href: '/v2/docs/cli',
     chShape: 3,
   },
   {
@@ -84,7 +84,7 @@ const CAPTURE_MODES = [
     eyebrow: 'WORKFLOWS',
     title: 'Turn raw speech into useful output.',
     body: 'Route captures into summaries, task lists, files, and follow-up actions without copy-paste.',
-    href: '/docs/workflows',
+    href: '/v2/docs/workflows',
     chShape: 4,
   },
   {
@@ -92,7 +92,7 @@ const CAPTURE_MODES = [
     eyebrow: 'CLI',
     title: 'Keep the advanced layer open.',
     body: 'Query your voice data from scripts and tools instead of trapping it inside a single interface.',
-    href: '/docs/cli',
+    href: '/v2/docs/cli',
     chShape: 5,
   },
 ]
@@ -409,7 +409,7 @@ export default function HomePage() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/download"
+                    href="/v2/download"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                     style={{
                       ...TRACE_TINT,
@@ -492,7 +492,7 @@ export default function HomePage() {
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/download"
+                    href="/v2/download"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                     style={{
                       ...TRACE_TINT,

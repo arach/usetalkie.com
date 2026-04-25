@@ -141,7 +141,7 @@ export default function DocsIndexPage() {
               </div>
 
               <Link
-                href="/download"
+                href="/v2/download"
                 className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
                 style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
               >

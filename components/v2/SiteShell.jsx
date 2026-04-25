@@ -3,9 +3,9 @@ import ThemeToggle from './ThemeToggle'
 
 const PRIMARY_NAV = [
   { label: 'Surfaces',   href: '/v2/surfaces' },
-  { label: 'Workflows',  href: '/workflows' },
+  { label: 'Workflows',  href: '/v2/workflows' },
   { label: 'Philosophy', href: '/v2/philosophy' },
-  { label: 'Docs',       href: '/docs' },
+  { label: 'Docs',       href: '/v2/docs' },
 ]
 
 const FOOTER_SECTIONS = [
@@ -15,7 +15,7 @@ const FOOTER_SECTIONS = [
       { label: 'Mac',       href: '/v2/mac' },
       { label: 'iPhone',    href: '/v2/mobile' },
       { label: 'Watch',     href: '/v2/mobile' },
-      { label: 'Workflows', href: '/workflows' },
+      { label: 'Workflows', href: '/v2/workflows' },
     ],
   },
   {
@@ -23,16 +23,16 @@ const FOOTER_SECTIONS = [
     links: [
       { label: 'Philosophy', href: '/v2/philosophy' },
       { label: 'Security',   href: '/v2/security' },
-      { label: 'About',      href: '/about' },
+      { label: 'About',      href: '/v2/about' },
     ],
   },
   {
     label: 'Resources',
     links: [
-      { label: 'Docs',    href: '/docs' },
-      { label: 'CLI',     href: '/docs/cli' },
-      { label: 'Pricing', href: '/#pricing' },
-      { label: 'Ideas',   href: '/ideas' },
+      { label: 'Docs',    href: '/v2/docs' },
+      { label: 'CLI',     href: '/v2/docs/cli' },
+      { label: 'Pricing', href: '/v2#pricing' },
+      { label: 'Ideas',   href: '/v2/ideas' },
     ],
   },
   {
@@ -77,7 +77,7 @@ export default function SiteShell({ children }) {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link
-              href="/download"
+              href="/v2/download"
               className="inline-flex items-center gap-2 rounded-sm border border-edge px-3 py-1.5 text-[9px] uppercase tracking-[0.22em] text-trace transition-all hover:-translate-y-px"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
@@ -129,7 +129,7 @@ export default function SiteShell({ children }) {
 
             <div className="flex items-center gap-3">
               <Link
-                href="/download"
+                href="/v2/download"
                 className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
                 style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
               >

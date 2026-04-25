@@ -102,7 +102,7 @@ export default function MobilePage() {
                 </p>
               </div>
               <Link
-                href="/download"
+                href="/v2/download"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background:
