@@ -15,19 +15,22 @@ export default function StatsRow() {
         {stats.map(({ value, label, icon: Icon }) => (
           <div
             key={label}
-            className="flex flex-col items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 py-5 px-4"
+            className="flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-5 px-4"
           >
-            <Icon className="w-4 h-4 text-zinc-400 dark:text-zinc-500 mb-1" />
-            <span className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">
+            <Icon className="w-4 h-4 text-ink-subtle mb-1" />
+            <span
+              className="text-4xl font-bold text-trace font-mono tabular-nums"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
               {value}
             </span>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">
+            <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-ink-faint">
               {label}
             </span>
           </div>
         ))}
       </div>
-      <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 mt-3">
+      <p className="text-center text-sm text-ink-muted mt-3">
         On a phone. Offline. No cloud.
       </p>
     </div>

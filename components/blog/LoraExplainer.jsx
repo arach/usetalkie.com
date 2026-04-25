@@ -7,6 +7,8 @@ const H = 220
 
 const ranks = [4, 8, 16]
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
 export default function LoraExplainer() {
   const [rank, setRank] = useState(16)
 
@@ -31,19 +33,27 @@ export default function LoraExplainer() {
   const pctParams = ((loraParams / frozenParams) * 100).toFixed(1)
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-5">
+    <div className="not-prose my-8 rounded-lg border border-edge-dim bg-canvas-alt p-5">
       {/* Rank selector */}
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">LoRA rank:</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">LoRA rank:</span>
         {ranks.map(r => (
           <button
             key={r}
             onClick={() => setRank(r)}
-            className={`text-xs font-mono px-2 py-0.5 rounded transition-all ${
+            className={`text-xs font-mono px-2 py-0.5 rounded transition-all border ${
               rank === r
-                ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 font-medium'
-                : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-400'
+                ? 'border-trace text-trace font-medium'
+                : 'border-edge-dim text-ink-faint hover:text-ink-muted hover:border-edge'
             }`}
+            style={
+              rank === r
+                ? {
+                    background: 'color-mix(in oklab, var(--trace) 12%, transparent)',
+                    boxShadow: '0 0 8px var(--trace-glow)',
+                  }
+                : undefined
+            }
           >
             {r}
           </button>
@@ -55,13 +65,14 @@ export default function LoraExplainer() {
         <rect
           x={fullX} y={fullY} width={fullW} height={fullH}
           rx="3"
-          className="fill-zinc-200 dark:fill-zinc-700 stroke-zinc-300 dark:stroke-zinc-600"
+          fill="color-mix(in oklab, var(--ink-faint) 25%, transparent)"
+          stroke="var(--edge)"
           strokeWidth="1"
         />
         <text
           x={fullX + fullW / 2} y={fullY + fullH / 2 - 6}
           textAnchor="middle"
-          className="fill-zinc-500 dark:fill-zinc-400"
+          fill="var(--ink-muted)"
           fontSize="11" fontFamily="ui-monospace, monospace"
         >
           W
@@ -69,7 +80,7 @@ export default function LoraExplainer() {
         <text
           x={fullX + fullW / 2} y={fullY + fullH / 2 + 10}
           textAnchor="middle"
-          className="fill-zinc-400 dark:fill-zinc-500"
+          fill="var(--ink-faint)"
           fontSize="9" fontFamily="ui-monospace, monospace"
         >
           frozen
@@ -77,11 +88,11 @@ export default function LoraExplainer() {
 
         {/* Dimension labels for W */}
         <text x={fullX + fullW / 2} y={fullY - 8} textAnchor="middle"
-          className="fill-zinc-400 dark:fill-zinc-500" fontSize="8" fontFamily="ui-monospace, monospace">
+          fill="var(--ink-faint)" fontSize="8" fontFamily="ui-monospace, monospace">
           d_out
         </text>
         <text x={fullX - 8} y={fullY + fullH / 2 + 3} textAnchor="end"
-          className="fill-zinc-400 dark:fill-zinc-500" fontSize="8" fontFamily="ui-monospace, monospace">
+          fill="var(--ink-faint)" fontSize="8" fontFamily="ui-monospace, monospace">
           d_in
         </text>
 
@@ -89,7 +100,7 @@ export default function LoraExplainer() {
         <text
           x={fullX + fullW + gapX / 2} y={fullY + fullH / 2 + 4}
           textAnchor="middle"
-          className="fill-zinc-400 dark:fill-zinc-500"
+          fill="var(--ink-faint)"
           fontSize="16"
         >
           +
@@ -99,13 +110,15 @@ export default function LoraExplainer() {
         <rect
           x={aX} y={aY} width={aW} height={aH}
           rx="3"
-          className="fill-emerald-200 dark:fill-emerald-800 stroke-emerald-400 dark:stroke-emerald-600"
+          fill="color-mix(in oklab, var(--trace) 30%, transparent)"
+          stroke="var(--trace)"
           strokeWidth="1.5"
+          style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
         />
         <text
           x={aX + aW / 2} y={aY + aH / 2 + 4}
           textAnchor="middle"
-          className="fill-emerald-700 dark:fill-emerald-300"
+          fill="var(--trace)"
           fontSize="10" fontFamily="ui-monospace, monospace"
         >
           A
@@ -115,7 +128,7 @@ export default function LoraExplainer() {
         <text
           x={aX + aW + 10} y={aY + aH / 2 + 4}
           textAnchor="middle"
-          className="fill-zinc-400 dark:fill-zinc-500"
+          fill="var(--ink-faint)"
           fontSize="12"
         >
           x
@@ -125,14 +138,16 @@ export default function LoraExplainer() {
         <rect
           x={bX} y={bY} width={bW} height={bH}
           rx="3"
-          className="fill-emerald-200 dark:fill-emerald-800 stroke-emerald-400 dark:stroke-emerald-600"
+          fill="color-mix(in oklab, var(--trace) 30%, transparent)"
+          stroke="var(--trace)"
           strokeWidth="1.5"
+          style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
         >
         </rect>
         <text
           x={bX + bW / 2} y={bY + bH / 2 + 4}
           textAnchor="middle"
-          className="fill-emerald-700 dark:fill-emerald-300"
+          fill="var(--trace)"
           fontSize="10" fontFamily="ui-monospace, monospace"
         >
           B
@@ -140,23 +155,23 @@ export default function LoraExplainer() {
 
         {/* Rank label on A */}
         <text x={aX + aW / 2} y={aY - 8} textAnchor="middle"
-          className="fill-emerald-600 dark:fill-emerald-400" fontSize="8" fontFamily="ui-monospace, monospace">
+          fill="var(--trace)" fontSize="8" fontFamily="ui-monospace, monospace">
           r={rank}
         </text>
 
         {/* Rank label on B */}
         <text x={bX - 8} y={bY + bH / 2 + 3} textAnchor="end"
-          className="fill-emerald-600 dark:fill-emerald-400" fontSize="8" fontFamily="ui-monospace, monospace">
+          fill="var(--trace)" fontSize="8" fontFamily="ui-monospace, monospace">
           r={rank}
         </text>
 
         {/* Labels */}
         <text x={fullX + fullW / 2} y={fullY + fullH + 20} textAnchor="middle"
-          className="fill-zinc-400 dark:fill-zinc-500" fontSize="9" fontFamily="ui-monospace, monospace">
+          fill="var(--ink-faint)" fontSize="9" fontFamily="ui-monospace, monospace">
           Original weights
         </text>
         <text x={(aX + bX + bW) / 2} y={aY + aH + 20} textAnchor="middle"
-          className="fill-emerald-600 dark:fill-emerald-400" fontSize="9" fontFamily="ui-monospace, monospace">
+          fill="var(--trace)" fontSize="9" fontFamily="ui-monospace, monospace">
           LoRA adapter (trainable)
         </text>
       </svg>
@@ -164,16 +179,21 @@ export default function LoraExplainer() {
       {/* Stats */}
       <div className="flex items-center justify-center gap-6 mt-3">
         <div className="text-center">
-          <div className="text-xs text-zinc-400 dark:text-zinc-500">Trainable params</div>
-          <div className="text-sm font-mono font-medium text-emerald-600 dark:text-emerald-400">{pctParams}%</div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Trainable params</div>
+          <div
+            className="text-sm font-mono font-medium text-trace tabular-nums"
+            style={TRACE_GLOW_SOFT}
+          >
+            {pctParams}%
+          </div>
         </div>
         <div className="text-center">
-          <div className="text-xs text-zinc-400 dark:text-zinc-500">Rank</div>
-          <div className="text-sm font-mono font-medium text-zinc-700 dark:text-zinc-300">{rank}</div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Rank</div>
+          <div className="text-sm font-mono font-medium text-ink tabular-nums">{rank}</div>
         </div>
         <div className="text-center">
-          <div className="text-xs text-zinc-400 dark:text-zinc-500">Approach</div>
-          <div className="text-sm font-mono font-medium text-zinc-700 dark:text-zinc-300">
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Approach</div>
+          <div className="text-sm font-mono font-medium text-ink">
             {rank <= 4 ? 'Minimal' : rank <= 8 ? 'Conservative' : 'Standard'}
           </div>
         </div>

@@ -1,5 +1,7 @@
 "use client"
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
 const vocab = [
   { spoken: 'dash', symbol: '-' },
   { spoken: 'quote', symbol: '"' },
@@ -25,18 +27,21 @@ export default function VocabGrid() {
         {vocab.map(({ spoken, symbol }) => (
           <div
             key={spoken}
-            className="flex flex-col items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 py-3 px-2"
+            className="flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-3 px-2"
           >
-            <span className="text-[11px] italic text-zinc-500 dark:text-zinc-400">
+            <span className="text-[11px] italic text-ink-muted">
               {spoken}
             </span>
-            <span className="text-lg font-mono font-bold text-emerald-600 dark:text-emerald-400">
+            <span
+              className="text-lg font-mono font-bold text-trace"
+              style={TRACE_GLOW_SOFT}
+            >
               {symbol}
             </span>
           </div>
         ))}
       </div>
-      <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 mt-3">
+      <p className="text-center text-sm text-ink-muted mt-3">
         30 spoken tokens → 30 symbols. No ambiguity. No ML needed.
       </p>
     </div>

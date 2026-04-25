@@ -2,6 +2,8 @@
 
 import { PatchDiff } from '@pierre/diffs/react'
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
 const diffs = {
   "apple-to-parakeet": {
     oldName: "Apple Speech (iOS)",
@@ -84,7 +86,25 @@ export default function TranscriptionDiff({ id, oldText, newText, oldName, newNa
   const patch = makePatch(data.oldText, data.newText, data.oldName, data.newName)
 
   return (
-    <div className="rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 not-prose my-8">
+    <div className="not-prose my-8 rounded-lg border border-edge-dim bg-canvas-alt overflow-hidden">
+      {/* Header — eyebrow + before/after labels */}
+      {(data.oldName || data.newName) && (
+        <div className="flex items-center justify-between gap-3 border-b border-edge-dim px-4 py-2.5">
+          <span
+            className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
+            style={TRACE_GLOW_SOFT}
+          >
+            Transcription diff
+          </span>
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">
+            {data.oldName && <span>{data.oldName}</span>}
+            {data.oldName && data.newName && (
+              <span className="text-trace" style={TRACE_GLOW_SOFT}>→</span>
+            )}
+            {data.newName && <span className="text-ink-muted">{data.newName}</span>}
+          </div>
+        </div>
+      )}
       <PatchDiff
         patch={patch}
         options={diffOptions}

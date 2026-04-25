@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+const TRACE_GLOW_BAR = { boxShadow: '0 0 6px var(--trace)' }
+
 const steps = [
   {
     label: 'Base model',
@@ -35,12 +38,20 @@ export default function QuantizationSteps() {
   const [active, setActive] = useState(null)
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-5">
+    <div className="not-prose my-8 rounded-lg border border-edge-dim bg-canvas-alt p-5">
       <div className="space-y-3">
         {steps.map((step, i) => {
           const barPct = (step.sizeBytes / maxSize) * 100
           const isActive = active === i
           const isLast = i === steps.length - 1
+
+          const cardStyle = isActive && isLast
+            ? {
+                background: 'color-mix(in oklab, var(--trace) 7%, transparent)',
+                boxShadow:
+                  'inset 0 0 0 1px color-mix(in oklab, var(--trace) 28%, transparent), 0 0 14px color-mix(in oklab, var(--trace-glow) 50%, transparent)',
+              }
+            : undefined
 
           return (
             <div
@@ -48,41 +59,52 @@ export default function QuantizationSteps() {
               className={`rounded-lg border p-3 cursor-default transition-all ${
                 isActive
                   ? isLast
-                    ? 'border-emerald-500/40 dark:border-emerald-500/25 bg-emerald-50/50 dark:bg-emerald-950/20'
-                    : 'border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800'
-                  : 'border-zinc-200/50 dark:border-zinc-800/50 bg-transparent'
+                    ? 'border-trace/40'
+                    : 'border-edge bg-surface'
+                  : 'border-edge-dim/60 bg-transparent'
               }`}
+              style={cardStyle}
               onMouseEnter={() => setActive(i)}
               onMouseLeave={() => setActive(null)}
             >
               <div className="flex items-baseline justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">{step.label}</span>
-                  <span className="text-[10px] font-mono text-zinc-400">{step.sublabel}</span>
+                  <span className="text-xs font-semibold text-ink">{step.label}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">{step.sublabel}</span>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <span className={`text-sm font-mono font-medium ${
-                    isLast ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-600 dark:text-zinc-300'
-                  }`}>
+                  <span
+                    className={`text-sm font-mono font-medium ${
+                      isLast ? 'text-trace' : 'text-ink-muted'
+                    }`}
+                    style={isLast ? TRACE_GLOW_SOFT : undefined}
+                  >
                     {step.size}
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-400">{step.precision}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">{step.precision}</span>
                 </div>
               </div>
 
               {/* Bar */}
-              <div className="h-2 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-canvas overflow-hidden border border-edge-dim/60">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
-                    isLast ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-600'
+                    isLast ? 'bg-trace' : ''
                   }`}
-                  style={{ width: `${barPct}%` }}
+                  style={
+                    isLast
+                      ? { width: `${barPct}%`, ...TRACE_GLOW_BAR }
+                      : {
+                          width: `${barPct}%`,
+                          background: 'color-mix(in oklab, var(--trace) 45%, var(--canvas))',
+                        }
+                  }
                 />
               </div>
 
               {/* Description on hover */}
               {isActive && (
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
+                <p className="text-xs text-ink-muted mt-2 leading-relaxed">
                   {step.desc}
                 </p>
               )}
@@ -93,8 +115,13 @@ export default function QuantizationSteps() {
 
       {/* Reduction stat */}
       <div className="text-center mt-4">
-        <span className="text-xs text-zinc-400">Size reduction: </span>
-        <span className="text-xs font-mono font-medium text-emerald-600 dark:text-emerald-400">72%</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Size reduction: </span>
+        <span
+          className="text-xs font-mono font-medium text-trace"
+          style={TRACE_GLOW_SOFT}
+        >
+          72%
+        </span>
       </div>
     </div>
   )

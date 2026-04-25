@@ -34,7 +34,7 @@ export default function TrainingCurve() {
   const yTicks = [0, 0.1, 0.2, 0.3, 0.4]
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-5">
+    <div className="not-prose my-8 rounded-lg border border-edge-dim bg-canvas-alt p-5">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Training and validation loss curve">
         {/* Y axis ticks */}
         {yTicks.map(t => (
@@ -44,14 +44,14 @@ export default function TrainingCurve() {
               y1={scaleY(t)}
               x2={PAD.left + plotW}
               y2={scaleY(t)}
-              className="stroke-zinc-200 dark:stroke-zinc-800"
+              stroke="var(--edge-dim)"
               strokeWidth="0.5"
             />
             <text
               x={PAD.left - 8}
               y={scaleY(t) + 3}
               textAnchor="end"
-              className="fill-zinc-400 dark:fill-zinc-500"
+              fill="var(--ink-muted)"
               fontSize="9"
               fontFamily="ui-monospace, monospace"
             >
@@ -67,7 +67,7 @@ export default function TrainingCurve() {
             x={scaleX(d.iter)}
             y={H - 6}
             textAnchor="middle"
-            className="fill-zinc-400 dark:fill-zinc-500"
+            fill="var(--ink-muted)"
             fontSize="9"
             fontFamily="ui-monospace, monospace"
           >
@@ -75,24 +75,26 @@ export default function TrainingCurve() {
           </text>
         ))}
 
-        {/* Train loss line */}
+        {/* Train loss line — primary trace */}
         <polyline
           points={polyline(data, 'train')}
           fill="none"
-          className="stroke-blue-500"
+          stroke="var(--trace)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
         />
 
-        {/* Val loss line */}
+        {/* Val loss line — semantic warning kept as amber */}
         <polyline
           points={polyline(data, 'val')}
           fill="none"
-          className="stroke-amber-400"
+          className="stroke-amber-400/80"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          strokeDasharray="3 3"
         />
 
         {/* Best checkpoint dot + label */}
@@ -100,14 +102,16 @@ export default function TrainingCurve() {
           cx={scaleX(bestPoint.iter)}
           cy={scaleY(bestPoint.val)}
           r="4"
-          className="fill-emerald-500"
+          fill="var(--trace)"
+          style={{ filter: 'drop-shadow(0 0 6px var(--trace-glow))' }}
         />
         <text
           x={scaleX(bestPoint.iter) + 8}
           y={scaleY(bestPoint.val) - 8}
-          className="fill-emerald-600 dark:fill-emerald-400"
+          fill="var(--trace)"
           fontSize="9"
           fontFamily="ui-monospace, monospace"
+          style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
         >
           best checkpoint
         </text>
@@ -116,16 +120,22 @@ export default function TrainingCurve() {
       {/* Legend */}
       <div className="flex items-center justify-center gap-5 mt-3">
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-blue-500 rounded" />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">Train loss</span>
+          <span
+            className="w-3 h-0.5 rounded"
+            style={{ background: 'var(--trace)', boxShadow: '0 0 4px var(--trace-glow)' }}
+          />
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Train loss</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-amber-400 rounded" />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">Val loss</span>
+          <span className="w-3 h-0.5 bg-amber-400/80 rounded" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Val loss</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 bg-emerald-500 rounded-full" />
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">Iter 800</span>
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ background: 'var(--trace)', boxShadow: '0 0 6px var(--trace)' }}
+          />
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Iter 800</span>
         </div>
       </div>
     </div>

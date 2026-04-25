@@ -2,6 +2,8 @@
 
 import { Check } from 'lucide-react'
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
 const domains = [
   {
     name: 'Bash',
@@ -43,35 +45,41 @@ export default function DomainGrid() {
           <div
             key={name}
             className={`rounded-lg border p-4 ${
-              done
-                ? 'border-emerald-500/50 dark:border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20'
-                : 'border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/50 opacity-60'
+              done ? 'border-trace/40' : 'border-dashed border-edge bg-canvas-alt/50 opacity-70'
             }`}
+            style={
+              done
+                ? {
+                    background: 'color-mix(in oklab, var(--trace) 7%, transparent)',
+                    boxShadow:
+                      'inset 0 0 0 1px color-mix(in oklab, var(--trace) 28%, transparent), 0 0 14px color-mix(in oklab, var(--trace-glow) 50%, transparent)',
+                  }
+                : undefined
+            }
           >
             <div className="flex items-center gap-2 mb-2">
               {done && (
-                <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <Check
+                  className="w-3.5 h-3.5 text-trace"
+                  style={TRACE_GLOW_SOFT}
+                />
               )}
               <span
                 className={`text-sm font-semibold ${
-                  done
-                    ? 'text-emerald-700 dark:text-emerald-300'
-                    : 'text-zinc-500 dark:text-zinc-400'
+                  done ? 'text-trace' : 'text-ink-muted'
                 }`}
+                style={done ? TRACE_GLOW_SOFT : undefined}
               >
                 {name}
               </span>
             </div>
             <div className="text-[11px] font-mono space-y-0.5">
-              <div className="text-zinc-500 dark:text-zinc-400 truncate">
+              <div className="text-ink-muted truncate">
                 {example[0]}
               </div>
               <div
-                className={`truncate ${
-                  done
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-zinc-400 dark:text-zinc-500'
-                }`}
+                className={`truncate ${done ? 'text-trace' : 'text-ink-subtle'}`}
+                style={done ? TRACE_GLOW_SOFT : undefined}
               >
                 → {example[1]}
               </div>

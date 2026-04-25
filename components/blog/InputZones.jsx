@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import { Cog, Cpu, AlertTriangle } from 'lucide-react'
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
 const examples = [
   {
     zone: 'clean',
     label: 'Processor handles it',
     icon: Cog,
-    color: 'emerald',
+    color: 'trace',
     input: 'chmod space seven five five space slash etc slash nginx dot conf',
     tokens: [
       { text: 'chmod', ok: true },
@@ -81,7 +83,7 @@ const examples = [
     zone: 'messy',
     label: 'Model needed',
     icon: Cpu,
-    color: 'blue',
+    color: 'ink',
     input: 'change permissions to seven fifty five on the nginx config in etsy',
     tokens: [
       { text: 'change', ok: null },
@@ -113,27 +115,40 @@ const examples = [
   },
 ]
 
+// Color tokens — `trace` and `ink` use phosphor/edge tokens; `amber` keeps semantic warning hue.
 const colorMap = {
-  emerald: {
-    border: 'border-emerald-500/40 dark:border-emerald-500/25',
-    bg: 'bg-emerald-50/50 dark:bg-emerald-950/20',
-    badge: 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/50',
-    icon: 'text-emerald-600 dark:text-emerald-400',
-    output: 'text-emerald-600 dark:text-emerald-400',
+  trace: {
+    iconClass: 'text-trace',
+    iconStyle: TRACE_GLOW_SOFT,
+    outputClass: 'text-trace',
+    outputStyle: TRACE_GLOW_SOFT,
+    badgeClass: 'text-trace border-trace/30',
+    badgeStyle: { ...TRACE_GLOW_SOFT, background: 'color-mix(in oklab, var(--trace) 8%, transparent)' },
+    cardStyle: {
+      background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
+      boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--trace) 26%, transparent)',
+    },
   },
   amber: {
-    border: 'border-amber-500/40 dark:border-amber-500/25',
-    bg: 'bg-amber-50/50 dark:bg-amber-950/20',
-    badge: 'text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/50',
-    icon: 'text-amber-500 dark:text-amber-400',
-    output: 'text-amber-600 dark:text-amber-400',
+    iconClass: 'text-amber-400/80',
+    iconStyle: undefined,
+    outputClass: 'text-amber-400/90',
+    outputStyle: undefined,
+    badgeClass: 'text-amber-400/90 border-amber-400/30',
+    badgeStyle: { background: 'color-mix(in oklab, rgb(251 191 36) 8%, transparent)' },
+    cardStyle: {
+      background: 'color-mix(in oklab, rgb(251 191 36) 5%, transparent)',
+      boxShadow: 'inset 0 0 0 1px color-mix(in oklab, rgb(251 191 36) 26%, transparent)',
+    },
   },
-  blue: {
-    border: 'border-blue-500/40 dark:border-blue-500/25',
-    bg: 'bg-blue-50/50 dark:bg-blue-950/20',
-    badge: 'text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50',
-    icon: 'text-blue-600 dark:text-blue-400',
-    output: 'text-blue-600 dark:text-blue-400',
+  ink: {
+    iconClass: 'text-ink-muted',
+    iconStyle: undefined,
+    outputClass: 'text-ink',
+    outputStyle: undefined,
+    badgeClass: 'text-ink-muted border-edge',
+    badgeStyle: { background: 'var(--canvas)' },
+    cardStyle: undefined,
   },
 }
 
@@ -149,15 +164,17 @@ export default function InputZones() {
       <div className="flex gap-1 mb-3">
         {examples.map((e, i) => {
           const c = colorMap[e.color]
+          const isActive = active === i
           return (
             <button
               key={e.zone}
               onClick={() => setActive(i)}
-              className={`text-[11px] font-mono px-2.5 py-1 rounded transition-all ${
-                active === i
-                  ? `${c.badge} font-medium`
-                  : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400'
+              className={`font-mono text-[11px] uppercase tracking-[0.18em] px-2.5 py-1 rounded border transition-all ${
+                isActive
+                  ? `${c.badgeClass} font-medium`
+                  : 'text-ink-subtle border-edge-dim hover:text-ink-muted hover:border-edge'
               }`}
+              style={isActive ? c.badgeStyle : undefined}
             >
               {e.zone}
             </button>
@@ -166,25 +183,28 @@ export default function InputZones() {
       </div>
 
       {/* Card */}
-      <div className={`rounded-lg border ${colors.border} ${colors.bg} p-4`}>
+      <div
+        className="rounded-lg border border-edge-dim bg-canvas-alt p-4"
+        style={colors.cardStyle}
+      >
         <div className="flex items-center gap-2 mb-3">
-          <Icon className={`w-4 h-4 ${colors.icon}`} />
-          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{ex.label}</span>
+          <Icon className={`w-4 h-4 ${colors.iconClass}`} style={colors.iconStyle} />
+          <span className="text-sm font-semibold text-ink">{ex.label}</span>
         </div>
 
         {/* Input with token highlighting */}
         <div className="mb-3">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Input</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Input</span>
           <div className="mt-1 font-mono text-sm leading-relaxed">
             {ex.tokens.filter(t => t.text !== ' ').map((t, i) => (
               <span key={i}>
                 {i > 0 && ' '}
                 <span className={
                   t.ok === false
-                    ? 'text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-900/40 px-0.5 rounded'
+                    ? 'text-red-500/90 bg-red-500/15 px-0.5 rounded'
                     : t.ok === null
-                    ? 'text-zinc-500 dark:text-zinc-400'
-                    : 'text-zinc-700 dark:text-zinc-300'
+                    ? 'text-ink-muted'
+                    : 'text-ink'
                 }>
                   {t.text}
                 </span>
@@ -195,21 +215,24 @@ export default function InputZones() {
 
         {/* Output */}
         <div className="mb-3">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Output</span>
-          <div className={`mt-1 font-mono text-sm ${
-            ex.correct ? 'text-red-500 dark:text-red-400 line-through' : colors.output
-          }`}>
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Output</span>
+          <div
+            className={`mt-1 font-mono text-sm ${
+              ex.correct ? 'text-red-500/90 line-through' : colors.outputClass
+            }`}
+            style={ex.correct ? undefined : colors.outputStyle}
+          >
             {ex.output}
           </div>
           {ex.correct && (
-            <div className={`font-mono text-sm mt-0.5 ${colors.output}`}>
-              {ex.correct} <span className="text-xs text-zinc-400">(needs model)</span>
+            <div className={`font-mono text-sm mt-0.5 ${colors.outputClass}`} style={colors.outputStyle}>
+              {ex.correct} <span className="text-xs text-ink-subtle">(needs model)</span>
             </div>
           )}
         </div>
 
         {/* Description */}
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{ex.desc}</p>
+        <p className="text-xs text-ink-muted leading-relaxed">{ex.desc}</p>
       </div>
     </div>
   )
