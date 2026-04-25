@@ -300,8 +300,8 @@ export default function AboutPage() {
                   · THIS IS TALKIE
                 </p>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  Talk to your Mac.<br />
-                  <span className="italic text-ink-muted">A mic is all you need.</span>
+                  A selfie. For your brain.<br />
+                  <span className="italic text-ink-muted">A signal is all you need.</span>
                 </h3>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
                   Voice capture, local-first, auditable signal path. Your words stay on your devices.

@@ -7,14 +7,14 @@ import HomePage from '../../components/v2/HomePage'
  * moves up to app/page.jsx alongside this body.
  */
 export const metadata = {
-  title: 'Talkie - Talk to your Mac',
+  title: 'Talkie - A selfie. For your brain.',
   description:
-    'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
+    'A selfie. For your brain. Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
   applicationName: 'Talkie',
   openGraph: {
-    title: 'Talkie - Talk to your Mac',
+    title: 'Talkie - A selfie. For your brain.',
     description:
-      'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
+      'A selfie. For your brain. Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
     url: 'https://usetalkie.com',
     siteName: 'Talkie',
     locale: 'en_US',
@@ -24,15 +24,15 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Talkie - Talk to your Mac',
+        alt: 'Talkie - A selfie. For your brain.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie - Talk to your Mac',
+    title: 'Talkie - A selfie. For your brain.',
     description:
-      'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
+      'A selfie. For your brain. Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
     images: ['/og-image.png'],
   },
 }

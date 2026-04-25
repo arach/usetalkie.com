@@ -121,7 +121,7 @@ export default function SiteShell({ children }) {
                 <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim">TALKIE</span>
               </div>
               <p className="mt-4 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
-                Talk to your Mac.<br />A mic is all you need.
+                A selfie. For your brain.<br />A mic is all you need.
               </p>
               <p className="mt-3 text-[11px] leading-relaxed text-ink-faint">
                 Voice capture, local-first, auditable signal path. Your words stay on your devices.

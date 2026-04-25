@@ -189,7 +189,7 @@ export default function HomePage() {
 
           {/* Headline */}
           <h1 className="mt-8 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-7xl">
-            Talk to your Mac.
+            A selfie. For your brain.
             <br />
             <span className="italic text-ink-muted">A mic is all you need.</span>
           </h1>
