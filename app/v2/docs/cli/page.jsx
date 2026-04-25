@@ -1,5 +1,7 @@
 import DocsLayout from '../../../../components/v2/docs/DocsLayout'
 import CodeBlock from '../../../../components/v2/docs/CodeBlock'
+import CopyCommand from '../../../../components/v2/CopyCommand'
+import PackageManagerTabs from '../../../../components/v2/PackageManagerTabs'
 import { Card, CategoryRule, FieldRow, PinTag } from '../../../../components/v2/docs/atoms'
 
 export const metadata = {
@@ -157,17 +159,46 @@ export default function Page() {
       <p>
         The CLI ships as an npm package and reads directly from Talkie&rsquo;s local SQLite
         database — no server, no auth flow, no telemetry. If Talkie isn&rsquo;t installed yet,
-        the one-liner below will install both.
+        the meta-package below installs both.
       </p>
 
-      <CodeBlock title="install" lang="sh">{`# CLI + app bundle
-curl -fsSL go.usetalkie.com/install | bash
+      <div className="not-prose my-5 space-y-5 rounded-sm border border-edge-dim bg-surface p-4 md:p-5">
+        {/* Primary: meta-package via the canonical PM toggle */}
+        <div>
+          <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+            · PRIMARY · META-PACKAGE
+          </p>
+          <div className="mt-3">
+            <PackageManagerTabs />
+          </div>
+          <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-faint">
+            Installs the app, the CLI, and launches Talkie.
+          </p>
+        </div>
 
-# Or just the CLI
-bun add -g @talkie/cli
+        {/* Secondary: curl one-liner */}
+        <div>
+          <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+            · OR · CURL ONE-LINER
+          </p>
+          <div className="mt-3">
+            <CopyCommand command="curl -fsSL go.usetalkie.com/install | bash" />
+          </div>
+        </div>
 
-# Or the meta-package
-bun add -g @talkie/app`}</CodeBlock>
+        {/* Tertiary: CLI only */}
+        <div>
+          <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+            · OR · CLI ONLY
+          </p>
+          <div className="mt-3">
+            <CopyCommand command="bun add -g @talkie/cli" variant="ghost" />
+          </div>
+          <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-faint">
+            Skip the app bundle — just the <code className="text-ink">talkie</code> binary.
+          </p>
+        </div>
+      </div>
 
       <p>
         Once installed the <code>talkie</code> binary is on <code>$PATH</code>. Every command
