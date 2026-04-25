@@ -1,12 +1,24 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
-import HeroWaveform from './HeroWaveform'
+import { useEffect, useRef } from 'react'
 
 /**
- * LiveTrace — render-only client island that paints either:
- *   - the static idle waveform (HeroWaveform) when nothing is playing
- *   - a live amplitude trace driven by an AnalyserNode when audio plays
+ * LiveTrace — render-only client island that paints the trace SVG
+ * across three visual states:
+ *   - idle (not playing, not frozen) → static decorative "captured
+ *                                       utterance" curve (burst +
+ *                                       settle envelopes × multi-
+ *                                       harmonic carrier)
+ *   - playing → live amplitude trace driven by an AnalyserNode
+ *   - frozen (transcribing) → last live shape held on screen
+ *
+ * The idle shape is the same deterministic curve the legacy
+ * HeroWaveform used: same envelope math, just sampled at this
+ * component's SAMPLE_COUNT so the polylines stay one-shape across
+ * states (avoiding the swap+remount the old design needed). Reads as
+ * a console "at rest with signal in memory," which invokes intent
+ * better than a flat line — the eye sees something captured and
+ * wants to interact.
  *
  * Receives a *ref* to an AnalyserNode (created and owned by the parent
  * SignalTable) plus a `playing` flag. Owns its own RAF loop, cleans up
@@ -49,26 +61,69 @@ export default function LiveTrace({
   const rafRef = useRef(0)
   const bufferRef = useRef(new Uint8Array(SAMPLE_COUNT))
 
-  // Toggle between idle SVG and live SVG based on `playing`. Keeping
-  // both rendered (one with display:none) means the swap is instant —
-  // no flash, no remount.
-  const [showLive, setShowLive] = useState(false)
+  // The SVG is always rendered now. We rewrite its polyline points
+  // to the right shape per state: flat line when idle, live analyser
+  // samples while playing, last-known shape when frozen. A single SVG
+  // (vs swapping with a separate idle component) means there's no
+  // remount + no flash on transitions.
+
+  // Build the deterministic "captured utterance" curve once. Two
+  // Gaussian envelopes (burst + tail) × a 3-harmonic carrier — same
+  // formula the legacy HeroWaveform used, sampled here at SAMPLE_COUNT
+  // so the polyline format matches the live RAF output exactly.
+  // Deterministic (no Math.random / Date.now) → server-safe and
+  // re-rendering is a no-op for these values.
+  const idleTracePoints = (() => {
+    const n = SAMPLE_COUNT
+    let pts = ''
+    for (let i = 0; i < n; i++) {
+      const nx = i / (n - 1)
+      const burstEnv = Math.exp(-Math.pow((nx - 0.32) * 4.2, 2)) * 0.95
+      const tailEnv = Math.exp(-Math.pow((nx - 0.74) * 5.5, 2)) * 0.55
+      const env = burstEnv + tailEnv
+      const carrier =
+        Math.sin(nx * 38 + 1.1) * 0.5 +
+        Math.sin(nx * 71 + 3.3) * 0.28 +
+        Math.sin(nx * 137 + 7.1) * 0.14
+      const y = VIEW_H / 2 - carrier * env * (VIEW_H * 0.4)
+      pts += `${(nx * VIEW_W).toFixed(2)},${y.toFixed(2)} `
+    }
+    return pts
+  })()
+
+  // Initial paint on mount: stamp the idle curve so the trace doesn't
+  // start empty (an unset polyline renders nothing).
+  useEffect(() => {
+    const polyTop = polyTopRef.current
+    const polyGlow = polyGlowRef.current
+    if (polyTop && polyGlow) {
+      polyTop.setAttribute('points', idleTracePoints)
+      polyGlow.setAttribute('points', idleTracePoints)
+    }
+    // idleTracePoints is derived from module-level constants — stable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!playing) {
       cancelAnimationFrame(rafRef.current)
-      // When `freeze` is true, the parent wants the live polyline held
-      // on screen at its last shape (e.g., during the post-audio
-      // TRANSCRIBING beat, where the trace acts as a still-frame
-      // backdrop for the engine indicator). Without freeze, fall back
-      // to the decorative idle HeroWaveform — the dimmed frozen
-      // polyline alone reads as flat, less beautiful than the
-      // authored idle shape.
-      if (!freeze) setShowLive(false)
+      // When `freeze` is true, the parent wants the live polyline
+      // held on screen at its last shape (the post-audio TRANSCRIBING
+      // beat — the trace acts as a still-frame backdrop for the
+      // engine indicator). Don't touch the polylines.
+      if (freeze) return
+      // Idle: repaint the "captured utterance" decorative curve. The
+      // dimmed stroke styling (driven by the `playing` prop on the
+      // polyline elements below) reads it as "console at rest with
+      // signal in memory" — invokes intent better than a flat line.
+      const polyTop = polyTopRef.current
+      const polyGlow = polyGlowRef.current
+      if (polyTop && polyGlow) {
+        polyTop.setAttribute('points', idleTracePoints)
+        polyGlow.setAttribute('points', idleTracePoints)
+      }
       return
     }
-
-    setShowLive(true)
 
     const draw = () => {
       const analyser = analyserRef.current
@@ -105,22 +160,18 @@ export default function LiveTrace({
     return () => {
       cancelAnimationFrame(rafRef.current)
     }
+    // idleTracePoints excluded — only used in the !playing branch
+    // and is derived from module-level constants, never changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, freeze, analyserRef])
 
   return (
     <div className="relative">
-      {/* Idle layer — only the hero variant renders the full HeroWaveform.
-          The compact (dock) variant skips it: dimensions don't scale and
-          the dock only ever appears once a clip is active anyway. */}
-      {!compact && (
-        <div style={{ display: showLive ? 'none' : 'block' }}>
-          <HeroWaveform channelLabel={channelLabel} scaleLabel={scaleLabel} />
-        </div>
-      )}
-
-      {/* Live layer — same shell as HeroWaveform but with mutable polylines.
-          Compact variant always shows this; non-compact toggles. */}
-      <div style={{ display: compact || showLive ? 'block' : 'none' }} aria-hidden>
+      {/* Single trace layer — always rendered. Polylines are rewritten
+          imperatively per state (flat at idle, live at playing, frozen
+          last-shape at transcribing). The decorative HeroWaveform idle
+          fallback was retired in favor of the flat-line at-rest look. */}
+      <div aria-hidden>
         <svg
           ref={svgRef}
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}

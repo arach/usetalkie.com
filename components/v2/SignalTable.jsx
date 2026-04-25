@@ -38,40 +38,52 @@ import CaptureIsland from './CaptureIsland'
 const AUTO_ADVANCE = true
 const WINDOW_SIZE = 3
 
-// Choreography timings — each beat of the capture flow gets just
-// enough breathing room to register as its own event:
+// Choreography timings — each beat of the capture flow gets enough
+// breathing room to register as its own event AND to invite the user
+// to take over the pacing manually if they want:
 //
 //   PRESS → audio + live caption → RELEASE → caption hides + trace
-//   freezes + TRANSCRIBING overlay → engine "finishes" → paste fires
-//   on the row (selection-band sweep + text settle + row halo + tick)
-//   → trace returns to idle waveform → breath → next clip
+//   freezes + island morphs to TRANSCRIBING (substantive — long
+//   enough to actually see) → island fades + row paste fires (text
+//   settles into the row, paste tick) → REVIEW (calm trailing
+//   confirmation: trace flat, no overlay, row sits highlighted with
+//   its new transcription) → IDLE (flat line, ready) → breath →
+//   next clip
 //
 // The caption is purely narrative scenery for the viewer; the engine
-// writes the transcription into the row via the paste beat. The
-// transcribe duration is dynamic per clip — short clips finish
-// quickly, long clips take a beat longer — clamped to 250–800ms so
-// it always reads as "fast enough to feel local."
-const BREATH_PRESS_TO_AUDIO_MS         = 240  // ⌘⇧A pressed → audio starts
-// Small breath between audio END and the TRANSCRIBING overlay
-// fading in — lets the eye register "audio just stopped" before the
-// engine cue appears, so the two read as discrete events.
-const BREATH_RELEASE_TO_TRANSCRIBING_MS = 150
+// writes the transcription into the row via the paste beat. There is
+// no "STORED" labeled beat — the trailing confirmation is the row
+// itself, no overlay. The transcribe duration is dynamic per clip —
+// short clips finish quickly, long clips take a beat longer — but
+// always long enough that the TRANSCRIBING indicator is visibly
+// present, not a flicker.
+const BREATH_PRESS_TO_AUDIO_MS         = 360  // ⌘⇧A pressed → audio starts
+// Breath between audio END and the engine indicator morphing in —
+// lets the eye register "audio just stopped" before the TRANSCRIBING
+// state appears, so the two read as discrete events.
+const BREATH_RELEASE_TO_TRANSCRIBING_MS = 280
 // Transcribe duration is computed dynamically from audio.duration:
-//   clamp(audio.duration * 100, 250, 800)
-// (audio.duration is seconds → *100 = "1/10 of duration" in ms.)
-// Falls back to ~420ms if audio.duration is unavailable.
-const TRANSCRIBE_MIN_MS                = 250
-const TRANSCRIBE_MAX_MS                = 800
-const TRANSCRIBE_FALLBACK_MS           = 420
-// STORED_DURATION_MS — how long the CaptureIsland holds "STORED" while
-// the row's paste-type animation plays. Calibrated to cover the full
-// row-paste-text color settle (~520ms) plus a small breath. The
-// island fades out when this expires and the trace returns to idle.
-const STORED_DURATION_MS               = 550
-// Short breath between STORED ending and the next capture starting.
-// Most of the post-paste pacing is now carried by the stored beat
-// itself, so this can be tight.
-const BREATH_PASTE_TO_NEXT_MS          = 240  // paste landed → next capture begins
+//   clamp(audio.duration * 200, 900, 1600)
+// (audio.duration is seconds → *200 = "1/5 of duration" in ms.)
+// Falls back to ~1100ms if audio.duration is unavailable. Floor of
+// 900ms is the key constraint — anything shorter and the engine cue
+// flickers in and out before the eye registers it. Cap at 1600ms so
+// long clips don't make the user wait longer than feels local.
+const TRANSCRIBE_MIN_MS                = 900
+const TRANSCRIBE_MAX_MS                = 1600
+const TRANSCRIBE_FALLBACK_MS           = 1100
+// REVIEW_DURATION_MS — trailing confirmation beat: the island is
+// gone, the trace is back to its flat idle line, and the row sits
+// highlighted with its transcription visible. Acts as the silent
+// "yep, that landed in your dictation buffer" confirmation. Long
+// enough that the user can manually click the next row before
+// auto-advance fires (any click cancels the queued advance via
+// clearChoreography). The only beat in the lifecycle where nothing
+// animates — by design. Paste tick + row typing animation fire on
+// ENTRY to this phase, then the rest of the duration is calm hold.
+const REVIEW_DURATION_MS               = 1800
+// Short breath between REVIEW ending and the next capture starting.
+const BREATH_PASTE_TO_NEXT_MS          = 240  // review settled → next capture begins
 
 export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
@@ -93,23 +105,41 @@ export default function SignalTable({ catalog }) {
   // surface the hotkey that bookends a recording. The `at` timestamp
   // is the React key on <KeypressCue/> so each fire replays the keyframe.
   const [keypressCue, setKeypressCue] = useState(null)
+  // hasEngaged: true after the first user-triggered or auto-triggered
+  // playback. Drives the START affordance — visible only before the
+  // first engagement, then permanently hidden in favor of the
+  // lifecycle's own indicators (CaptureIsland, row halo, etc.).
+  // Doesn't reset across pause/resume — once engaged, you're past the
+  // "what is this?" moment for the rest of the session.
+  const [hasEngaged, setHasEngaged] = useState(false)
   // captionPhase: the central state machine for the capture lifecycle.
-  // Drives CinematicCaption visibility, LiveTrace freeze, AND the
-  // CaptureIsland morph (recording → transcribing → stored → idle).
+  // Drives CinematicCaption visibility, LiveTrace freeze, the
+  // CaptureIsland morph, the hover affordance gate, AND the
+  // top-header eyebrow visibility.
   //
   //   recording    — audio playing. Caption visible; trace live;
-  //                  island shows "● REC · {eyebrow}".
+  //                  island shows "● REC · {eyebrow}". Top header
+  //                  shows "PLAYING · {eyebrow}".
   //   transcribing — audio ended. Caption hidden, trace frozen,
-  //                  island morphs to "TRANSCRIBING · · ·".
-  //   stored       — engine "finished." Trace still frozen (until
-  //                  this beat ends), row paste typing animation
-  //                  fires, paste tick fires, island morphs to
-  //                  "● STORED" with a brief halo flash.
-  //   idle         — between captures. Caption hidden, trace returns
-  //                  to the idle HeroWaveform, island fades out.
+  //                  island morphs to "TRANSCRIBING · · ·". Long
+  //                  enough (≥ 900ms) to actually inhabit the screen
+  //                  rather than flicker. Top header still shows
+  //                  the eyebrow.
+  //   review       — trailing confirmation. Island is GONE (no
+  //                  "STORED" overlay — that beat was retired in
+  //                  favor of letting the row carry the result by
+  //                  itself). Row paste typing fires on entry,
+  //                  paste tick plays on entry, then the rest of
+  //                  the beat is silent hold. Trace flat. Top
+  //                  header drops the eyebrow.
+  //   idle         — flat line, neutral header. Hover affordance
+  //                  ("PLAY · {eyebrow}") only appears in this
+  //                  phase, never during recording / transcribing /
+  //                  review (those are mid-pipeline, not "ready to
+  //                  start something new").
   //
-  // (The earlier 'finalize' / 'live' values are retired. finalizeKey
-  // is kept as a no-op stub for any straggler refs.)
+  // (The earlier 'finalize' / 'live' / 'stored' values are retired.
+  // finalizeKey is kept as a no-op stub for any straggler refs.)
   const [captionPhase, setCaptionPhase] = useState('idle')
   const [finalizeKey] = useState(0)
   // transcribeKey: per-slug timestamp captured when the engine
@@ -237,6 +267,10 @@ export default function SignalTable({ catalog }) {
       // Clear any pending paste/auto-advance from a previous clip.
       clearChoreography()
 
+      // Past the "before you've engaged" moment — START affordance
+      // hides for the rest of the session, the lifecycle takes over.
+      setHasEngaged(true)
+
       ensureAudioGraph()
 
       // If the user is re-clicking the active row's play button, just
@@ -257,12 +291,17 @@ export default function SignalTable({ catalog }) {
         setKeypressCue({ kind: 'start', at: Date.now() })
         playPressTick(ctxRef.current)
 
-        // Beat 2 — breath, then audio. Phase becomes 'recording' the
-        // moment audio actually begins so the CaptureIsland morphs
-        // from idle into "● REC · {eyebrow}" in sync with the audio.
+        // Beat 2 — breath, then audio. activeIndex updates BEFORE
+        // audio.play() so the alignment file (driven by activeCapture)
+        // is already pointed at the new clip when the play event
+        // fires and CinematicCaption mounts. Setting activeIndex
+        // after play() created a one-render glitch where the cinematic
+        // caption rendered the previous clip's words against the new
+        // clip's currentTime — that's the "interstitial caption"
+        // flash between sequences.
         await new Promise((resolve) => setTimeout(resolve, BREATH_PRESS_TO_AUDIO_MS))
-        await audio.play()
         setActiveIndex(idx)
+        await audio.play()
         setIsPlaying(true)
         setCaptionPhase('recording')
       } catch (err) {
@@ -333,50 +372,58 @@ export default function SignalTable({ catalog }) {
       const currentSlug = catalog[activeIndex]?.slug
 
       // Compute dynamic transcribe duration from the clip length.
-      // audio.duration is in seconds; *100 maps "1/10 of duration"
-      // into milliseconds. Clamp 250–800ms so it always feels
-      // local-fast. Defensive fallback if duration is unavailable
-      // (some browsers report Infinity / NaN until metadata loads,
-      // though by `ended` it's reliably populated).
+      // audio.duration is in seconds; *200 maps "1/5 of duration"
+      // into milliseconds. Clamp 900–1600ms so it always inhabits
+      // the screen long enough to register as its own beat (not a
+      // flicker), but never feels slower than local. Defensive
+      // fallback if duration is unavailable (some browsers report
+      // Infinity / NaN until metadata loads, though by `ended` it's
+      // reliably populated).
       const audioDur = audioRef.current?.duration
       const dynamicMs =
         Number.isFinite(audioDur) && audioDur > 0
-          ? Math.max(TRANSCRIBE_MIN_MS, Math.min(TRANSCRIBE_MAX_MS, audioDur * 100))
+          ? Math.max(TRANSCRIBE_MIN_MS, Math.min(TRANSCRIBE_MAX_MS, audioDur * 200))
           : TRANSCRIBE_FALLBACK_MS
 
       // Beat A — short breath, then enter the transcribing state:
       // caption disappears, trace freezes (LiveTrace `freeze` prop
-      // gates the swap-back to HeroWaveform), CaptureIsland morphs
-      // from "● REC" to "TRANSCRIBING · · ·".
+      // holds the last live polyline shape on screen), CaptureIsland
+      // morphs from "● REC" to "TRANSCRIBING · · ·".
       const tEnter = setTimeout(() => {
         setCaptionPhase('transcribing')
       }, BREATH_RELEASE_TO_TRANSCRIBING_MS)
       choreographyTimeoutsRef.current.push(tEnter)
 
-      // Beat B — the engine "finishes." Phase morphs to 'stored':
-      // CaptureIsland flips to "● STORED" with a brief halo flash,
-      // row paste typing fires (transcribeKey + activationKey
-      // bumps), paste tick plays. Trace is still frozen through this
-      // beat — we want the island's "STORED" pulse and the row's
-      // paste typing to read as a single coordinated event.
-      const tStored = setTimeout(() => {
-        setCaptionPhase('stored')
+      // Beat B — engine "finishes." Phase morphs DIRECTLY to
+      // 'review' (no separate stored beat). On entry to review:
+      //   - CaptureIsland fades out (no overlay during trailing
+      //     confirmation — the row carries the result)
+      //   - Trace unfreezes and returns to its flat idle line
+      //   - Row paste typing fires (transcribeKey + activationKey
+      //     bumps drive the keyed overlays on the row)
+      //   - Paste tick plays
+      //   - Top-header eyebrow drops to neutral
+      // The remainder of the review beat is silent hold so the user
+      // can read what landed and (optionally) take over pacing.
+      const tReview = setTimeout(() => {
+        setCaptionPhase('review')
         if (currentSlug) {
           setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
           setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
         }
         playPasteTick(ctxRef.current)
       }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs)
-      choreographyTimeoutsRef.current.push(tStored)
+      choreographyTimeoutsRef.current.push(tReview)
 
-      // Beat C — STORED held long enough for the row's paste-type
-      // animation to complete (~520ms total), then phase → idle:
-      // island fades out, trace unfreezes and returns to the idle
-      // HeroWaveform.
+      // Beat C — review held long enough for the user to read the
+      // result and (optionally) click the next row themselves. Then
+      // phase → idle, formal end of choreography.
       const tIdle = setTimeout(() => {
         setCaptionPhase('idle')
 
-        // Beat D — short breath, then advance to the next clip.
+        // Beat D — short breath, then auto-advance to the next clip.
+        // (Any user click during the review beat cancels this via
+        // clearChoreography(), so manual triggering wins.)
         if (AUTO_ADVANCE) {
           const tNext = setTimeout(() => {
             for (let step = 1; step <= catalog.length; step++) {
@@ -389,7 +436,7 @@ export default function SignalTable({ catalog }) {
           }, BREATH_PASTE_TO_NEXT_MS)
           choreographyTimeoutsRef.current.push(tNext)
         }
-      }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs + STORED_DURATION_MS)
+      }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs + REVIEW_DURATION_MS)
       choreographyTimeoutsRef.current.push(tIdle)
     }
     const onError = () => {
@@ -538,6 +585,12 @@ export default function SignalTable({ catalog }) {
   const totalRows = catalog.length
   const visibleStart = Math.max(0, Math.min(windowStart, catalog.length - WINDOW_SIZE))
 
+  // True only during the recording → transcribing arc. Review and
+  // idle both read as neutral pre-interaction state — the row halo
+  // carries the trailing confirmation visually instead of the header.
+  const inActiveCapture =
+    captionPhase === 'recording' || captionPhase === 'transcribing'
+
   return (
     <div className="space-y-10">
       {/* Trace + caption rail */}
@@ -549,7 +602,14 @@ export default function SignalTable({ catalog }) {
               className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
               style={{ boxShadow: '0 0 6px var(--trace)' }}
             />
-            {isPlaying ? 'PLAYING' : 'STANDBY'} · {activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}
+            {/* In active capture phases the header narrates the row
+                being processed; in review/idle it falls back to the
+                neutral pre-interaction label so the calm end state
+                doesn't keep shouting the row that just landed —
+                that's the table's job (the row halo). */}
+            {inActiveCapture
+              ? `${isPlaying ? 'PLAYING' : 'STANDBY'} · ${activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}`
+              : 'STANDBY · CH-01 / VOICE.IN'}
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -596,26 +656,32 @@ export default function SignalTable({ catalog }) {
           <LiveTrace
             analyserRef={analyserRef}
             playing={isPlaying}
-            freeze={captionPhase === 'transcribing' || captionPhase === 'stored'}
+            freeze={captionPhase === 'transcribing'}
             channelLabel="CH-01"
             scaleLabel="32.1kHz · MAC · iPHONE · WATCH"
             hideLabels
           />
 
-          {/* Hover affordance — fades in when not playing so the trace
-              area reads as "press here to play this." Hidden during
-              playback (cinematic captions take that role). */}
-          {!isPlaying && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          {/* START affordance — pre-engagement only. Lives at the
+              top-center of the trace area (same spot the
+              CaptureIsland will occupy once recording starts) so the
+              same region of screen narrates "what can I do / what is
+              happening" through the whole session. Single word + play
+              icon: minimal invitation to engage. Once the user (or
+              auto-advance) kicks off the first clip, hasEngaged flips
+              true and START never returns — the lifecycle indicators
+              take over. */}
+          {!hasEngaged && (
+            <div className="pointer-events-none absolute left-1/2 top-3 z-10 -translate-x-1/2 transition-opacity duration-300 opacity-100">
               <div
-                className="flex items-center gap-2 rounded-sm border border-edge bg-canvas-overlay/80 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.26em] text-trace backdrop-blur-md"
+                className="flex items-center gap-2 rounded-full border border-edge bg-canvas-overlay/90 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.26em] text-trace backdrop-blur-md"
                 style={{
                   textShadow: '0 0 4px var(--trace-glow)',
-                  boxShadow: '0 0 18px color-mix(in oklab, var(--trace-glow) 35%, transparent)',
+                  boxShadow: '0 0 14px color-mix(in oklab, var(--trace-glow) 32%, transparent), 0 1px 2px rgba(0,0,0,0.04)',
                 }}
               >
                 <Play className="h-3 w-3" />
-                <span>PLAY · {activeCapture?.eyebrow ?? 'CH-01'}</span>
+                <span>START</span>
               </div>
             </div>
           )}

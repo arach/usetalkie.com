@@ -8,26 +8,28 @@
  *
  *   recording    → "● REC · {eyebrow}"   pulsing phosphor dot, live
  *   transcribing → "TRANSCRIBING ···"    3-dot phosphor processor pulse
- *   stored       → "✓ STORED"            solid trace, brief halo flash
+ *   review       → hidden                trailing confirmation lives
+ *                                        on the row (paste typing +
+ *                                        halo); the island gets out
+ *                                        of the way deliberately
  *   idle         → hidden                fades out
  *
  * Mirrors the floating-bubble UI in the actual Talkie macOS app —
  * the same physical indicator follows the user from recording into
- * transcribing into "your dictation just landed in your editor."
- *
- * Continuity is the point. The transition from transcription to
- * "data stored in the row" is what was previously elusive — having a
- * single element that morphs through the states bridges them visually
- * (and the STORED beat is timed to overlap exactly with the row's
- * paste-type animation, so the eye reads them as a single event).
+ * transcribing, then steps aside so the row's paste-type animation
+ * is the visible "your dictation just landed" beat without an
+ * overlay shouting on top of it.
  *
  * Props:
- *   phase   — 'idle' | 'recording' | 'transcribing' | 'stored'
+ *   phase   — 'idle' | 'recording' | 'transcribing' | 'review'
  *   eyebrow — the active capture's eyebrow text (sub-label during
  *             recording)
  */
 export default function CaptureIsland({ phase = 'idle', eyebrow }) {
-  const visible = phase !== 'idle'
+  // Visible only during the recording → transcribing arc. Review and
+  // idle both hide the island so the row's paste typing + halo can
+  // carry the trailing confirmation by itself, no overlay competing.
+  const visible = phase === 'recording' || phase === 'transcribing'
 
   const config = {
     recording: {
@@ -43,13 +45,6 @@ export default function CaptureIsland({ phase = 'idle', eyebrow }) {
       dotClass: 'capture-island-dot-pulse',
       dotShadow: '0 0 6px var(--trace)',
       pillExtra: '',
-    },
-    stored: {
-      label: 'STORED',
-      sub: null,
-      dotClass: '',
-      dotShadow: '0 0 8px var(--trace), 0 0 2px var(--trace)',
-      pillExtra: 'capture-island-stored-flash',
     },
     idle: { label: '', sub: null, dotClass: '', dotShadow: '', pillExtra: '' },
   }[phase] || { label: '', sub: null, dotClass: '', dotShadow: '', pillExtra: '' }
