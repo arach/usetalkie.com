@@ -5,6 +5,7 @@ import { Play } from 'lucide-react'
 import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
 import CinematicCaption from './CinematicCaption'
+import KeypressCue from './KeypressCue'
 
 /**
  * SignalTable — the navigatable, audio-driven hero player.
@@ -50,6 +51,11 @@ export default function SignalTable({ catalog }) {
   // settle-from-trace animation replays on every fresh activation
   // (not just on the first one).
   const [activationKey, setActivationKey] = useState({})
+  // keypressCue: { kind: 'start' | 'end', at: number } — fires once at
+  // play start and once at clip end, mirroring how screencast tools
+  // surface the hotkey that bookends a recording. The `at` timestamp
+  // is the React key on <KeypressCue/> so each fire replays the keyframe.
+  const [keypressCue, setKeypressCue] = useState(null)
 
   // -------------------------------------------------------------------
   // Refs (Web Audio + DOM)
@@ -163,6 +169,7 @@ export default function SignalTable({ catalog }) {
         await audio.play()
         setActiveIndex(idx)
         setIsPlaying(true)
+        setKeypressCue({ kind: 'start', at: Date.now() })
       } catch (err) {
         // Autoplay rejection or 404 — surface for dev, soft-fail for user.
         // eslint-disable-next-line no-console
@@ -214,6 +221,7 @@ export default function SignalTable({ catalog }) {
     const onEnded = () => {
       setIsPlaying(false)
       setCaptionText('')
+      setKeypressCue({ kind: 'end', at: Date.now() })
       if (AUTO_ADVANCE) {
         // Advance to next non-missing row, wrapping.
         for (let step = 1; step <= catalog.length; step++) {
@@ -460,6 +468,18 @@ export default function SignalTable({ catalog }) {
                 className="text-base sm:text-lg"
               />
             </div>
+          )}
+
+          {/* Keypress cue — pops the hotkey HUD at the start and end
+              of each clip, like a screencast tool. Inside the trace's
+              corner-tick guides, bottom-right. Re-keyed per fire so
+              the keyframe replays. */}
+          {keypressCue && (
+            <KeypressCue
+              key={keypressCue.at}
+              keys={['⌘', '⇧', 'A']}
+              variant={keypressCue.kind}
+            />
           )}
         </div>
 

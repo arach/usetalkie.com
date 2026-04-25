@@ -46,6 +46,10 @@ export function NarratorProvider({ children }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [captionText, setCaptionText] = useState('')
   const [missingSet, setMissingSet] = useState(() => new Set())
+  // keypressCue: { kind: 'start' | 'end', at: number } — fires once at
+  // play start and once at clip end. <NarratorDock/> consumes via
+  // context and renders <KeypressCue/> with the timestamp as React key.
+  const [keypressCue, setKeypressCue] = useState(null)
 
   // -------------------------------------------------------------------
   // Refs (Web Audio + DOM)
@@ -120,6 +124,7 @@ export function NarratorProvider({ children }) {
           await ctxRef.current.resume()
         }
         await audio.play()
+        setKeypressCue({ kind: 'start', at: Date.now() })
       } catch (err) {
         // eslint-disable-next-line no-console
         console.warn(`[Narrator] play failed for "${next.slug}":`, err)
@@ -151,6 +156,7 @@ export function NarratorProvider({ children }) {
     const onEnded = () => {
       setIsPlaying(false)
       setCaptionText('')
+      setKeypressCue({ kind: 'end', at: Date.now() })
     }
     const onError = () => {
       const slug = clip?.slug
@@ -253,6 +259,7 @@ export function NarratorProvider({ children }) {
       clip,
       isPlaying,
       captionText,
+      keypressCue,
       missing: clip ? missingSet.has(clip.slug) : false,
       analyserRef,
       audioRef,
@@ -260,7 +267,7 @@ export function NarratorProvider({ children }) {
       pause,
       close,
     }),
-    [clip, isPlaying, captionText, missingSet, play, pause, close]
+    [clip, isPlaying, captionText, keypressCue, missingSet, play, pause, close]
   )
 
   return (

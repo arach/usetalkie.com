@@ -3,6 +3,7 @@
 import { Pause, Play, X } from 'lucide-react'
 import LiveTrace from '../LiveTrace'
 import CinematicCaption from '../CinematicCaption'
+import KeypressCue from '../KeypressCue'
 import { useNarrator } from './NarratorProvider'
 
 /**
@@ -20,7 +21,7 @@ import { useNarrator } from './NarratorProvider'
  *                    the right (or the missing-audio fallback message).
  */
 export default function NarratorDock() {
-  const { clip, isPlaying, captionText, missing, analyserRef, audioRef, play, pause, close } = useNarrator()
+  const { clip, isPlaying, captionText, keypressCue, missing, analyserRef, audioRef, play, pause, close } = useNarrator()
 
   if (!clip) return null
 
@@ -126,6 +127,15 @@ export default function NarratorDock() {
               className="text-sm"
             />
           </div>
+        )}
+
+        {/* Keypress cue at clip start + end */}
+        {keypressCue && !missing && (
+          <KeypressCue
+            key={keypressCue.at}
+            keys={['⌘', '⇧', 'A']}
+            variant={keypressCue.kind}
+          />
         )}
       </div>
 

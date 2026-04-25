@@ -101,6 +101,21 @@ html.dark {
 .osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
 .osc-hop        { animation: osc-hop   3s ease-out infinite; }
 
+/* keypress-cue → screencast-style hotkey HUD that fires at the start
+ * and end of a capture playback. Pops in, holds, fades out — total
+ * lifecycle 1.6s. The phosphor textShadow on the label and the soft
+ * trace-glow boxShadow on the container keep it on-brand with the
+ * oscilloscope aesthetic without needing a heavy backdrop. */
+@keyframes keypress-cue {
+  0%   { opacity: 0;    transform: translateY(4px)  scale(0.96); }
+  15%  { opacity: 1;    transform: translateY(0)    scale(1); }
+  78%  { opacity: 1;    transform: translateY(0)    scale(1); }
+  100% { opacity: 0;    transform: translateY(-2px) scale(0.98); }
+}
+.keypress-cue {
+  animation: keypress-cue 1.6s ease-out forwards;
+}
+
 /* row-settle → "we just captured this from the world (the trace) and
  * stored it here in the table." Applied to an absolute-positioned
  * overlay span on the active SignalTableRow. The `key={activationKey}`
@@ -175,8 +190,10 @@ html.dark {
   .osc-hop,
   .narrator-anchor-flash,
   .tagline-fade-in,
-  .row-settle {
+  .row-settle,
+  .keypress-cue {
     animation: none;
+    opacity: 1; /* keep keypress-cue visible without motion */
   }
 }
 
