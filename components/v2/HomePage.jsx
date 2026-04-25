@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import InstallCard from './InstallCard'
 import SignalTable from './SignalTable'
+import RotatingTagline from './RotatingTagline'
 import capturesCatalog from '../../content/v2/captures.json'
 
 /**
@@ -191,9 +192,11 @@ export default function HomePage() {
           <h1 className="mt-8 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-7xl">
             A selfie. For your brain.
             <br />
-            <span className="mt-2 inline-block text-3xl italic leading-tight text-ink-muted md:text-5xl">
-              A mic is all you need.
-            </span>
+            <RotatingTagline
+              className="mt-2 inline-block text-3xl italic leading-tight text-ink-muted md:text-5xl"
+              variants={['mic', 'thought', 'whisper', 'signal']}
+              intervalMs={6000}
+            />
           </h1>
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted md:text-[17px]">

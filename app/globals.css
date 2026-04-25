@@ -101,6 +101,18 @@ html.dark {
 .osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
 .osc-hop        { animation: osc-hop   3s ease-out infinite; }
 
+/* tagline-fade-in → soft phosphor settle for rotating tagline variants.
+ * Applied via React key remount in <RotatingTagline/>. The slight blur
+ * mimics phosphor letting go of the previous letterforms before the
+ * new ones materialize — on-brand with the oscilloscope canvas. */
+@keyframes tagline-fade-in {
+  from { opacity: 0.18; filter: blur(0.6px); }
+  to   { opacity: 1;    filter: blur(0); }
+}
+.tagline-fade-in {
+  animation: tagline-fade-in 0.5s ease-out;
+}
+
 /* narrator-anchor-flash → "this is what's being narrated"
  * One-shot phosphor halo applied imperatively by NarratorProvider when a
  * clip with an `anchor` selector starts playing. Self-contained: no inline
@@ -127,7 +139,8 @@ html.dark {
   .osc-chase,
   .osc-chase-slow,
   .osc-hop,
-  .narrator-anchor-flash {
+  .narrator-anchor-flash,
+  .tagline-fade-in {
     animation: none;
   }
 }
