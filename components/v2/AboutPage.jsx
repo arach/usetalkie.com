@@ -300,7 +300,7 @@ export default function AboutPage() {
                   · THIS IS TALKIE
                 </p>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  A selfie. For your brain.<br />
+                  A selfie. For your mind.<br />
                   <span className="text-base italic text-ink-muted md:text-lg">A signal is all you need.</span>
                 </h3>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">

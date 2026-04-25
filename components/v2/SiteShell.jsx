@@ -121,7 +121,7 @@ export default function SiteShell({ children }) {
                 <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim">TALKIE</span>
               </div>
               <p className="mt-4 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
-                A selfie. For your brain.
+                A selfie. For your mind.
                 <br />
                 <span className="text-base italic text-ink-muted">A mic is all you need.</span>
               </p>
