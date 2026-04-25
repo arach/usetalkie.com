@@ -13,15 +13,16 @@ import {
   Lock,
   ArrowRight,
 } from 'lucide-react'
-import HeroWaveform from './HeroWaveform'
 import InstallCard from './InstallCard'
+import SignalTable from './SignalTable'
+import capturesCatalog from '../../content/v2/captures.json'
 
 /**
  * HomePage — body of /v2. Pure server component.
  *
  * Sections (mirrors donor LandingPage but re-authored on the
  * oscilloscope canvas):
- *   1. HERO         · trace + headline + signal table + InstallCard
+ *   1. HERO         · headline + audio-driven SignalTable + InstallCard
  *   2. CAPTURE      · 6-card features grid (CAPTURE_MODES)
  *   3. FLOW         · three-step recovery flow
  *   4. OWNERSHIP    · three architectural pillars + pills
@@ -34,19 +35,16 @@ import InstallCard from './InstallCard'
  * express: linear-gradient graticules, phosphor glow shadows, and
  * `color-mix()` tints from the trace var.
  *
- * The single client island is <InstallCard/> — only because the
- * package-manager tabs and clipboard copy need state.
+ * Client islands:
+ *   - <SignalTable/> — audio-driven hero player. Hydrates over a static
+ *     SSR shell of the first 3 catalog rows + the idle waveform, so the
+ *     no-JS fallback is a clean static list.
+ *   - <InstallCard/>  — package-manager tabs + clipboard copy.
  */
 
 // -----------------------------------------------------------------------------
 // Content data
 // -----------------------------------------------------------------------------
-
-const HERO_USE_CASES = [
-  { stage: 'T+01', action: 'Voice a rough draft',                outcome: 'Cleanup rule runs automatically' },
-  { stage: 'T+02', action: 'Record the meeting',                 outcome: 'Summary in your format' },
-  { stage: 'T+03', action: "Describe the bug while it's fresh", outcome: 'Issue filed, not forgotten' },
-]
 
 const CAPTURE_MODES = [
   {
@@ -200,55 +198,15 @@ export default function HomePage() {
             Capture a thought, shape a draft, search what you said, or kick off a workflow. Talkie sits alongside the apps you already use &mdash; speak straight into them, and the cursor lands back where it started.
           </p>
 
-          {/* Waveform panel */}
-          <div className="relative mt-10 overflow-hidden rounded-md border border-edge bg-surface">
-            <div className="flex items-center justify-between border-b border-edge-dim px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-faint">
-              <div className="flex items-center gap-2">
-                <span
-                  aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
-                  style={TRACE_GLOW_DOT}
-                />
-                ACQUIRING · CH-01 / VOICE.IN
-              </div>
-              <span>32.1kHz · 24-BIT · MONO</span>
-            </div>
-            <div className="bg-canvas-alt p-2 sm:p-4">
-              <HeroWaveform />
-            </div>
+          {/* Audio-driven signal table — client island that SSRs its
+              initial state (first 3 catalog rows + idle waveform) so
+              the no-JS fallback is a clean static list. */}
+          <div className="mt-10">
+            <SignalTable catalog={capturesCatalog} />
           </div>
 
-          {/* Hero grid: signal table + install card */}
-          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1.15fr_1fr] lg:gap-8">
-            {/* Signal table */}
-            <div className="overflow-hidden rounded-md border border-edge-dim">
-              <div className="flex items-center justify-between border-b border-edge-faint bg-canvas-alt px-4 py-2 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-                <span>SIGNAL TABLE · IN → OUT</span>
-                <span>N = 3</span>
-              </div>
-              {HERO_USE_CASES.map((row, i) => (
-                <div
-                  key={row.stage}
-                  className={`grid grid-cols-[58px_1fr_1.1fr] items-center gap-3 px-4 py-3.5 ${
-                    i % 2 === 0 ? 'bg-canvas' : 'bg-canvas-alt'
-                  } ${i > 0 ? 'border-t border-edge-subtle' : ''}`}
-                >
-                  <span
-                    className="text-[10px] uppercase tracking-[0.22em] text-trace"
-                    style={TRACE_GLOW_SOFT}
-                  >
-                    {row.stage}
-                  </span>
-                  <span className="text-[13px] text-ink-muted">{row.action}</span>
-                  <span className="flex items-center gap-2 text-[13px] text-ink">
-                    <span className="text-trace" style={TRACE_GLOW_SOFT}>→</span>
-                    <span>{row.outcome}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Install card (client island) */}
+          {/* Install card (client island) */}
+          <div className="mt-10">
             <InstallCard />
           </div>
         </div>
