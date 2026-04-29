@@ -33,7 +33,6 @@ export default function DownloadAllPage() {
   const handleDownload = () => {
     setDownloading(true)
     trackDownload('latest', 'download_page')
-    window.location.href = GITHUB_DMG_URL
   }
 
   const handleCopy = async (text, id) => {
@@ -99,14 +98,14 @@ export default function DownloadAllPage() {
               </div>
 
               {/* DMG download — secondary */}
-              <button
+              <a
+                href={GITHUB_DMG_URL}
                 onClick={handleDownload}
-                disabled={downloading}
-                className="w-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 py-3 px-4 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] border border-zinc-200 dark:border-zinc-700"
+                className="w-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 py-3 px-4 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] border border-zinc-200 dark:border-zinc-700"
               >
                 <Download className="w-4 h-4" />
                 <span>{downloading ? 'Downloading...' : 'Download DMG'}</span>
-              </button>
+              </a>
 
               {/* curl — alternative */}
               <div>

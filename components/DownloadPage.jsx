@@ -13,7 +13,6 @@ export default function DownloadPage() {
 
   const handleDownload = () => {
     setDownloading(true)
-    window.location.href = GITHUB_DMG_URL
   }
 
   const handleCopy = async () => {
@@ -76,14 +75,14 @@ export default function DownloadPage() {
 
           {/* Download button */}
           <div className="p-8 space-y-6">
-            <button
+            <a
+              href={GITHUB_DMG_URL}
               onClick={handleDownload}
-              disabled={downloading}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-4 px-6 text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-4 px-6 text-sm font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download className="w-5 h-5" />
               <span>{downloading ? 'Downloading...' : 'Download Talkie for Mac'}</span>
-            </button>
+            </a>
 
             {/* Download URL */}
             <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
