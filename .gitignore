@@ -16,7 +16,7 @@ logs/
 .env*.local
 
 # Claude Code settings
-.claude/settings.local.json
+.claude/
 
 # Dev tools
 .devmux.json
