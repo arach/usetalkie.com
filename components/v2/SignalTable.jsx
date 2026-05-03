@@ -593,8 +593,48 @@ export default function SignalTable({ catalog }) {
 
   return (
     <div className="space-y-10">
-      {/* Trace + caption rail */}
-      <div className="relative overflow-hidden rounded-md border border-edge bg-surface">
+      {/* Trace + caption rail — chassis renders with the always-dark
+          panel identity in both themes (instruments-as-objects). The
+          inner audio logic / LiveTrace already strokes in --trace, but
+          --trace flips between charcoal and phosphor with theme. Inside
+          a panel chassis we want a consistent phosphor stroke, so the
+          inner trace area scopes --trace to --panel-trace via inline
+          custom properties — LiveTrace and its descendants pick that up
+          naturally. */}
+      <div
+        className="relative overflow-hidden rounded-md"
+        style={{
+          background: 'var(--panel-bg)',
+          color: 'var(--panel-ink)',
+          border: '1px solid var(--panel-edge)',
+          boxShadow: 'var(--panel-chassis-shadow)',
+          // Scope theme-flipping tokens to the panel's permanent identity.
+          // Anything inside this subtree that reads --trace/--ink/--edge
+          // through CSS vars (e.g. SVG strokes, LiveTrace) renders against
+          // the panel palette regardless of html.dark.
+          '--trace': 'var(--panel-trace)',
+          '--trace-glow': 'var(--panel-trace-glow)',
+          '--trace-dim': 'var(--panel-trace-dim)',
+          '--ink': 'var(--panel-ink)',
+          '--ink-dim': 'var(--panel-ink-dim)',
+          '--ink-muted': 'var(--panel-ink-muted)',
+          '--ink-faint': 'var(--panel-ink-faint)',
+          '--ink-subtle': 'var(--panel-ink-subtle)',
+          '--edge': 'var(--panel-edge)',
+          '--edge-dim': 'var(--panel-edge-dim)',
+          '--edge-faint': 'var(--panel-edge-faint)',
+          '--edge-subtle': 'rgba(77, 255, 158, 0.06)',
+          '--canvas-alt': 'var(--panel-bg-alt)',
+          '--canvas': 'var(--panel-bg)',
+          '--canvas-overlay': 'rgba(6, 9, 10, 0.85)',
+        }}
+      >
+        {/* Corner fasteners — sells "equipment" */}
+        <span aria-hidden className="pointer-events-none absolute left-1.5 top-1.5 font-mono text-[8px] leading-none select-none" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <span aria-hidden className="pointer-events-none absolute right-1.5 top-1.5 font-mono text-[8px] leading-none select-none" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <span aria-hidden className="pointer-events-none absolute left-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <span aria-hidden className="pointer-events-none absolute right-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+
         <div className="flex items-center justify-between border-b border-edge-dim px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-faint">
           <div className="flex items-center gap-2">
             <span
@@ -747,15 +787,44 @@ export default function SignalTable({ catalog }) {
         </div>
       </div>
 
-      {/* Table */}
+      {/* Table — second instrument; same chassis treatment as the
+          trace card so they read as a matched pair sitting on the
+          workbench. Token re-scoping mirrors the trace card. */}
       <div
         ref={tableRef}
         tabIndex={0}
         role="listbox"
         aria-label="Talkie capture catalog"
         aria-activedescendant={`signal-row-${activeIndex}`}
-        className="overflow-hidden rounded-md border border-edge-dim focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+        className="relative overflow-hidden rounded-md focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+        style={{
+          background: 'var(--panel-bg)',
+          color: 'var(--panel-ink)',
+          border: '1px solid var(--panel-edge)',
+          boxShadow: 'var(--panel-chassis-shadow)',
+          '--trace': 'var(--panel-trace)',
+          '--trace-glow': 'var(--panel-trace-glow)',
+          '--trace-dim': 'var(--panel-trace-dim)',
+          '--ink': 'var(--panel-ink)',
+          '--ink-dim': 'var(--panel-ink-dim)',
+          '--ink-muted': 'var(--panel-ink-muted)',
+          '--ink-faint': 'var(--panel-ink-faint)',
+          '--ink-subtle': 'var(--panel-ink-subtle)',
+          '--edge': 'var(--panel-edge)',
+          '--edge-dim': 'var(--panel-edge-dim)',
+          '--edge-faint': 'var(--panel-edge-faint)',
+          '--edge-subtle': 'rgba(77, 255, 158, 0.06)',
+          '--canvas-alt': 'var(--panel-bg-alt)',
+          '--canvas': 'var(--panel-bg)',
+          '--surface': 'var(--panel-bg)',
+        }}
       >
+        {/* Corner fasteners */}
+        <span aria-hidden className="pointer-events-none absolute left-1.5 top-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <span aria-hidden className="pointer-events-none absolute right-1.5 top-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <span aria-hidden className="pointer-events-none absolute left-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <span aria-hidden className="pointer-events-none absolute right-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+
         <div className="flex items-center justify-between border-b border-edge-faint bg-canvas-alt px-4 py-2 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
           <span>SIGNAL TABLE · DICTATION BUFFER</span>
           <span>
