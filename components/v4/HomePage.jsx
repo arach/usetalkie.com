@@ -13,7 +13,6 @@ import {
   Lock,
   ArrowRight,
 } from 'lucide-react'
-import InstallCard from '../v2/InstallCard'
 import SignalTable from '../v2/SignalTable'
 import capturesCatalog from '../../content/v2/captures.json'
 import PanoramicHero from './PanoramicHero'
@@ -195,15 +194,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* The synthesis: one chassis, three bays, signal-paths between */}
+          {/* The synthesis: one chassis, three bays, signal-paths between.
+              The chassis itself carries the install affordance per device
+              (Mac DMG / iPhone QR / Watch handoff in the left bay), so the
+              standalone InstallCard isn't repeated here — it's reserved
+              for sub-pages and page endings where the patch-bay shines. */}
           <PanoramicHero />
-
-          {/* Developer rail — slim panel directly under the hero. The
-              chassis already covers Mac/iPhone/Watch installs; this is
-              the CLI/patch-bay variant for developers. */}
-          <div className="mt-5">
-            <InstallCard />
-          </div>
         </div>
       </section>
 

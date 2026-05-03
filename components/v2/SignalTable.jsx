@@ -781,7 +781,7 @@ export default function SignalTable({ catalog }) {
                 boxShadow: isPlaying ? '0 0 4px var(--trace)' : 'none',
               }}
             />
-            TRIG · LIVE
+            TRIG
           </span>
           <span>{activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}</span>
         </div>

@@ -157,7 +157,7 @@ export default function PanoramicHero() {
     '--trace': 'var(--panel-trace)',
     '--trace-glow': 'var(--panel-trace-glow)',
     '--trace-dim': 'var(--panel-trace-dim)',
-    '--trace-faint': 'rgba(255, 184, 77, 0.08)',
+    '--trace-faint': 'var(--panel-trace-faint)',
     '--ink': 'var(--panel-ink)',
     '--ink-dim': 'var(--panel-ink-dim)',
     '--ink-muted': 'var(--panel-ink-muted)',
@@ -166,7 +166,7 @@ export default function PanoramicHero() {
     '--edge': 'var(--panel-edge)',
     '--edge-dim': 'var(--panel-edge-dim)',
     '--edge-faint': 'var(--panel-edge-faint)',
-    '--edge-subtle': 'rgba(255, 184, 77, 0.06)',
+    '--edge-subtle': 'var(--panel-edge-subtle)',
     '--canvas-alt': 'var(--panel-bg-alt)',
     '--canvas': 'var(--panel-bg)',
     '--surface': 'var(--panel-bg)',
@@ -454,7 +454,7 @@ function ScopeBay({ device, flipPhase }) {
     >
       <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
         <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-          · SCOPE · LIVE
+          · SCOPE
         </span>
         <span className="opacity-70">PROC · SAY → DO</span>
       </div>
@@ -662,7 +662,7 @@ function OutputBay({ device, flipPhase }) {
           className="pointer-events-none absolute inset-0"
           style={{
             backgroundImage:
-              'linear-gradient(180deg, transparent 0%, transparent 49%, rgba(255,184,77,0.04) 50%, transparent 51%)',
+              'linear-gradient(180deg, transparent 0%, transparent 49%, var(--panel-scanline) 50%, transparent 51%)',
             backgroundSize: '100% 4px',
           }}
         />
@@ -680,11 +680,8 @@ function OutputBay({ device, flipPhase }) {
         />
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-2 text-[10px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)]">
+      <div className="mt-3 text-[10px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)]">
         <span>{device.screenshot.caption}</span>
-        <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-          LIVE
-        </span>
       </div>
     </div>
   )
@@ -711,7 +708,7 @@ function SignalPathOverlay({ flipPhase }) {
     position: 'absolute',
     top: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '64px',
+    width: '52px',
     height: '14px',
     pointerEvents: 'none',
   }
@@ -742,7 +739,7 @@ function SignalWire({ leftPercent, delayMs }) {
         top: '50%',
         left: `${leftPercent}%`,
         transform: 'translate(-50%, -50%)',
-        width: '64px',
+        width: '52px',
         height: '14px',
         pointerEvents: 'none',
       }}
