@@ -1,15 +1,12 @@
 import HomePage from '../components/v4/HomePage'
-import SiteShell from '../components/v2/SiteShell'
-import { NarratorProvider, NarratorDock } from '../components/v2/narrator'
+import MainShell from '../components/MainShell'
 
 /**
  * Root homepage `/` — renders the v4 panoramic-instrument hero with the
- * shared site chrome (header, footer, narrator). The original donor
- * landing page is preserved at `components/LandingPage.jsx` for reference;
- * `/v4/` continues to serve the same composition for direct comparison.
- *
- * Open-graph + Twitter metadata mirrors `app/v4/page.jsx` so the canonical
- * URL `https://usetalkie.com/` and `/v4/` produce identical social cards.
+ * shared site chrome via MainShell. The donor `LandingPage.jsx` is
+ * preserved in components/ for reference but no longer mounted at any
+ * route. The previous `/v4/` route has been retired in favor of this
+ * canonical path.
  */
 export const metadata = {
   title: 'Talkie - A selfie. For your thoughts.',
@@ -44,13 +41,8 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <NarratorProvider>
-      <div className="min-h-screen bg-canvas text-ink antialiased">
-        <SiteShell>
-          <HomePage />
-        </SiteShell>
-      </div>
-      <NarratorDock />
-    </NarratorProvider>
+    <MainShell>
+      <HomePage />
+    </MainShell>
   )
 }

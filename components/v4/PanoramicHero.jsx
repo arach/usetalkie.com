@@ -47,7 +47,7 @@ const DEVICES = [
       eyebrow: 'INSTALL · MAC',
       title: 'Download .dmg',
       meta: 'universal · 12 mb',
-      href: '/v4/downloads',
+      href: '/downloads',
       Icon: Download,
     },
     screenshot: {
@@ -95,7 +95,7 @@ const DEVICES = [
       eyebrow: 'INSTALL · WATCH',
       title: 'Auto-installs with iPhone',
       meta: 'pair via Watch app →',
-      href: '/v4/mobile',
+      href: '/v2/mobile',
       Icon: Watch,
     },
     screenshot: {
