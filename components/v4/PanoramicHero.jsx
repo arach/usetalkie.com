@@ -157,7 +157,7 @@ export default function PanoramicHero() {
     '--trace': 'var(--panel-trace)',
     '--trace-glow': 'var(--panel-trace-glow)',
     '--trace-dim': 'var(--panel-trace-dim)',
-    '--trace-faint': 'rgba(77, 255, 158, 0.08)',
+    '--trace-faint': 'rgba(255, 184, 77, 0.08)',
     '--ink': 'var(--panel-ink)',
     '--ink-dim': 'var(--panel-ink-dim)',
     '--ink-muted': 'var(--panel-ink-muted)',
@@ -166,7 +166,7 @@ export default function PanoramicHero() {
     '--edge': 'var(--panel-edge)',
     '--edge-dim': 'var(--panel-edge-dim)',
     '--edge-faint': 'var(--panel-edge-faint)',
-    '--edge-subtle': 'rgba(77, 255, 158, 0.06)',
+    '--edge-subtle': 'rgba(255, 184, 77, 0.06)',
     '--canvas-alt': 'var(--panel-bg-alt)',
     '--canvas': 'var(--panel-bg)',
     '--surface': 'var(--panel-bg)',
@@ -662,7 +662,7 @@ function OutputBay({ device, flipPhase }) {
           className="pointer-events-none absolute inset-0"
           style={{
             backgroundImage:
-              'linear-gradient(180deg, transparent 0%, transparent 49%, rgba(77,255,158,0.04) 50%, transparent 51%)',
+              'linear-gradient(180deg, transparent 0%, transparent 49%, rgba(255,184,77,0.04) 50%, transparent 51%)',
             backgroundSize: '100% 4px',
           }}
         />

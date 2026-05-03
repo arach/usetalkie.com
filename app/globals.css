@@ -15,44 +15,45 @@ html { scroll-behavior: smooth; }
  * Consumed via semantic Tailwind tokens declared in tailwind.config.js.
  * ───────────────────────────────────────────────────────────────────── */
 :root {
-  --canvas:         #f0ede4;
-  --canvas-alt:     #ebe7dc;
-  --canvas-overlay: rgba(240, 237, 228, 0.85);
-  --surface:        #e6e2d6;
-  --trace:          #2a2e2d;
-  --trace-glow:     rgba(42, 46, 45, 0.18);
-  --trace-dim:      rgba(42, 46, 45, 0.28);
-  --trace-faint:    rgba(42, 46, 45, 0.08);
+  --canvas:         #e8dcc4;
+  --canvas-alt:     #e0d3b6;
+  --canvas-overlay: rgba(232, 220, 196, 0.85);
+  --surface:        #ddd0b3;
+  --trace:          #2a2520;
+  --trace-glow:     rgba(42, 37, 32, 0.18);
+  --trace-dim:      rgba(42, 37, 32, 0.28);
+  --trace-faint:    rgba(42, 37, 32, 0.08);
   --amber:          #c47d1c;
-  --ink:            #1a1d1c;
-  --ink-dim:        #2a2e2d;
-  --ink-muted:      #3a4441;
-  --ink-faint:      #5a6560;
-  --ink-subtle:     #6b7670;
-  --edge:           rgba(42, 46, 45, 0.30);
-  --edge-dim:       rgba(42, 46, 45, 0.20);
-  --edge-faint:     rgba(42, 46, 45, 0.14);
-  --edge-subtle:    rgba(42, 46, 45, 0.08);
+  --ink:            #1a1612;
+  --ink-dim:        #2a221e;
+  --ink-muted:      #463b32;
+  --ink-faint:      #6b5d4f;
+  --ink-subtle:     #7d6e5e;
+  --edge:           rgba(26, 22, 18, 0.30);
+  --edge-dim:       rgba(26, 22, 18, 0.20);
+  --edge-faint:     rgba(26, 22, 18, 0.14);
+  --edge-subtle:    rgba(26, 22, 18, 0.08);
 
   /* Panel tokens — instruments-as-objects.
-   * These do NOT flip with theme. Instruments stay dark + phosphor in
-   * BOTH modes; only the room around them changes. The instruments
-   * read as physical equipment sitting on the workbench (cream paper
-   * in light mode, dark studio in dark mode). */
-  --panel-bg:         #06090a;
-  --panel-bg-alt:     #0b0f10;
-  --panel-bg-deep:    #050708;
-  --panel-edge:       rgba(77, 255, 158, 0.22);
-  --panel-edge-dim:   rgba(77, 255, 158, 0.14);
-  --panel-edge-faint: rgba(77, 255, 158, 0.08);
-  --panel-ink:        #f1f5f2;
-  --panel-ink-dim:    #d7e3de;
-  --panel-ink-muted:  #a0b5ac;
-  --panel-ink-faint:  #7a8b85;
-  --panel-ink-subtle: #6b8a7f;
-  --panel-trace:      #4dff9e;
-  --panel-trace-glow: rgba(77, 255, 158, 0.50);
-  --panel-trace-dim:  rgba(77, 255, 158, 0.18);
+   * These do NOT flip with theme. Instruments stay warm-charcoal +
+   * amber-phosphor in BOTH modes; only the room around them changes.
+   * The instruments read as brass-plated equipment sitting on the
+   * workbench (warm beige paper in light mode, warm-charcoal studio
+   * in dark mode). */
+  --panel-bg:         #1c1814;
+  --panel-bg-alt:     #221d18;
+  --panel-bg-deep:    #14110d;
+  --panel-edge:       rgba(255, 184, 77, 0.22);
+  --panel-edge-dim:   rgba(255, 184, 77, 0.14);
+  --panel-edge-faint: rgba(255, 184, 77, 0.08);
+  --panel-ink:        #f0ead8;
+  --panel-ink-dim:    #d8d2c0;
+  --panel-ink-muted:  #b8b0a0;
+  --panel-ink-faint:  #80786a;
+  --panel-ink-subtle: #6e675b;
+  --panel-trace:      #ffb84d;
+  --panel-trace-glow: rgba(255, 184, 77, 0.50);
+  --panel-trace-dim:  rgba(255, 184, 77, 0.18);
   /* Multi-stop chassis shadow: top-edge highlight (catches light),
    * bottom-edge inset (shadow), then two outer drop shadows that
    * ground the chassis to the surface beneath it. */
@@ -64,39 +65,40 @@ html { scroll-behavior: smooth; }
 }
 
 html.dark {
-  /* Push canvas slightly darker than the panel chassis (#06090a) so
+  /* Push canvas distinctly darker than the panel chassis (#1c1814) so
    * instruments read as set pieces lit faintly from within rather
    * than blending into the void. The instruments themselves don't
-   * change — only the room around them. */
-  --canvas:         #03050a;
-  --canvas-alt:     #02040a;
-  --canvas-overlay: rgba(3, 5, 10, 0.82);
-  --surface:        #050708;
-  --trace:          #4dff9e;
-  --trace-glow:     rgba(77, 255, 158, 0.50);
-  --trace-dim:      rgba(77, 255, 158, 0.18);
-  --trace-faint:    rgba(77, 255, 158, 0.06);
-  --amber:          #ffb84d;
-  --ink:            #f1f5f2;
-  --ink-dim:        #d7e3de;
-  --ink-muted:      #a0b5ac;
-  --ink-faint:      #7a8b85;
-  --ink-subtle:     #6b8a7f;
-  --edge:           rgba(77, 255, 158, 0.22);
-  --edge-dim:       rgba(77, 255, 158, 0.14);
-  --edge-faint:     rgba(77, 255, 158, 0.10);
-  --edge-subtle:    rgba(77, 255, 158, 0.06);
+   * change — only the room around them. The gap from canvas → panel
+   * needs to be wide enough that the chassis edge actually reads. */
+  --canvas:         #0a0805;
+  --canvas-alt:     #060403;
+  --canvas-overlay: rgba(10, 8, 5, 0.85);
+  --surface:        #14100c;
+  --trace:          #ffb84d;
+  --trace-glow:     rgba(255, 184, 77, 0.50);
+  --trace-dim:      rgba(255, 184, 77, 0.18);
+  --trace-faint:    rgba(255, 184, 77, 0.06);
+  --amber:          #ffd47a;
+  --ink:            #f0ead8;
+  --ink-dim:        #d8d2c0;
+  --ink-muted:      #a8a08d;
+  --ink-faint:      #80786a;
+  --ink-subtle:     #6e675b;
+  --edge:           rgba(255, 184, 77, 0.22);
+  --edge-dim:       rgba(255, 184, 77, 0.14);
+  --edge-faint:     rgba(255, 184, 77, 0.10);
+  --edge-subtle:    rgba(255, 184, 77, 0.06);
 
   /* Soften the chassis bottom-edge shadow in dark mode: the canvas
    * around the chassis is near-black, so the heavy black drop shadow
    * from light mode would be invisible. We trade it for a subtle
-   * outer phosphor halo so the panel's outline reads against the
+   * outer amber halo so the panel's outline reads against the
    * dark room. */
   --panel-chassis-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     inset 0 -1px 0 rgba(0, 0, 0, 0.50),
     0 12px 28px -10px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(77, 255, 158, 0.04);
+    0 0 0 1px rgba(255, 184, 77, 0.04);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
