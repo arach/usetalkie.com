@@ -2,7 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal } from 'lucide-react'
+import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy } from 'lucide-react'
+
+const PACKAGE_MANAGERS = [
+  { id: 'bun',  label: 'BUN',  cmd: 'bun add -g @talkie/app' },
+  { id: 'npm',  label: 'NPM',  cmd: 'npm install -g @talkie/app' },
+  { id: 'pnpm', label: 'PNPM', cmd: 'pnpm add -g @talkie/app' },
+]
 
 /**
  * PanoramicHero — v4's synthesis composition.
@@ -361,6 +367,109 @@ function InputBay({ device, flipPhase, onJump, deviceIdx }) {
 
       {/* Sub-jack: device-aware install affordance. Morphs with rotation. */}
       <DeviceInstallJack install={Install} flipPhase={flipPhase} />
+
+      {/* CLI install rail — Mac only. The DMG is the headline path; this
+          is the CLI alternative for developers who prefer global npm bins.
+          Hidden during morph so the bay doesn't flicker between devices. */}
+      {Install.kind === 'dmg' && <MacCliRail flipPhase={flipPhase} />}
+    </div>
+  )
+}
+
+function MacCliRail({ flipPhase }) {
+  const [pmIndex, setPmIndex] = useState(0)
+  const [copied, setCopied] = useState(false)
+  const current = PACKAGE_MANAGERS[pmIndex]
+  const isMorphing = flipPhase !== 'idle'
+
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(current.cmd)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1600)
+    } catch {
+      /* clipboard unavailable — silent */
+    }
+  }
+
+  return (
+    <div
+      className="-mt-2 flex flex-col gap-2"
+      style={{
+        opacity: isMorphing ? 0.4 : 1,
+        transition: 'opacity 200ms ease-out',
+      }}
+    >
+      {/* Divider eyebrow — frames the rail as an alternative path */}
+      <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.26em] text-[var(--panel-ink-subtle)]">
+        <span className="h-px flex-1" style={{ background: 'var(--panel-edge-faint)' }} />
+        <span>· OR VIA CLI ·</span>
+        <span className="h-px flex-1" style={{ background: 'var(--panel-edge-faint)' }} />
+      </div>
+
+      {/* Centered tabs */}
+      <div
+        role="tablist"
+        aria-label="Package manager"
+        className="inline-flex self-center overflow-hidden rounded-sm text-[9px] uppercase tracking-[0.22em]"
+        style={{ border: '1px solid var(--panel-edge-dim)' }}
+      >
+        {PACKAGE_MANAGERS.map((pm, i) => {
+          const active = i === pmIndex
+          return (
+            <button
+              key={pm.id}
+              role="tab"
+              aria-selected={active}
+              onClick={() => setPmIndex(i)}
+              className="px-2.5 py-1 transition-colors"
+              style={{
+                color: active ? 'var(--panel-trace)' : 'var(--panel-ink-faint)',
+                borderLeft: i > 0 ? '1px solid var(--panel-edge-faint)' : undefined,
+                background: active
+                  ? 'color-mix(in oklab, var(--panel-trace) 10%, transparent)'
+                  : 'transparent',
+                textShadow: active ? '0 0 4px var(--panel-trace-glow)' : undefined,
+              }}
+            >
+              {pm.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Command + copy */}
+      <div className="flex items-stretch gap-2">
+        <code
+          className="flex-1 truncate rounded-sm px-2.5 py-1.5 text-[11px]"
+          style={{
+            background: 'var(--panel-bg-deep)',
+            border: '1px solid var(--panel-edge-faint)',
+            color: 'var(--panel-ink-dim)',
+          }}
+        >
+          <span
+            className="select-none mr-2"
+            style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}
+          >
+            $
+          </span>
+          {current.cmd}
+        </code>
+        <button
+          type="button"
+          onClick={onCopy}
+          aria-label={copied ? 'Copied' : 'Copy command'}
+          className="inline-flex items-center justify-center rounded-sm px-2 py-1.5 text-[9px] uppercase tracking-[0.22em] transition-colors"
+          style={{
+            border: '1px solid var(--panel-edge-dim)',
+            color: copied ? 'var(--panel-trace)' : 'var(--panel-ink-muted)',
+            textShadow: copied ? '0 0 4px var(--panel-trace-glow)' : undefined,
+          }}
+        >
+          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+        </button>
+      </div>
     </div>
   )
 }
