@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy } from 'lucide-react'
+import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot } from 'lucide-react'
 
 const PACKAGE_MANAGERS = [
   { id: 'bun',  label: 'BUN',  cmd: 'bun add -g @talkie/app' },
@@ -37,6 +37,10 @@ const DEVICES = [
     key: 'mac',
     label: 'Mac',
     Icon: Laptop,
+    taglines: [
+      'Voice a rough draft. Watch it tighten.',
+      'Speak any thought. Search it tomorrow.',
+    ],
     useCases: [
       { action: 'Voice a rough draft', outcome: 'Cleanup rule runs' },
       { action: 'Record the meeting', outcome: 'Summary, every time' },
@@ -61,6 +65,10 @@ const DEVICES = [
     key: 'iphone',
     label: 'iPhone',
     Icon: Smartphone,
+    taglines: [
+      'Ramble for five minutes. Get a research brief.',
+      'Snap and speak. Spec on your desk.',
+    ],
     useCases: [
       { action: 'Ramble five minutes', outcome: 'Researches, pings back' },
       { action: 'Snap + voice an idea', outcome: 'Spec at your desk' },
@@ -85,6 +93,10 @@ const DEVICES = [
     key: 'watch',
     label: 'Watch',
     Icon: Watch,
+    taglines: [
+      'Tap mid-thought. Searchable by tonight.',
+      'The 3am idea, still there at 9am.',
+    ],
     useCases: [
       { action: 'Tap mid-thought', outcome: 'Searchable by tonight' },
       { action: 'Capture without stopping', outcome: 'Waiting on your Mac' },
@@ -106,6 +118,34 @@ const DEVICES = [
       caption: 'Glance on the wrist',
     },
     waveformBias: 2,
+  },
+  {
+    key: 'agents',
+    label: 'agents',
+    Icon: Bot,
+    taglines: [
+      'Voice the trigger. The agent picks it up.',
+      'Wire a daily. Brief lands at 7am.',
+    ],
+    useCases: [
+      { action: 'Voice the trigger', outcome: 'Workflow runs while you sleep' },
+      { action: 'Wire a daily', outcome: 'Brief lands at 7am' },
+      { action: 'Sketch a recipe', outcome: 'Agent runs it for you' },
+    ],
+    install: {
+      kind: 'handoff',
+      eyebrow: 'CONFIGURE · AGENTS',
+      title: 'Wire up a workflow',
+      meta: 'see what they do →',
+      href: '/workflows',
+      Icon: Bot,
+    },
+    screenshot: {
+      src: '/screenshots/mac-home.png',
+      alt: 'Workflow output landing in Talkie inbox',
+      caption: 'Workflows in motion',
+    },
+    waveformBias: 3,
   },
 ]
 
@@ -179,6 +219,20 @@ export default function PanoramicHero() {
   }
 
   return (
+    <>
+      {/* CINEMATIC HERO — disconnected from the chassis. The Rolodex
+          flip card and "Talk to your {device}" sit central with
+          generous breathing room, donor-v1 in shape, warm-amber in
+          vocabulary. Per-device taglines underneath give a scannable
+          narrative. The chassis below is the deeper machine — this
+          section's job is to make the product instantly legible. */}
+      <CinematicHero
+        device={device}
+        flipPhase={flipPhase}
+        onCycle={() => jumpTo((prevIdx) => (prevIdx + 1) % DEVICES.length)}
+        onPause={setPaused}
+      />
+
     <div
       className="relative overflow-hidden rounded-md font-mono"
       style={panelStyle}
@@ -217,6 +271,127 @@ export default function PanoramicHero() {
       {/* Chassis status footer — channel meter, signal-path label */}
       <ChassisFooter device={device} />
     </div>
+    </>
+  )
+}
+
+// =============================================================================
+// Cinematic hero — centered title-card section that sits above the chassis.
+
+function CinematicHero({ device, flipPhase, onCycle, onPause }) {
+  const feature = device.useCases[0]
+  return (
+    <section className="relative pb-14 pt-2 text-center md:pb-20 md:pt-6">
+      {/* Brand placard — small amber eyebrow above the headline */}
+      <p
+        className="mb-10 inline-block font-mono text-[10px] uppercase tracking-[0.32em] md:mb-14"
+        style={{
+          color: 'var(--amber)',
+          textShadow: '0 0 6px color-mix(in oklab, var(--amber) 50%, transparent)',
+        }}
+      >
+        · TALKIE / SIGNAL · INSTRUMENT ·
+      </p>
+
+      {/* Donor-shape headline: "Talk to your" inline with the Rolodex
+          flip card, sized 1em relative to the H1 and baseline-nudged
+          so the card sits visually grounded under the typography.
+          Sizing matches donor v1 verbatim (clamp 2.8rem → 5.6rem,
+          tracking -0.025em, leading 0.92). */}
+      <h1
+        className="mx-auto flex max-w-5xl flex-wrap items-end justify-center gap-x-[0.28em] gap-y-2 font-display text-[clamp(2.8rem,9vw,5.6rem)] font-normal leading-[0.92] tracking-[-0.025em] text-ink"
+        aria-label={`Talk to your ${device.label}`}
+      >
+        <span className="shrink-0">Talk to your</span>
+        <RolodexFlipCard
+          label={device.label}
+          flipPhase={flipPhase}
+          onClick={onCycle}
+          onPause={onPause}
+        />
+      </h1>
+
+      {/* Single action → outcome row, donor-shape three-column grid:
+          right-aligned action / centered arrow / left-aligned outcome.
+          Fades with the flip choreography so it swaps with the device. */}
+      <div
+        className="mx-auto mt-10 grid w-full max-w-[40rem] grid-cols-[1fr_2.5rem_1fr] items-center gap-y-3 px-4 text-[15px] leading-relaxed md:mt-14"
+        style={{
+          opacity: flipPhase === 'idle' ? 1 : 0.4,
+          transition: 'opacity 220ms ease-out',
+        }}
+        aria-live="polite"
+      >
+        <span className="text-right text-ink-muted">{feature.action}</span>
+        <span aria-hidden className="select-none text-center text-ink-faint">
+          →
+        </span>
+        <span className="text-left text-ink">{feature.outcome}</span>
+      </div>
+    </section>
+  )
+}
+
+// Rolodex-style flip card — warm beige paper card sized at 1em so it
+// sits inline INSIDE the H1, baseline-nudged with mb-[-0.18em] like the
+// donor's keyboard-key. Sizing rules mirror donor v1 verbatim
+// (min-w-[3.8em], rounded-[0.18em], px-[0.28em], py-[0.18em]); only
+// the surface palette changed from chromey black to warm Rolodex paper.
+function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
+  return (
+    <span className="shrink-0" style={{ perspective: '600px' }}>
+      <button
+        type="button"
+        onClick={onClick}
+        onMouseEnter={() => onPause(true)}
+        onMouseLeave={() => onPause(false)}
+        onFocus={() => onPause(true)}
+        onBlur={() => onPause(false)}
+        aria-label={`Cycle device — currently ${label}. Click to advance.`}
+        className="relative mb-[-0.28em] inline-flex min-w-[3.8em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] py-[0.18em] font-display text-[1em] font-normal leading-[1] tracking-[-0.01em]"
+        style={{
+          color: '#2a1f12',
+          background:
+            'linear-gradient(180deg, #f7ecd0 0%, #efdfb8 50%, #e8d5a3 100%)',
+          borderColor: 'color-mix(in oklab, #2a1f12 22%, transparent)',
+          boxShadow: [
+            'inset 0 1px 0 rgba(255, 248, 230, 0.85)',
+            'inset 0 -2px 0 rgba(80, 60, 30, 0.18)',
+            '0 1px 0 rgba(255, 255, 255, 0.4)',
+            '0 18px 40px -18px rgba(60, 40, 20, 0.4)',
+          ].join(', '),
+          animation:
+            flipPhase === 'out'
+              ? 'flap-out 140ms ease-in forwards'
+              : flipPhase === 'in'
+              ? 'flap-in 200ms cubic-bezier(0.22,1.2,0.36,1) forwards'
+              : undefined,
+        }}
+      >
+        {/* Center horizontal flap line — the Rolodex hinge */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-1/2 h-px"
+          style={{
+            background:
+              'linear-gradient(90deg, transparent 0%, color-mix(in oklab, #2a1f12 22%, transparent) 12%, color-mix(in oklab, #2a1f12 22%, transparent) 88%, transparent 100%)',
+          }}
+        />
+        {/* Top sheen — paper highlight */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
+          style={{ background: 'linear-gradient(180deg, rgba(255,248,230,0.55), transparent)' }}
+        />
+        {/* Bottom drop shadow — card resting */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+          style={{ background: 'linear-gradient(180deg, transparent, rgba(80,60,30,0.18))' }}
+        />
+        <span className="relative inline-block w-full text-center">{label}</span>
+      </button>
+    </span>
   )
 }
 
@@ -263,9 +438,15 @@ function ChassisHeader({ device, deviceIdx, onJump }) {
         <span>CH-01 / VOICE.IN</span>
       </div>
 
-      {/* Device LED rotor — clicking a device LED jumps the whole
-          composition. This is the single shared input control. */}
-      <DeviceRotor deviceIdx={deviceIdx} onJump={onJump} />
+      {/* Device LED rotor — duplicate of the vertical DeviceRail
+          inside the input bay. Hidden by default in current
+          composition; show it back via the chassis-rotor toggle.
+          Visibility is CSS-controlled (display:none on the wrapper)
+          so SSR + pre-paint script can decide before first frame
+          and there's no FOUC. */}
+      <span className="chassis-rotor-host">
+        <DeviceRotor deviceIdx={deviceIdx} onJump={onJump} />
+      </span>
 
       <div className="flex items-center gap-2 opacity-80">
         <span>REV A.4</span>
@@ -317,61 +498,106 @@ function DeviceRotor({ deviceIdx, onJump }) {
 // LEFT BAY · keyboard-key transducer + install affordance
 // -----------------------------------------------------------------------------
 
+// Vertical device rail — left edge of the input bay. Same content as
+// the (now-toggleable) top rotor: 4 device LEDs that drive the chassis
+// rotation. Both pickers write to the same `deviceIdx` state in
+// PanoramicHero, so they stay in sync if both are visible. Default
+// composition uses only this rail; the top rotor is hidden unless
+// explicitly toggled back on.
+function DeviceRail({ deviceIdx, onJump }) {
+  return (
+    <div
+      role="tablist"
+      aria-label="Surface"
+      aria-orientation="vertical"
+      className="flex w-12 shrink-0 flex-col items-center justify-start gap-2 border-r py-5 sm:w-14 sm:py-6 lg:py-7"
+      style={{ borderColor: 'var(--panel-edge-faint)' }}
+    >
+      {DEVICES.map((d, i) => {
+        const isActive = i === deviceIdx
+        const Icon = d.Icon
+        return (
+          <button
+            key={d.key}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            aria-label={d.label}
+            onClick={() => onJump(i)}
+            className="group relative flex h-9 w-9 items-center justify-center rounded-sm transition-colors"
+            style={{
+              background: isActive
+                ? 'color-mix(in oklab, var(--panel-trace) 12%, transparent)'
+                : 'transparent',
+              border: isActive
+                ? '1px solid var(--panel-edge-dim)'
+                : '1px solid transparent',
+            }}
+          >
+            <Icon
+              className="h-4 w-4 transition-colors"
+              style={{
+                color: isActive ? 'var(--panel-trace)' : 'var(--panel-ink-faint)',
+                filter: isActive ? 'drop-shadow(0 0 4px var(--panel-trace-glow))' : undefined,
+              }}
+            />
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 function InputBay({ device, flipPhase, onJump, deviceIdx }) {
   const Icon = device.Icon
   const Install = device.install
-  const InstallIcon = Install.Icon
   return (
-    <div className="relative flex flex-col gap-5 bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
-      <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
-        <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-          · INPUT · TRANSDUCER
-        </span>
-        <span className="opacity-70">JACK 01</span>
-      </div>
+    <div className="relative flex bg-[var(--panel-bg)]">
+      <DeviceRail deviceIdx={deviceIdx} onJump={onJump} />
+      <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6 lg:p-7">
+        <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
+          <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+            · INPUT · {device.label.toUpperCase()}
+          </span>
+          <span className="opacity-70">JACK 01</span>
+        </div>
 
-      {/* Keyboard-key transducer. The kb-key sits like a physical keycap
-          tied into the chassis. Clicking advances the rotation. */}
-      <button
-        type="button"
-        onClick={() => onJump((deviceIdx + 1) % DEVICES.length)}
-        aria-label={`Switch surface — currently ${device.label}`}
-        className="group relative flex flex-col items-center"
-        style={{ perspective: '600px' }}
-      >
-        <span
-          className="relative inline-flex min-w-[5.5em] items-center justify-center overflow-hidden rounded-[0.18em] border border-[rgba(255,255,255,0.08)] bg-[#0f1417] px-[0.42em] py-[0.18em] font-display text-[clamp(2rem,4vw,2.8rem)] font-normal leading-[1] tracking-[-0.01em] text-[var(--panel-ink)]"
+        {/* Small device callsign — the Rolodex flipper lives in the
+            cinematic hero above, so the bay leads with the install
+            affordance. This is just a phosphor-toned line confirming
+            which device's install path is currently armed. */}
+        <div
+          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-[var(--panel-ink-muted)]"
           style={{
-            animation:
-              flipPhase === 'out'
-                ? 'flap-out 140ms ease-in forwards'
-                : flipPhase === 'in'
-                ? 'flap-in 220ms cubic-bezier(0.22,1.2,0.36,1) forwards'
-                : undefined,
-            boxShadow:
-              'inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -2px 0 rgba(0,0,0,0.5), 0 8px 16px -8px rgba(0,0,0,0.7)',
+            opacity: flipPhase === 'idle' ? 1 : 0.5,
+            transition: 'opacity 220ms ease-out',
           }}
         >
-          <span className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-white/10" />
-          <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)]" />
-          <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.4))]" />
-          <span className="relative inline-block w-full text-center">{device.label}</span>
-        </span>
+          <Icon
+            className="h-3.5 w-3.5"
+            style={{
+              color: 'var(--panel-trace)',
+              filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))',
+            }}
+          />
+          <span>Configured for {device.label}</span>
+        </div>
 
-        {/* Sub-caption under the key — names the gesture */}
-        <span className="mt-3 inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.26em] text-[var(--panel-ink-faint)]">
-          <Icon className="h-3 w-3 text-[var(--panel-trace)]" style={{ filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))' }} />
-          <span>Talk to your {device.label}</span>
-        </span>
-      </button>
+        {/* Sub-jack: device-aware install affordance. Morphs with rotation. */}
+        <DeviceInstallJack install={Install} flipPhase={flipPhase} />
 
-      {/* Sub-jack: device-aware install affordance. Morphs with rotation. */}
-      <DeviceInstallJack install={Install} flipPhase={flipPhase} />
-
-      {/* CLI install rail — Mac only. The DMG is the headline path; this
-          is the CLI alternative for developers who prefer global npm bins.
-          Hidden during morph so the bay doesn't flicker between devices. */}
-      {Install.kind === 'dmg' && <MacCliRail flipPhase={flipPhase} />}
+        {/* CLI install rail — Mac only. The DMG is the headline path; this
+            is the CLI alternative for developers who prefer global npm bins.
+            On non-Mac devices we keep the same vertical space (visibility
+            hidden) so the chassis row doesn't resize when the rotation
+            lands on a device that doesn't expose a CLI install. */}
+        <div
+          aria-hidden={Install.kind !== 'dmg'}
+          style={{ visibility: Install.kind === 'dmg' ? 'visible' : 'hidden' }}
+        >
+          <MacCliRail flipPhase={flipPhase} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -552,50 +778,85 @@ function DeviceInstallJack({ install, flipPhase }) {
 // -----------------------------------------------------------------------------
 
 function ScopeBay({ device, flipPhase }) {
+  // Regenerate-on-flip choreography. During flip-out, all sub-components
+  // fade together (so the bay reads as "channel changing"). During
+  // flip-in, they cascade with stagger delays so the bay re-scans on the
+  // new device — channel readout first, then waveform, then ribbon.
+  const isOut = flipPhase !== 'idle'
+  const inDelay = (ms) => (flipPhase === 'in' ? `${ms}ms` : '0ms')
+  const fadeStyle = (ms) => ({
+    opacity: isOut ? 0 : 1,
+    transform: isOut ? 'translateY(2px)' : 'translateY(0)',
+    transition: 'opacity 220ms ease-out, transform 220ms ease-out',
+    transitionDelay: inDelay(ms),
+  })
+
   return (
     <div
-      className="relative bg-[var(--panel-bg-alt)] p-5 sm:p-6"
+      className="relative flex h-full min-h-[460px] flex-col bg-[var(--panel-bg-alt)] p-5 sm:p-6"
       style={{
         backgroundImage:
           'linear-gradient(var(--panel-edge-faint) 1px, transparent 1px), linear-gradient(90deg, var(--panel-edge-faint) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}
     >
-      <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
+      {/* Header row — pinned to top */}
+      <div
+        className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]"
+        style={fadeStyle(0)}
+      >
         <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
           · SCOPE
         </span>
         <span className="opacity-70">PROC · SAY → DO</span>
       </div>
 
-      {/* Headline lives INSIDE the scope bay, on the dark trace canvas —
-          phosphor against the graticule. The kb-key on the left literally
-          "writes" into this display. */}
-      <h1 className="mt-3 font-display text-[clamp(1.9rem,3vw,2.6rem)] font-normal leading-[1.04] tracking-[-0.02em] text-[var(--panel-ink)]">
-        Talk to your{' '}
+      {/* Scope readout — small device callsign above the waveform.
+          The big "Talk to your {device}" H1 lives above the chassis
+          now; this is just the phosphor-toned channel label so the
+          signal still has a name. */}
+      <p
+        className="mt-3 inline-flex items-baseline gap-2 font-display text-[11px] uppercase tracking-[0.24em]"
+        style={{
+          color: 'var(--panel-ink-muted)',
+          ...fadeStyle(60),
+        }}
+      >
+        <span>CHANNEL</span>
         <span
-          className="italic"
+          className="not-italic"
           style={{
             color: 'var(--panel-trace)',
-            textShadow: '0 0 14px var(--panel-trace-glow), 0 0 4px var(--panel-trace-glow)',
-            opacity: flipPhase === 'idle' ? 1 : 0.5,
-            transition: 'opacity 220ms ease-out',
+            textShadow: '0 0 8px var(--panel-trace-glow)',
           }}
         >
-          {device.label}
+          {device.label.toUpperCase()}
         </span>
-        .
-      </h1>
+      </p>
 
-      {/* Animated trace — bias parameter shifts the carrier so each device
-          has a distinct fingerprint that swaps in on rotation. */}
-      <div className="mt-4 overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] bg-[var(--panel-bg-deep)]">
+      {/* Animated trace — vertically centered in the bay so the
+          waveform's carrier line lands on the same Y as the wire-port
+          that enters from the input bay (both at bay midpoint).
+          Pinned to --screen-* tokens (always-dark CRT bezel) so the
+          phosphor display retains its instrument identity even when
+          the surrounding chassis flips to a cream/notepad treatment.
+          Corner brackets pick up --screen-edge so they tint with
+          whatever phosphor the active treatment uses. */}
+      <div
+        className="relative my-auto overflow-hidden rounded-md border bg-[var(--screen-bg)]"
+        style={{
+          ...fadeStyle(140),
+          borderColor: 'var(--screen-edge-dim)',
+          boxShadow: 'var(--screen-recess-shadow)',
+        }}
+      >
         <ScopeWaveform bias={device.waveformBias} flipPhase={flipPhase} />
+        <ScreenCornerBrackets />
       </div>
 
-      {/* Use-case caption ribbon — what this kb-key produces on this
-          device, presented as the engine's "what I do" output. */}
-      <div className="mt-4">
+      {/* Use-case caption ribbon — pinned to the bottom of the bay so
+          the waveform sits between header and ribbon at vertical center. */}
+      <div style={fadeStyle(220)}>
         <UseCaseRibbon useCases={device.useCases} flipPhase={flipPhase} />
       </div>
     </div>
@@ -618,7 +879,7 @@ function ScopeWaveform({ bias, flipPhase }) {
         className="absolute inset-0 block"
       >
         {/* Center divider */}
-        <line x1={0} x2={1200} y1={110} y2={110} stroke="var(--panel-edge-faint)" strokeWidth={1} />
+        <line x1={0} x2={1200} y1={110} y2={110} stroke="var(--screen-edge-faint)" strokeWidth={1} />
 
         {/* Vertical ticks */}
         {Array.from({ length: 8 }, (_, i) => {
@@ -630,7 +891,7 @@ function ScopeWaveform({ bias, flipPhase }) {
               x2={x}
               y1={94}
               y2={126}
-              stroke="var(--panel-edge-faint)"
+              stroke="var(--screen-edge-faint)"
               strokeWidth={1}
             />
           )
@@ -640,7 +901,7 @@ function ScopeWaveform({ bias, flipPhase }) {
         <polyline
           points={curve}
           fill="none"
-          stroke="var(--panel-trace)"
+          stroke="var(--screen-trace)"
           strokeWidth={6}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -650,12 +911,12 @@ function ScopeWaveform({ bias, flipPhase }) {
         <polyline
           points={curve}
           fill="none"
-          stroke="var(--panel-trace)"
+          stroke="var(--screen-trace)"
           strokeWidth={1.6}
           strokeLinecap="round"
           strokeLinejoin="round"
           style={{
-            filter: 'drop-shadow(0 0 2px var(--panel-trace-glow))',
+            filter: 'drop-shadow(0 0 2px var(--screen-trace-glow))',
             opacity: flipPhase === 'idle' ? 1 : 0.4,
             transition: 'opacity 200ms ease-out',
           }}
@@ -668,12 +929,46 @@ function ScopeWaveform({ bias, flipPhase }) {
           x2={0}
           y1={20}
           y2={200}
-          stroke="var(--panel-trace)"
+          stroke="var(--screen-trace)"
           strokeWidth={1}
           opacity={0.55}
         />
       </svg>
     </div>
+  )
+}
+
+function ScreenCornerBrackets() {
+  // Four small L-bracket marks, one per CRT corner. Sits inside the
+  // overflow-hidden screen container and traces phosphor from
+  // --screen-edge so brackets always match the active trace color.
+  // Pure decoration — pointer-events disabled so they never intercept
+  // anything that lands on the screen later (hover regions, etc).
+  const common = 'pointer-events-none absolute h-3 w-3'
+  const stroke = 'var(--screen-edge)'
+  return (
+    <>
+      <span
+        aria-hidden
+        className={`${common} left-1.5 top-1.5`}
+        style={{ borderLeft: `1px solid ${stroke}`, borderTop: `1px solid ${stroke}` }}
+      />
+      <span
+        aria-hidden
+        className={`${common} right-1.5 top-1.5`}
+        style={{ borderRight: `1px solid ${stroke}`, borderTop: `1px solid ${stroke}` }}
+      />
+      <span
+        aria-hidden
+        className={`${common} bottom-1.5 left-1.5`}
+        style={{ borderLeft: `1px solid ${stroke}`, borderBottom: `1px solid ${stroke}` }}
+      />
+      <span
+        aria-hidden
+        className={`${common} bottom-1.5 right-1.5`}
+        style={{ borderRight: `1px solid ${stroke}`, borderBottom: `1px solid ${stroke}` }}
+      />
+    </>
   )
 }
 
@@ -718,13 +1013,13 @@ function UseCaseRibbon({ useCases, flipPhase }) {
       {useCases.map((u) => (
         <div
           key={u.action}
-          className="grid grid-cols-[1fr_1.4rem_1fr] items-baseline gap-x-2"
+          className="grid h-[1.6em] grid-cols-[1fr_1.4rem_1fr] items-baseline gap-x-2"
         >
-          <span className="text-right text-[var(--panel-ink-faint)]">{u.action}</span>
+          <span className="truncate text-right text-[var(--panel-ink-faint)]">{u.action}</span>
           <span aria-hidden className="text-center text-[var(--panel-trace)]" style={{ textShadow: '0 0 4px var(--panel-trace-glow)' }}>
             →
           </span>
-          <span className="text-left text-[var(--panel-ink)]">{u.outcome}</span>
+          <span className="truncate text-left text-[var(--panel-ink)]">{u.outcome}</span>
         </div>
       ))}
     </div>

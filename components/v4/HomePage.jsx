@@ -16,6 +16,8 @@ import {
 import SignalTable from '../v2/SignalTable'
 import capturesCatalog from '../../content/v2/captures.json'
 import PanoramicHero from './PanoramicHero'
+import OsciStyleToggle from './OsciStyleToggle'
+import ChassisRotorToggle from './ChassisRotorToggle'
 
 /**
  * v4 HomePage — synthesis composition.
@@ -168,38 +170,29 @@ const AMBER_TINT_SUBTLE = { background: 'color-mix(in oklab, var(--amber) 5%, tr
 export default function HomePage() {
   return (
     <>
+      <OsciStyleToggle />
+      <ChassisRotorToggle />
       {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16">
-          {/* Workbench placard — small label above the chassis. The
-              brand line is here, not as a giant headline; the headline
-              "Talk to your {device}." is engraved INTO the scope bay
-              of the chassis itself. */}
-          <div className="mb-5 flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
-            <div>
-              <p
-                className="text-[10px] uppercase tracking-[0.26em]"
-                style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
-              >
-                · TALKIE / SIGNAL · INSTRUMENT
-              </p>
-              <h2 className="mt-2 font-display text-[clamp(1.4rem,2.4vw,2rem)] font-normal leading-[1.05] tracking-[-0.01em] text-ink">
-                A selfie. <span className="italic text-ink-muted">For your thoughts.</span>
-              </h2>
-            </div>
-            <p className="max-w-md text-[13px] leading-relaxed text-ink-muted">
-              One instrument, three surfaces. Talk to whichever device is in your hand — the cursor lands back where it started.
-            </p>
-          </div>
-
-          {/* The synthesis: one chassis, three bays, signal-paths between.
-              The chassis itself carries the install affordance per device
-              (Mac DMG / iPhone QR / Watch handoff in the left bay), so the
-              standalone InstallCard isn't repeated here — it's reserved
-              for sub-pages and page endings where the patch-bay shines. */}
+          {/* Donor-shape hero leads with the product proposition (the H1
+              and placard live inside PanoramicHero now, since they're
+              tied to the rotating device state). The chassis below is
+              the deeper structure — instrument as evidence, not as
+              headline. */}
           <PanoramicHero />
+
+          {/* Brand callback — the original "selfie / thoughts" line
+              moves here as a small italic signoff, so it lands as a
+              memorable closer instead of competing with "Talk to your
+              {device}" for the lead. */}
+          <p className="mt-10 text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14">
+            <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
+            A selfie. For your thoughts.
+            <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
+          </p>
         </div>
       </section>
 
@@ -342,7 +335,7 @@ export default function HomePage() {
 
           <div className="mt-8">
             <Link
-              href="/v2/security"
+              href="/security"
               className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
               style={{
                 color: 'var(--amber)',
@@ -443,7 +436,7 @@ export default function HomePage() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/v2/downloads"
+                    href="/downloads"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
                     style={{
                       color: 'var(--amber)',
@@ -455,7 +448,7 @@ export default function HomePage() {
                     DOWNLOAD · MAC <span aria-hidden>→</span>
                   </Link>
                   <Link
-                    href="/v2/mobile"
+                    href="/mobile"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     iPHONE & WATCH <span aria-hidden>↗</span>
@@ -524,7 +517,7 @@ export default function HomePage() {
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/v2/downloads"
+                    href="/downloads"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
                     style={{
                       color: 'var(--amber)',
@@ -536,7 +529,7 @@ export default function HomePage() {
                     DOWNLOAD FOR MAC <ArrowRight className="h-3 w-3" />
                   </Link>
                   <Link
-                    href="/v2/security"
+                    href="/security"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     HOW PRIVACY WORKS <Lock className="h-3 w-3" />
@@ -546,7 +539,7 @@ export default function HomePage() {
             </div>
 
             <Link
-              href="/v2/philosophy"
+              href="/philosophy"
               className="group block rounded-md border border-edge bg-surface p-8 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-2.5">

@@ -70,6 +70,10 @@ export default function RootLayout({ children }) {
               const useDark = stored ? stored === 'dark' : prefersDark;
               const root = document.documentElement;
               if (useDark) root.classList.add('dark'); else root.classList.remove('dark');
+              const osci = localStorage.getItem('osci-style');
+              if (osci) root.setAttribute('data-osci-style', osci);
+              const rotor = localStorage.getItem('chassis-rotor');
+              if (rotor === 'on') root.setAttribute('data-chassis-rotor', 'on');
             } catch (e) {}
           `}
         </Script>

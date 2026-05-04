@@ -64,6 +64,28 @@ html { scroll-behavior: smooth; }
     inset 0 -1px 0 rgba(0, 0, 0, 0.40),
     0 12px 32px -12px rgba(0, 0, 0, 0.35),
     0 4px 12px -4px rgba(0, 0, 0, 0.20);
+
+  /* Screen tokens — always-dark CRT bezel for the scope bay's waveform
+   * inset. Never overridden by data-osci-style treatments; only flip
+   * for theme (amber light / green dark). Lets the chassis harmonize
+   * with the chosen paper while the screen retains its instrument
+   * identity. Use these for any element that should always read as an
+   * "active instrument display" — waveform, LED readout, status pill. */
+  --screen-bg:          #0a0907;
+  --screen-bg-deep:     #060504;
+  --screen-edge:        rgba(255, 184, 77, 0.22);
+  --screen-edge-dim:    rgba(255, 184, 77, 0.14);
+  --screen-edge-faint:  rgba(255, 184, 77, 0.08);
+  --screen-trace:       #ffb84d;
+  --screen-trace-glow:  rgba(255, 184, 77, 0.50);
+  --screen-trace-dim:   rgba(255, 184, 77, 0.18);
+  --screen-trace-faint: rgba(255, 184, 77, 0.08);
+  /* Inset shadow that sells "recessed glass" — soft dark vignette
+   * inside the rim so the screen reads as below the chassis surface
+   * rather than pasted on top. */
+  --screen-recess-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.30);
 }
 
 html.dark {
@@ -119,6 +141,169 @@ html.dark {
     inset 0 -1px 0 rgba(0, 0, 0, 0.50),
     0 12px 28px -10px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(77, 255, 158, 0.04);
+
+  /* Dark-mode screen — same dark glass, but trace flips to green phosphor
+   * to match the studio-scope theme. Screen-bg stays near-black (a CRT
+   * is always dark), only the trace + edge phosphor recolors. */
+  --screen-bg:          #03050a;
+  --screen-bg-deep:     #02040a;
+  --screen-edge:        rgba(77, 255, 158, 0.22);
+  --screen-edge-dim:    rgba(77, 255, 158, 0.14);
+  --screen-edge-faint:  rgba(77, 255, 158, 0.08);
+  --screen-trace:       #4dff9e;
+  --screen-trace-glow:  rgba(77, 255, 158, 0.50);
+  --screen-trace-dim:   rgba(77, 255, 158, 0.18);
+  --screen-trace-faint: rgba(77, 255, 158, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Osci-style variants — light-mode chassis identity options.
+ * Toggled by setting `data-osci-style` on <html>. All variants only
+ * override light mode (`:not(.dark)`); dark mode stays the green-phosphor
+ * scope.
+ *
+ *   (no attribute) = "Original" — warm-charcoal chassis + amber phosphor.
+ *   ember-cream    = cream paper chassis but with a deep ember trace —
+ *                  ember's *warmth* rendered at a value that's legible
+ *                  on cream (bright #ffb84d sinks to ~1.6:1 on cream so
+ *                  we drop to burnt-sienna #a04918 ~5.5:1). Reads like
+ *                  a vintage cream-bakelite scope at low power.
+ *   ember-notepad  = pale notepad paper + same deep ember trace.
+ *                  Same temperature as ember-cream but cooler paper, so
+ *                  you can isolate the paper-temperature preference.
+ *   cream-desk     = cream paper + deep espresso trace. Most ink-like.
+ *   field-notebook = pale paper + graphite trace. Highest contrast, no
+ *                  warmth, biggest identity shift from the original.
+ * ───────────────────────────────────────────────────────────────────── */
+/* Ember·Cream + Ember·Notepad — both keep a deep warm-ember chassis;
+ * what changes is the *canvas around* the scope. Cream pushes the page
+ * toward butterscotch; Notepad pushes it toward pale paper. The chassis
+ * itself doesn't move — A/B is paper temperature with scope held
+ * constant, mirroring the Cream-vs-Notepad pairing on the all-paper
+ * side of the toggle. */
+html[data-osci-style="ember-cream"]:not(.dark) {
+  /* Ember·Cream — cream-bakelite chassis (mirrors the Cream treatment)
+   * + a brighter, more "poppy" CRT trace inside. Canvas/page is
+   * intentionally untouched: this treatment only modifies what's
+   * inside the bay. The chassis matches Cream-Desk so flipping
+   * between Cream and Ember·Cream isolates the CRT pop, with the
+   * shell held constant. */
+  --panel-bg:           #d9c9a8;
+  --panel-bg-alt:       #cdbb95;
+  --panel-bg-deep:      #c4ae84;
+  --panel-edge:         rgba(122, 58, 10, 0.28);
+  --panel-edge-dim:     rgba(122, 58, 10, 0.18);
+  --panel-edge-faint:   rgba(122, 58, 10, 0.10);
+  --panel-edge-subtle:  rgba(122, 58, 10, 0.06);
+  --panel-ink:          #2a1a08;
+  --panel-ink-dim:      #3d2a14;
+  --panel-ink-muted:    #5c452a;
+  --panel-ink-faint:    #856b4d;
+  --panel-ink-subtle:   #a08767;
+  --panel-trace:        #7a3a0a;
+  --panel-trace-glow:   rgba(122, 58, 10, 0.32);
+  --panel-trace-dim:    rgba(122, 58, 10, 0.16);
+  --panel-trace-faint:  rgba(122, 58, 10, 0.08);
+  --panel-scanline:     rgba(122, 58, 10, 0.04);
+  --panel-chassis-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 -1px 0 rgba(122, 58, 10, 0.18),
+    0 12px 32px -12px rgba(80, 50, 20, 0.28),
+    0 4px 12px -4px rgba(80, 50, 20, 0.16);
+
+  /* CRT screen pop — brighter amber, stronger glow. The "very light
+   * wave" inside the dark bezel. Only Ember treatments override these;
+   * Cream/Notepad keep the default screen-trace for a more restrained
+   * scope. */
+  --screen-trace:       #ffd17a;
+  --screen-trace-glow:  rgba(255, 209, 122, 0.70);
+  --screen-trace-dim:   rgba(255, 209, 122, 0.24);
+  --screen-trace-faint: rgba(255, 209, 122, 0.10);
+  --screen-edge:        rgba(255, 209, 122, 0.26);
+  --screen-edge-dim:    rgba(255, 209, 122, 0.16);
+  --screen-edge-faint:  rgba(255, 209, 122, 0.09);
+}
+
+html[data-osci-style="ember-notepad"]:not(.dark) {
+  /* Canvas — paler notepad/lemon-paper. */
+  --canvas:         #f4eadc;
+  --canvas-alt:     #ebe0c8;
+  --canvas-overlay: rgba(244, 234, 220, 0.86);
+  --surface:        #e6d8b8;
+
+  /* Panel — same darker/warmer ember chassis as Ember·Cream. */
+  --panel-bg:           #150f0c;
+  --panel-bg-alt:       #1c150f;
+  --panel-bg-deep:      #0d0907;
+  --panel-edge:         rgba(255, 155, 61, 0.26);
+  --panel-edge-dim:     rgba(255, 155, 61, 0.16);
+  --panel-edge-faint:   rgba(255, 155, 61, 0.09);
+  --panel-edge-subtle:  rgba(255, 155, 61, 0.06);
+  --panel-ink:          #f5e8c8;
+  --panel-ink-dim:      #ddd0b0;
+  --panel-ink-muted:    #b8a888;
+  --panel-ink-faint:    #80735c;
+  --panel-ink-subtle:   #6e6350;
+  --panel-trace:        #ff9b3d;
+  --panel-trace-glow:   rgba(255, 155, 61, 0.55);
+  --panel-trace-dim:    rgba(255, 155, 61, 0.20);
+  --panel-trace-faint:  rgba(255, 155, 61, 0.09);
+  --panel-scanline:     rgba(255, 155, 61, 0.04);
+  --panel-chassis-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+    0 14px 36px -12px rgba(0, 0, 0, 0.40),
+    0 4px 12px -4px rgba(0, 0, 0, 0.22);
+}
+
+html[data-osci-style="cream-desk"]:not(.dark) {
+  --panel-bg:           #d9c9a8;
+  --panel-bg-alt:       #cdbb95;
+  --panel-bg-deep:      #c4ae84;
+  --panel-edge:         rgba(122, 58, 10, 0.28);
+  --panel-edge-dim:     rgba(122, 58, 10, 0.18);
+  --panel-edge-faint:   rgba(122, 58, 10, 0.10);
+  --panel-edge-subtle:  rgba(122, 58, 10, 0.06);
+  --panel-ink:          #2a1a08;
+  --panel-ink-dim:      #3d2a14;
+  --panel-ink-muted:    #5c452a;
+  --panel-ink-faint:    #856b4d;
+  --panel-ink-subtle:   #a08767;
+  --panel-trace:        #7a3a0a;
+  --panel-trace-glow:   rgba(122, 58, 10, 0.32);
+  --panel-trace-dim:    rgba(122, 58, 10, 0.16);
+  --panel-trace-faint:  rgba(122, 58, 10, 0.08);
+  --panel-scanline:     rgba(122, 58, 10, 0.04);
+  --panel-chassis-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 -1px 0 rgba(122, 58, 10, 0.18),
+    0 12px 32px -12px rgba(80, 50, 20, 0.28),
+    0 4px 12px -4px rgba(80, 50, 20, 0.16);
+}
+
+html[data-osci-style="field-notebook"]:not(.dark) {
+  --panel-bg:           #efe4cc;
+  --panel-bg-alt:       #e7d9b8;
+  --panel-bg-deep:      #ddcfa8;
+  --panel-edge:         rgba(26, 22, 18, 0.30);
+  --panel-edge-dim:     rgba(26, 22, 18, 0.18);
+  --panel-edge-faint:   rgba(26, 22, 18, 0.10);
+  --panel-edge-subtle:  rgba(26, 22, 18, 0.06);
+  --panel-ink:          #1a1612;
+  --panel-ink-dim:      #2a221c;
+  --panel-ink-muted:    #463a2e;
+  --panel-ink-faint:    #6b5d4a;
+  --panel-ink-subtle:   #857558;
+  --panel-trace:        #1a1612;
+  --panel-trace-glow:   rgba(26, 22, 18, 0.20);
+  --panel-trace-dim:    rgba(26, 22, 18, 0.12);
+  --panel-trace-faint:  rgba(26, 22, 18, 0.06);
+  --panel-scanline:     rgba(26, 22, 18, 0.03);
+  --panel-chassis-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.40),
+    inset 0 -1px 0 rgba(26, 22, 18, 0.14),
+    0 10px 28px -12px rgba(26, 22, 18, 0.22),
+    0 3px 10px -4px rgba(26, 22, 18, 0.12);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -455,6 +640,13 @@ html.dark {
     opacity: 0;
   }
 }
+
+/* Top-of-chassis device rotor — hidden by default in v4 composition
+ * since the vertical DeviceRail in the input bay is the primary
+ * picker. Toggle re-enables via data-chassis-rotor="on" on <html>.
+ * SSR-safe: the wrapper is always in the DOM, only display flips. */
+.chassis-rotor-host { display: none; }
+html[data-chassis-rotor="on"] .chassis-rotor-host { display: inline-flex; }
 
 /* Utilities */
 .btn-primary { @apply rounded-md bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:bg-primary-700; }
