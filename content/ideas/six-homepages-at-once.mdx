@@ -1,0 +1,185 @@
+---
+title: "Six homepages at once"
+description: "How we redesigned the Talkie homepage by spinning up parallel subagents in git worktrees, brainstorming six directions at the same time, and converging on a winner."
+date: "2026-05-03"
+tags: ["design", "process", "agents"]
+---
+
+## Before / after
+
+Skip ahead, then we'll go back and walk through how we got here. The toggle flips both panels at once so you can compare each lighting condition fairly.
+
+<VersionCompare preset="hero-before-after" />
+
+The new homepage is one chassis with three inset bays — Input, Scope, Output — visibly *wired together* with phosphor signal-path lines. Light mode is warm amber on beige (a vintage CRT terminal sitting on warm paper). Dark mode is green phosphor on near-black (a clinical oscilloscope in a dim studio). Same chassis, two rooms.
+
+The rest of this post is the trail of how we got from the donor to that. Including the four candidates that didn't make it.
+
+## The comment that started it
+
+About a week before any of the work in this post happened, the v2 redesign of usetalkie.com had been live at `/v2/`. I sat with it for a while and admitted something out loud:
+
+> The new style is super clean and smart but a bit on the flat matte side imo... does that make sense?
+
+It made sense to me. The oscilloscope theme — phosphor traces, signal grids, two-channel hierarchy — looked great in dark mode. In light mode it looked like a thoughtful printed manual. Smart. Inert.
+
+The first answer I got back was *"let's add motion."* I pushed back: it wasn't a motion problem.
+
+> yes, but I think it's a light/contrast/visual language thing... dark mode pops more now that I think of it.
+
+Same components, same layout, same type — but one mode had a chromatic event and the other didn't. That's where the redesign actually started.
+
+<VersionCompare preset="v2-diagnosis" />
+
+## The diagnosis: chromatic asymmetry
+
+Look at v2 in light mode. The trace color (the green oscilloscope line) and the ink color (body text) live in roughly the same hue family — both desaturated, both quiet. Nothing in the composition *steals attention*. There's no spike on the chroma channel.
+
+In dark mode, the same trace lights up like phosphor against a near-black canvas. The trace and the ink occupy completely different physical roles — one is a glowing emission, the other is dim chrome. That's a chromatic event.
+
+The tokens were symmetric. The *physics* needed to be asymmetric. Light mode needed its own equivalent of "phosphor against the void" — but warm, not green.
+
+I didn't know what that should look like yet. Neither did Claude. So we did what we'd done once before on this project: we let several subagents argue about it in parallel.
+
+## The pattern: subagents in worktrees
+
+Two weeks earlier, when v2 was first being designed, we'd run six parallel agents on six radically different homepages — Field Notebook, Broadcast Console, Type Specimen, Oscilloscope, Quiet Library, Live Transcript. Each one got its own git worktree, its own branch, its own dev server. They didn't know about each other. When all six were done I screenshotted them and we picked a winner.
+
+The Oscilloscope won that round. That's what shipped at `/v2/`.
+
+The trick that makes this work is `git worktree add`. Each agent gets a separate checkout of the repo on a separate branch in a separate directory. They install dependencies, run a dev server, screenshot themselves, commit, and never collide. When you're done, you delete the worktrees you don't want.
+
+I'd forgotten this was happening in the background until I noticed the absurd amount of git activity in the terminal and asked:
+
+> why are you using git so much? what is going on? lol
+
+The answer: six agents, six worktrees, six dev servers on six ports, all independent. It looks like git chaos because *it is* git chaos. But it's the kind that converges on a single answer instead of merging into mush.
+
+## Round 1: Path A vs Path B
+
+For the chromatic problem, we kicked off two parallel spikes.
+
+**Path A — amber-on-chrome.** The hypothesis: light mode just needs a warm chromatic accent that does the work green phosphor does in dark mode. Introduce amber/copper as the trace color. Keep the architecture the same. See if warmth alone fixes the flatness.
+
+**Path B — instruments-as-objects.** A more structural hypothesis: instead of "the page IS the oscilloscope," what if the oscilloscope is one of several *instruments* sitting on the page? A chassis with a dark face that stays dark in both themes. The page wraps it, the page can flip, the instrument keeps its identity.
+
+Both shipped to a screenshot reel within an hour.
+
+<VersionCompare preset="round-1-paths" />
+
+I looked at both and gave the only honest reaction:
+
+> I think both paths add something nice in the dark mode — amber livens up bottom, instruments as objects spice up the oscilloscope view.
+
+Both. Not one or the other. Path A solved chroma, Path B solved structure. They weren't mutually exclusive — they were two halves of the same answer.
+
+I also made a note that surprised me when I read it back:
+
+> I love the light mode contrasting attempts, maybe we have different high contrast colors to attempt that aren't replay of dark mode?
+
+That sentence is the seed of the whole thing. It's saying: stop trying to make light mode feel like dark mode in a different palette. Let the two modes be *different instruments in different rooms.*
+
+## The donation pivot
+
+While I was looking at Path A and Path B, my eye kept drifting back to the original homepage — the one before v2. The donor. It had a 3D keyboard-key headline that flipped between *Talk to your **Mac*** / *Talk to your **iPhone*** / *Talk to your **Watch***. Crisp. Concrete. The most product-utility-clear sentence on the whole site.
+
+v2 didn't have that. v2 had elegance. The donor had punch.
+
+> I'm starting to think that we wanna maybe blend this style with some of the components that we have from the original. I do think talk to your Mac and phone and watch are very powerful, you know, crisp explanation.
+
+This is the move I keep making and forgetting I make: when a redesign feels *correct* but doesn't *land*, look at what the previous version was getting right and figure out how to graft it back in. Don't throw the donor away. Donate from it.
+
+So I asked for v3, v4, and v5 — three different ways to fuse the donor (rotating device hero, install card, screenshot well) with the receiver (oscilloscope theme, signal table, phosphor traces). Three more parallel agents, three more worktrees.
+
+> Have agents figure out what they think this means.
+
+## Round 2: v3 / v4 / v5
+
+Three subagents went off and built three full homepages in parallel. About 40 minutes later I had three screenshots side by side.
+
+<VersionCompare preset="round-2-syntheses" />
+
+**v5 lost first.** It wasn't bad. It was just unfocused:
+
+> I think the V5 is a little bit less appealing, it's a little bit less opinionated, it's a little bit too much of too many things, and then also when we go into like some of these other views the content gets like very light so scratch the v5.
+
+That's the most-things-fewer-takes failure mode. When you blend three references and call each one halfway, you get something everyone can tolerate and nobody loves. Scratch the v5.
+
+**v3 vs v4** was harder. v3 had a clean, structured central component — the rotating device card sitting in the middle, screenshots flanking it, signal table below. It told the story crisply.
+
+v4 was a single panoramic chassis — Input bay on the left, Scope bay in the middle, Output bay on the right — with phosphor signal-path lines visibly *wired* between the three. When you clicked the device key on the headline, all three bays rotated in lock-step: the install jack swapped (DMG / QR / Watch handoff), the waveform shifted, the screenshot well swapped surface. It read as one orchestrated state change rather than three separate components doing the same thing.
+
+> Okay, so the V4 is emerging as my favorite, but the V3's kind of structured central component is also very strong... I really like it.
+
+I sat with both for ten minutes. The thing that pushed v4 over the edge was the wires. Three cards with the same payload still read as three cards. Three bays connected by visible signal-path wires read as *one instrument.* The wires forced a single read of the composition. You can't see input/scope/output as separate components when there are visible voltage chase lines pulling your eye left → right.
+
+v4 won. We never built it again differently.
+
+## The palette pivot
+
+Now back to the unfinished chromatic problem. v4-as-built used the original v2 palette: green phosphor in both modes, just brighter in dark and dimmer in light. That's still the symmetric mistake.
+
+> I wonder if there's a way for us to come up with like... if there's a way for us to kind of bring the color scheme closer to the amber beige you know kind of black gray you know kind of style. I think that could be an interesting kind of attempt now.
+
+Spike: an all-amber v4. Light mode and dark mode both rendered with amber-on-warm-paper. It looked beautiful in light mode and weird in dark mode — a nightclub trying to read like a desk lamp.
+
+I looked at it for about a minute and walked it back:
+
+> I love the warm amber for the light mode and then I think we can go back to the green phosphor for the dark mode. That would give us like nice diversity... we have a winner with the amber for light mode and phosphor for dark mode.
+
+This was the moment the asymmetric palette got named. Light = warm amber on beige. Dark = green phosphor on near-black. Each mode is its own coherent instrument identity, not a recolor of the other.
+
+<VersionCompare preset="palette-pivot" />
+
+Flip the toggle a few times on that one. It's the clearest demonstration of what "asymmetric palette" actually means in practice.
+
+## Polish at pixel scale
+
+Once the big shape was right, the rest was small calls.
+
+**Wires too long.** I noticed the right-side signal-path pulse was overshooting the screenshot well by a few pixels.
+
+> the ending of the little flowing kind of electron or electricity on the right side is going like just a couple of pixels too much to the right and so that if we could just like tighten it up a little bit.
+
+64px → 52px on the wire span, on both ends. Six pixels per side that nobody would consciously notice but everybody would feel.
+
+**Too many LIVEs.** v4 had `LIVE` indicators in four places: the SCOPE bay eyebrow, the OutputBay caption, the SignalTable footer, and the chassis footer. One canonical `LIVE` is a signal. Four `LIVE`s is wallpaper. Kept the chassis footer (`TRIG · LIVE`), removed the rest.
+
+**Patch bay → CLI rail (Mac only).** The original install component (we started calling it "the patch bay") was a separate card sitting below the panoramic chassis. Two opinions evolved: first, the standalone card was redundant — the chassis already shows install per device. Second, on Mac specifically, the DMG download is one path but `npm i -g talkie-cli` is another and developers want it surfaced. So:
+
+- Removed the standalone patch-bay from the hero entirely.
+- Inside the InputBay, when Mac is the active device, added a `· OR VIA CLI ·` divider with a BUN/NPM/PNPM switcher and a copy button.
+- Other devices (iPhone QR, Watch handoff) get their normal install affordance with no rail.
+
+The patch-bay component still exists. It's used on sub-pages and section closers. It just doesn't show up on the home anymore.
+
+## Promoting v4 to `/`
+
+Up until this point, v4 lived at `/v4/`. The original home was still `/`, the v2 oscilloscope was still `/v2/`, and v4 was a third sibling.
+
+> No, I think like what you need to do is figure out a way to like make this a main branch thing, meaning not a /V4 sub path, but you know, kinda like take over the the main path. That would be my preference.
+
+The actual route shuffle was small:
+
+- `app/page.jsx` now renders v4's `HomePage`.
+- `app/downloads/page.jsx` is promoted from `/v2/downloads` to a top-level `/downloads`.
+- `app/v4/` deleted entirely. `/v4/` is now a 404. Nobody had bookmarked it; it was a dev URL.
+- `/v2/*` is untouched. The subroute pages can migrate to root paths in follow-up PRs, one at a time.
+
+I also extracted a tiny `MainShell` wrapper — `NarratorProvider` + `SiteShell` + the canvas root div — so `/` and `/downloads` share chrome without duplicating boilerplate. `/v2/*` keeps its own layout.
+
+## What I learned about working this way
+
+A few things I want to remember the next time I'm tempted to "iterate" on a design.
+
+**Don't iterate. Spike.** Iterating on one design biases you toward the version you already have. Spiking three independent versions in parallel lets you see what was load-bearing and what was incidental. The ones that get cut teach you almost as much as the one that wins.
+
+**Subagents in worktrees is the unlock.** Each agent gets a separate worktree, separate branch, separate dev server, separate port. Zero coordination overhead. They don't merge until you pick one. Most of the cost is the dev-server fan-out, not the LLM calls. If your project has a fast dev server you can run six versions of your homepage simultaneously and pick.
+
+**The "donor" pattern beats the rewrite.** When v2 was elegant but flat, my instinct was either "fix v2" or "rewrite from scratch." Both are wrong. The right move was: keep v2's vocabulary, take what was working in the previous version (the rotating device key), and graft it. Donor + receiver. Most of the time, the page before this one was already getting *something* right that the redesign is failing to carry forward. Find that and bring it across.
+
+**Asymmetric is more honest than symmetric.** v2's mistake was treating dark mode and light mode as the same composition recolored. The fix was to give each mode its own physical metaphor: one is a warm desk lab, the other is a cool studio. Same chassis. Different rooms. Theme tokens flip in lock-step but they're not mirror images.
+
+**Pixels matter. Trust the noticer.** When something feels six pixels off, it usually is. The wire span, the LIVE label count, the patch-bay placement — none of these would have moved a metric. They moved how the page *feels under the eye*, which is what we're actually trying to design.
+
+The new homepage is live at `/`. It came out of about three intensive evenings of conversation, six parallel subagent spikes, twelve screenshots, and one sentence — *"a bit on the flat matte side imo"* — that turned out to mean a lot more than it sounded like.
