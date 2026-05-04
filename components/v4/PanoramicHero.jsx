@@ -348,18 +348,12 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
         onFocus={() => onPause(true)}
         onBlur={() => onPause(false)}
         aria-label={`Cycle device — currently ${label}. Click to advance.`}
-        className="relative mb-[-0.28em] inline-flex min-w-[3.8em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] py-[0.18em] font-display text-[1em] font-normal leading-[1] tracking-[-0.01em]"
+        className="relative mb-[-0.28em] inline-flex min-w-[3.8em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border pl-[0.28em] pr-[0.28em] pt-[0.26em] pb-[0.10em] font-display text-[1em] font-normal leading-[1] tracking-[-0.01em]"
         style={{
-          color: '#2a1f12',
-          background:
-            'linear-gradient(180deg, #f7ecd0 0%, #efdfb8 50%, #e8d5a3 100%)',
-          borderColor: 'color-mix(in oklab, #2a1f12 22%, transparent)',
-          boxShadow: [
-            'inset 0 1px 0 rgba(255, 248, 230, 0.85)',
-            'inset 0 -2px 0 rgba(80, 60, 30, 0.18)',
-            '0 1px 0 rgba(255, 255, 255, 0.4)',
-            '0 18px 40px -18px rgba(60, 40, 20, 0.4)',
-          ].join(', '),
+          color: 'var(--rolodex-ink)',
+          background: 'var(--rolodex-bg)',
+          borderColor: 'var(--rolodex-edge)',
+          boxShadow: 'var(--rolodex-shadow)',
           animation:
             flipPhase === 'out'
               ? 'flap-out 140ms ease-in forwards'
@@ -374,20 +368,20 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
           className="pointer-events-none absolute inset-x-0 top-1/2 h-px"
           style={{
             background:
-              'linear-gradient(90deg, transparent 0%, color-mix(in oklab, #2a1f12 22%, transparent) 12%, color-mix(in oklab, #2a1f12 22%, transparent) 88%, transparent 100%)',
+              'linear-gradient(90deg, transparent 0%, var(--rolodex-hinge) 12%, var(--rolodex-hinge) 88%, transparent 100%)',
           }}
         />
         {/* Top sheen — paper highlight */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
-          style={{ background: 'linear-gradient(180deg, rgba(255,248,230,0.55), transparent)' }}
+          style={{ background: 'linear-gradient(180deg, var(--rolodex-sheen), transparent)' }}
         />
         {/* Bottom drop shadow — card resting */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
-          style={{ background: 'linear-gradient(180deg, transparent, rgba(80,60,30,0.18))' }}
+          style={{ background: 'linear-gradient(180deg, transparent, var(--rolodex-rest))' }}
         />
         <span className="relative inline-block w-full text-center">{label}</span>
       </button>

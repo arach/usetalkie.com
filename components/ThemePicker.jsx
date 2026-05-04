@@ -4,31 +4,33 @@ import { useEffect, useState } from 'react'
 
 /**
  * Site-wide design-theme picker. Flips the html-level `data-theme`
- * attribute between unset (modern, default) and "classic" (donor look).
+ * attribute between unset (warm, default oscilloscope identity) and
+ * "modern" (donor / clean editorial look).
  *
  * The pre-paint script in app/layout.jsx applies the resolved theme
  * before first frame from a precedence chain:
- *   1. URL `?theme=modern|classic` (campaign-friendly; also sticks to
+ *   1. URL `?theme=warm|modern` (campaign-friendly; also sticks to
  *      localStorage so visit-onward navigation keeps the choice)
  *   2. localStorage 'design-theme'
- *   3. 'modern' (site default)
+ *   3. 'warm' (site default — oscilloscope chassis is the brand identity)
  *
  * The localStorage key is `design-theme` rather than `theme` because the
  * existing dark/light color-scheme toggle already owns `localStorage.theme`.
  * Two orthogonal axes — color scheme + design language — coexist without
  * name collision.
  *
- * Positioned bottom-left so it doesn't conflict with the Modern-only
- * floating toggles (osci-style, chassis-rotor) at bottom-right. Visible
- * on every page since this component is mounted in app/layout.jsx.
+ * Positioned bottom-left so it doesn't conflict with the floating osci
+ * toggles (chassis-rotor in both themes, osci-style in Warm only) at
+ * bottom-right. Visible on every page since this component is mounted
+ * in app/layout.jsx.
  */
 const OPTIONS = [
-  { key: 'modern',  label: 'Modern'  },
-  { key: 'classic', label: 'Classic' },
+  { key: 'warm',   label: 'Warm'   },
+  { key: 'modern', label: 'Modern' },
 ]
 
 export default function ThemePicker() {
-  const [theme, setTheme] = useState('modern')
+  const [theme, setTheme] = useState('warm')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -44,13 +46,13 @@ export default function ThemePicker() {
   const apply = (next) => {
     setTheme(next)
     const root = document.documentElement
-    if (next === 'classic') {
-      root.setAttribute('data-theme', 'classic')
+    if (next === 'modern') {
+      root.setAttribute('data-theme', 'modern')
     } else {
       root.removeAttribute('data-theme')
     }
     try {
-      if (next === 'modern') localStorage.removeItem('design-theme')
+      if (next === 'warm') localStorage.removeItem('design-theme')
       else localStorage.setItem('design-theme', next)
     } catch {}
   }

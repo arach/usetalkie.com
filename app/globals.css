@@ -86,6 +86,23 @@ html { scroll-behavior: smooth; }
   --screen-recess-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.55),
     inset 0 0 0 1px rgba(0, 0, 0, 0.30);
+
+  /* Rolodex flipcard tokens — warm paper aesthetic (default Warm theme).
+   * The card sits inline inside the H1, so its paint anchors the
+   * "warm desk lab" identity. Modern theme overrides these to a clean
+   * white card. */
+  --rolodex-bg:
+    linear-gradient(180deg, #f7ecd0 0%, #efdfb8 50%, #e8d5a3 100%);
+  --rolodex-ink:       #2a1f12;
+  --rolodex-edge:      color-mix(in oklab, #2a1f12 22%, transparent);
+  --rolodex-hinge:     color-mix(in oklab, #2a1f12 22%, transparent);
+  --rolodex-sheen:     rgba(255, 248, 230, 0.55);
+  --rolodex-rest:      rgba(80, 60, 30, 0.18);
+  --rolodex-shadow:
+    inset 0 1px 0 rgba(255, 248, 230, 0.85),
+    inset 0 -2px 0 rgba(80, 60, 30, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.4),
+    0 18px 40px -18px rgba(60, 40, 20, 0.4);
 }
 
 html.dark {
@@ -157,14 +174,14 @@ html.dark {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Classic theme bundle — the donor design language coexisting with the
- * default Modern (oscilloscope) language. Activated via data-theme on
+ * Modern theme bundle — the donor design language coexisting with the
+ * default Warm (oscilloscope) language. Activated via data-theme on
  * <html>. Same component tree, same sequence; only paint changes.
  *
  * Resolved by the pre-paint script in app/layout.jsx via a chain:
- *   1. URL ?theme=classic  (campaign-friendly, persists to localStorage)
+ *   1. URL ?theme=modern  (campaign-friendly, persists to localStorage)
  *   2. localStorage 'design-theme'
- *   3. 'modern' (default; no attribute set)
+ *   3. 'warm' (default; no attribute set)
  *
  * Mined from the donor /mac screenshot: emerald accent, near-white
  * canvas, soft pill nav, generous spacing, hard light→dark section
@@ -174,7 +191,7 @@ html.dark {
  * neutralize so Modern's instrument vocabulary disappears from the
  * paint without removing components from the tree.
  * ───────────────────────────────────────────────────────────────────── */
-html[data-theme="classic"]:not(.dark) {
+html[data-theme="modern"]:not(.dark) {
   --canvas:         #ffffff;
   --canvas-alt:     #fafafa;
   --canvas-overlay: rgba(255, 255, 255, 0.86);
@@ -235,16 +252,33 @@ html[data-theme="classic"]:not(.dark) {
   --screen-trace-faint: transparent;
   --screen-recess-shadow: none;
 
-  /* Body sans swaps to Inter under Classic for the softer feel. Display
+  /* Rolodex flipcard tokens — clean white card to match Modern's neutral
+   * palette. The Rolodex card sits inline inside the H1, so its paint
+   * needs to harmonize with the surrounding theme. Warm theme uses a
+   * beige-paper aesthetic (defined in :root); Modern flips to a clean
+   * card with subtle elevation that reads quiet against the white canvas. */
+  --rolodex-bg:        linear-gradient(180deg, #ffffff 0%, #fafafa 50%, #f4f4f4 100%);
+  --rolodex-ink:       #0a0a0a;
+  --rolodex-edge:      rgba(0, 0, 0, 0.14);
+  --rolodex-hinge:     rgba(0, 0, 0, 0.10);
+  --rolodex-sheen:     rgba(255, 255, 255, 0.7);
+  --rolodex-rest:      rgba(0, 0, 0, 0.06);
+  --rolodex-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05),
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 12px 28px -14px rgba(0, 0, 0, 0.18);
+
+  /* Body sans swaps to Inter under Modern for the softer feel. Display
    * stays Fraunces (italic accent in donor headlines is load-bearing).
    * Mono stays JetBrains Mono — eyebrows look right in either theme. */
   --font-sans: var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
                'Segoe UI', Roboto, sans-serif;
 }
 
-/* Dark mode under Classic — keep the cool studio palette but flip the
- * accent to emerald to match Classic-light's donor accent. */
-html.dark[data-theme="classic"] {
+/* Dark mode under Modern — keep the cool studio palette but flip the
+ * accent to emerald to match Modern-light's donor accent. */
+html.dark[data-theme="modern"] {
   --canvas:         #0a0a0a;
   --canvas-alt:     #050505;
   --canvas-overlay: rgba(10, 10, 10, 0.86);
@@ -279,26 +313,26 @@ html.dark[data-theme="classic"] {
   --screen-trace-glow:  rgba(52, 211, 153, 0.30);
 }
 
-/* Classic-only structural rules — these handle decoration that has no
+/* Modern-only structural rules — these handle decoration that has no
  * natural token off-switch (animated SVG wires, the v4-playhead-sweep
  * keyframe, etc.). Token-driven elements (graticule grid, phosphor
  * glow, scanlines, corner brackets) already neutralize via the
  * transparent values above; this block catches the rest. */
-html[data-theme="classic"] .v4-playhead-sweep,
-html[data-theme="classic"] .osc-sweep,
-html[data-theme="classic"] .osc-chase,
-html[data-theme="classic"] .osc-chase-slow,
-html[data-theme="classic"] .osc-hop {
+html[data-theme="modern"] .v4-playhead-sweep,
+html[data-theme="modern"] .osc-sweep,
+html[data-theme="modern"] .osc-chase,
+html[data-theme="modern"] .osc-chase-slow,
+html[data-theme="modern"] .osc-hop {
   animation: none;
 }
 
-/* The Modern-only floating toggles (osci-style chassis paper picker
- * and chassis-rotor visibility toggle) have no meaning under Classic
- * because Classic doesn't render the oscilloscope chassis vocabulary
- * the same way. Hide them under Classic; the global ThemePicker stays
- * visible at bottom-left for theme flipping. */
-html[data-theme="classic"] [aria-label="Oscilloscope chassis style"],
-html[data-theme="classic"] [aria-label="Top device rotor visibility"] {
+/* The osci-style picker (chassis paper variants) only does something
+ * visible under the Warm theme — Modern overrides the panel-* tokens
+ * so cycling chassis paper has no effect. Hide it under Modern. The
+ * chassis-rotor toggle stays visible in both themes (the rotor sits
+ * on the chassis bay regardless of paint). The global ThemePicker
+ * stays visible at bottom-left for theme flipping. */
+html[data-theme="modern"] [aria-label="Oscilloscope chassis style"] {
   display: none;
 }
 

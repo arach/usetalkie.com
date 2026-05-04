@@ -8,9 +8,9 @@ import ThemePicker from '../components/ThemePicker'
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
 const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' })
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', display: 'swap' })
-// Inter is the body sans for the Classic theme (donor look). Loaded under
+// Inter is the body sans for the Modern theme (donor look). Loaded under
 // --font-sans-classic; theme-scoped CSS rules in globals.css remap
-// --font-sans to point at it when html[data-theme="classic"] is active.
+// --font-sans to point at it when html[data-theme="modern"] is active.
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans-classic', display: 'swap' })
 
 export const metadata = {
@@ -82,11 +82,11 @@ export default function RootLayout({ children }) {
 
               /* Design-theme resolver chain — applies before first paint.
                  Precedence (highest wins): URL ?theme=... > localStorage
-                 'design-theme' > 'modern' (default). URL param sticks to
+                 'design-theme' > 'warm' (default). URL param sticks to
                  localStorage so a campaign link visit persists. */
               const url = new URLSearchParams(location.search);
               const urlTheme = url.get('theme');
-              const validThemes = ['modern', 'classic'];
+              const validThemes = ['warm', 'modern'];
               let theme = null;
               if (urlTheme && validThemes.includes(urlTheme)) {
                 theme = urlTheme;
@@ -95,7 +95,7 @@ export default function RootLayout({ children }) {
                 const savedTheme = localStorage.getItem('design-theme');
                 if (savedTheme && validThemes.includes(savedTheme)) theme = savedTheme;
               }
-              if (theme === 'classic') root.setAttribute('data-theme', 'classic');
+              if (theme === 'modern') root.setAttribute('data-theme', 'modern');
             } catch (e) {}
           `}
         </Script>
