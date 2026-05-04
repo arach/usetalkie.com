@@ -27,7 +27,7 @@ import {
  *   3. Recipes — 2x2 grid of voice-initiated agent flows
  *   4. Terminal exemplar — static "talk → gh issue create" sample
  *   5. Trigger primitives — what voice can kick off
- *   6. Install + tie-back to /v2/features
+ *   6. Install + tie-back to /features
  *
  * Pure server component. The donor's animated activeStep is replaced
  * with a CSS-only chase glow so the rhythm reads without a client hook.
@@ -390,7 +390,7 @@ export default function AgentsPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             <Link
-              href="/v2/features"
+              href="/features"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
             >
               <div className="flex items-center gap-2.5">
@@ -426,7 +426,7 @@ export default function AgentsPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',

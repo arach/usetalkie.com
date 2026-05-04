@@ -197,8 +197,8 @@ export default function PhilosophyPage() {
                 variant="pill"
                 clip={{
                   slug: 'philosophy-manifesto',
-                  audio: '/v2/captures/philosophy-manifesto.mp3',
-                  vtt: '/v2/captures/philosophy-manifesto.vtt',
+                  audio: '/captures/philosophy-manifesto.mp3',
+                  vtt: '/captures/philosophy-manifesto.vtt',
                   caption: 'VELOCITY · SOVEREIGNTY · FLOW',
                   anchor: '#philosophy-pull-quote',
                 }}
@@ -232,7 +232,7 @@ export default function PhilosophyPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
@@ -245,7 +245,7 @@ export default function PhilosophyPage() {
 
             {/* Surfaces tie-back */}
             <Link
-              href="/v2/mac"
+              href="/mac"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-2.5">

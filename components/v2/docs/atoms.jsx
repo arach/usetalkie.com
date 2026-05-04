@@ -1,5 +1,5 @@
 /**
- * Small server-only atoms shared by /v2/docs/* pages.
+ * Small server-only atoms shared by /docs/* pages.
  * Kept local to docs so they don't leak into the marketing pages.
  */
 

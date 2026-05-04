@@ -4,7 +4,7 @@ import Link from 'next/link'
  * Idea slug layout — v2 oscilloscope canvas.
  *
  * Server component. Wraps MDX `children` in a header + article + footer
- * tied to the SiteShell that already wraps every /v2/* route.
+ * tied to the SiteShell that already wraps every /* route.
  *
  * Prose strategy
  * --------------
@@ -69,7 +69,7 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
         <div className="relative mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
           {/* Crumb back to the index */}
           <Link
-            href="/v2/ideas"
+            href="/ideas"
             className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors hover:text-trace"
           >
             <span aria-hidden>←</span>
@@ -165,7 +165,7 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
         <div className="mx-auto max-w-3xl px-4 py-12 md:px-6 md:py-14">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <Link
-              href="/v2/ideas"
+              href="/ideas"
               className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-trace"
             >
               <span aria-hidden>←</span>

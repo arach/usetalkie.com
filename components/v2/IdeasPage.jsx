@@ -6,9 +6,9 @@ import Link from 'next/link'
  * Server component. All chrome is themed via semantic Tailwind tokens
  * (canvas, surface, ink, trace, edge…). The donor at components/IdeasPage.jsx
  * shipped its own header / nav / footer; here we render only the body
- * because /v2/* routes are wrapped by SiteShell in app/v2/layout.jsx.
+ * because /* routes are wrapped by SiteShell in app/layout.jsx.
  *
- * Internal links target /v2/ideas/[slug] so the user stays inside the v2
+ * Internal links target /ideas/[slug] so the user stays inside the v2
  * surface while we evaluate the new shell.
  */
 
@@ -111,7 +111,7 @@ function IdeaRow({ idea }) {
 
   return (
     <Link
-      href={`/v2/ideas/${idea.slug}`}
+      href={`/ideas/${idea.slug}`}
       className="group relative block overflow-hidden rounded-md border border-edge-dim bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-edge"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />

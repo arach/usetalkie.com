@@ -7,7 +7,7 @@ import { TAGLINE_VARIANTS } from '../../content/v2/tagline'
  * RotatingTagline — fades through fills of "A ___ is all you need.",
  * the supporting half of Talkie's brand pair.
  *
- * Variants live in `content/v2/tagline.js` — that file is the single
+ * Variants live in `content/tagline.js` — that file is the single
  * source of truth for brand-voice strings. Don't hardcode fills here
  * or in callers; import them.
  *

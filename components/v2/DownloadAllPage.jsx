@@ -14,7 +14,7 @@ import QRExpand from './QRExpand'
 import TrackedAnchor from './TrackedAnchor'
 
 /**
- * v2 DownloadAllPage — body of /v2/downloads. All-platforms, all-channels view.
+ * v2 DownloadAllPage — body of /downloads. All-platforms, all-channels view.
  *
  * Composition:
  *   1. Channel hero — eyebrow + headline + supporting copy
@@ -22,7 +22,7 @@ import TrackedAnchor from './TrackedAnchor'
  *      · CH-A · MAC      — package-manager tabs + DMG fallback + curl
  *      · CH-B · IPHONE   — App Store CTA + QR code
  *   3. Trust strip — system requirements / signing / data posture
- *   4. Cross-link to canonical /v2/download for the simple install path
+ *   4. Cross-link to canonical /download for the simple install path
  *
  * Pure server component. Three small client islands are embedded:
  *   - <PackageManagerTabs />  tab switcher + clipboard
@@ -275,7 +275,7 @@ export default function DownloadAllPage() {
 
           {/* Cross-link to canonical */}
           <Link
-            href="/v2/downloads"
+            href="/downloads"
             className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-trace"
           >
             <div>

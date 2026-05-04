@@ -13,7 +13,7 @@ import CaptureIsland from './CaptureIsland'
  * SignalTable — the navigatable, audio-driven hero player.
  *
  * Catalog comes in as a prop (server-imported from
- * `content/v2/captures.json` and rendered as the static SSR shell in
+ * `content/captures.json` and rendered as the static SSR shell in
  * HomePage). On hydration this island takes over: 3-row windowed view,
  * keyboard + scroll-wheel nav, click-to-jump, lazy AudioContext, live
  * amplitude trace via AnalyserNode, captions via the cuechange event,

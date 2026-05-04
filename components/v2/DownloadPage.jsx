@@ -9,14 +9,14 @@ import {
 import CopyCommand from './CopyCommand'
 
 /**
- * v2 DownloadPage — body of /v2/download (and /v2/dl, which renders the
+ * v2 DownloadPage — body of /download (and /dl, which renders the
  * same component with no-index metadata).
  *
  * Composition:
  *   1. Channel hero — eyebrow, headline, supporting copy
  *   2. Install card — primary DMG anchor + curl one-liner + direct URL
  *   3. Trust strip — system requirements, signing, local-first
- *   4. Cross-link — "all platforms / iPhone" pointer to /v2/downloads
+ *   4. Cross-link — "all platforms / iPhone" pointer to /downloads
  *
  * Pure server component. The only interactive bits are <CopyCommand /> islands,
  * which own clipboard state in isolation.
@@ -190,7 +190,7 @@ export default function DownloadPage() {
 
           {/* Cross-link */}
           <Link
-            href="/v2/downloads"
+            href="/downloads"
             className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-trace"
           >
             <div>

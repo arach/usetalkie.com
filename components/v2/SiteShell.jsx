@@ -3,38 +3,37 @@ import ThemeToggle from './ThemeToggle'
 import { supportingLine, ANCHOR_VARIANT } from '../../content/v2/tagline'
 
 const PRIMARY_NAV = [
-  { label: 'Surfaces',   href: '/v2/surfaces' },
-  { label: 'Workflows',  href: '/v2/workflows' },
-  { label: 'Philosophy', href: '/v2/philosophy' },
-  { label: 'Ideas',      href: '/v2/ideas' },
-  { label: 'Docs',       href: '/v2/docs' },
+  { label: 'Workflows',  href: '/workflows' },
+  { label: 'Philosophy', href: '/philosophy' },
+  { label: 'Ideas',      href: '/ideas' },
+  { label: 'Docs',       href: '/docs' },
 ]
 
 const FOOTER_SECTIONS = [
   {
     label: 'Product',
     links: [
-      { label: 'Mac',       href: '/v2/mac' },
-      { label: 'iPhone',    href: '/v2/mobile' },
-      { label: 'Watch',     href: '/v2/mobile' },
-      { label: 'Workflows', href: '/v2/workflows' },
+      { label: 'Mac',       href: '/mac' },
+      { label: 'iPhone',    href: '/mobile' },
+      { label: 'Watch',     href: '/mobile' },
+      { label: 'Workflows', href: '/workflows' },
     ],
   },
   {
     label: 'Substance',
     links: [
-      { label: 'Philosophy', href: '/v2/philosophy' },
-      { label: 'Security',   href: '/v2/security' },
-      { label: 'About',      href: '/v2/about' },
+      { label: 'Philosophy', href: '/philosophy' },
+      { label: 'Security',   href: '/security' },
+      { label: 'About',      href: '/about' },
     ],
   },
   {
     label: 'Resources',
     links: [
-      { label: 'Docs',    href: '/v2/docs' },
-      { label: 'CLI',     href: '/v2/docs/cli' },
-      { label: 'Pricing', href: '/v2#pricing' },
-      { label: 'Ideas',   href: '/v2/ideas' },
+      { label: 'Docs',    href: '/docs' },
+      { label: 'CLI',     href: '/docs/cli' },
+      { label: 'Pricing', href: '/#pricing' },
+      { label: 'Ideas',   href: '/ideas' },
     ],
   },
   {
@@ -79,7 +78,7 @@ export default function SiteShell({ children }) {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link
-              href="/v2/downloads"
+              href="/downloads"
               className="inline-flex items-center gap-2 rounded-sm border border-edge px-3 py-1.5 text-[9px] uppercase tracking-[0.22em] text-trace transition-all hover:-translate-y-px"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
@@ -133,14 +132,14 @@ export default function SiteShell({ children }) {
 
             <div className="flex items-center gap-3">
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
                 style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
               >
                 DOWNLOAD · MAC <span>→</span>
               </Link>
               <Link
-                href="/v2/mobile"
+                href="/mobile"
                 className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
               >
                 APP STORE <span>↗</span>

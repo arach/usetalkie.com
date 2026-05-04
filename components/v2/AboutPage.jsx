@@ -279,7 +279,7 @@ export default function AboutPage() {
               label="PHILOSOPHY"
               heading="Why Talkie exists."
               body="The principles behind the tool — local-first, sovereign, low-friction."
-              href="/v2/philosophy"
+              href="/philosophy"
               cta="READ"
               highlight
             />
@@ -309,7 +309,7 @@ export default function AboutPage() {
                 </p>
               </div>
               <Link
-                href="/v2/mac"
+                href="/mac"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   ...TRACE_TINT,
@@ -322,7 +322,7 @@ export default function AboutPage() {
 
             {/* Mobile tie-back */}
             <Link
-              href="/v2/mobile"
+              href="/mobile"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-2.5">

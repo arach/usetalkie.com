@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 /**
- * SurfaceChannels — four-channel hub grid for /v2/surfaces.
+ * SurfaceChannels — four-channel hub grid for /surfaces.
  *
  * Pure server component. Each card is a <Link> to its detail page; the
  * card itself is the affordance, not a buried "OPEN" pill. No JS state,
@@ -28,7 +28,7 @@ const CHANNELS = [
     sublabel: 'DESKTOP',
     freq: '32.1kHz',
     freqKHz: 32.1,
-    href: '/v2/mac',
+    href: '/mac',
     tagline: 'Talk to your Mac. Menu-bar instrument, hotkey-driven.',
   },
   {
@@ -38,7 +38,7 @@ const CHANNELS = [
     sublabel: 'MOBILE',
     freq: '48.0kHz',
     freqKHz: 48.0,
-    href: '/v2/mobile',
+    href: '/mobile',
     tagline: 'Catch the thought before it fades. Lands on your Mac.',
   },
   {
@@ -48,7 +48,7 @@ const CHANNELS = [
     sublabel: 'WRIST',
     freq: '22.4kHz',
     freqKHz: 22.4,
-    href: '/v2/mobile',
+    href: '/mobile',
     tagline: 'Tap mid-stride. Searchable by tonight.',
   },
   {
@@ -58,7 +58,7 @@ const CHANNELS = [
     sublabel: 'TERMINAL',
     freq: '9.6kHz',
     freqKHz: 9.6,
-    href: '/v2/downloads',
+    href: '/downloads',
     tagline: 'Pipe voice through any tool. Scriptable surface.',
   },
 ]

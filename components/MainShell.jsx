@@ -4,8 +4,8 @@ import { NarratorProvider, NarratorDock } from './v2/narrator'
 /**
  * Shared shell for top-level routes (`/`, `/downloads`, etc.). Wraps the
  * page in NarratorProvider + SiteShell + a canvas-themed root div so the
- * v2 chrome (header, footer, narrator) renders consistently across the
- * canonical routes that aren't under `/v2/*` (which has its own layout).
+ * shared chrome (header, footer, narrator) renders consistently across
+ * canonical routes.
  */
 export default function MainShell({ children }) {
   return (

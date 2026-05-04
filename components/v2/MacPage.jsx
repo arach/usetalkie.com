@@ -5,7 +5,7 @@ import MacFeatures from './MacFeatures'
 import MacUseCases from './MacUseCases'
 
 /**
- * MacPage — body of /v2/mac. Pure server component.
+ * MacPage — body of /mac. Pure server component.
  *
  * Composition:
  *   1. Surfaces sub-nav (Mac active)
@@ -63,7 +63,7 @@ export default function MacPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             {/* Next channel: Mobile */}
             <Link
-              href="/v2/mobile"
+              href="/mobile"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
             >
               <div className="flex items-center gap-2.5">
@@ -100,7 +100,7 @@ export default function MacPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',

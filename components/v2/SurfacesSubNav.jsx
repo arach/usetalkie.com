@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 /**
- * SurfacesSubNav — tab strip shared between /v2/mac and /v2/mobile.
+ * SurfacesSubNav — tab strip shared between /mac and /mobile.
  * Server-rendered. Theme flows entirely through CSS-variable-backed
  * Tailwind tokens; the active tab gets a glowing trace underline that
  * re-skins atomically on theme flip.
@@ -9,17 +9,17 @@ import Link from 'next/link'
  * Sticks just below the SiteShell header (h-12 = top-12).
  */
 const SURFACES = [
-  { id: 'mac',    label: 'MAC',    channel: 'CH-A', freq: '32.1kHz', href: '/v2/mac' },
-  { id: 'mobile', label: 'MOBILE', channel: 'CH-B', freq: '48.0kHz', href: '/v2/mobile' },
+  { id: 'mac',    label: 'MAC',    channel: 'CH-A', freq: '32.1kHz', href: '/mac' },
+  { id: 'mobile', label: 'MOBILE', channel: 'CH-B', freq: '48.0kHz', href: '/mobile' },
 ]
 
 export default function SurfacesSubNav({ active }) {
   return (
     <div className="sticky top-12 z-30 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
       <div className="mx-auto flex max-w-6xl items-stretch gap-1 px-4 md:px-6">
-        {/* Breadcrumb back to /v2/surfaces */}
+        {/* Breadcrumb back to /surfaces */}
         <Link
-          href="/v2/surfaces"
+          href="/surfaces"
           className="group flex items-center gap-2 py-3 pr-4 text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors hover:text-ink-muted"
         >
           <span>SURFACES</span>

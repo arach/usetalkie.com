@@ -952,7 +952,7 @@ export default function SecurityPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Link
-              href="/v2/philosophy"
+              href="/philosophy"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-2.5">
@@ -980,7 +980,7 @@ export default function SecurityPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 5%, transparent)',

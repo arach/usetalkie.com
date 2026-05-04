@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { DOCS_NAV, siblingDocs } from './DOCS_NAV'
 
 /**
- * DocsLayout — wrapper for every /v2/docs/{slug} page.
+ * DocsLayout — wrapper for every /docs/{slug} page.
  *
  * Pure server component. Owns three structural elements that
  * otherwise drift across docs: the sidebar (from DOCS_NAV), the page
@@ -177,7 +177,7 @@ export default function DocsLayout({ slug, title, description, toc, children }) 
         <aside className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-2">
           <div className="space-y-6">
             <Link
-              href="/v2/docs"
+              href="/docs"
               className="block px-3 font-mono text-[10px] uppercase tracking-[0.26em] text-trace transition-colors hover:text-ink"
               style={TRACE_GLOW_SOFT}
             >

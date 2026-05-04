@@ -54,7 +54,7 @@ const CAPTURE_MODES = [
     eyebrow: 'CAPTURE',
     title: 'Catch the thought before it mutates.',
     body: 'Record on iPhone, Apple Watch, or Mac and keep the full transcript in the same system.',
-    href: '/v2/mobile',
+    href: '/mobile',
     chShape: 0,
   },
   {
@@ -62,7 +62,7 @@ const CAPTURE_MODES = [
     eyebrow: 'DICTATION',
     title: 'Speak straight into the work.',
     body: 'Global shortcuts on Mac dictate into the app you are already using — no switching tools.',
-    href: '/v2/mac',
+    href: '/mac',
     chShape: 1,
   },
   {
@@ -70,7 +70,7 @@ const CAPTURE_MODES = [
     eyebrow: 'COMPOSE',
     title: 'Structure it after the moment.',
     body: 'Rewrite, expand, summarize, and compare edits once the raw idea is safely recorded.',
-    href: '/v2/mac',
+    href: '/mac',
     chShape: 2,
   },
   {
@@ -78,7 +78,7 @@ const CAPTURE_MODES = [
     eyebrow: 'RECOVERY',
     title: 'Recover the full thread later.',
     body: 'Search across memos and dictations, with app context attached when capture starts on desktop.',
-    href: '/v2/docs/cli',
+    href: '/docs/cli',
     chShape: 3,
   },
   {
@@ -86,7 +86,7 @@ const CAPTURE_MODES = [
     eyebrow: 'WORKFLOWS',
     title: 'Turn raw speech into useful output.',
     body: 'Route captures into summaries, task lists, files, and follow-up actions without copy-paste.',
-    href: '/v2/docs/workflows',
+    href: '/docs/workflows',
     chShape: 4,
   },
   {
@@ -94,7 +94,7 @@ const CAPTURE_MODES = [
     eyebrow: 'CLI',
     title: 'Keep the advanced layer open.',
     body: 'Query your voice data from scripts and tools instead of trapping it inside a single interface.',
-    href: '/v2/docs/cli',
+    href: '/docs/cli',
     chShape: 5,
   },
 ]
@@ -323,7 +323,7 @@ export default function HomePage() {
 
           <div className="mt-8">
             <Link
-              href="/v2/security"
+              href="/security"
               className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
               style={{
                 ...TRACE_TINT,
@@ -413,7 +413,7 @@ export default function HomePage() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/v2/downloads"
+                    href="/downloads"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                     style={{
                       ...TRACE_TINT,
@@ -424,7 +424,7 @@ export default function HomePage() {
                     DOWNLOAD · MAC <span aria-hidden>→</span>
                   </Link>
                   <Link
-                    href="/v2/mobile"
+                    href="/mobile"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     iPHONE & WATCH <span aria-hidden>↗</span>
@@ -496,7 +496,7 @@ export default function HomePage() {
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
-                    href="/v2/downloads"
+                    href="/downloads"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                     style={{
                       ...TRACE_TINT,
@@ -507,7 +507,7 @@ export default function HomePage() {
                     DOWNLOAD FOR MAC <ArrowRight className="h-3 w-3" />
                   </Link>
                   <Link
-                    href="/v2/security"
+                    href="/security"
                     className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     HOW PRIVACY WORKS <Lock className="h-3 w-3" />
@@ -518,7 +518,7 @@ export default function HomePage() {
 
             {/* Tie-back to philosophy */}
             <Link
-              href="/v2/philosophy"
+              href="/philosophy"
               className="group block rounded-md border border-edge bg-surface p-8 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-2.5">

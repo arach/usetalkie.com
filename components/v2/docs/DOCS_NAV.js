@@ -4,8 +4,8 @@ import { FEATURES } from '../../../shared/config/features'
  * Single source of truth for the v2 docs navigation.
  *
  * Consumed by:
- *   - components/v2/docs/DocsLayout.jsx  (sidebar + prev/next)
- *   - components/v2/docs/DocsIndexPage.jsx  (section grid)
+ *   - components/docs/DocsLayout.jsx  (sidebar + prev/next)
+ *   - components/docs/DocsIndexPage.jsx  (section grid)
  *
  * Sub-page agents may import { DOCS_NAV, ALL_DOCS } if they need to
  * derive ordering or sibling slugs, but the canonical contract is the
@@ -22,19 +22,19 @@ export const DOCS_NAV = [
         slug: 'overview',
         title: 'Overview',
         description: 'What Talkie is and how the pieces fit.',
-        href: '/v2/docs/overview',
+        href: '/docs/overview',
       },
       {
         slug: 'architecture',
         title: 'Architecture',
         description: 'Multi-process design — Talkie, Agent, Engine, Server.',
-        href: '/v2/docs/architecture',
+        href: '/docs/architecture',
       },
       {
         slug: 'lifecycle',
         title: 'Lifecycle',
         description: 'The voice-to-action signal path, phase by phase.',
-        href: '/v2/docs/lifecycle',
+        href: '/docs/lifecycle',
       },
     ],
   },
@@ -45,19 +45,19 @@ export const DOCS_NAV = [
         slug: 'cli',
         title: 'CLI',
         description: 'Command-line access to memos, search, and workflows.',
-        href: '/v2/docs/cli',
+        href: '/docs/cli',
       },
       {
         slug: 'workflows',
         title: 'Workflows',
         description: 'Automated pipelines, step types, template variables.',
-        href: '/v2/docs/workflows',
+        href: '/docs/workflows',
       },
       {
         slug: 'extensibility',
         title: 'Extensibility',
         description: 'Webhooks, integrations, and custom plug-in surfaces.',
-        href: '/v2/docs/extensibility',
+        href: '/docs/extensibility',
       },
     ],
   },
@@ -68,19 +68,19 @@ export const DOCS_NAV = [
         slug: 'data',
         title: 'Data',
         description: 'Where your recordings live, formats, and exports.',
-        href: '/v2/docs/data',
+        href: '/docs/data',
       },
       {
         slug: 'bridge-setup',
         title: 'Bridge Setup',
         description: 'Local TalkieServer for iPhone connectivity.',
-        href: '/v2/docs/bridge-setup',
+        href: '/docs/bridge-setup',
       },
       {
         slug: 'tailscale',
         title: 'Tailscale',
         description: 'Secure tunnel between your devices.',
-        href: '/v2/docs/tailscale',
+        href: '/docs/tailscale',
         hidden: !SHOW_TAILSCALE_DOCS,
       },
     ],

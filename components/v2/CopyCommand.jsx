@@ -9,7 +9,7 @@ import { Check, Copy } from 'lucide-react'
  * surrounding download bodies can stay server components.
  *
  * `prefix` defaults to `>`. `variant="ghost"` strips the surface chrome for
- * inline use inside the simpler /v2/dl card.
+ * inline use inside the simpler /dl card.
  */
 export default function CopyCommand({
   command,

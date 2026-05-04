@@ -17,7 +17,7 @@ import { getTourBySlug, getAdjacentTour } from '../../lib/tour'
  * The data fetch (`getTourBySlug` / `getAdjacentTour`) is synchronous and
  * pure (lib/tour.js is a static array), so reading it from a client
  * component is fine — no fs, no network. Internal links route through
- * /v2/tour/[slug].
+ * /tour/[slug].
  *
  * Theme tokens flow through tailwind semantic colors; inline `style` is
  * limited to `--trace`-glow shadows that the token system can't express.
@@ -35,7 +35,7 @@ export default function TourSlide({ slug }) {
   const audioRef = useRef(null)
 
   const copyLink = async () => {
-    const url = `${window.location.origin}/v2/tour/${slug}/`
+    const url = `${window.location.origin}/tour/${slug}/`
     await navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -62,8 +62,8 @@ export default function TourSlide({ slug }) {
   // Keyboard navigation
   useEffect(() => {
     function handleKey(e) {
-      if (e.key === 'ArrowLeft' && prev) router.push(`/v2/tour/${prev.slug}/`)
-      if (e.key === 'ArrowRight' && next) router.push(`/v2/tour/${next.slug}/`)
+      if (e.key === 'ArrowLeft' && prev) router.push(`/tour/${prev.slug}/`)
+      if (e.key === 'ArrowRight' && next) router.push(`/tour/${next.slug}/`)
       if (e.key === 'Escape') router.push('/v2')
     }
     window.addEventListener('keydown', handleKey)
@@ -132,7 +132,7 @@ export default function TourSlide({ slug }) {
             title="Copy link"
           >
             <Link2 className="h-3 w-3" aria-hidden />
-            <span>{copied ? 'COPIED' : `usetalkie.com/v2/tour/${slug}`}</span>
+            <span>{copied ? 'COPIED' : `usetalkie.com/tour/${slug}`}</span>
           </button>
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function TourSlide({ slug }) {
         <div className="flex items-center justify-between border-t border-edge-faint px-4 py-5 md:px-8">
           {prev ? (
             <Link
-              href={`/v2/tour/${prev.slug}/`}
+              href={`/tour/${prev.slug}/`}
               className="group flex items-center gap-3 text-ink-faint transition-colors hover:text-trace"
             >
               <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
@@ -236,7 +236,7 @@ export default function TourSlide({ slug }) {
 
           {next ? (
             <Link
-              href={`/v2/tour/${next.slug}/`}
+              href={`/tour/${next.slug}/`}
               className="group flex items-center gap-3 text-right text-ink-faint transition-colors hover:text-trace"
             >
               <div>

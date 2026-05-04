@@ -1,5 +1,5 @@
 /**
- * Patch-bay schematic for /v2/docs/workflows.
+ * Patch-bay schematic for /docs/workflows.
  * Pure server-rendered SVG. All paint references CSS vars so it flips
  * with the theme. No client hooks.
  *

@@ -106,7 +106,7 @@ function Eyebrow({ children }) {
 }
 
 // ---------------------------------------------------------------------------
-// PipelineSchematic — pure SVG patch-bay diagram for /v2/workflows.
+// PipelineSchematic — pure SVG patch-bay diagram for /workflows.
 // viewBox 0 0 720 320:
 //   CAP   x=20  y=130  w=120 h=70   — capture source
 //   S1    x=200 y=50   w=130 h=60   — LLM
@@ -424,7 +424,7 @@ export default function WorkflowsPage() {
 
           <div className="mt-10 flex flex-wrap items-center gap-3 font-mono">
             <Link
-              href="/v2/downloads"
+              href="/downloads"
               className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
@@ -753,7 +753,7 @@ export default function WorkflowsPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Link
-              href="/v2/mac"
+              href="/mac"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
             >
               <div className="flex items-center gap-2.5">
@@ -781,7 +781,7 @@ export default function WorkflowsPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 5%, transparent)',

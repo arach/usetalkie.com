@@ -2,7 +2,7 @@ import Link from 'next/link'
 import SurfaceChannels from './SurfaceChannels'
 
 /**
- * SurfacesPage — body for /v2/surfaces (the surfaces hub).
+ * SurfacesPage — body for /surfaces (the surfaces hub).
  *
  * Pure server component. The /v2 layout already wraps in <SiteShell> on a
  * `bg-canvas text-ink` shell, so this composes the page-level chrome only:
@@ -87,7 +87,7 @@ export default function SurfacesPage() {
               </p>
             </div>
             <Link
-              href="/v2/downloads"
+              href="/downloads"
               className="inline-flex items-center gap-2 self-start rounded-sm border border-edge px-5 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5 md:self-end"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',

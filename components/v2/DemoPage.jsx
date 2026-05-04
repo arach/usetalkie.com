@@ -10,7 +10,7 @@ import { Play, Laptop, Mic, Smartphone, Lock } from 'lucide-react'
  *   3. Hero clip — TalkieHero.mp4 with native <video controls>
  *   4. Promo clip — TalkiePromo.mp4
  *   5. Spec strip — three product summary tiles
- *   6. Cross-surface CTA — install + tie-back to /v2/mac
+ *   6. Cross-surface CTA — install + tie-back to /mac
  *
  * Hard constraint: pure server component, no useState/useEffect.
  * The donor's email signup form is reframed as a mailto pill so the
@@ -199,7 +199,7 @@ export default function DemoPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             <Link
-              href="/v2/mac"
+              href="/mac"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
             >
               <div className="flex items-center gap-2.5">
@@ -235,7 +235,7 @@ export default function DemoPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',

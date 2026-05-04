@@ -31,7 +31,7 @@ import {
  *   4. Step type registry — table of available workflow step types
  *   5. Path aliases + smart output — split panel, mono ledger
  *   6. Privacy posture — three-tile spec strip
- *   7. Cross-surface tie-back to /v2/agents + install CTA
+ *   7. Cross-surface tie-back to /agents + install CTA
  *
  * Pure server component. The donor's animated orchestrator is reframed
  * as a static four-stage pipeline; the screenshots/widget/security
@@ -419,7 +419,7 @@ export default function FeaturesPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             <Link
-              href="/v2/agents"
+              href="/agents"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
             >
               <div className="flex items-center gap-2.5">
@@ -455,7 +455,7 @@ export default function FeaturesPage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',

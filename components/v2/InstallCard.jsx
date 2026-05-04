@@ -102,7 +102,7 @@ export default function InstallCard() {
         style={{ background: 'var(--panel-edge-faint)', gap: '1px' }}
       >
         <Link
-          href="/v2/downloads"
+          href="/downloads"
           className="group flex items-center gap-4 p-5 transition-colors"
           style={{ background: 'var(--panel-bg-alt)' }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--panel-bg)' }}

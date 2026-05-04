@@ -4,12 +4,12 @@ import MobileCaptureModes from './MobileCaptureModes'
 import MobileMoments from './MobileMoments'
 
 /**
- * MobilePage — body for /v2/mobile (Channel B).
+ * MobilePage — body for /mobile (Channel B).
  *
  * Pure server component. The /v2 layout already wraps every route in
  * <SiteShell> on a `bg-canvas text-ink` shell, so this component renders
  * the page-level chrome only: the surfaces sub-nav, hero, two content
- * sections, and the cross-surface tie-back to /v2/mac + install CTA.
+ * sections, and the cross-surface tie-back to /mac + install CTA.
  */
 export default function MobilePage() {
   return (
@@ -58,7 +58,7 @@ export default function MobilePage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             {/* Prev channel: Mac */}
             <Link
-              href="/v2/mac"
+              href="/mac"
               className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-center gap-2.5">
@@ -102,7 +102,7 @@ export default function MobilePage() {
                 </p>
               </div>
               <Link
-                href="/v2/downloads"
+                href="/downloads"
                 className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
                 style={{
                   background:

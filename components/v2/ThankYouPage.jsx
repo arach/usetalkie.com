@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Check, Mail, Sparkles, Laptop, Smartphone, ArrowRight } from 'lucide-react'
 
 /**
- * /v2/thank-you — confirmation page on the oscilloscope canvas.
+ * /thank-you — confirmation page on the oscilloscope canvas.
  *
  * Pure server component. The donor (`components/ThankYouPage.jsx`) had
  * no interactive state, just animated decorations — so this re-author
