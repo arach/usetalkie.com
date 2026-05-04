@@ -107,7 +107,7 @@ const DEVICES = [
       eyebrow: 'INSTALL · WATCH',
       title: 'Auto-installs with iPhone',
       meta: 'pair via Watch app →',
-      href: '/v2/mobile',
+      href: '/mobile',
       Icon: Watch,
     },
     screenshot: {
