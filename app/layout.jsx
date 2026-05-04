@@ -86,7 +86,7 @@ export default function RootLayout({ children }) {
                  localStorage so a campaign link visit persists. */
               const url = new URLSearchParams(location.search);
               const urlTheme = url.get('theme');
-              const validThemes = ['warm', 'modern'];
+              const validThemes = ['warm', 'linen', 'modern'];
               let theme = null;
               if (urlTheme && validThemes.includes(urlTheme)) {
                 theme = urlTheme;
@@ -95,7 +95,7 @@ export default function RootLayout({ children }) {
                 const savedTheme = localStorage.getItem('design-theme');
                 if (savedTheme && validThemes.includes(savedTheme)) theme = savedTheme;
               }
-              if (theme === 'modern') root.setAttribute('data-theme', 'modern');
+              if (theme === 'modern' || theme === 'linen') root.setAttribute('data-theme', theme);
             } catch (e) {}
           `}
         </Script>

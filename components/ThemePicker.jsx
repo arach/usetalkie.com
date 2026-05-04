@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react'
  */
 const OPTIONS = [
   { key: 'warm',   label: 'Warm'   },
+  { key: 'linen',  label: 'Linen'  },
   { key: 'modern', label: 'Modern' },
 ]
 
@@ -46,8 +47,8 @@ export default function ThemePicker() {
   const apply = (next) => {
     setTheme(next)
     const root = document.documentElement
-    if (next === 'modern') {
-      root.setAttribute('data-theme', 'modern')
+    if (next === 'modern' || next === 'linen') {
+      root.setAttribute('data-theme', next)
     } else {
       root.removeAttribute('data-theme')
     }
