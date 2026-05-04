@@ -2,6 +2,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { getAllSlugs, getIdeaBySlug } from '../../../lib/ideas'
 import IdeaLayout from '../../../components/IdeaLayout'
+import MainShell from '../../../components/MainShell'
 import TranscriptionDiff from '../../../components/TranscriptionDiff'
 import StatsRow from '../../../components/blog/StatsRow'
 import AccuracyBar from '../../../components/blog/AccuracyBar'
@@ -20,8 +21,10 @@ import ObsidianNote from '../../../components/blog/ObsidianNote'
 import PromptShowcase from '../../../components/blog/PromptShowcase'
 import CopyableCode from '../../../components/blog/CopyableCode'
 import { VKNote, VKPrompt, VKCode } from '../../../components/blog/VoiceKnowledgeBlocks'
+import VersionCompare from '../../../components/blog/VersionCompare'
 
 const mdxComponents = {
+  VersionCompare,
   TranscriptionDiff,
   StatsRow,
   AccuracyBar,
@@ -84,15 +87,17 @@ export default async function IdeaPost({ params }) {
   const idea = getIdeaBySlug(slug)
 
   return (
-    <IdeaLayout
-      title={idea.title}
-      description={idea.description}
-      date={idea.date}
-      tags={idea.tags}
-      entryType={idea.entryType}
-      status={idea.status}
-    >
-      <MDXRemote source={idea.content} components={mdxComponents} options={mdxOptions} />
-    </IdeaLayout>
+    <MainShell>
+      <IdeaLayout
+        title={idea.title}
+        description={idea.description}
+        date={idea.date}
+        tags={idea.tags}
+        entryType={idea.entryType}
+        status={idea.status}
+      >
+        <MDXRemote source={idea.content} components={mdxComponents} options={mdxOptions} />
+      </IdeaLayout>
+    </MainShell>
   )
 }

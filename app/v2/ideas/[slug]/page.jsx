@@ -20,6 +20,7 @@ import ObsidianNote from '../../../../components/blog/ObsidianNote'
 import PromptShowcase from '../../../../components/blog/PromptShowcase'
 import CopyableCode from '../../../../components/blog/CopyableCode'
 import { VKNote, VKPrompt, VKCode } from '../../../../components/blog/VoiceKnowledgeBlocks'
+import VersionCompare from '../../../../components/blog/VersionCompare'
 
 /**
  * v2 idea slug page.
@@ -30,6 +31,7 @@ import { VKNote, VKPrompt, VKCode } from '../../../../components/blog/VoiceKnowl
  */
 
 const mdxComponents = {
+  VersionCompare,
   TranscriptionDiff,
   StatsRow,
   AccuracyBar,
