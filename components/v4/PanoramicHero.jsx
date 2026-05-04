@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot } from 'lucide-react'
 
@@ -60,6 +60,16 @@ const DEVICES = [
       caption: 'Library, search, compose',
     },
     waveformBias: 0,
+    inputSpec: {
+      platform: 'macOS 13+',
+      build:    'v0.4.2 · build 142',
+      status:   'ARMED',
+    },
+    features: [
+      'Global hotkey dictation',
+      'Per-app context aware',
+      'On-device whisper',
+    ],
   },
   {
     key: 'iphone',
@@ -88,6 +98,16 @@ const DEVICES = [
       caption: 'Capture on the go',
     },
     waveformBias: 1,
+    inputSpec: {
+      platform: 'iOS 17+',
+      build:    'v0.4.2 · build 142',
+      status:   'ARMED',
+    },
+    features: [
+      'Always-on capture',
+      'Snap + describe',
+      'Background research',
+    ],
   },
   {
     key: 'watch',
@@ -118,6 +138,16 @@ const DEVICES = [
       caption: 'Glance on the wrist',
     },
     waveformBias: 2,
+    inputSpec: {
+      platform: 'watchOS 10+',
+      build:    'v0.4.2 · build 142',
+      status:   'PAIRED',
+    },
+    features: [
+      'Tap-to-capture',
+      'Glance summary',
+      'Auto-sync to Mac',
+    ],
   },
   {
     key: 'agents',
@@ -146,6 +176,16 @@ const DEVICES = [
       caption: 'Workflows in motion',
     },
     waveformBias: 3,
+    inputSpec: {
+      platform: 'Workflow runtime',
+      build:    'v0.4.2',
+      status:   'WIRED',
+    },
+    features: [
+      'Voice trigger → action',
+      'Daily briefs · cron',
+      'Recipe runner · JSON',
+    ],
   },
 ]
 
@@ -543,12 +583,17 @@ function DeviceRail({ deviceIdx, onJump }) {
 }
 
 function InputBay({ device, flipPhase, onJump, deviceIdx }) {
-  const Icon = device.Icon
   const Install = device.install
+  const isMorphing = flipPhase !== 'idle'
+  const fadePanelStyle = {
+    opacity: isMorphing ? 0.5 : 1,
+    transition: 'opacity 220ms ease-out',
+  }
+
   return (
     <div className="relative flex bg-[var(--panel-bg)]">
       <DeviceRail deviceIdx={deviceIdx} onJump={onJump} />
-      <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6 lg:p-7">
+      <div className="flex flex-1 flex-col gap-4 p-5 sm:p-6 lg:p-7">
         <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
           <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
             · INPUT · {device.label.toUpperCase()}
@@ -556,28 +601,19 @@ function InputBay({ device, flipPhase, onJump, deviceIdx }) {
           <span className="opacity-70">JACK 01</span>
         </div>
 
-        {/* Small device callsign — the Rolodex flipper lives in the
-            cinematic hero above, so the bay leads with the install
-            affordance. This is just a phosphor-toned line confirming
-            which device's install path is currently armed. */}
-        <div
-          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-[var(--panel-ink-muted)]"
-          style={{
-            opacity: flipPhase === 'idle' ? 1 : 0.5,
-            transition: 'opacity 220ms ease-out',
-          }}
-        >
-          <Icon
-            className="h-3.5 w-3.5"
-            style={{
-              color: 'var(--panel-trace)',
-              filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))',
-            }}
-          />
-          <span>Configured for {device.label}</span>
-        </div>
+        {/* SPEC — data-sheet rows describing the input source. Fades
+            with the flip choreography so the channel changeover reads
+            as a single gesture across the bay. */}
+        <SectionDivider label="· SPEC ·" />
+        <SpecRows spec={device.inputSpec} fadeStyle={fadePanelStyle} />
 
-        {/* Sub-jack: device-aware install affordance. Morphs with rotation. */}
+        {/* FEATURES — what this input source actually does. Three short
+            bullets per device; same fade. */}
+        <SectionDivider label="· FEATURES ·" />
+        <FeatureList features={device.features} fadeStyle={fadePanelStyle} />
+
+        {/* Install jack — device-aware install affordance. Morphs with rotation. */}
+        <SectionDivider label="· INSTALL ·" />
         <DeviceInstallJack install={Install} flipPhase={flipPhase} />
 
         {/* CLI install rail — Mac only. The DMG is the headline path; this
@@ -593,6 +629,82 @@ function InputBay({ device, flipPhase, onJump, deviceIdx }) {
         </div>
       </div>
     </div>
+  )
+}
+
+// Sub-rail: a thin labeled divider used to separate stacked sections
+// inside the input bay. Reads as a chassis silkscreen separator —
+// short ALL-CAPS label between two hairlines.
+function SectionDivider({ label }) {
+  return (
+    <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.26em] text-[var(--panel-ink-subtle)]">
+      <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-faint)' }} />
+      <span>{label}</span>
+      <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-faint)' }} />
+    </div>
+  )
+}
+
+// SPEC table — definition list of platform/build/status. STATUS gets
+// a small phosphor LED + trace-colored value to signal "armed/live".
+function SpecRows({ spec, fadeStyle }) {
+  const rows = [
+    ['PLATFORM', spec.platform, false],
+    ['BUILD',    spec.build,    false],
+    ['STATUS',   spec.status,   true],
+  ]
+  return (
+    <dl
+      className="grid grid-cols-[5.5em_1fr] gap-x-3 gap-y-1.5 text-[10px] uppercase tracking-[0.18em]"
+      style={fadeStyle}
+    >
+      {rows.map(([key, value, isStatus]) => (
+        <Fragment key={key}>
+          <dt className="text-[var(--panel-ink-faint)]">{key}</dt>
+          <dd className="text-[var(--panel-ink)]">
+            {isStatus ? (
+              <span className="inline-flex items-center gap-1.5">
+                <span
+                  aria-hidden
+                  className="inline-block h-1 w-1 rounded-full"
+                  style={{
+                    background: 'var(--panel-trace)',
+                    boxShadow: '0 0 4px var(--panel-trace-glow)',
+                  }}
+                />
+                <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+                  {value}
+                </span>
+              </span>
+            ) : (
+              <span style={{ color: 'var(--panel-ink-dim)' }}>{value}</span>
+            )}
+          </dd>
+        </Fragment>
+      ))}
+    </dl>
+  )
+}
+
+// FEATURES — three short bullets describing what this input source can do.
+// Pure list, same fade as SPEC.
+function FeatureList({ features, fadeStyle }) {
+  return (
+    <ul
+      className="flex flex-col gap-1.5 text-[11px] leading-snug text-[var(--panel-ink-dim)]"
+      style={fadeStyle}
+    >
+      {features.map((f) => (
+        <li key={f} className="flex items-start gap-2">
+          <span
+            aria-hidden
+            className="mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full"
+            style={{ background: 'var(--panel-trace)', boxShadow: '0 0 3px var(--panel-trace-glow)' }}
+          />
+          <span>{f}</span>
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -835,17 +947,27 @@ function ScopeBay({ device, flipPhase }) {
           phosphor display retains its instrument identity even when
           the surrounding chassis flips to a cream/notepad treatment.
           Corner brackets pick up --screen-edge so they tint with
-          whatever phosphor the active treatment uses. */}
-      <div
-        className="relative my-auto overflow-hidden rounded-md border bg-[var(--screen-bg)]"
-        style={{
-          ...fadeStyle(140),
-          borderColor: 'var(--screen-edge-dim)',
-          boxShadow: 'var(--screen-recess-shadow)',
-        }}
-      >
-        <ScopeWaveform bias={device.waveformBias} flipPhase={flipPhase} />
-        <ScreenCornerBrackets />
+          whatever phosphor the active treatment uses.
+
+          The outer wrapper hosts the ScopePort jacks (left/right) so
+          they sit OUTSIDE the screen well's overflow-hidden clip and
+          land on the SignalPathOverlay wires entering/leaving the
+          bay at top:50%. Both the wires and the screen well's vertical
+          midpoint are anchored to the same row-50% line, so the ports
+          plug into the wire endpoints visually. */}
+      <div className="relative my-auto" style={fadeStyle(140)}>
+        <ScopePort side="left" />
+        <ScopePort side="right" />
+        <div
+          className="relative overflow-hidden rounded-md border bg-[var(--screen-bg)]"
+          style={{
+            borderColor: 'var(--screen-edge-dim)',
+            boxShadow: 'var(--screen-recess-shadow)',
+          }}
+        >
+          <ScopeWaveform bias={device.waveformBias} flipPhase={flipPhase} />
+          <ScreenCornerBrackets />
+        </div>
       </div>
 
       {/* Use-case caption ribbon — pinned to the bottom of the bay so
@@ -858,10 +980,18 @@ function ScopeBay({ device, flipPhase }) {
 }
 
 function ScopeWaveform({ bias, flipPhase }) {
-  // Three deterministic curves — one per device. Pre-compute and swap
-  // by index. The "playhead" sweep gives each curve a sense of being
-  // an active capture even though there's no audio playing.
-  const curve = useMemo(() => buildWaveformCurve(bias), [bias])
+  // Live curve = device-specific waveform. Flat curve = no-signal jitter
+  // shown DURING channel changes (the OUT phase of the flip choreography).
+  // This is what real oscilloscopes do when you switch input sources —
+  // the trace collapses to thermal-noise flatline before the new signal
+  // pattern resolves. Replaces the previous opacity-fade approach which
+  // read as "the panel is changing"; this reads as "the SIGNAL is
+  // changing" — a more honest mental model.
+  const liveCurve = useMemo(() => buildWaveformCurve(bias), [bias])
+  const flatCurve = useMemo(() => buildFlatCurve(), [])
+
+  const isFlatline = flipPhase === 'out'
+  const curve = isFlatline ? flatCurve : liveCurve
 
   return (
     <div className="relative h-[180px] sm:h-[210px]" aria-hidden>
@@ -891,7 +1021,8 @@ function ScopeWaveform({ bias, flipPhase }) {
           )
         })}
 
-        {/* Glow underlay */}
+        {/* Glow underlay — flatline phase uses a softer glow so the
+            no-signal state reads as quieter than the live curve. */}
         <polyline
           points={curve}
           fill="none"
@@ -899,9 +1030,16 @@ function ScopeWaveform({ bias, flipPhase }) {
           strokeWidth={6}
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ filter: 'blur(6px)', opacity: 0.45 }}
+          style={{
+            filter: 'blur(6px)',
+            opacity: isFlatline ? 0.18 : 0.45,
+            transition: 'opacity 200ms ease-out',
+          }}
         />
-        {/* Crisp top stroke */}
+        {/* Crisp top stroke — always visible at full opacity since the
+            curve itself swaps between flat and live (no fade-out
+            needed). The trace stays "on" through the channel change,
+            it just collapses to flatline mid-transition. */}
         <polyline
           points={curve}
           fill="none"
@@ -911,8 +1049,6 @@ function ScopeWaveform({ bias, flipPhase }) {
           strokeLinejoin="round"
           style={{
             filter: 'drop-shadow(0 0 2px var(--screen-trace-glow))',
-            opacity: flipPhase === 'idle' ? 1 : 0.4,
-            transition: 'opacity 200ms ease-out',
           }}
         />
 
@@ -929,6 +1065,67 @@ function ScopeWaveform({ bias, flipPhase }) {
         />
       </svg>
     </div>
+  )
+}
+
+function buildFlatCurve() {
+  // Flat-line at midline (y=110) with subtle thermal-noise jitter.
+  // Mimics what an oscilloscope shows with no signal on the input —
+  // a near-flat trace with small high-frequency wobble from amplifier
+  // noise. Two layered sine waves at different frequencies for organic
+  // texture (deterministic across renders so React reconciles cleanly).
+  const n = 360
+  const pts = []
+  for (let i = 0; i < n; i++) {
+    const nx = i / (n - 1)
+    const jitter =
+      Math.sin(nx * 71 + 0.7) * 1.4 +
+      Math.sin(nx * 197 + 2.1) * 0.6
+    const y = 110 + jitter
+    pts.push(`${(nx * 1200).toFixed(1)},${y.toFixed(1)}`)
+  }
+  return pts.join(' ')
+}
+
+// ScopePort — small phosphor-glowing jack on the screen well's left
+// and right edges. Aligns vertically with the SignalPathOverlay wires
+// (both anchored at top:50% of the bay row) so the wire endpoints
+// visually plug into the port's outer ring. Pure decoration —
+// pointer-events disabled.
+function ScopePort({ side }) {
+  const isLeft = side === 'left'
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute top-1/2 z-10 -translate-y-1/2"
+      style={{
+        [isLeft ? 'left' : 'right']: '-7px',
+      }}
+    >
+      {/* Outer jack ring — sits in the screen-bg color so it reads as a
+          recessed socket rather than a button. Inset shadow + outer
+          phosphor halo gives it depth. */}
+      <span
+        className="block h-3.5 w-3.5 rounded-full"
+        style={{
+          background: 'var(--screen-bg)',
+          border: '1px solid var(--screen-edge)',
+          boxShadow:
+            '0 0 6px var(--screen-trace-glow), inset 0 0 0 1px rgba(0,0,0,0.4)',
+        }}
+      />
+      {/* Inner trace dot — phosphor-colored conducting bit at the port
+          center. The wire endpoint dot from SignalPathOverlay (also
+          phosphor) lands beside this, so they read as connected. */}
+      <span
+        className="absolute left-1/2 top-1/2 block h-1.5 w-1.5 rounded-full"
+        style={{
+          background: 'var(--screen-trace)',
+          boxShadow: '0 0 4px var(--screen-trace-glow)',
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
+    </span>
   )
 }
 
