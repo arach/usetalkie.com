@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import SurfacesSubNav from './SurfacesSubNav'
 import MobileCaptureModes from './MobileCaptureModes'
+import MobileTransitBay from './MobileTransitBay'
 import MobileMoments from './MobileMoments'
 
 /**
@@ -50,6 +51,10 @@ export default function MobilePage() {
 
       {/* ─────────────── SECTIONS ─────────────── */}
       <MobileCaptureModes />
+
+      {/* DARK TRANSIT BEAT — 3 channels firing live (amber/emerald/cyan) */}
+      <MobileTransitBay />
+
       <MobileMoments />
 
       {/* ─────────────── TIE-BACK + INSTALL ─────────────── */}
