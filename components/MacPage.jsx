@@ -4,6 +4,7 @@ import MacDemoBay from './MacDemoBay'
 import MacHowItWorks from './MacHowItWorks'
 import MacFeatures from './MacFeatures'
 import MacUseCases from './MacUseCases'
+import InstallCard from './InstallCard'
 
 /**
  * MacPage — body of /mac. Pure server component.
@@ -63,59 +64,23 @@ export default function MacPage() {
       <MacFeatures />
       <MacUseCases />
 
-      {/* CROSS-SURFACE TIE-BACK + INSTALL */}
+      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
       <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
-        <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            {/* Next channel: Mobile */}
-            <Link
-              href="/mobile"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
+        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
+          <div className="text-center">
+            <p
+              className="text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
             >
-              <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim"
-                />
-                <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                  NEXT CHANNEL · CH-B
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                Catch it while it is live.
-              </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                iPhone and Apple Watch are the fast path back in. Keep reading →
-              </p>
-            </Link>
-
-            {/* Install CTA */}
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
-              <div>
-                <p
-                  className="text-[10px] uppercase tracking-[0.26em] text-trace"
-                  style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-                >
-                  · READY TO INSTALL
-                </p>
-                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  Download Talkie for Mac.
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                  DMG, App Store, or a single CLI command.
-                </p>
-              </div>
-              <Link
-                href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
-                style={{
-                  background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
-                  textShadow: '0 0 6px var(--trace-glow)',
-                }}
-              >
-                GO TO INSTALL <span>→</span>
-              </Link>
-            </div>
+              · CATCH IT · KEEP IT
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
+              Talk to your Mac.
+              <span className="italic text-ink-muted"> A mic is all you need.</span>
+            </h2>
+          </div>
+          <div className="mt-10">
+            <InstallCard />
           </div>
         </div>
       </section>

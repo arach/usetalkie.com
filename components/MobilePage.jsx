@@ -3,6 +3,7 @@ import SurfacesSubNav from './SurfacesSubNav'
 import MobileCaptureModes from './MobileCaptureModes'
 import MobileTransitBay from './MobileTransitBay'
 import MobileMoments from './MobileMoments'
+import InstallCard from './InstallCard'
 
 /**
  * MobilePage — body for /mobile (Channel B).
@@ -57,69 +58,23 @@ export default function MobilePage() {
 
       <MobileMoments />
 
-      {/* ─────────────── TIE-BACK + INSTALL ─────────────── */}
+      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
-        <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            {/* Prev channel: Mac */}
-            <Link
-              href="/mac"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
+        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
+          <div className="text-center">
+            <p
+              className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
             >
-              <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim"
-                />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                  PREV CHANNEL · CH-A
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                Talk to your Mac.
-              </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                Menu-bar instrument, hotkey trigger, smart routing. Keep
-                reading{' '}
-                <span
-                  aria-hidden
-                  className="text-trace transition-transform group-hover:translate-x-0.5"
-                >
-                  →
-                </span>
-              </p>
-            </Link>
-
-            {/* Install CTA */}
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
-              <div>
-                <p
-                  className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
-                  style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-                >
-                  · READY TO INSTALL
-                </p>
-                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  Get Talkie Mobile.
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                  iPhone, iPad, and Apple Watch — one App Store download.
-                </p>
-              </div>
-              <Link
-                href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
-                style={{
-                  background:
-                    'color-mix(in oklab, var(--trace) 6%, transparent)',
-                  textShadow: '0 0 6px var(--trace-glow)',
-                  boxShadow: '0 0 18px var(--trace-faint)',
-                }}
-              >
-                GO TO INSTALL
-                <span aria-hidden>→</span>
-              </Link>
-            </div>
+              · ONE LIBRARY · EVERY SURFACE
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
+              Catch it on iPhone.
+              <span className="italic text-ink-muted"> Finish it on Mac.</span>
+            </h2>
+          </div>
+          <div className="mt-10">
+            <InstallCard />
           </div>
         </div>
       </section>

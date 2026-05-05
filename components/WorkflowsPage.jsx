@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import InstallCard from './InstallCard'
 import {
   Mic,
   Cpu,
@@ -651,11 +652,11 @@ export default function WorkflowsPage() {
 {`# template: file an issue from a dictated bug report
 `}<span className="text-amber">{`gh`}</span>{` issue create \\
   --repo  `}<span className="text-amber">{`"arach/talkie"`}</span>{` \\
-  --title `}<span className="text-amber">{`"`}</span><span className="italic text-amber" style={{ opacity: 0.6 }}>{`{{TITLE}}`}</span><span className="text-amber">{`"`}</span>{` \\
-  --body  `}<span className="text-amber">{`"`}</span><span className="italic text-amber" style={{ opacity: 0.6 }}>{`{{TRANSCRIPT}}`}</span><span className="text-amber">{`"`}</span>{` \\
+  --title `}<span className="text-amber">{`"`}</span><span className="italic text-amber">{`{{TITLE}}`}</span><span className="text-amber">{`"`}</span>{` \\
+  --body  `}<span className="text-amber">{`"`}</span><span className="italic text-amber">{`{{TRANSCRIPT}}`}</span><span className="text-amber">{`"`}</span>{` \\
   --label `}<span className="text-amber">{`"voice-memo"`}</span>{`
 
-`}<span className="text-screen-ink-faint">{`# stdout becomes `}</span><span className="italic text-amber" style={{ opacity: 0.45 }}>{`{{LAST_OUTPUT}}`}</span><span className="text-screen-ink-faint">{` for the next step
+`}<span className="text-screen-ink-faint">{`# stdout becomes `}</span><span className="italic text-amber">{`{{LAST_OUTPUT}}`}</span><span className="text-screen-ink-faint">{` for the next step
 # https://github.com/arach/talkie/issues/421`}</span>
               </pre>
               <div className="flex items-center gap-2 border-t border-screen-edge-dim px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-screen-ink-faint">
@@ -706,9 +707,9 @@ export default function WorkflowsPage() {
                       key={a.token}
                       className="group/row flex items-center gap-3 rounded-sm border border-transparent px-3 py-2 transition-all duration-200 hover:border-amber/40 hover:bg-canvas/40"
                     >
-                      {/* Token chip — amber bg/border syntax highlight, like an inline code chip */}
+                      {/* Bold amber — no border, the boldness + amber phosphor IS the highlight */}
                       <span
-                        className="inline-flex items-center rounded-sm border border-amber/40 bg-amber/10 px-2 py-0.5 text-amber transition-all duration-200 group-hover/row:border-amber/70 group-hover/row:bg-amber/20"
+                        className="font-bold text-amber"
                         style={{ textShadow: '0 0 4px var(--trace-glow)' }}
                       >
                         {a.token}
@@ -751,26 +752,13 @@ export default function WorkflowsPage() {
                     dotted-underline to read as "interpolated value"
                     while staying full-amber for legibility on cream. */}
                 <div className="mt-6 font-mono text-[12px] text-ink-dim leading-loose">
-                  <span
-                    className="inline-flex items-center rounded-sm border border-amber/40 bg-amber/10 px-1.5 py-0.5 text-amber"
-                    style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-                  >
+                  <span className="font-bold text-amber" style={{ textShadow: '0 0 4px var(--trace-glow)' }}>
                     @Notes
                   </span>
                   <span className="text-ink-faint">/</span>
-                  <span
-                    className="italic text-amber"
-                    style={{ textDecoration: 'underline dotted', textUnderlineOffset: '3px' }}
-                  >
-                    {'{{DATE}}'}
-                  </span>
+                  <span className="italic text-amber">{'{{DATE}}'}</span>
                   <span className="text-ink-faint">-</span>
-                  <span
-                    className="italic text-amber"
-                    style={{ textDecoration: 'underline dotted', textUnderlineOffset: '3px' }}
-                  >
-                    {'{{TITLE}}'}
-                  </span>
+                  <span className="italic text-amber">{'{{TITLE}}'}</span>
                   <span className="text-ink-faint">.md</span>
                 </div>
               </div>
@@ -826,50 +814,20 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== TIE-BACK ========== */}
+      {/* ========== INSTALL — patch-bay chassis (shared with /, /mac, /mobile) ========== */}
       <section className="relative border-t border-edge-faint bg-canvas">
-        <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Link
-              href="/mac"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
-            >
-              <div className="flex items-center gap-2.5">
-                <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                  WHERE IT LIVES · CH-A
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                Workflows run on your Mac.
-              </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                The patch bay sits in the menu bar — one hotkey, one transcript, one signal path. Read more →
-              </p>
-            </Link>
-
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
-              <div>
-                <Eyebrow>· READY TO INSTALL</Eyebrow>
-                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  Download Talkie for Mac.
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                  DMG, App Store, or a single CLI command.
-                </p>
-              </div>
-              <Link
-                href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
-                style={{
-                  background: 'color-mix(in oklab, var(--trace) 5%, transparent)',
-                  textShadow: '0 0 6px var(--trace-glow)',
-                  boxShadow: '0 0 18px color-mix(in oklab, var(--trace) 8%, transparent)',
-                }}
-              >
-                GO TO INSTALL <span>→</span>
-              </Link>
-            </div>
+        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
+          <div className="text-center">
+            <Eyebrow>· READY TO WIRE</Eyebrow>
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
+              Workflows run on your Mac.
+            </h2>
+            <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
+              Patch the menu-bar instrument once — every hotkey-triggered capture flows through the same patch bay.
+            </p>
+          </div>
+          <div className="mt-10">
+            <InstallCard />
           </div>
         </div>
       </section>
