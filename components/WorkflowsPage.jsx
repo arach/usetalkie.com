@@ -632,6 +632,7 @@ export default function WorkflowsPage() {
           style={{
             backgroundImage:
               'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
+            animation: 'scan-drift 0.8s linear infinite',
           }}
         />
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">

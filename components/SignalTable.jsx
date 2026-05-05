@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { playPressTick, playPasteTick } from '../lib/sfx'
-import { Play } from 'lucide-react'
+import { Play, Pause } from 'lucide-react'
 import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
 import CinematicCaption from './CinematicCaption'
 import KeypressCue from './KeypressCue'
 import CaptureIsland from './CaptureIsland'
+import PasteMock from './PasteMock'
 
 /**
  * SignalTable — the navigatable, audio-driven hero player.
@@ -63,15 +64,17 @@ const BREATH_PRESS_TO_AUDIO_MS         = 360  // ⌘⇧A pressed → audio start
 // state appears, so the two read as discrete events.
 const BREATH_RELEASE_TO_TRANSCRIBING_MS = 280
 // Transcribe duration is computed dynamically from audio.duration:
-//   clamp(audio.duration * 200, 900, 1600)
-// (audio.duration is seconds → *200 = "1/5 of duration" in ms.)
-// Falls back to ~1100ms if audio.duration is unavailable. Floor of
-// 900ms is the key constraint — anything shorter and the engine cue
-// flickers in and out before the eye registers it. Cap at 1600ms so
-// long clips don't make the user wait longer than feels local.
-const TRANSCRIBE_MIN_MS                = 900
-const TRANSCRIBE_MAX_MS                = 1600
-const TRANSCRIBE_FALLBACK_MS           = 1100
+//   clamp(audio.duration * 60, 350, 600)
+// Brisk by design — the surrounding choreography (keypress cue, tick
+// sound, TRIG dot, dock icon lift, window-opening bezier-bounce,
+// wave-bar overlay, traffic-light dots) carries the "something is
+// happening" story in parallel, so the transcribe beat itself can be
+// a flicker of confidence rather than a wait. Earlier 900-1600ms
+// range was protective — protected against thin choreography that
+// no longer exists.
+const TRANSCRIBE_MIN_MS                = 350
+const TRANSCRIBE_MAX_MS                = 600
+const TRANSCRIBE_FALLBACK_MS           = 450
 // REVIEW_DURATION_MS — trailing confirmation beat: the island is
 // gone, the trace is back to its flat idle line, and the row sits
 // highlighted with its transcription visible. Acts as the silent
@@ -81,9 +84,11 @@ const TRANSCRIBE_FALLBACK_MS           = 1100
 // clearChoreography). The only beat in the lifecycle where nothing
 // animates — by design. Paste tick + row typing animation fire on
 // ENTRY to this phase, then the rest of the duration is calm hold.
-const REVIEW_DURATION_MS               = 1800
-// Short breath between REVIEW ending and the next capture starting.
-const BREATH_PASTE_TO_NEXT_MS          = 240  // review settled → next capture begins
+const REVIEW_DURATION_MS               = 3000
+// Breath between REVIEW ending and the next capture starting — long
+// enough that consecutive captures don't read as a tickertape; the
+// dock + window have time to "settle" before the next one stages.
+const BREATH_PASTE_TO_NEXT_MS          = 800   // review settled → next capture begins
 
 export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
@@ -363,11 +368,12 @@ export default function SignalTable({ catalog }) {
       setIsPlaying(false)
       setCaptionText('')
 
-      // RELEASE pill fires immediately. Caption hides during the
-      // small breath before the TRANSCRIBING overlay appears (no
-      // finalize border-glow on the caption pill — that beat has
-      // been retired in favor of the cleaner hide + overlay).
+      // STOP pill fires immediately, with the same audible tick as the
+      // start cue — capture is now a toggle (ding to start, ding to
+      // stop) rather than push-to-talk (press-and-hold). Same hotkey,
+      // same sound, two distinct gestures bracketing the recording.
       setKeypressCue({ kind: 'end', at: Date.now() })
+      playPressTick(ctxRef.current)
 
       const currentSlug = catalog[activeIndex]?.slug
 
@@ -382,7 +388,7 @@ export default function SignalTable({ catalog }) {
       const audioDur = audioRef.current?.duration
       const dynamicMs =
         Number.isFinite(audioDur) && audioDur > 0
-          ? Math.max(TRANSCRIBE_MIN_MS, Math.min(TRANSCRIBE_MAX_MS, audioDur * 200))
+          ? Math.max(TRANSCRIBE_MIN_MS, Math.min(TRANSCRIBE_MAX_MS, audioDur * 60))
           : TRANSCRIBE_FALLBACK_MS
 
       // Beat A — short breath, then enter the transcribing state:
@@ -769,10 +775,12 @@ export default function SignalTable({ catalog }) {
         </div>
 
         {/* Status bar — mirrors the top header for visual balance.
-            Only the phosphor dot subtly signals active/idle so the UI
-            doesn't feel nervous between clips. The label stays calm. */}
-        <div className="flex items-center justify-between gap-3 border-t border-edge-faint px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
-          <span className="flex items-center gap-2">
+            Three-column grid: TRIG (left) · play/pause (center, only
+            after first engagement) · channel/eyebrow label (right).
+            Only the phosphor dot + the play/pause icon signal state;
+            the rest stays calm so consecutive captures don't strobe. */}
+        <div className="grid grid-cols-3 items-center gap-3 border-t border-edge-faint px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+          <span className="flex items-center gap-2 justify-self-start">
             <span
               aria-hidden
               className="inline-block h-1 w-1 rounded-full transition-all duration-500"
@@ -783,9 +791,37 @@ export default function SignalTable({ catalog }) {
             />
             TRIG
           </span>
-          <span>{activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}</span>
+          <div className="justify-self-center">
+            {hasEngaged && (
+              <button
+                type="button"
+                onClick={() => togglePlay(activeIndex)}
+                aria-label={isPlaying ? 'Pause' : 'Play'}
+                className="group inline-flex h-5 w-5 items-center justify-center rounded-full border border-edge-dim text-ink-muted transition-all duration-150 hover:border-trace hover:text-trace"
+                style={{
+                  background: isPlaying
+                    ? 'color-mix(in oklab, var(--trace) 8%, transparent)'
+                    : 'transparent',
+                }}
+              >
+                {isPlaying ? (
+                  <Pause className="h-2.5 w-2.5 fill-current" />
+                ) : (
+                  <Play className="h-2.5 w-2.5 fill-current" style={{ marginLeft: 0.5 }} />
+                )}
+              </button>
+            )}
+          </div>
+          <span className="justify-self-end">{activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}</span>
         </div>
       </div>
+
+      {/* Paste-preview mock — destination-app chrome that slides in
+          during the review phase, sitting BETWEEN the play bar above
+          and the dictation buffer below. The sequence reads:
+          live capture (play bar) → simulated paste (here) → historical
+          record of past captures (table chassis). */}
+      <PasteMock capture={activeCapture} phase={captionPhase} keypressCue={keypressCue} />
 
       {/* Table — second instrument; same chassis treatment as the
           trace card so they read as a matched pair sitting on the

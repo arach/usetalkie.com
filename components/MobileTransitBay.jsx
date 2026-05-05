@@ -16,13 +16,14 @@
 export default function MobileTransitBay() {
   return (
     <section className="relative border-t border-b border-panel-edge-dim bg-panel-bg-deep font-mono">
-      {/* Faint scanline overlay */}
+      {/* Faint scanline overlay — drifts via scan-drift keyframe for live-CRT motion */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-30"
         style={{
           backgroundImage:
             'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
+          animation: 'scan-drift 0.8s linear infinite',
         }}
       />
       <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">

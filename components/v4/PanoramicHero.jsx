@@ -413,18 +413,7 @@ export default function PanoramicHero() {
 
 function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle, onPause }) {
   return (
-    <section className="relative pb-6 pt-2 text-center md:pb-8 md:pt-6">
-      {/* Brand placard — small amber eyebrow above the headline */}
-      <p
-        className="mb-6 inline-block font-mono text-[10px] uppercase tracking-[0.32em] md:mb-8"
-        style={{
-          color: 'var(--amber)',
-          textShadow: '0 0 6px color-mix(in oklab, var(--amber) 50%, transparent)',
-        }}
-      >
-        · TALKIE / SIGNAL · INSTRUMENT ·
-      </p>
-
+    <section className="relative pb-6 pt-10 text-center md:pb-8 md:pt-14">
       {/* Donor-shape headline: "Talk to your" inline with the Rolodex
           flip card, sized 1em relative to the H1 and baseline-nudged
           so the card sits visually grounded under the typography.
@@ -512,7 +501,7 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
         onFocus={() => onPause(true)}
         onBlur={() => onPause(false)}
         aria-label={`Cycle device — currently ${label}. Click to advance.`}
-        className="relative -mb-[0.10em] inline-flex w-[5em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-normal leading-[1] tracking-[-0.01em]"
+        className="relative -mb-[0.10em] inline-flex w-[5em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-semibold leading-[1] tracking-[-0.01em]"
         style={{
           color: 'var(--rolodex-ink)',
           background: 'var(--rolodex-bg)',
@@ -547,7 +536,7 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
           className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
           style={{ background: 'linear-gradient(180deg, transparent, var(--rolodex-rest))' }}
         />
-        <span className="relative inline-block w-full text-center">{label}</span>
+        <span data-hero-accent className="relative inline-block w-full text-center">{label}</span>
       </button>
     </span>
   )
@@ -804,44 +793,24 @@ function SectionDivider({ label, num }) {
   )
 }
 
-// SPEC sheet — nutrition-label-style key/value rows. The data field
-// list (platform / release / channel / status) is intentionally short
-// and numerically dense so it reads as a printed device label rather
-// than free-form copy. STATUS lights up phosphor (armed/live signal).
-// Build numbers go in parentheses next to the version per the user's
-// "the way Mac does" note — collapses what was two rows into one.
+// SPEC sheet — nutrition-label-style key/value rows. STATUS row removed
+// (read as goofy "armed/live" gimmick); platform / release / channel are
+// the only fields that earn their place as printed device labels.
 function SpecRows({ spec }) {
   const rows = [
-    ['PLATFORM', spec.platform, false],
-    ['RELEASE',  spec.release,  false],
-    ['CHANNEL',  spec.channel,  false],
-    ['STATUS',   spec.status,   true],
+    ['PLATFORM', spec.platform],
+    ['RELEASE',  spec.release],
+    ['CHANNEL',  spec.channel],
   ]
   return (
     <dl
       className="grid grid-cols-[5.5em_1fr] gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.18em]"
     >
-      {rows.map(([key, value, isStatus]) => (
+      {rows.map(([key, value]) => (
         <Fragment key={key}>
           <dt className="text-[var(--panel-ink-subtle)]">{key}</dt>
-          <dd className="text-[var(--panel-ink)]">
-            {isStatus ? (
-              <span className="inline-flex items-center gap-1.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-1 w-1 rounded-full"
-                  style={{
-                    background: 'var(--panel-trace)',
-                    boxShadow: '0 0 4px var(--panel-trace-glow)',
-                  }}
-                />
-                <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-                  {value}
-                </span>
-              </span>
-            ) : (
-              <span style={{ color: 'var(--panel-ink-dim)' }}>{value}</span>
-            )}
+          <dd>
+            <span style={{ color: 'var(--panel-ink-dim)' }}>{value}</span>
           </dd>
         </Fragment>
       ))}
@@ -975,10 +944,14 @@ function DeviceInstallJack({ install }) {
   // overflowing into the adjacent ScopeBay (clipped silently by the
   // chassis overflow-hidden — but the install card was extending
   // ~170px past the Watch bay's right edge before this fix).
+  // Solid button-look: panel-bg-alt fill (auto theme-flips: light gray on
+  // Modern, warm-charcoal on Warm) + full panel-edge border + bright
+  // panel-ink text. No phosphor wash — that 4% trace tint read as a
+  // half-selected highlight, not a clickable button.
   const sharedClass =
-    'group flex min-w-0 items-center gap-2.5 overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] px-2.5 py-1.5 transition-colors hover:border-[var(--panel-trace)]'
+    'group flex min-w-0 items-center gap-2.5 overflow-hidden rounded-sm border border-[var(--panel-edge)] px-2.5 py-1.5 transition-colors hover:border-[var(--panel-trace)]'
   const sharedStyle = {
-    background: 'color-mix(in oklab, var(--panel-trace) 4%, transparent)',
+    background: 'var(--panel-bg-alt)',
   }
   const inner = (
     <>
@@ -1126,6 +1099,18 @@ function ScopeBay({ device, useCase, flipPhase }) {
               boxShadow: 'var(--screen-recess-shadow)',
             }}
           >
+            {/* CRT scanline overlay — drifts via scan-drift keyframe so the
+                instrument reads as live phosphor, not a still image. Sits
+                behind the waveform in DOM order so the trace stays primary. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-50"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
+                animation: 'scan-drift 0.8s linear infinite',
+              }}
+            />
             <ScopeWaveform bias={device.waveformBias} flipPhase={flipPhase} />
             <ScreenCornerBrackets />
           </div>
@@ -1608,14 +1593,15 @@ function ChassisFooter({ device }) {
           jacks above. Centered via the 3-col grid. */}
       <Link
         href="/downloads"
-        className="group inline-flex items-center gap-2 justify-self-center rounded-sm border border-[var(--panel-edge-dim)] px-3 py-1 transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-trace)]"
+        className="group inline-flex items-center gap-2 justify-self-center rounded-sm border border-[var(--panel-edge)] px-3 py-1.5 transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-trace)]"
         style={{
-          background: 'color-mix(in oklab, var(--panel-trace) 4%, transparent)',
+          background: 'var(--panel-bg-alt)',
+          color: 'var(--panel-ink)',
         }}
       >
-        <Download className="h-3 w-3 text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]" />
+        <Download className="h-3 w-3 transition-colors group-hover:text-[var(--panel-trace)]" />
         <span>ALL DOWNLOADS</span>
-        <span aria-hidden className="text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]">↗</span>
+        <span aria-hidden className="transition-colors group-hover:text-[var(--panel-trace)]">↗</span>
       </Link>
       <span className="opacity-80 justify-self-end">SURFACE · {device.label.toUpperCase()}</span>
     </div>

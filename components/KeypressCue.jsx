@@ -17,11 +17,12 @@
  * Props:
  *   keys      array of glyph strings, e.g. ['⌘', '⇧', 'A']
  *   variant   'start' | 'end' — drives the small label prefix
- *             ('PRESS' for start, 'RELEASE' for end). Visual treatment
- *             is the same; the label is the only difference.
+ *             ('PRESS' for start, 'STOP' for end — toggle semantics;
+ *             same hotkey fires both, push-to-talk RELEASE wording
+ *             retired). Visual treatment is the same; label differs.
  */
 export default function KeypressCue({ keys = ['⌘', '⇧', 'A'], variant = 'start' }) {
-  const label = variant === 'end' ? 'RELEASE' : 'PRESS'
+  const label = variant === 'end' ? 'STOP' : 'PRESS'
   return (
     <div
       aria-hidden

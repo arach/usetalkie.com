@@ -15,6 +15,11 @@ html { scroll-behavior: smooth; }
  * Consumed via semantic Tailwind tokens declared in tailwind.config.js.
  * ───────────────────────────────────────────────────────────────────── */
 :root {
+  /* Public display token — Tailwind's `font-display` utility resolves to
+   * this. Defaults to Fraunces (Warm/Linen instrument face). The Modern
+   * theme overrides this below to point at Instrument Serif. */
+  --font-display: var(--font-display-warm), Georgia, serif;
+
   --canvas:         #e8dcc4;
   --canvas-alt:     #e0d3b6;
   --canvas-overlay: rgba(232, 220, 196, 0.85);
@@ -207,6 +212,12 @@ html.dark {
  * paint without removing components from the tree.
  * ───────────────────────────────────────────────────────────────────── */
 html[data-theme="modern"]:not(.dark) {
+  /* Modern flips the display face to Instrument Serif — single-weight
+   * editorial serif with a refined italic. Replaces Fraunces (whose
+   * chunkier italic suits the Warm instrument paper but reads textbook-y
+   * against the donor white canvas). */
+  --font-display: var(--font-display-modern), Georgia, serif;
+
   --canvas:         #ffffff;
   --canvas-alt:     #fafafa;
   --canvas-overlay: rgba(255, 255, 255, 0.86);
@@ -246,18 +257,17 @@ html[data-theme="modern"]:not(.dark) {
   --panel-trace-glow:   transparent;
   --panel-trace-dim:    rgba(16, 185, 129, 0.16);
   --panel-trace-faint:  transparent;
-  --panel-scanline:     transparent;
+  --panel-scanline:     rgba(16, 185, 129, 0.04);
   --panel-chassis-shadow:
     0 1px 3px rgba(0, 0, 0, 0.06),
     0 8px 24px -12px rgba(0, 0, 0, 0.10);
 
-  /* Screen = scope CRT bezel. Under Classic, becomes a clean dark
-   * media frame (the donor's hard light→dark flip for the demo
-   * section). Phosphor glow gone, recess shadow gone, edge tints
-   * neutralize — but the dark backdrop stays so the structure still
-   * reads as "media surface" inside a white card. */
-  --screen-bg:          #0a0a0a;
-  --screen-bg-deep:     #050505;
+  /* Screen = scope CRT bezel. Under Modern, becomes a clean dark
+   * media frame. Subtle emerald tint on the dark interior (was pure
+   * #0a0a0a) so the screen reads as "live phosphor surface" hue-matched
+   * to the emerald border, not a black rectangle inside a green frame. */
+  --screen-bg:          #0d1612;
+  --screen-bg-deep:     #081310;
   --screen-edge:        rgba(255, 255, 255, 0.10);
   --screen-edge-dim:    rgba(255, 255, 255, 0.06);
   --screen-edge-faint:  transparent;
@@ -294,6 +304,8 @@ html[data-theme="modern"]:not(.dark) {
 /* Dark mode under Modern — keep the cool studio palette but flip the
  * accent to emerald to match Modern-light's donor accent. */
 html.dark[data-theme="modern"] {
+  --font-display: var(--font-display-modern), Georgia, serif;
+
   --canvas:         #0a0a0a;
   --canvas-alt:     #050505;
   --canvas-overlay: rgba(10, 10, 10, 0.86);
@@ -321,11 +333,22 @@ html.dark[data-theme="modern"] {
   --panel-trace:        #34d399;
   --panel-trace-glow:   transparent;
   --panel-trace-faint:  transparent;
-  --panel-scanline:     transparent;
+  --panel-scanline:     rgba(52, 211, 153, 0.05);
 
-  --screen-bg:          #050505;
+  --screen-bg:          #0a120e;
   --screen-trace:       #34d399;
   --screen-trace-glow:  rgba(52, 211, 153, 0.30);
+}
+
+/* Modern's display face (Cormorant Garamond) was designed at body
+ * sizes — at display sizes (3xl–6xl) it benefits from a tight squeeze
+ * so the high-contrast hairlines read as confident magazine copy
+ * rather than an enlarged paragraph. Cormorant's natural display
+ * weight is 400; 500 starts to feel heavy against its hairlines.
+ * Applies to all .font-display usage on Modern (light + dark). */
+html[data-theme="modern"] .font-display {
+  font-weight: 400;
+  letter-spacing: -0.015em;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -639,6 +662,16 @@ html[data-osci-style="field-notebook"]:not(.dark) {
 @keyframes osc-sweep {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
+}
+
+/* scan-drift → slow vertical drift for CRT scanline overlays.
+ * The repeating-linear-gradient stripe pattern repeats every 4px
+ * (3px transparent + 1px line). Animating background-position-y
+ * from 0 to 4px shifts one full period, so the loop is seamless —
+ * no visible "snap back." Read as continuous scan motion. */
+@keyframes scan-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 4px; }
 }
 
 /* osc-chase → "your data path · stays on your devices"

@@ -477,7 +477,7 @@ export default function LandingPage() {
                 <span className="shrink-0" style={{ perspective: '600px' }}>
                   <span
                     onClick={() => jumpToSurface((heroSurfaceIndex + 1) % HERO_STORIES.length)}
-                    className="relative mb-[-0.18em] inline-flex min-w-[3.8em] cursor-pointer items-center justify-center overflow-hidden rounded-[0.18em] border border-zinc-700/50 bg-zinc-900 px-[0.28em] py-[0.18em] font-display text-[1em] font-normal tracking-[-0.01em] text-zinc-50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_40px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-zinc-800"
+                    className="relative mb-[-0.18em] inline-flex min-w-[3.8em] cursor-pointer items-center justify-center overflow-hidden rounded-[0.18em] border border-zinc-700/50 bg-zinc-900 px-[0.28em] py-[0.18em] font-display text-[1em] font-semibold tracking-[-0.01em] text-zinc-50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_40px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-zinc-800"
                     style={{
                       animation:
                         flipPhase === 'out' ? 'flap-out 140ms ease-in forwards' :
@@ -488,7 +488,7 @@ export default function LandingPage() {
                     <span className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/10 dark:bg-white/10" />
                     <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),transparent)]" />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.18))]" />
-                    <span className="relative inline-block w-full text-center">
+                    <span data-hero-accent className="relative inline-block w-full text-center">
                       {currentHeroStory.surface}
                     </span>
                   </span>
