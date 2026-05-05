@@ -70,9 +70,9 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
           {/* Crumb back to the index */}
           <Link
             href="/ideas"
-            className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors hover:text-trace"
+            className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors duration-200 hover:text-amber"
           >
-            <span aria-hidden>←</span>
+            <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>
             <span>ALL IDEAS</span>
           </Link>
 
@@ -166,9 +166,9 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <Link
               href="/ideas"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-trace"
+              className="group inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-amber"
             >
-              <span aria-hidden>←</span>
+              <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>
               <span>ALL IDEAS</span>
             </Link>
 

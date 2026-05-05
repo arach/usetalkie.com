@@ -70,13 +70,13 @@ export default function DemoPage() {
             </p>
             <a
               href="mailto:hello@usetalkie.com?subject=Demo%20reel%20heads-up"
-              className="mt-5 inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
+              className="group/btn mt-5 inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
                 textShadow: '0 0 6px var(--trace-glow)',
               }}
             >
-              PING ME WHEN READY <span>→</span>
+              PING ME WHEN READY <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">→</span>
             </a>
           </div>
         </div>
@@ -200,26 +200,26 @@ export default function DemoPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             <Link
               href="/mac"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-trace"
+              className="group block rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
             >
               <div className="flex items-center gap-2.5">
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim"
+                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim transition-all duration-200 group-hover:scale-150 group-hover:border-amber group-hover:bg-amber"
                 />
-                <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
                   KEEP READING · CH-A
                 </span>
               </div>
               <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                 Talk to your Mac.
               </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                The full tour of the Mac surface — hold-to-talk, return-to-origin, 48-hour echoes. →
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+                The full tour of the Mac surface — hold-to-talk, return-to-origin, 48-hour echoes. <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </p>
             </Link>
 
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
+            <div className="group flex flex-col justify-between rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
               <div>
                 <p
                   className="text-[10px] uppercase tracking-[0.26em] text-trace"
@@ -230,20 +230,20 @@ export default function DemoPage() {
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                   Get early access.
                 </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
                   macOS 26+ · DMG, App Store, or one CLI command.
                 </p>
               </div>
               <Link
                 href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                className="group/btn mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
                   textShadow: '0 0 6px var(--trace-glow)',
                 }}
               >
-                <Laptop className="h-3.5 w-3.5" />
-                GO TO INSTALL <span>→</span>
+                <Laptop className="h-3.5 w-3.5 transition-transform duration-200 group-hover/btn:scale-110" />
+                GO TO INSTALL <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">→</span>
               </Link>
             </div>
           </div>
@@ -311,7 +311,7 @@ function ClipFrame({ src, label, channel, durationLabel, narrow = false }) {
 
 function SpecCard({ channel, icon: Icon, title, body }) {
   return (
-    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-50"
@@ -324,20 +324,20 @@ function SpecCard({ channel, icon: Icon, title, body }) {
       <div className="relative flex h-full flex-col">
         <div className="flex items-center justify-between">
           <div
-            className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+            className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
             style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
           >
             <Icon
-              className="h-4 w-4 text-trace"
+              className="h-4 w-4 text-trace transition-transform duration-200"
               style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
             />
           </div>
-          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
             CH-{channel}
           </span>
         </div>
         <h3 className="mt-4 font-display text-lg tracking-[-0.01em] text-ink">{title}</h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{body}</p>
+        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{body}</p>
       </div>
     </div>
   )

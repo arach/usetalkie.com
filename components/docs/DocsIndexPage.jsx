@@ -24,28 +24,28 @@ function DocCard({ slug, title, description, href }) {
   return (
     <Link
       href={href}
-      className="group relative flex h-full flex-col justify-between rounded-sm border border-edge-faint bg-canvas p-5 transition-all hover:-translate-y-px hover:border-edge"
+      className="group relative flex h-full flex-col justify-between rounded-sm border border-edge-faint bg-canvas p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
     >
       <div>
         <p
-          className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors group-hover:text-trace"
+          className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber"
         >
           /docs/{slug}
         </p>
         <h3 className="mt-3 font-display text-xl font-normal leading-tight tracking-[-0.01em] text-ink">
           {title}
         </h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{description}</p>
+        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{description}</p>
       </div>
 
       <div className="mt-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
         <span
           aria-hidden
-          className="inline-block h-1 w-1 rounded-full bg-trace"
+          className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
           style={{ boxShadow: '0 0 4px var(--trace)' }}
         />
         <span>Read guide</span>
-        <span aria-hidden className="transition-transform group-hover:translate-x-1">
+        <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">
           →
         </span>
       </div>
@@ -142,15 +142,15 @@ export default function DocsIndexPage() {
 
               <Link
                 href="/downloads"
-                className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
+                className="group inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60"
                 style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
               >
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+                  className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-125"
                   style={{ boxShadow: '0 0 4px var(--trace)' }}
                 />
-                DOWNLOAD · MAC <span>→</span>
+                DOWNLOAD · MAC <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </Link>
             </div>
           </div>

@@ -109,23 +109,23 @@ export default function ThankYouPage() {
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <a
               href="https://app.usetalkie.com/dl"
-              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
                 textShadow: '0 0 6px var(--trace-glow)',
               }}
             >
-              <Laptop className="h-3.5 w-3.5" aria-hidden />
+              <Laptop className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" aria-hidden />
               DOWNLOAD · MAC
-              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+              <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </a>
             <a
               href="https://app.usetalkie.com/testflight"
-              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:text-amber hover:border-amber/50"
             >
-              <Smartphone className="h-3.5 w-3.5" aria-hidden />
+              <Smartphone className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" aria-hidden />
               TESTFLIGHT · iPHONE
-              <span aria-hidden>↗</span>
+              <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
             </a>
           </div>
         </div>
@@ -162,15 +162,15 @@ export default function ThankYouPage() {
 function NextStep({ step }) {
   const Icon = step.icon
   return (
-    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
       <div className="relative flex items-start gap-4">
         <div
-          className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-sm border border-edge"
+          className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
           style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
         >
           <Icon
-            className="h-4 w-4 text-trace"
+            className="h-4 w-4 text-trace transition-transform duration-200"
             style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
             aria-hidden
           />
@@ -179,7 +179,7 @@ function NextStep({ step }) {
           <h3 className="font-display text-base font-normal leading-snug tracking-[-0.01em] text-ink">
             {step.title}
           </h3>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{step.body}</p>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{step.body}</p>
         </div>
       </div>
     </div>
