@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Mic, Lock, Layers } from 'lucide-react'
 import { NarrateTrigger } from './narrator'
 import { supportingLine, TAGLINE_PHILOSOPHY } from '../content/tagline'
+import DownloadBay from './DownloadBay'
 
 /**
  * Philosophy — v2 oscilloscope canvas.
@@ -226,33 +227,9 @@ export default function PhilosophyPage() {
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            {/* This is Talkie */}
-            <div className="group flex flex-col justify-between rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
-              <div>
-                <p
-                  className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
-                  style={TRACE_GLOW_SOFT}
-                >
-                  · THIS IS TALKIE
-                </p>
-                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  A selfie. For your thoughts.<br />
-                  <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_PHILOSOPHY)}</span>
-                </h3>
-                <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
-                  Voice capture, local-first, auditable signal path. Your words stay on your devices.
-                </p>
-              </div>
-              <Link
-                href="/downloads"
-                className="group/btn mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60"
-                style={{
-                  background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
-                  textShadow: '0 0 6px var(--trace-glow)',
-                }}
-              >
-                INSTALL <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">→</span>
-              </Link>
+            {/* Download — proper module, not a corny INSTALL chip */}
+            <div className="flex items-center justify-center rounded-md border border-edge bg-surface p-6 md:p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
+              <DownloadBay caption="Voice capture, local-first, auditable signal path." />
             </div>
 
             {/* Surfaces tie-back */}
