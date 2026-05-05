@@ -21,11 +21,18 @@ import { Check, Copy, Download } from 'lucide-react'
  * bottom-of-page download moment for Mac-context routes.
  */
 const INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
-const NPM_CMD = 'npm install -g talkie-cli'
+
+const MANAGERS = [
+  { id: 'bun',  label: 'bun',  cmd: 'bun add -g talkie-cli' },
+  { id: 'npm',  label: 'npm',  cmd: 'npm install -g talkie-cli' },
+  { id: 'pnpm', label: 'pnpm', cmd: 'pnpm add -g talkie-cli' },
+]
 
 export default function DownloadBay({ caption }) {
   const [copiedCurl, setCopiedCurl] = useState(false)
-  const [copiedNpm, setCopiedNpm] = useState(false)
+  const [copiedDev, setCopiedDev] = useState(false)
+  const [activeMgr, setActiveMgr] = useState('bun')
+  const currentMgr = MANAGERS.find((m) => m.id === activeMgr) ?? MANAGERS[0]
 
   const copyTo = async (cmd, setter) => {
     try {
@@ -102,7 +109,8 @@ export default function DownloadBay({ caption }) {
 
       {/* For developers — separate beat below the primary install paths.
           Border-top + extra spacing signals a tier change rather than a
-          third equivalent option. */}
+          third equivalent option. Package-manager tabs let bun/npm/pnpm
+          users self-select instead of staring at someone else's PM. */}
       <div className="mt-2 flex w-full max-w-md flex-col items-center gap-3 border-t border-edge-faint pt-7">
         <p
           className="font-mono text-[9px] uppercase tracking-[0.28em] text-ink-faint"
@@ -110,10 +118,40 @@ export default function DownloadBay({ caption }) {
         >
           · FOR DEVELOPERS
         </p>
+        <div className="flex items-center gap-1" role="tablist" aria-label="Package manager">
+          {MANAGERS.map((m) => {
+            const isActive = m.id === activeMgr
+            return (
+              <button
+                key={m.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => {
+                  setActiveMgr(m.id)
+                  setCopiedDev(false)
+                }}
+                className={`relative px-2.5 py-1 font-mono text-[10px] lowercase tracking-[0.18em] transition-colors duration-150 ${
+                  isActive ? 'text-amber' : 'text-ink-faint hover:text-ink-muted'
+                }`}
+                style={isActive ? { textShadow: '0 0 4px var(--trace-glow)' } : undefined}
+              >
+                {m.label}
+                {isActive && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-2 -bottom-0.5 block h-px bg-amber"
+                    style={{ boxShadow: '0 0 6px var(--trace-glow)' }}
+                  />
+                )}
+              </button>
+            )
+          })}
+        </div>
         <CommandBar
-          cmd={NPM_CMD}
-          copied={copiedNpm}
-          onCopy={() => copyTo(NPM_CMD, setCopiedNpm)}
+          cmd={currentMgr.cmd}
+          copied={copiedDev}
+          onCopy={() => copyTo(currentMgr.cmd, setCopiedDev)}
         />
       </div>
     </div>
