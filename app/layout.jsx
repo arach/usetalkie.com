@@ -76,7 +76,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="modern" data-osci-style="slate" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         {/*
          * Theme resolver — must run synchronously in <head> before first paint
@@ -117,7 +117,11 @@ export default function RootLayout({ children }) {
                 var savedTheme = localStorage.getItem('design-theme');
                 if (savedTheme && validThemes.indexOf(savedTheme) !== -1) theme = savedTheme;
               }
-              if (theme === 'modern' || theme === 'linen') root.setAttribute('data-theme', theme);
+              if (theme === 'modern' || theme === 'linen') {
+                root.setAttribute('data-theme', theme);
+              } else {
+                root.removeAttribute('data-theme');
+              }
 
               /* Tone resolver — saved value wins. If none saved AND theme
                  is Modern, default to "slate" (the Modern-paired tone).
@@ -128,6 +132,8 @@ export default function RootLayout({ children }) {
                 root.setAttribute('data-osci-style', osci);
               } else if (theme === 'modern') {
                 root.setAttribute('data-osci-style', 'slate');
+              } else {
+                root.removeAttribute('data-osci-style');
               }
             } catch (e) {}
           `,
@@ -151,7 +157,7 @@ export default function RootLayout({ children }) {
         {children}
         <StudioPanel />
         <FeedbackWidget />
-        <DevConsole />
+        {process.env.NODE_ENV === 'development' && <DevConsole />}
       </body>
     </html>
   )

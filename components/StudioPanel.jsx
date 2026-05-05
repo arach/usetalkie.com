@@ -294,7 +294,7 @@ export default function StudioPanel() {
        * inset so the pill sits in horizontal formation with GET APP
        * on standard viewport widths. z-50 keeps the expanded panel
        * above the sticky header (which is z-40). */
-      className="fixed top-[9px] right-4 md:right-6 z-50 rounded-md border font-mono shadow-md backdrop-blur"
+      className="fixed top-[9px] right-4 md:right-6 z-50 hidden rounded-md border font-mono shadow-md backdrop-blur md:block"
       style={{
         background:  'var(--canvas-overlay)',
         borderColor: 'var(--edge)',

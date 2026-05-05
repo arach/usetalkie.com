@@ -205,7 +205,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · 01 / DATA BUFFER
+              · DATA BUFFER
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               What the instrument actually captures.
@@ -234,7 +234,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · 02 / CAPTURE MODES
+              · CAPTURE MODES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               One voice path. <span className="italic text-ink-muted">More than one use.</span>
@@ -245,9 +245,26 @@ export default function HomePage() {
           </div>
 
           <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-            {CAPTURE_MODES.map((m, i) => (
+            {CAPTURE_MODES.slice(0, 3).map((m, i) => (
               <CaptureModeCard key={m.title} mode={m} index={i} />
             ))}
+            <div className="hidden md:contents">
+              {CAPTURE_MODES.slice(3).map((m, i) => (
+                <CaptureModeCard key={m.title} mode={m} index={i + 3} />
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile-only escape hatch — last 3 modes (Recovery / Workflows /
+              CLI) are hidden above to keep the section from sprawling on
+              iPhone; this points to the full tour. */}
+          <div className="mt-6 md:hidden">
+            <Link
+              href="/tour"
+              className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
+            >
+              MORE MODES <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </section>
@@ -265,7 +282,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · 03 / RECOVERY FLOW
+              · RECOVERY FLOW
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Voice notes are easy to save.
@@ -298,7 +315,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · 04 / OWNERSHIP
+              · OWNERSHIP
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Your voice stays on your side.
@@ -358,7 +375,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · 05 / PRICING
+              · PRICING
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Free while we build.
@@ -621,7 +638,7 @@ function FlowStep({ step }) {
     <div className="grid grid-cols-1 gap-6 border-t border-edge-faint py-10 md:grid-cols-[140px_1fr] md:gap-10 md:py-12">
       <div>
         <div
-          className="font-display text-5xl font-normal leading-none tracking-[-0.04em] opacity-95"
+          className="hidden font-display text-5xl font-normal leading-none tracking-[-0.04em] opacity-95 md:block"
           style={{
             color: 'var(--amber)',
             textShadow:
