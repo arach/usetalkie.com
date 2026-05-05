@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { SecurityInfographic } from './SecurityInfographic'
 import {
   ShieldCheck,
   Lock,
@@ -568,8 +569,11 @@ export default function SecurityPage() {
             device solely when you explicitly route a workflow to an external provider.
           </p>
 
-          <div className="mt-10">
+          <div className="mt-10 theme-warm-only">
             <SecuritySchematic />
+          </div>
+          <div className="mt-10 theme-modern-only">
+            <SecurityInfographic />
           </div>
         </div>
       </section>
@@ -583,12 +587,21 @@ export default function SecurityPage() {
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Stored */}
-            <div className="relative overflow-hidden rounded-sm border border-edge bg-surface p-6">
+            {/* Stored — semantic green accent: this is the SAFE/OK column */}
+            <div
+              className="relative overflow-hidden rounded-sm border border-emerald-700/40 bg-surface p-6"
+              style={{ boxShadow: 'inset 0 0 0 1px rgba(16, 185, 129, 0.06)' }}
+            >
               <Graticule opacity={0.5} />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-12 -left-12 h-32 w-32 rounded-full opacity-30"
+                style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.35) 0%, transparent 65%)' }}
+              />
               <div className="relative">
-                <div className="mb-1 font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                  · STORED
+                <div className="mb-1 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.26em] text-emerald-700">
+                  <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.7)' }} />
+                  STORED
                 </div>
                 <h3 className="font-display text-lg font-normal tracking-[-0.01em] text-ink">
                   On your devices only.
@@ -597,28 +610,36 @@ export default function SecurityPage() {
                   {STORED_ITEMS.map((label) => (
                     <li key={label} className="flex items-start gap-3">
                       <Check
-                        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-trace"
-                        style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
+                        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600"
+                        style={{ filter: 'drop-shadow(0 0 3px rgba(16,185,129,0.55))' }}
                       />
                       <span className="text-[13px] leading-snug text-ink-muted">{label}</span>
                     </li>
                   ))}
                 </ul>
                 <div
-                  className="mt-6 border-t border-edge-subtle pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
-                  style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+                  className="mt-6 border-t border-emerald-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-emerald-700"
                 >
                   ON-DEVICE · LOCAL-FIRST
                 </div>
               </div>
             </div>
 
-            {/* Not stored */}
-            <div className="relative overflow-hidden rounded-sm border border-edge-dim bg-surface p-6">
+            {/* Not stored — semantic rose accent: this is the BLOCKED/NEVER column */}
+            <div
+              className="relative overflow-hidden rounded-sm border border-rose-700/40 bg-surface p-6"
+              style={{ boxShadow: 'inset 0 0 0 1px rgba(244, 63, 94, 0.06)' }}
+            >
               <Graticule opacity={0.5} />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-30"
+                style={{ background: 'radial-gradient(circle, rgba(244,63,94,0.35) 0%, transparent 65%)' }}
+              />
               <div className="relative">
-                <div className="mb-1 font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                  · NOT STORED
+                <div className="mb-1 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.26em] text-rose-700">
+                  <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-rose-500" style={{ boxShadow: '0 0 6px rgba(244,63,94,0.7)' }} />
+                  NOT STORED
                 </div>
                 <h3 className="font-display text-lg font-normal tracking-[-0.01em] text-ink">
                   Never on Talkie servers.
@@ -626,12 +647,12 @@ export default function SecurityPage() {
                 <ul className="mt-6 space-y-3">
                   {NOT_STORED_ITEMS.map((label) => (
                     <li key={label} className="flex items-start gap-3">
-                      <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber" />
+                      <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600" />
                       <span className="text-[13px] leading-snug text-ink-muted">{label}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 border-t border-edge-subtle pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-amber">
+                <div className="mt-6 border-t border-rose-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-rose-700">
                   TALKIE SYSTEMS · NO ACCESS
                 </div>
               </div>

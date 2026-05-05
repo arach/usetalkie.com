@@ -1085,3 +1085,15 @@ html[data-chassis-rotor="on"] .chassis-rotor-host { display: inline-flex; }
   border-radius: 9999px;
   filter: blur(100px);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Theme-branch utilities — let a page render different content per theme
+ * without JS. Default (Warm/Linen): warm slot visible, modern slot hidden.
+ * Modern theme: warm hidden, modern visible. Used where a section deserves
+ * a different illustration treatment per theme (e.g., Security architecture
+ * shows oscilloscope schematic in Warm, clean SaaS infographic in Modern).
+ * ───────────────────────────────────────────────────────────────────── */
+.theme-warm-only   { display: block; }
+.theme-modern-only { display: none; }
+html[data-theme="modern"] .theme-warm-only   { display: none; }
+html[data-theme="modern"] .theme-modern-only { display: block; }
