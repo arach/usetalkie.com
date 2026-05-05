@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   Cpu,
   Download,
@@ -272,27 +271,6 @@ export default function DownloadAllPage() {
               value="Local-first · Your iCloud"
             />
           </div>
-
-          {/* Cross-link to canonical */}
-          <Link
-            href="/downloads"
-            className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
-          >
-            <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                · QUICK INSTALL
-              </p>
-              <p className="mt-1.5 font-mono text-[12px] text-ink">
-                Just want the Mac DMG and the one-liner?
-              </p>
-            </div>
-            <span
-              className="font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-transform group-hover:translate-x-0.5"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              CANONICAL INSTALL →
-            </span>
-          </Link>
         </div>
       </section>
     </>
