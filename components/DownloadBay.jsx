@@ -23,9 +23,9 @@ import { Check, Copy, Download } from 'lucide-react'
 const INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
 
 const MANAGERS = [
-  { id: 'bun',  label: 'bun',  cmd: 'bun add -g talkie-cli' },
-  { id: 'npm',  label: 'npm',  cmd: 'npm install -g talkie-cli' },
-  { id: 'pnpm', label: 'pnpm', cmd: 'pnpm add -g talkie-cli' },
+  { id: 'bun',  label: 'bun',  cmd: 'bun add -g @talkie/app' },
+  { id: 'npm',  label: 'npm',  cmd: 'npm install -g @talkie/app' },
+  { id: 'pnpm', label: 'pnpm', cmd: 'pnpm add -g @talkie/app' },
 ]
 
 export default function DownloadBay({ caption }) {

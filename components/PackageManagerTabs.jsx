@@ -13,10 +13,10 @@ import { Check, Copy } from 'lucide-react'
  */
 
 const MANAGERS = [
-  { id: 'bun',  label: 'bun',  command: 'bun add -g talkie-cli' },
-  { id: 'npm',  label: 'npm',  command: 'npm install -g talkie-cli' },
-  { id: 'pnpm', label: 'pnpm', command: 'pnpm add -g talkie-cli' },
-  { id: 'yarn', label: 'yarn', command: 'yarn global add talkie-cli' },
+  { id: 'bun',  label: 'bun',  command: 'bun add -g @talkie/app' },
+  { id: 'npm',  label: 'npm',  command: 'npm install -g @talkie/app' },
+  { id: 'pnpm', label: 'pnpm', command: 'pnpm add -g @talkie/app' },
+  { id: 'yarn', label: 'yarn', command: 'yarn global add @talkie/app' },
 ]
 
 export default function PackageManagerTabs({ className = '' }) {
