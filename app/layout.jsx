@@ -1,12 +1,17 @@
 import './globals.css'
 import Script from 'next/script'
-import { Space_Grotesk, JetBrains_Mono, Fraunces } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono, Fraunces, Inter } from 'next/font/google'
 import DevConsole from '../components/DevConsole'
 import FeedbackWidget from '../shared/components/FeedbackWidget'
+import ThemePicker from '../components/ThemePicker'
 
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
 const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' })
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display', display: 'swap' })
+// Inter is the body sans for the Modern theme (donor look). Loaded under
+// --font-sans-classic; theme-scoped CSS rules in globals.css remap
+// --font-sans to point at it when html[data-theme="modern"] is active.
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans-classic', display: 'swap' })
 
 export const metadata = {
   title: 'Talkie - Talk to your Mac',
@@ -59,7 +64,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         {/* Apply saved/system theme before paint to prevent FOUC */}
         <Script id="theme-init" strategy="beforeInteractive">
@@ -74,6 +79,23 @@ export default function RootLayout({ children }) {
               if (osci) root.setAttribute('data-osci-style', osci);
               const rotor = localStorage.getItem('chassis-rotor');
               if (rotor === 'on') root.setAttribute('data-chassis-rotor', 'on');
+
+              /* Design-theme resolver chain — applies before first paint.
+                 Precedence (highest wins): URL ?theme=... > localStorage
+                 'design-theme' > 'warm' (default). URL param sticks to
+                 localStorage so a campaign link visit persists. */
+              const url = new URLSearchParams(location.search);
+              const urlTheme = url.get('theme');
+              const validThemes = ['warm', 'linen', 'modern'];
+              let theme = null;
+              if (urlTheme && validThemes.includes(urlTheme)) {
+                theme = urlTheme;
+                localStorage.setItem('design-theme', theme);
+              } else {
+                const savedTheme = localStorage.getItem('design-theme');
+                if (savedTheme && validThemes.includes(savedTheme)) theme = savedTheme;
+              }
+              if (theme === 'modern' || theme === 'linen') root.setAttribute('data-theme', theme);
             } catch (e) {}
           `}
         </Script>
@@ -93,6 +115,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${grotesk.className} min-h-screen bg-white text-slate-800 antialiased`}>
         {children}
+        <ThemePicker />
         <FeedbackWidget />
         <DevConsole />
       </body>

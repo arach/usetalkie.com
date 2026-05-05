@@ -1,4 +1,5 @@
 import SecurityPage from '../../components/SecurityPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Security & Privacy - Talkie',
@@ -28,5 +29,9 @@ export const metadata = {
 }
 
 export default function Security() {
-  return <SecurityPage />
+  return (
+    <MainShell>
+      <SecurityPage />
+    </MainShell>
+  )
 }

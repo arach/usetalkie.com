@@ -1,4 +1,5 @@
 import DownloadAllPage from '../../components/DownloadAllPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Download Talkie',
@@ -6,5 +7,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <DownloadAllPage />
+  return (
+    <MainShell>
+      <DownloadAllPage />
+    </MainShell>
+  )
 }

@@ -1,4 +1,5 @@
 import DocsIndexPage from '../../components/docs/DocsIndexPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Documentation — Talkie',
@@ -15,5 +16,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <DocsIndexPage />
+  return (
+    <MainShell>
+      <DocsIndexPage />
+    </MainShell>
+  )
 }

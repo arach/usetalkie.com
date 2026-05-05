@@ -3,8 +3,28 @@
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Volume2, ArrowLeft, Laptop, Smartphone, Link2, Quote } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Volume2, Laptop, Smartphone, Link2, Quote } from 'lucide-react'
 import { getTourBySlug, getAdjacentTour } from '../lib/tour'
+
+/**
+ * Tour slide — v2 oscilloscope canvas.
+ *
+ * Client component. Three pieces of behavior force this:
+ *   1. <audio> playback toggling and end-of-track reset
+ *   2. global keyboard navigation (←, →, Esc)
+ *   3. clipboard copy of the share URL with transient feedback
+ *
+ * The data fetch (`getTourBySlug` / `getAdjacentTour`) is synchronous and
+ * pure (lib/tour.js is a static array), so reading it from a client
+ * component is fine — no fs, no network. Internal links route through
+ * /tour/[slug].
+ *
+ * Theme tokens flow through tailwind semantic colors; inline `style` is
+ * limited to `--trace`-glow shadows that the token system can't express.
+ */
+
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+const TRACE_GLOW_DOT = { boxShadow: '0 0 6px var(--trace)' }
 
 export default function TourSlide({ slug }) {
   const router = useRouter()
@@ -21,7 +41,7 @@ export default function TourSlide({ slug }) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  // Stop audio on slug change
+  // Stop audio when slug changes
   useEffect(() => {
     setAudioPlaying(false)
     if (audioRef.current) {
@@ -30,7 +50,7 @@ export default function TourSlide({ slug }) {
     }
   }, [slug])
 
-  // Handle audio end
+  // Reset playing state when audio ends
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -44,7 +64,7 @@ export default function TourSlide({ slug }) {
     function handleKey(e) {
       if (e.key === 'ArrowLeft' && prev) router.push(`/tour/${prev.slug}/`)
       if (e.key === 'ArrowRight' && next) router.push(`/tour/${next.slug}/`)
-      if (e.key === 'Escape') router.push('/')
+      if (e.key === 'Escape') router.push('/v2')
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
@@ -52,14 +72,19 @@ export default function TourSlide({ slug }) {
 
   if (!item) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <section className="flex min-h-[60vh] items-center justify-center bg-canvas">
         <div className="text-center">
-          <p className="text-white/50 text-sm font-mono">Tour slide not found</p>
-          <Link href="/" className="text-white/80 hover:text-white text-sm mt-4 inline-block underline">
-            Back to home
+          <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-ink-faint">
+            TOUR SLIDE NOT FOUND
+          </p>
+          <Link
+            href="/v2"
+            className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-trace hover:underline"
+          >
+            <span aria-hidden>←</span> BACK HOME
           </Link>
         </div>
-      </div>
+      </section>
     )
   }
 
@@ -70,68 +95,87 @@ export default function TourSlide({ slug }) {
     : 'min(90vw, calc(60vh * 1.15))'
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <section className="relative flex min-h-[80vh] flex-col bg-canvas">
       {/* Audio element */}
       {item.audio && <audio ref={audioRef} src={item.audio} preload="none" />}
 
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-4">
+      {/* ========== TOP BAR ========== */}
+      <div className="flex items-center justify-between border-b border-edge-faint px-4 py-3 md:px-8">
         <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white text-xs font-mono uppercase tracking-widest transition-colors"
+          href="/v2"
+          className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors hover:text-trace"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to tour</span>
+          <span aria-hidden>←</span>
+          <span>BACK TO TOUR</span>
         </Link>
+
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-white/40 text-[10px] font-mono uppercase tracking-widest">
-            <PlatformIcon className="w-3.5 h-3.5" />
-            <span>Talkie for {isPortrait ? 'iPhone' : 'Mac'}</span>
+          <div className="hidden items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle sm:inline-flex">
+            <PlatformIcon className="h-3.5 w-3.5" aria-hidden />
+            <span>TALKIE FOR {isPortrait ? 'IPHONE' : 'MAC'}</span>
           </div>
+
           <button
+            type="button"
             onClick={copyLink}
-            className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
+            className={`inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.22em] transition-all ${
               copied
-                ? 'text-emerald-400 bg-emerald-500/10'
-                : 'text-white/30 hover:text-white/60 hover:bg-white/5'
+                ? 'border-edge text-trace'
+                : 'border-edge-dim text-ink-faint hover:border-edge hover:text-trace'
             }`}
+            style={
+              copied
+                ? { background: 'color-mix(in oklab, var(--trace) 8%, transparent)' }
+                : undefined
+            }
             aria-label="Copy link to this slide"
             title="Copy link"
           >
-            <Link2 className="w-3 h-3" />
-            <span className="text-[10px] font-mono tracking-wide">
-              {copied ? 'Copied!' : `usetalkie.com/tour/${slug}`}
-            </span>
+            <Link2 className="h-3 w-3" aria-hidden />
+            <span>{copied ? 'COPIED' : `usetalkie.com/tour/${slug}`}</span>
           </button>
         </div>
       </div>
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 md:px-10 pb-8">
-        <div className="relative w-full flex flex-col items-center">
-          {/* Screenshot + caption bezel */}
-          <div className="rounded-xl border border-white/20 overflow-hidden shadow-2xl" style={{ maxWidth: imageMaxWidth }}>
+      {/* ========== STAGE ========== */}
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-8 md:px-10">
+        <div className="relative flex w-full flex-col items-center">
+          {/* Screenshot bezel + caption */}
+          <div
+            className="overflow-hidden rounded-md border border-edge bg-surface shadow-lg"
+            style={{ maxWidth: imageMaxWidth }}
+          >
             <img
               src={item.src}
               alt={item.title}
-              className="w-full h-auto select-none"
+              className="h-auto w-full select-none"
               style={isPortrait ? { maxHeight: '50vh', width: 'auto', margin: '0 auto' } : undefined}
               draggable={false}
             />
-            <div className="border-t border-white/20 bg-black px-10 py-3">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40">
-                {item.title}
+            <div className="border-t border-edge-faint bg-canvas-alt px-6 py-3">
+              <span
+                className="font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
+                style={TRACE_GLOW_SOFT}
+              >
+                · {item.title}
               </span>
-              <p className="text-xs text-white/80 mt-1 leading-relaxed">{item.caption}</p>
+              <p className="mt-1 text-[13px] leading-relaxed text-ink-dim">{item.caption}</p>
             </div>
           </div>
 
           {/* Narration + listen */}
-          <div className="w-full mt-3 flex items-start gap-3 px-10" style={{ maxWidth: imageMaxWidth }}>
-            <Quote className="w-4 h-4 text-white/20 flex-shrink-0 mt-0.5" />
-            <p className="flex-1 text-xs text-white/60 leading-relaxed italic">{item.narration}</p>
+          <div
+            className="mt-4 flex w-full items-start gap-3 px-2 md:px-6"
+            style={{ maxWidth: imageMaxWidth }}
+          >
+            <Quote className="mt-0.5 h-4 w-4 shrink-0 text-ink-subtle" aria-hidden />
+            <p className="flex-1 text-[13px] italic leading-relaxed text-ink-muted">
+              {item.narration}
+            </p>
+
             {item.audio && (
               <button
+                type="button"
                 onClick={() => {
                   if (!audioRef.current) return
                   if (audioPlaying) {
@@ -141,50 +185,73 @@ export default function TourSlide({ slug }) {
                     audioRef.current.play().then(() => setAudioPlaying(true)).catch(() => {})
                   }
                 }}
-                className={`flex-shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest transition-all ${
+                className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-3 py-1 font-mono text-[9px] uppercase tracking-[0.24em] transition-all ${
                   audioPlaying
-                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                    : 'bg-white/10 text-white/60 border border-white/15 hover:bg-white/20 hover:text-white'
+                    ? 'border-edge text-trace'
+                    : 'border-edge-dim text-ink-faint hover:border-edge hover:text-trace'
                 }`}
+                style={
+                  audioPlaying
+                    ? { background: 'color-mix(in oklab, var(--trace) 8%, transparent)' }
+                    : undefined
+                }
                 aria-label={audioPlaying ? 'Pause narration' : 'Listen to narration'}
               >
-                <Volume2 className="w-3 h-3" />
-                <span>{audioPlaying ? 'Playing' : 'Listen'}</span>
+                <Volume2 className="h-3 w-3" aria-hidden />
+                <span>{audioPlaying ? 'PLAYING' : 'LISTEN'}</span>
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* Prev/Next navigation */}
+      {/* ========== PREV / NEXT ========== */}
       {(prev || next) && (
-        <div className="flex items-center justify-between px-4 md:px-8 py-5 border-t border-white/10">
+        <div className="flex items-center justify-between border-t border-edge-faint px-4 py-5 md:px-8">
           {prev ? (
             <Link
               href={`/tour/${prev.slug}/`}
-              className="group flex items-center gap-2 text-white/50 hover:text-white transition-colors"
+              className="group flex items-center gap-3 text-ink-faint transition-colors hover:text-trace"
             >
-              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+              <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
               <div className="text-left">
-                <span className="text-[10px] font-mono uppercase tracking-widest block text-white/30">Previous</span>
-                <span className="text-xs">{prev.title}</span>
+                <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+                  PREVIOUS
+                </span>
+                <span className="text-[12px]">{prev.title}</span>
               </div>
             </Link>
-          ) : <div />}
+          ) : (
+            <span aria-hidden />
+          )}
+
+          <div className="hidden items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle sm:inline-flex">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+              style={TRACE_GLOW_DOT}
+            />
+            <span>← / → TO NAVIGATE</span>
+          </div>
+
           {next ? (
             <Link
               href={`/tour/${next.slug}/`}
-              className="group flex items-center gap-2 text-white/50 hover:text-white transition-colors text-right"
+              className="group flex items-center gap-3 text-right text-ink-faint transition-colors hover:text-trace"
             >
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest block text-white/30">Next</span>
-                <span className="text-xs">{next.title}</span>
+                <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+                  NEXT
+                </span>
+                <span className="text-[12px]">{next.title}</span>
               </div>
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
-          ) : <div />}
+          ) : (
+            <span aria-hidden />
+          )}
         </div>
       )}
-    </div>
+    </section>
   )
 }

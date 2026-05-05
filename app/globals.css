@@ -80,12 +80,36 @@ html { scroll-behavior: smooth; }
   --screen-trace-glow:  rgba(255, 184, 77, 0.50);
   --screen-trace-dim:   rgba(255, 184, 77, 0.18);
   --screen-trace-faint: rgba(255, 184, 77, 0.08);
+  /* Screen ink — body/numerals on the always-dark scope surface.
+   * Stays light across all theme/mode combos because the screen IS dark
+   * by design. Distinct from panel-ink which can flip polarity per theme. */
+  --screen-ink:         #f0ead8;
+  --screen-ink-dim:     #d8d2c0;
+  --screen-ink-muted:   #b8b0a0;
+  --screen-ink-faint:   #80786a;
   /* Inset shadow that sells "recessed glass" — soft dark vignette
    * inside the rim so the screen reads as below the chassis surface
    * rather than pasted on top. */
   --screen-recess-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.55),
     inset 0 0 0 1px rgba(0, 0, 0, 0.30);
+
+  /* Rolodex flipcard tokens — warm paper aesthetic (default Warm theme).
+   * The card sits inline inside the H1, so its paint anchors the
+   * "warm desk lab" identity. Modern theme overrides these to a clean
+   * white card. */
+  --rolodex-bg:
+    linear-gradient(180deg, #f7ecd0 0%, #efdfb8 50%, #e8d5a3 100%);
+  --rolodex-ink:       #2a1f12;
+  --rolodex-edge:      color-mix(in oklab, #2a1f12 22%, transparent);
+  --rolodex-hinge:     color-mix(in oklab, #2a1f12 22%, transparent);
+  --rolodex-sheen:     rgba(255, 248, 230, 0.55);
+  --rolodex-rest:      rgba(80, 60, 30, 0.18);
+  --rolodex-shadow:
+    inset 0 1px 0 rgba(255, 248, 230, 0.85),
+    inset 0 -2px 0 rgba(80, 60, 30, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.4),
+    0 18px 40px -18px rgba(60, 40, 20, 0.4);
 }
 
 html.dark {
@@ -154,6 +178,288 @@ html.dark {
   --screen-trace-glow:  rgba(77, 255, 158, 0.50);
   --screen-trace-dim:   rgba(77, 255, 158, 0.18);
   --screen-trace-faint: rgba(77, 255, 158, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Modern theme bundle — the donor design language coexisting with the
+ * default Warm (oscilloscope) language. Activated via data-theme on
+ * <html>. Same component tree, same sequence; only paint changes.
+ *
+ * Resolved by the pre-paint script in app/layout.jsx via a chain:
+ *   1. URL ?theme=modern  (campaign-friendly, persists to localStorage)
+ *   2. localStorage 'design-theme'
+ *   3. 'warm' (default; no attribute set)
+ *
+ * Mined from the donor /mac screenshot: emerald accent, near-white
+ * canvas, soft pill nav, generous spacing, hard light→dark section
+ * flips for media. Fraunces stays the display face (italic shines on
+ * the donor headlines); body sans swaps to Inter for the softer feel.
+ * Decoration tokens (graticule, scanline, phosphor glow, recess) all
+ * neutralize so Modern's instrument vocabulary disappears from the
+ * paint without removing components from the tree.
+ * ───────────────────────────────────────────────────────────────────── */
+html[data-theme="modern"]:not(.dark) {
+  --canvas:         #ffffff;
+  --canvas-alt:     #fafafa;
+  --canvas-overlay: rgba(255, 255, 255, 0.86);
+  --surface:        #f5f5f5;
+  --trace:          #10b981;
+  --trace-glow:     rgba(16, 185, 129, 0.20);
+  --trace-dim:      rgba(16, 185, 129, 0.16);
+  --trace-faint:    transparent;
+  --amber:          #10b981;
+  --ink:            #0a0a0a;
+  --ink-dim:        #1a1a1a;
+  --ink-muted:      #525252;
+  --ink-faint:      #737373;
+  --ink-subtle:     #a3a3a3;
+  --edge:           rgba(0, 0, 0, 0.10);
+  --edge-dim:       rgba(0, 0, 0, 0.06);
+  --edge-faint:     rgba(0, 0, 0, 0.04);
+  --edge-subtle:    rgba(0, 0, 0, 0.02);
+
+  /* Panel = chassis bays. Under Classic these become soft white cards
+   * with thin borders and gentle shadows; same 3-bay layout, totally
+   * different paint. Edge-faint goes transparent so the inner graticule
+   * grid background disappears. */
+  --panel-bg:           #fafafa;
+  --panel-bg-alt:       #f5f5f5;
+  --panel-bg-deep:      #0a0a0a;
+  --panel-edge:         rgba(0, 0, 0, 0.10);
+  --panel-edge-dim:     rgba(0, 0, 0, 0.06);
+  --panel-edge-faint:   transparent;
+  --panel-edge-subtle:  transparent;
+  --panel-ink:          #0a0a0a;
+  --panel-ink-dim:      #1a1a1a;
+  --panel-ink-muted:    #525252;
+  --panel-ink-faint:    #737373;
+  --panel-ink-subtle:   #a3a3a3;
+  --panel-trace:        #10b981;
+  --panel-trace-glow:   transparent;
+  --panel-trace-dim:    rgba(16, 185, 129, 0.16);
+  --panel-trace-faint:  transparent;
+  --panel-scanline:     transparent;
+  --panel-chassis-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 8px 24px -12px rgba(0, 0, 0, 0.10);
+
+  /* Screen = scope CRT bezel. Under Classic, becomes a clean dark
+   * media frame (the donor's hard light→dark flip for the demo
+   * section). Phosphor glow gone, recess shadow gone, edge tints
+   * neutralize — but the dark backdrop stays so the structure still
+   * reads as "media surface" inside a white card. */
+  --screen-bg:          #0a0a0a;
+  --screen-bg-deep:     #050505;
+  --screen-edge:        rgba(255, 255, 255, 0.10);
+  --screen-edge-dim:    rgba(255, 255, 255, 0.06);
+  --screen-edge-faint:  transparent;
+  --screen-trace:       #10b981;
+  --screen-trace-glow:  rgba(16, 185, 129, 0.30);
+  --screen-trace-dim:   rgba(16, 185, 129, 0.16);
+  --screen-trace-faint: transparent;
+  --screen-recess-shadow: none;
+
+  /* Rolodex flipcard tokens — clean white card to match Modern's neutral
+   * palette. The Rolodex card sits inline inside the H1, so its paint
+   * needs to harmonize with the surrounding theme. Warm theme uses a
+   * beige-paper aesthetic (defined in :root); Modern flips to a clean
+   * card with subtle elevation that reads quiet against the white canvas. */
+  --rolodex-bg:        linear-gradient(180deg, #ffffff 0%, #fafafa 50%, #f4f4f4 100%);
+  --rolodex-ink:       #0a0a0a;
+  --rolodex-edge:      rgba(0, 0, 0, 0.14);
+  --rolodex-hinge:     rgba(0, 0, 0, 0.10);
+  --rolodex-sheen:     rgba(255, 255, 255, 0.7);
+  --rolodex-rest:      rgba(0, 0, 0, 0.06);
+  --rolodex-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05),
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 12px 28px -14px rgba(0, 0, 0, 0.18);
+
+  /* Body sans swaps to Inter under Modern for the softer feel. Display
+   * stays Fraunces (italic accent in donor headlines is load-bearing).
+   * Mono stays JetBrains Mono — eyebrows look right in either theme. */
+  --font-sans: var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
+               'Segoe UI', Roboto, sans-serif;
+}
+
+/* Dark mode under Modern — keep the cool studio palette but flip the
+ * accent to emerald to match Modern-light's donor accent. */
+html.dark[data-theme="modern"] {
+  --canvas:         #0a0a0a;
+  --canvas-alt:     #050505;
+  --canvas-overlay: rgba(10, 10, 10, 0.86);
+  --surface:        #171717;
+  --trace:          #34d399;
+  --trace-glow:     rgba(52, 211, 153, 0.30);
+  --trace-dim:      rgba(52, 211, 153, 0.16);
+  --trace-faint:    transparent;
+  --ink:            #fafafa;
+  --ink-dim:        #e5e5e5;
+  --ink-muted:      #a3a3a3;
+  --ink-faint:      #737373;
+  --ink-subtle:     #525252;
+  --edge:           rgba(255, 255, 255, 0.12);
+  --edge-dim:       rgba(255, 255, 255, 0.08);
+  --edge-faint:     rgba(255, 255, 255, 0.04);
+  --edge-subtle:    transparent;
+
+  --panel-bg:           #0f0f0f;
+  --panel-bg-alt:       #171717;
+  --panel-bg-deep:      #050505;
+  --panel-edge:         rgba(255, 255, 255, 0.10);
+  --panel-edge-dim:     rgba(255, 255, 255, 0.06);
+  --panel-edge-faint:   transparent;
+  --panel-trace:        #34d399;
+  --panel-trace-glow:   transparent;
+  --panel-trace-faint:  transparent;
+  --panel-scanline:     transparent;
+
+  --screen-bg:          #050505;
+  --screen-trace:       #34d399;
+  --screen-trace-glow:  rgba(52, 211, 153, 0.30);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Linen theme — a lighter, less-saturated variant of Warm. Same warm
+ * desk-lab grammar (cream paper canvas, dark chassis with amber
+ * phosphor), but every value is pulled toward neutral by 1–2 shades
+ * so the page transition from Modern → Linen reads as a softer step
+ * than Modern → Warm. The "original styled high-contrast version"
+ * (the dark warm-charcoal chassis) gets lightened to a medium warm
+ * grey so the contrast against the lighter canvas is gentler.
+ *
+ * Resolved by the pre-paint script in app/layout.jsx via the same
+ * chain as Modern: URL ?theme=linen → localStorage → 'warm' default.
+ * ───────────────────────────────────────────────────────────────────── */
+html[data-theme="linen"]:not(.dark) {
+  /* Canvas — pulled toward eggshell, less yellow than Warm's #e8dcc4. */
+  --canvas:         #f0e8d4;
+  --canvas-alt:     #e8e0c8;
+  --canvas-overlay: rgba(240, 232, 212, 0.85);
+  --surface:        #e0d8c2;
+  --trace:          #2a2520;
+  --trace-glow:     rgba(42, 37, 32, 0.16);
+  --trace-dim:      rgba(42, 37, 32, 0.24);
+  --trace-faint:    rgba(42, 37, 32, 0.06);
+  --amber:          #a16614;
+  --ink:            #14110d;
+  --ink-dim:        #221c17;
+  --ink-muted:      #3a2f24;
+  --ink-faint:      #5a4d3e;
+  --ink-subtle:     #6e6052;
+  --edge:           rgba(26, 22, 18, 0.32);
+  --edge-dim:       rgba(26, 22, 18, 0.22);
+  --edge-faint:     rgba(26, 22, 18, 0.14);
+  --edge-subtle:    rgba(26, 22, 18, 0.08);
+
+  /* Chassis — lifted from #1c1814 (Warm) to #2c2620 so the dark
+   * instrument body reads as a medium warm grey instead of near-
+   * black. Phosphor accent stays amber for instrument identity.
+   * Secondary panel inks lifted (lighter) to maintain readable
+   * contrast against the lighter chassis (chassis went up by ~16
+   * units in lightness, so secondary text needs to follow). */
+  --panel-bg:           #2c2620;
+  --panel-bg-alt:       #332d26;
+  --panel-bg-deep:      #1f1a14;
+  --panel-edge:         rgba(255, 184, 77, 0.22);
+  --panel-edge-dim:     rgba(255, 184, 77, 0.15);
+  --panel-edge-faint:   rgba(255, 184, 77, 0.09);
+  --panel-edge-subtle:  rgba(255, 184, 77, 0.06);
+  --panel-ink:          #f5efe0;
+  --panel-ink-dim:      #e2dcca;
+  --panel-ink-muted:    #c4bba8;
+  --panel-ink-faint:    #968d7c;
+  --panel-ink-subtle:   #807868;
+  --panel-trace:        #ffb84d;
+  --panel-trace-glow:   rgba(255, 184, 77, 0.45);
+  --panel-trace-dim:    rgba(255, 184, 77, 0.16);
+  --panel-trace-faint:  rgba(255, 184, 77, 0.07);
+  --panel-scanline:     rgba(255, 184, 77, 0.03);
+  --panel-chassis-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.32),
+    0 10px 28px -12px rgba(0, 0, 0, 0.28),
+    0 4px 10px -4px rgba(0, 0, 0, 0.16);
+
+  /* Screen stays dark CRT — the active instrument display always
+   * reads as a recessed glass surface. Only the surrounding chassis
+   * lightens; the screen itself keeps the same depth as Warm. */
+  --screen-bg:          #0a0907;
+  --screen-bg-deep:     #060504;
+  --screen-edge:        rgba(255, 184, 77, 0.20);
+  --screen-edge-dim:    rgba(255, 184, 77, 0.13);
+  --screen-edge-faint:  rgba(255, 184, 77, 0.07);
+  --screen-trace:       #ffb84d;
+  --screen-trace-glow:  rgba(255, 184, 77, 0.45);
+  --screen-trace-dim:   rgba(255, 184, 77, 0.16);
+  --screen-trace-faint: rgba(255, 184, 77, 0.07);
+  --screen-recess-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.50),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+
+  /* Rolodex card — Linen-flavored paper card. Same paper-on-paper
+   * grammar as Warm (the canvas IS paper, the card is a fresher sheet
+   * lifted off it), but every value pulled toward neutral by 1–2
+   * shades to match the rest of Linen's softening pass. Top stop is
+   * brighter than the Linen canvas (#f0e8d4) so the card reads as a
+   * lifted artifact rather than merging with the desk; bottom stop
+   * is slightly recessed for the physical-card affordance. The
+   * earlier obsidian variant inverted Linen's contrast hierarchy
+   * (the flipper out-darkened the lightened chassis), so this
+   * version keeps the flipper inside Linen's value range. */
+  --rolodex-bg:
+    linear-gradient(180deg, #faf3e0 0%, #f5ecd2 50%, #ede2c2 100%);
+  --rolodex-ink:       #1a1410;
+  --rolodex-edge:      color-mix(in oklab, #1a1410 18%, transparent);
+  --rolodex-hinge:     color-mix(in oklab, #1a1410 18%, transparent);
+  --rolodex-sheen:     rgba(255, 250, 240, 0.55);
+  --rolodex-rest:      rgba(70, 55, 35, 0.16);
+  --rolodex-shadow:
+    inset 0 1px 0 rgba(255, 250, 240, 0.85),
+    inset 0 -2px 0 rgba(70, 55, 35, 0.16),
+    0 1px 0 rgba(255, 255, 255, 0.45),
+    0 16px 36px -18px rgba(60, 45, 25, 0.32);
+}
+
+/* Linen dark mode — Warm dark lifted by ~1 shade. The near-black
+ * studio scope brightens to a dark slate; phosphor stays green for
+ * instrument identity. */
+html.dark[data-theme="linen"] {
+  --canvas:         #0c0e14;
+  --canvas-alt:     #0a0c12;
+  --canvas-overlay: rgba(12, 14, 20, 0.82);
+  --surface:        #0e1014;
+
+  --panel-bg:           #0e1214;
+  --panel-bg-alt:       #14181a;
+  --panel-bg-deep:      #0a0d0e;
+
+  --screen-bg:          #060810;
+  --screen-bg-deep:     #04060c;
+}
+
+/* Modern-only structural rules — these handle decoration that has no
+ * natural token off-switch (animated SVG wires, the v4-playhead-sweep
+ * keyframe, etc.). Token-driven elements (graticule grid, phosphor
+ * glow, scanlines, corner brackets) already neutralize via the
+ * transparent values above; this block catches the rest. */
+html[data-theme="modern"] .v4-playhead-sweep,
+html[data-theme="modern"] .osc-sweep,
+html[data-theme="modern"] .osc-chase,
+html[data-theme="modern"] .osc-chase-slow,
+html[data-theme="modern"] .osc-hop {
+  animation: none;
+}
+
+/* The osci-style picker (chassis paper variants) only does something
+ * visible under the Warm theme — Modern overrides the panel-* tokens
+ * so cycling chassis paper has no effect. Hide it under Modern. The
+ * chassis-rotor toggle stays visible in both themes (the rotor sits
+ * on the chassis bay regardless of paint). The global ThemePicker
+ * stays visible at bottom-left for theme flipping. */
+html[data-theme="modern"] [aria-label="Oscilloscope chassis style"] {
+  display: none;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -786,3 +1092,15 @@ html[data-chassis-rotor="on"] .chassis-rotor-host { display: inline-flex; }
   border-radius: 9999px;
   filter: blur(100px);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Theme-branch utilities — let a page render different content per theme
+ * without JS. Default (Warm/Linen): warm slot visible, modern slot hidden.
+ * Modern theme: warm hidden, modern visible. Used where a section deserves
+ * a different illustration treatment per theme (e.g., Security architecture
+ * shows oscilloscope schematic in Warm, clean SaaS infographic in Modern).
+ * ───────────────────────────────────────────────────────────────────── */
+.theme-warm-only   { display: block; }
+.theme-modern-only { display: none; }
+html[data-theme="modern"] .theme-warm-only   { display: none; }
+html[data-theme="modern"] .theme-modern-only { display: block; }

@@ -13,11 +13,10 @@ import {
   Lock,
   ArrowRight,
 } from 'lucide-react'
-import SignalTable from '../v2/SignalTable'
-import capturesCatalog from '../../content/v2/captures.json'
+import SignalTable from '../SignalTable'
+import capturesCatalog from '../../content/captures.json'
 import PanoramicHero from './PanoramicHero'
 import OsciStyleToggle from './OsciStyleToggle'
-import ChassisRotorToggle from './ChassisRotorToggle'
 
 /**
  * v4 HomePage — synthesis composition.
@@ -171,7 +170,6 @@ export default function HomePage() {
   return (
     <>
       <OsciStyleToggle />
-      <ChassisRotorToggle />
       {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
@@ -190,7 +188,7 @@ export default function HomePage() {
               {device}" for the lead. */}
           <p className="mt-10 text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14">
             <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
-            A selfie. For your thoughts.
+            It's like a selfie. For your thoughts.
             <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
           </p>
         </div>

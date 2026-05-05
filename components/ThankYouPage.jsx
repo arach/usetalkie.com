@@ -1,105 +1,187 @@
-"use client"
-import React from 'react'
 import Link from 'next/link'
-import { Check, ArrowRight, Mail, Sparkles, Laptop, Smartphone } from 'lucide-react'
+import { Check, Mail, Sparkles, Laptop, Smartphone, ArrowRight } from 'lucide-react'
+
+/**
+ * /thank-you — confirmation page on the oscilloscope canvas.
+ *
+ * Pure server component. The donor (`components/ThankYouPage.jsx`) had
+ * no interactive state, just animated decorations — so this re-author
+ * keeps every content beat (confirmation, two next-steps, two download
+ * surfaces, back-home link) but trades the corner brackets and rounded
+ * pulse-dot for the v2 phosphor aesthetic.
+ */
+
+const GRATICULE = {
+  backgroundImage:
+    'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+  backgroundSize: '48px 48px',
+}
+const GRATICULE_FINE = {
+  backgroundImage:
+    'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+  backgroundSize: '24px 24px',
+}
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+const TRACE_GLOW_DOT = { boxShadow: '0 0 6px var(--trace)' }
+const HEADLINE_PHOSPHOR = {
+  textShadow: '0 0 18px var(--trace-glow), 0 0 6px var(--trace-glow)',
+}
+
+const NEXT_STEPS = [
+  {
+    icon: Mail,
+    title: 'Check your inbox.',
+    body: 'Confirmation signal incoming. Add hello@usetalkie.com to your contacts so it lands cleanly.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Early access + launch discount.',
+    body: 'You will be among the first invited before the public broadcast.',
+  },
+]
 
 export default function ThankYouPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-      {/* Background Grid */}
-      <div className="fixed inset-0 z-0 bg-tactical-grid dark:bg-tactical-grid-dark bg-[size:60px_60px] opacity-20 dark:opacity-10 pointer-events-none" />
+    <section className="relative overflow-hidden bg-canvas">
+      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-      <main className="relative z-10 min-h-screen flex items-center justify-center px-6 py-24">
-        <div className="w-full max-w-sm">
-          <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-8 relative">
-            {/* Corner Accents */}
-            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-emerald-500" />
-            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-emerald-500" />
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-emerald-500" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-emerald-500" />
+      <div className="relative mx-auto flex min-h-[calc(100vh-3rem)] max-w-3xl flex-col items-center justify-center px-4 py-20 md:px-6 md:py-28">
+        {/* Status strip */}
+        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+          <span aria-hidden className="inline-block h-px w-8" style={{ background: 'var(--trace-dim)' }} />
+          <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-trace" style={TRACE_GLOW_DOT} />
+          <span>SIGNAL · CONFIRMED</span>
+          <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-trace" style={TRACE_GLOW_DOT} />
+          <span aria-hidden className="inline-block h-px w-8" style={{ background: 'var(--trace-dim)' }} />
+        </div>
 
-            {/* Success Icon */}
-            <div className="flex justify-center mb-8">
-              <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
-                <Check className="w-8 h-8 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
-              </div>
-            </div>
+        {/* Phosphor check */}
+        <div
+          className="mt-8 inline-flex h-16 w-16 items-center justify-center rounded-full border border-edge"
+          style={{
+            background: 'color-mix(in oklab, var(--trace) 8%, transparent)',
+            boxShadow: '0 0 24px var(--trace-glow), inset 0 0 12px var(--trace-glow)',
+          }}
+        >
+          <Check
+            className="h-7 w-7 text-trace"
+            strokeWidth={2.5}
+            style={{ filter: 'drop-shadow(0 0 6px var(--trace-glow))' }}
+            aria-hidden
+          />
+        </div>
 
-            {/* Header */}
-            <div className="text-center mb-8">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
-                  Confirmed
-                </span>
-              </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-3">
-                You&apos;re on the list.
-              </h1>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mx-auto">
-                Thanks for your interest in Talkie. We&apos;re building something special and you&apos;ll be among the first to experience it.
-              </p>
-            </div>
+        {/* Headline */}
+        <h1 className="mt-8 text-center font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
+          You&apos;re{' '}
+          <span className="italic text-trace" style={HEADLINE_PHOSPHOR}>
+            on the list.
+          </span>
+        </h1>
+        <p className="mt-5 max-w-xl text-center text-[15px] leading-relaxed text-ink-muted">
+          Thanks for your interest in Talkie. We&apos;re building something local-first and
+          carefully tuned — you&apos;ll be among the first to hear it.
+        </p>
 
-            {/* What to Expect */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 mb-6">
-              <h2 className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 mb-5 text-center">
-                &gt; What happens next
-              </h2>
-              <div className="space-y-4 text-center">
-                <div className="group">
-                  <div className="inline-flex items-center justify-center w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded mb-2 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 transition-colors">
-                    <Mail className="w-4 h-4 text-zinc-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" />
-                  </div>
-                  <p className="text-xs font-bold text-zinc-900 dark:text-white">Check your inbox</p>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Confirmation email incoming.</p>
-                </div>
-                <div className="group">
-                  <div className="inline-flex items-center justify-center w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded mb-2 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 transition-colors">
-                    <Sparkles className="w-4 h-4 text-zinc-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" />
-                  </div>
-                  <p className="text-xs font-bold text-zinc-900 dark:text-white">Early access + launch discount</p>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">We&apos;ll invite you before public launch.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Download Links */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 mb-6 space-y-3">
-              <a
-                href="https://app.usetalkie.com/dl"
-                className="w-full flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-100 rounded-sm"
-              >
-                <Laptop className="w-4 h-4" />
-                Download Talkie for Mac
-              </a>
-              <a
-                href="https://app.usetalkie.com/testflight"
-                className="w-full flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors hover:border-zinc-400 dark:hover:border-zinc-500 rounded-sm"
-              >
-                <Smartphone className="w-3.5 h-3.5" />
-                Get iPhone TestFlight
-              </a>
-            </div>
-
-            {/* CTA */}
-            <div className="text-center">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors group"
-              >
-                Back to Home
-                <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
+        {/* What happens next */}
+        <div className="mt-14 w-full">
+          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
+            <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--trace-dim)' }} />
+            <span>· WHAT HAPPENS NEXT</span>
+            <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--edge-subtle)' }} />
           </div>
 
-          {/* Footer note */}
-          <p className="text-center text-[10px] font-mono text-zinc-400 mt-6 uppercase tracking-wider">
-            Questions? Reach out anytime.
-          </p>
+          <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {NEXT_STEPS.map((step) => (
+              <NextStep key={step.title} step={step} />
+            ))}
+          </div>
         </div>
-      </main>
+
+        {/* Download surfaces */}
+        <div className="mt-12 w-full">
+          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
+            <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--trace-dim)' }} />
+            <span>· GET TALKIE NOW</span>
+            <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--edge-subtle)' }} />
+          </div>
+
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <a
+              href="https://app.usetalkie.com/dl"
+              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+              style={{
+                background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
+                textShadow: '0 0 6px var(--trace-glow)',
+              }}
+            >
+              <Laptop className="h-3.5 w-3.5" aria-hidden />
+              DOWNLOAD · MAC
+              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <a
+              href="https://app.usetalkie.com/testflight"
+              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+            >
+              <Smartphone className="h-3.5 w-3.5" aria-hidden />
+              TESTFLIGHT · iPHONE
+              <span aria-hidden>↗</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom rule + back link */}
+        <div className="mt-14 flex w-full items-center gap-4">
+          <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
+          <span
+            aria-hidden
+            className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+            style={TRACE_GLOW_DOT}
+          />
+          <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
+        </div>
+
+        <Link
+          href="/v2"
+          className="group mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.26em] text-ink-muted transition-colors hover:text-trace"
+        >
+          BACK TO HOME
+          <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden />
+        </Link>
+
+        <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+          QUESTIONS? REACH OUT ANYTIME.
+        </p>
+      </div>
+    </section>
+  )
+}
+
+/* ── Sub-components ─────────────────────────────────────────────────── */
+
+function NextStep({ step }) {
+  const Icon = step.icon
+  return (
+    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
+      <div className="relative flex items-start gap-4">
+        <div
+          className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-sm border border-edge"
+          style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+        >
+          <Icon
+            className="h-4 w-4 text-trace"
+            style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
+            aria-hidden
+          />
+        </div>
+        <div>
+          <h3 className="font-display text-base font-normal leading-snug tracking-[-0.01em] text-ink">
+            {step.title}
+          </h3>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{step.body}</p>
+        </div>
+      </div>
     </div>
   )
 }

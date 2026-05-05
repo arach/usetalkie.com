@@ -1,4 +1,5 @@
 import AboutPage from '../../components/AboutPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'About - Talkie',
@@ -6,5 +7,9 @@ export const metadata = {
 }
 
 export default function About() {
-  return <AboutPage />
+  return (
+    <MainShell>
+      <AboutPage />
+    </MainShell>
+  )
 }

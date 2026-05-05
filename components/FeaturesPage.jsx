@@ -1,466 +1,523 @@
-"use client"
-import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import InstallCard from './InstallCard'
 import {
-  ArrowLeft,
-  Code,
-  Layers,
   Mic,
+  CornerDownLeft,
+  Clock,
+  Eye,
+  Send,
+  Signal,
   Workflow,
-  Terminal,
-  FolderTree,
-  FileOutput,
   Cpu,
-  Monitor,
-  Zap,
-  Calendar,
-  Mail,
-  Bell,
-  Copy,
+  Terminal,
+  FileOutput,
   Globe,
-  LayoutGrid,
-  RefreshCw,
-  MessageCircle,
-  Smartphone,
-  Watch,
-  Search,
-  Play,
-  Hash,
-  Bot,
+  Mail,
+  Calendar,
+  Copy,
+  Bell,
+  FolderTree,
+  Lock,
+  Layers,
+  Zap,
 } from 'lucide-react'
-import Container from './Container'
-import ThemeToggle from './ThemeToggle'
-import SubNav from './SubNav'
-import { SecurityInfographic } from './SecurityInfographic'
-import ScreenshotsSection from './ScreenshotsSection'
 
-const SectionHeader = ({ label, icon: Icon }) => (
-  <div className="flex items-center gap-3 mb-8 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-    {Icon && <Icon className="w-4 h-4 text-emerald-500" />}
-    <h2 className="text-sm font-mono font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-      {label}
-    </h2>
-  </div>
-)
+/**
+ * FeaturesPage (v2) — full Talkie feature catalog as oscilloscope panels.
+ *
+ * Composition:
+ *   1. Hero — phosphor eyebrow + headline + supporting copy
+ *   2. Capture features — 2x3 channel-strip grid (the core dictation behaviors)
+ *   3. Workflow pipeline — four-stage signal flow (capture → transform → route → log)
+ *   4. Step type registry — table of available workflow step types
+ *   5. Path aliases + smart output — split panel, mono ledger
+ *   6. Privacy posture — three-tile spec strip
+ *   7. Cross-surface tie-back to /agents + install CTA
+ *
+ * Pure server component. The donor's animated orchestrator is reframed
+ * as a static four-stage pipeline; the screenshots/widget/security
+ * sub-components are intentionally not ported here — they live (or will
+ * live) on their own surfaces. This page is the catalog index.
+ */
+const CAPTURE_FEATURES = [
+  { icon: Mic,            title: 'Hold-to-Talk',     body: 'Press and hold the hotkey, speak, release. No recording state to babysit.' },
+  { icon: CornerDownLeft, title: 'Return to Origin', body: 'Cursor lands back where you left it. Typing flow resumes without a stutter.' },
+  { icon: Clock,          title: '48-Hour Echoes',   body: 'Every capture stays searchable for 48 hours. Past words come back fast.' },
+  { icon: Eye,            title: 'Minimal HUD',      body: 'A tiny waveform appears when you speak. No modal dialog, no interruption.' },
+  { icon: Send,           title: 'Smart Routing',    body: 'Talkie pastes into the focused app. No copy-and-paste step at the end.' },
+  { icon: Signal,         title: 'Always Ready',     body: 'Lives in the menu bar. One hotkey away from any app at any time.' },
+]
 
-const FeatureCard = ({ title, description, children }) => (
-  <div className="group border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors">
-    <h3 className="text-base font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-2">{title}</h3>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">{description}</p>
-    {children}
-  </div>
-)
+const PIPELINE_STAGES = [
+  { n: '01', icon: Mic,        label: 'Capture',   sub: 'CH-01 · INPUT',   desc: 'Hold-to-talk into the focused app.' },
+  { n: '02', icon: Cpu,        label: 'Transform', sub: 'CH-02 · LLM',     desc: 'On-device or your model of choice.' },
+  { n: '03', icon: Terminal,   label: 'Route',     sub: 'CH-03 · OUTPUT',  desc: 'CLI, file, webhook, or clipboard.' },
+  { n: '04', icon: FileOutput, label: 'Log',       sub: 'CH-04 · LEDGER',  desc: 'Local, searchable, replayable.' },
+]
 
-const WorkflowStepRow = ({ icon: Icon, label, desc }) => (
-  <div className="flex items-start gap-4 p-3 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0">
-    <div className="mt-0.5 p-1.5 bg-zinc-100 dark:bg-zinc-800 rounded text-zinc-900 dark:text-white">
-      <Icon className="w-3.5 h-3.5" />
-    </div>
-    <div>
-      <span className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white block">{label}</span>
-      <span className="text-xs text-zinc-500 dark:text-zinc-400">{desc}</span>
-    </div>
-  </div>
-)
+const STEP_TYPES = [
+  { icon: Cpu,        label: 'LLM',           desc: 'Summarize, extract, restructure.' },
+  { icon: Terminal,   label: 'Shell',         desc: 'Run CLI tools (gh, jq, claude).' },
+  { icon: FileOutput, label: 'Save to file',  desc: 'Write to disk via path aliases.' },
+  { icon: Globe,      label: 'Webhook',       desc: 'POST JSON to any endpoint.' },
+  { icon: Mail,       label: 'Email',         desc: 'Send via Mail.app, in your voice.' },
+  { icon: Calendar,   label: 'Calendar',      desc: 'Create events from a transcript.' },
+  { icon: Copy,       label: 'Clipboard',     desc: 'Copy result to system clipboard.' },
+  { icon: Bell,       label: 'Notification',  desc: 'Native macOS alert on completion.' },
+]
 
-const ArchitectNode = ({ label, icon: Icon, active, activeClass, iconActiveClass, pingClass = 'bg-emerald-500' }) => (
-  <div className={`flex flex-col items-center gap-3 transition-all duration-500 ${active ? 'scale-110' : 'opacity-40 grayscale'}`}>
-    <div className={`w-14 h-14 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-center relative shadow-2xl transition-all ${active ? activeClass : ''}`}>
-      <Icon className={`w-6 h-6 ${active ? iconActiveClass : 'text-zinc-600'}`} />
-      {active && <div className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full animate-ping ${pingClass}`} />}
-    </div>
-    <span className="text-[9px] font-mono font-bold uppercase tracking-[0.15em] text-zinc-500">{label}</span>
-  </div>
-)
+const ALIASES = [
+  { token: '@Notes',    target: '~/Documents/Obsidian/Vault' },
+  { token: '@Projects', target: '~/Dev/Current' },
+  { token: '@Inbox',    target: '~/Documents/Talkie/Inbox' },
+  { token: '@Daily',    target: '~/Documents/Journal/{{DATE}}.md' },
+]
+
+const PRIVACY = [
+  { icon: Cpu,    title: 'On-device transcription', body: 'Whisper runs locally. Your speech never leaves the Mac unless you route it that way.' },
+  { icon: Lock,   title: 'Auditable signal path',   body: 'Every workflow step is visible. You see exactly where a transcript goes.' },
+  { icon: Signal, title: 'No telemetry on speech',  body: 'No analytics on transcripts, no account required to use the app.' },
+]
 
 export default function FeaturesPage() {
-  const [scrolled, setScrolled] = useState(false)
-  const [activeStep, setActiveStep] = useState(0)
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % 3)
-    }, 3500)
-    return () => clearInterval(timer)
-  }, [])
-
-  const statusLabels = [
-    'Talkie capture streaming...',
-    'Claude Code responding...',
-    'Feedback loop synced...',
-  ]
-
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
-        <Container className="h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-black dark:hover:text-white transition-colors group"
-          >
-            <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5" />
-            BACK
-          </Link>
-
-          {/* Platform Nav - Center */}
-          <SubNav />
-
-          <div className="w-16" /> {/* Spacer for balance */}
-        </Container>
-      </nav>
-
-      {/* Hero */}
-      <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
-        <div className="absolute inset-0 z-0 bg-grid-fade pointer-events-none opacity-40" />
-        <div className="bg-glow-orange top-[-200px] left-1/2 -translate-x-1/2 z-0" />
-        <Container className="relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl tracking-tighter text-zinc-900 dark:text-white leading-[0.95] mb-6">
-              <span className="font-display italic">Voice</span> <span className="text-zinc-400 dark:text-zinc-500">to</span>{' '}
-              <span className="font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">Agents.</span>
-            </h1>
-
-            <p className="text-base text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg mx-auto mb-8">
-              Voice-driven workflows turn your words into documents, tasks, and actions - local-first and private.
+    <>
+      {/* PAGE HERO */}
+      <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="flex items-center gap-2">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+              style={{ boxShadow: '0 0 6px var(--trace)' }}
+            />
+            <p
+              className="text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
+              · WORKFLOWS · CATALOG
             </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/download" className="h-12 px-8 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm uppercase tracking-wider hover:scale-105 transition-all flex items-center gap-3 shadow-xl shadow-orange-500/25">
-                <Bot className="w-4 h-4" />
-                <span>Download for Mac</span>
-              </Link>
-              <div className="flex flex-col gap-1 text-left">
-                <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
-                  <Monitor className="w-3 h-3" />
-                  macOS 26+ • Workflow Editor
-                </div>
-                <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-400 uppercase">
-                  <Terminal className="w-3 h-3 text-orange-500" />
-                  Claude CLI • Shell Commands
-                </div>
-              </div>
-            </div>
           </div>
-        </Container>
+          <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
+            Voice in. <span className="italic">Anything out.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+            Talkie is two products in one signal path: a fast dictation surface and a workflow runner that turns speech into drafts, tasks, files, and CLI calls. The chain is local, auditable, and yours.
+          </p>
+        </div>
       </section>
 
-      {/* Agent Orchestrator */}
-      <section className="py-16 md:py-20 bg-white dark:bg-black border-t border-zinc-200 dark:border-zinc-800">
-        <Container>
-            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 md:p-10 text-white shadow-2xl">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-500/10 border border-orange-500/20 rounded-lg">
-                    <Layers className="w-4 h-4 text-orange-400" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">Talkie Capture → Claude Code → Feedback</span>
-                    <span className="text-[11px] text-zinc-500">Auto-paced loop that accelerates collaboration with Claude.</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                  <Zap className="w-3 h-3 text-emerald-400" />
-                  <span className="text-[9px] font-mono text-emerald-400 uppercase font-bold tracking-widest">Speed: 120ms</span>
-                </div>
-              </div>
+      {/* CAPTURE FEATURES */}
+      <section className="relative border-t border-edge-faint bg-canvas font-mono">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="max-w-3xl">
+            <p
+              className="text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
+              · CAPTURE
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+              Six behaviors. <span className="italic text-ink-muted">One instrument.</span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+              The dictation surface stays the same in every app — same hold-to-talk, same return-to-origin, same fast search of what you said.
+            </p>
+          </div>
 
-              <div className="bg-zinc-950/80 border border-zinc-800 rounded-xl p-6 md:p-8">
-                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-                    <ArchitectNode
-                      label="Talkie Capture"
-                    icon={Mic}
-                    active={activeStep === 0}
-                    activeClass="border-emerald-500 bg-zinc-900 shadow-[0_0_25px_rgba(16,185,129,0.35)]"
-                    iconActiveClass="text-emerald-400"
-                  />
-
-                  <div className="hidden md:block flex-1 h-px border-t border-dashed border-zinc-700" />
-                  <div className="md:hidden h-6 w-px border-l border-dashed border-zinc-700" />
-
-                  <ArchitectNode
-                    label="Claude Code"
-                    icon={Code}
-                    active={activeStep === 1}
-                    activeClass="border-orange-500 bg-zinc-900 shadow-[0_0_25px_rgba(249,115,22,0.35)]"
-                    iconActiveClass="text-orange-400"
-                    pingClass="bg-orange-500"
-                  />
-
-                  <div className="hidden md:block flex-1 h-px border-t border-dashed border-zinc-700" />
-                  <div className="md:hidden h-6 w-px border-l border-dashed border-zinc-700" />
-
-                  <ArchitectNode
-                    label="Feedback Loop"
-                    icon={RefreshCw}
-                    active={activeStep === 2}
-                    activeClass="border-emerald-500 bg-zinc-900 shadow-[0_0_25px_rgba(16,185,129,0.35)]"
-                    iconActiveClass="text-emerald-400"
-                  />
-                </div>
-
-                <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[10px] font-mono">
-                  <span className="text-zinc-400 uppercase tracking-widest">{statusLabels[activeStep]}</span>
-                  <div className="flex items-center gap-2 text-zinc-600">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-zinc-500">Auto-paced loop, accelerating collaboration with Claude</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </Container>
+          <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
+            {CAPTURE_FEATURES.map((f, i) => (
+              <CaptureCard key={f.title} feature={f} index={i} />
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Main Content */}
-      <main className="py-16 md:py-20 bg-zinc-50 dark:bg-zinc-950">
-        <Container>
-          {/* 1. Example Workflows - Lead with what you can DO */}
-          <section className="mb-24">
-             <SectionHeader label="Example Workflows" icon={Workflow} />
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FeatureCard title="Voice → Obsidian" description="Extract insights → enrich with Claude CLI → save to Markdown in your vault." />
-                <FeatureCard title="Meeting Notes → Tasks" description="Extract todos → structure JSON → send to Todoist or Linear via API." />
-                <FeatureCard title="Daily Journal Builder" description="Summarize daily thoughts → append to daily journal file with timestamp." />
-                <FeatureCard title="Quick GitHub Issue" description="Dictate bug report → transform to format → gh issue create." />
-             </div>
-          </section>
-
-          {/* 2. AI Workflows */}
-          <section className="mb-20">
-            <SectionHeader label="AI-Powered Workflows" icon={Workflow} />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <h3 className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-6">Modular Pipelines</h3>
-                <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-xl">
-                  Build modular pipelines that process your voice memos through multiple steps. Use our drag-and-drop editor to chain LLMs, scripts, and file operations.
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-zinc-100 dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-800">
-                    <span className="text-xs font-mono text-zinc-500 block mb-1">SUPPORTED MODELS</span>
-                    <p className="text-sm font-bold text-zinc-900 dark:text-white">Gemini, OpenAI, Anthropic, Groq, Local MLX</p>
-                  </div>
-                  <div className="bg-zinc-100 dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-800">
-                    <span className="text-xs font-mono text-zinc-500 block mb-1">VARIABLES</span>
-                    <p className="text-sm font-bold text-zinc-900 dark:text-white">{'{{TRANSCRIPT}}, {{TITLE}}, {{DATE}}'}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Workflow Step Types Table */}
-              <div className="bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800">
-                <div className="p-3 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">Available Step Types</span>
-                </div>
-                <div>
-                  <WorkflowStepRow icon={Cpu} label="LLM" desc="Summaries, extraction, restructuring" />
-                  <WorkflowStepRow icon={Terminal} label="Shell Command" desc="Run CLI tools (claude, gh, jq)" />
-                  <WorkflowStepRow icon={FileOutput} label="Save to File" desc="Write results to disk with aliases" />
-                  <WorkflowStepRow icon={Globe} label="Webhook" desc="Send JSON/Text to any endpoint" />
-                  <WorkflowStepRow icon={Mail} label="Email" desc="Send results via Mail.app" />
-                  <WorkflowStepRow icon={Calendar} label="Calendar" desc="Create events from transcript" />
-                  <WorkflowStepRow icon={Copy} label="Clipboard" desc="Copy results to system clipboard" />
-                  <WorkflowStepRow icon={Bell} label="Notification" desc="Native macOS alerts" />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 3. Shell Integration */}
-          <section className="mb-20">
-            <SectionHeader label="Shell Command Integration" icon={Terminal} />
-            <div className="bg-zinc-900 text-zinc-100 p-8 rounded-sm font-mono text-sm border border-zinc-800 relative overflow-hidden">
-               <div className="absolute top-0 right-0 p-4 opacity-20">
-                 <Terminal className="w-24 h-24" />
-               </div>
-               <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12">
-                 <div>
-                   <h3 className="text-emerald-400 font-bold uppercase tracking-wider mb-4">Run Unix Tools Directly</h3>
-                   <ul className="space-y-3 text-zinc-400">
-                     <li className="flex items-center gap-2"><span className="text-emerald-500">➜</span> Executable allowlist for safety</li>
-                     <li className="flex items-center gap-2"><span className="text-emerald-500">➜</span> Claude CLI integration (MCP)</li>
-                     <li className="flex items-center gap-2"><span className="text-emerald-500">➜</span> Multi-line templates</li>
-                     <li className="flex items-center gap-2"><span className="text-emerald-500">➜</span> Respectful PATH merging (brew, node, bun)</li>
-                   </ul>
-                 </div>
-                 <div className="flex flex-col justify-center">
-                    <div className="bg-black/50 p-4 rounded border border-zinc-700">
-                      <p className="text-zinc-500 mb-2"># Example: Create GitHub Issue</p>
-                      <p className="text-white">
-                        <span className="text-orange-400">gh</span> issue create <br/>
-                        <span className="pl-4">--title</span> <span className="text-green-400">{'"{{TITLE}}"'}</span> <br/>
-                        <span className="pl-4">--body</span> <span className="text-green-400">{'"{{TRANSCRIPT}}"'}</span> <br/>
-                        <span className="pl-4">--label</span> <span className="text-green-400">&quot;voice-memo&quot;</span>
-                      </p>
-                    </div>
-                 </div>
-               </div>
-            </div>
-          </section>
-
-          {/* 4. Aliases & Output */}
-          <section className="mb-20">
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-               <div>
-                  <SectionHeader label="Path Aliases" icon={FolderTree} />
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">Shortcuts for your most important directories.</p>
-                  <ul className="space-y-2 font-mono text-xs">
-                    <li className="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 p-2 border border-zinc-200 dark:border-zinc-800">
-                      <span className="text-emerald-600 dark:text-emerald-500 font-bold">@Notes</span>
-                      <span className="text-zinc-400">→</span>
-                      <span className="text-zinc-500">~/Documents/Obsidian/Vault</span>
-                    </li>
-                    <li className="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-900 p-2 border border-zinc-200 dark:border-zinc-800">
-                      <span className="text-emerald-600 dark:text-emerald-500 font-bold">@Projects</span>
-                      <span className="text-zinc-400">→</span>
-                      <span className="text-zinc-500">~/Dev/Current</span>
-                    </li>
-                  </ul>
-               </div>
-               <div>
-                  <SectionHeader label="Smart File Output" icon={FileOutput} />
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">Save workflow results exactly where you want.</p>
-                  <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-                     <li className="flex items-center gap-2">
-                       <Zap className="w-3 h-3 text-zinc-400" /> Template filenames with date/time
-                     </li>
-                     <li className="flex items-center gap-2">
-                       <Zap className="w-3 h-3 text-zinc-400" /> Auto-directory creation
-                     </li>
-                     <li className="flex items-center gap-2">
-                       <Zap className="w-3 h-3 text-zinc-400" /> Append mode for logs &amp; journals
-                     </li>
-                  </ul>
-               </div>
-             </div>
-          </section>
-
-          {/* 5. Voice Recording */}
-          <section className="mb-20">
-            <SectionHeader label="Voice Recording & Transcription" icon={Mic} />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FeatureCard title="One-Tap Capture" description="Instant recording startup time. No lag. No loading screens." />
-                <FeatureCard title="Auto-Transcribe" description="Local, high-accuracy transcription running on-device via Apple's Neural Engine." />
-                <FeatureCard title="iCloud Sync" description="Seamless, encrypted synchronization across iPhone, iPad, and Mac." />
-                <FeatureCard title="Smart Library" description="Organize with Recent, Processed, Archived, and custom Smart Folders." />
-              </div>
-              <div className="bg-zinc-100 dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-800">
-                <ScreenshotsSection />
-              </div>
-            </div>
-          </section>
-
-          {/* 6. Widgets */}
-          <section className="mb-20">
-            <SectionHeader label="Widgets & Quick Access" icon={LayoutGrid} />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-6">Record From Anywhere</h3>
-                <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-xl">
-                  Add Talkie widgets to your Home Screen, Lock Screen, or Control Center for instant voice capture - no need to open the app.
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <FeatureCard title="Home Screen Widget" description="Small or medium widget with quick record button and memo count." />
-                  <FeatureCard title="Lock Screen Widget" description="Circular widget for instant capture without unlocking." />
-                  <FeatureCard title="Control Center" description="iOS 18+ toggle for one-tap recording from anywhere." />
-                  <FeatureCard title="Deep Links" description="Widget taps open directly to recording view." />
-                </div>
-              </div>
-
-              {/* Widget Preview */}
-              <div className="flex items-center justify-center">
-                <div className="relative">
-                  {/* Phone frame mockup */}
-                  <div className="w-64 h-[420px] bg-zinc-900 rounded-[2.5rem] p-3 shadow-2xl">
-                    <div className="w-full h-full bg-zinc-800 rounded-[2rem] p-4 flex flex-col">
-                      {/* Status bar */}
-                      <div className="flex justify-between text-[10px] text-zinc-400 mb-4">
-                        <span>9:41</span>
-                        <div className="flex gap-1">
-                          <span>5G</span>
-                          <span>100%</span>
-                        </div>
-                      </div>
-
-                      {/* Widget preview */}
-                      <div className="bg-black rounded-2xl p-4 mb-4">
-                        <div className="flex flex-col items-center">
-                          <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mb-2 shadow-lg shadow-red-500/30">
-                            <Mic className="w-6 h-6 text-white" />
-                          </div>
-                          <span className="text-[10px] font-mono font-bold tracking-widest text-zinc-400 uppercase">Record</span>
-                          <span className="text-[9px] text-zinc-600 mt-1">12 memos</span>
-                        </div>
-                      </div>
-
-                      {/* App icons placeholder */}
-                      <div className="grid grid-cols-4 gap-3 mt-auto">
-                        {[...Array(8)].map((_, i) => (
-                          <div key={i} className="w-10 h-10 bg-zinc-700 rounded-xl" />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Floating badge */}
-                  <div className="absolute -right-4 top-20 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">
-                    iOS 16+
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 6. Security Infographic */}
-          <section className="mb-24">
-            <SecurityInfographic />
-          </section>
-
-          {/* Footer Lists */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-zinc-200 dark:border-zinc-800 pt-12">
-
-             {/* Platform */}
-             <div>
-               <h4 className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-4">
-                 <Monitor className="w-4 h-4" /> Platform Support
-               </h4>
-               <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span> macOS (Primary App)</li>
-                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span> iOS (Companion App)</li>
-                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> iCloud Sync</li>
-               </ul>
-             </div>
-
-             {/* Config */}
-             <div>
-               <h4 className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide mb-4">
-                 <Cpu className="w-4 h-4" /> Configuration
-               </h4>
-               <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-                 <li>Workflow Manager</li>
-                 <li>Activity Log</li>
-                 <li>Model Library</li>
-                 <li>API Key Management</li>
-               </ul>
-             </div>
-
+      {/* WORKFLOW PIPELINE */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="max-w-3xl">
+            <p
+              className="text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
+              · PIPELINE
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+              Capture → Transform → Route → Log.
+            </h2>
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+              Every workflow is a four-stage signal chain. Plug or unplug stages. The whole chain runs on your Mac.
+            </p>
           </div>
-        </Container>
-      </main>
 
-      <ThemeToggle />
+          <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-4 md:gap-4">
+            {PIPELINE_STAGES.map((stage) => (
+              <StageCard key={stage.n} stage={stage} />
+            ))}
+          </div>
+
+          <p className="mt-8 text-center text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+            · auto-paced · local-first · auditable ·
+          </p>
+        </div>
+      </section>
+
+      {/* STEP TYPE REGISTRY */}
+      <section className="relative border-t border-edge-faint bg-canvas font-mono">
+        <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr,1.2fr] md:gap-12">
+            <div>
+              <p
+                className="text-[10px] uppercase tracking-[0.26em] text-trace"
+                style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+              >
+                · STEP TYPES
+              </p>
+              <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+                The patch bay.
+              </h2>
+              <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">
+                Eight stage types, mixed and matched. Each one is a small, focused module — chain them with template variables like{' '}
+                <code className="rounded-sm border border-edge-subtle bg-surface px-1.5 py-0.5 text-[12px] text-trace">
+                  {'{{TRANSCRIPT}}'}
+                </code>
+                ,{' '}
+                <code className="rounded-sm border border-edge-subtle bg-surface px-1.5 py-0.5 text-[12px] text-trace">
+                  {'{{TITLE}}'}
+                </code>
+                , and{' '}
+                <code className="rounded-sm border border-edge-subtle bg-surface px-1.5 py-0.5 text-[12px] text-trace">
+                  {'{{DATE}}'}
+                </code>
+                .
+              </p>
+
+              <div className="mt-8 grid grid-cols-2 gap-3 text-[11px]">
+                <div className="rounded-md border border-edge-dim bg-surface p-3">
+                  <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">MODELS</p>
+                  <p className="mt-1.5 leading-relaxed text-ink-dim">Anthropic · OpenAI · Gemini · Groq · Local MLX</p>
+                </div>
+                <div className="rounded-md border border-edge-dim bg-surface p-3">
+                  <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">VARIABLES</p>
+                  <p className="mt-1.5 leading-relaxed text-ink-dim">
+                    {'{{TRANSCRIPT}}'} · {'{{TITLE}}'} · {'{{DATE}}'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-md border border-edge-dim bg-surface">
+              <div className="flex items-center justify-between border-b border-edge-subtle px-4 py-3">
+                <span className="text-[9px] uppercase tracking-[0.24em] text-ink-subtle">· REGISTRY</span>
+                <span className="text-[9px] uppercase tracking-[0.22em] text-ink-faint">{STEP_TYPES.length} STAGES</span>
+              </div>
+              <ul>
+                {STEP_TYPES.map((step, i) => {
+                  const Icon = step.icon
+                  return (
+                    <li
+                      key={step.label}
+                      className="flex items-start gap-3 border-b border-edge-subtle px-4 py-3 last:border-b-0"
+                    >
+                      <div
+                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-edge"
+                        style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+                      >
+                        <Icon
+                          className="h-3.5 w-3.5 text-trace"
+                          style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-baseline justify-between gap-3">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink">
+                            {step.label}
+                          </span>
+                          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-[12px] leading-snug text-ink-muted">{step.desc}</p>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PATH ALIASES + SMART OUTPUT */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
+            {/* Aliases ledger */}
+            <div className="rounded-md border border-edge-dim bg-surface p-5 md:p-6">
+              <div className="flex items-center gap-2">
+                <FolderTree className="h-3.5 w-3.5 text-trace" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} />
+                <p className="text-[10px] uppercase tracking-[0.26em] text-trace" style={{ textShadow: '0 0 4px var(--trace-glow)' }}>
+                  · PATH ALIASES
+                </p>
+              </div>
+              <h3 className="mt-3 font-display text-2xl tracking-[-0.01em] text-ink">Shortcuts to where things go.</h3>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+                Map a token to a directory or template path. Use the alias inside any "Save to file" step.
+              </p>
+              <ul className="mt-5 space-y-2">
+                {ALIASES.map((a) => (
+                  <li
+                    key={a.token}
+                    className="flex items-center gap-3 rounded-sm border border-edge-subtle bg-canvas px-3 py-2 text-[12px]"
+                  >
+                    <span
+                      className="font-semibold text-trace"
+                      style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+                    >
+                      {a.token}
+                    </span>
+                    <span className="text-ink-subtle">→</span>
+                    <span className="truncate text-ink-muted">{a.target}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Smart output */}
+            <div className="rounded-md border border-edge-dim bg-surface p-5 md:p-6">
+              <div className="flex items-center gap-2">
+                <FileOutput className="h-3.5 w-3.5 text-trace" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} />
+                <p className="text-[10px] uppercase tracking-[0.26em] text-trace" style={{ textShadow: '0 0 4px var(--trace-glow)' }}>
+                  · SMART OUTPUT
+                </p>
+              </div>
+              <h3 className="mt-3 font-display text-2xl tracking-[-0.01em] text-ink">Save the result, exactly.</h3>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+                Workflows write to disk where you tell them. No mystery folders, no scattered drafts.
+              </p>
+              <ul className="mt-5 space-y-2.5 text-[13px] text-ink-muted">
+                <li className="flex items-start gap-2">
+                  <Zap className="mt-0.5 h-3 w-3 shrink-0 text-trace" />
+                  <span>Template filenames with date, time, and title.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Zap className="mt-0.5 h-3 w-3 shrink-0 text-trace" />
+                  <span>Auto-create directories that do not exist yet.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Zap className="mt-0.5 h-3 w-3 shrink-0 text-trace" />
+                  <span>Append mode for daily logs and rolling journals.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Zap className="mt-0.5 h-3 w-3 shrink-0 text-trace" />
+                  <span>Markdown-first, frontmatter optional.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PRIVACY POSTURE */}
+      <section className="relative border-t border-edge-faint bg-canvas font-mono">
+        <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="max-w-3xl">
+            <p
+              className="text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
+              · POSTURE
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+              Local-first, by default.
+            </h2>
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+              Privacy is the architecture, not a setting. The signal path is on your Mac unless you route a stage outward.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+            {PRIVACY.map((p, i) => {
+              const Icon = p.icon
+              return (
+                <div
+                  key={p.title}
+                  className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5"
+                >
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 opacity-50"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+                      backgroundSize: '24px 24px',
+                    }}
+                  />
+                  <div className="relative">
+                    <div className="flex items-center justify-between">
+                      <div
+                        className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+                        style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+                      >
+                        <Icon
+                          className="h-4 w-4 text-trace"
+                          style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
+                        />
+                      </div>
+                      <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+                        SEC-{String(i + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 font-display text-lg tracking-[-0.01em] text-ink">{p.title}</h3>
+                    <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{p.body}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
+        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
+          <div className="text-center">
+            <p
+              className="text-[10px] uppercase tracking-[0.26em] text-trace"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
+              · ONE INSTRUMENT · MANY PATCHES
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
+              Hand the chain to an agent.
+              <span className="italic text-ink-muted"> Speak the trigger.</span>
+            </h2>
+          </div>
+          <div className="mt-10">
+            <InstallCard />
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
+function CaptureCard({ feature, index }) {
+  const Icon = feature.icon
+  const chNum = String(index + 1).padStart(2, '0')
+  return (
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-trace">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-50"
+        style={{
+          backgroundImage:
+            'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+      <div className="relative flex h-full flex-col">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+              style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+            >
+              <Icon
+                className="h-4 w-4 text-trace"
+                style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
+              />
+            </div>
+            <h3 className="font-display text-lg tracking-[-0.01em] text-ink">{feature.title}</h3>
+          </div>
+          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">CH-{chNum}</span>
+        </div>
+        <div className="mt-4 h-px w-full bg-edge-subtle" />
+        <p className="mt-4 flex-1 text-[13px] leading-relaxed text-ink-muted">{feature.body}</p>
+      </div>
+    </div>
+  )
+}
+
+function StageCard({ stage }) {
+  const Icon = stage.icon
+  return (
+    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-50"
+        style={{
+          backgroundImage:
+            'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+          backgroundSize: '20px 20px',
+        }}
+      />
+      <div className="relative flex h-full flex-col">
+        <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+          <span>{stage.sub}</span>
+          <span
+            aria-hidden
+            className="inline-block h-1 w-1 rounded-full bg-trace"
+            style={{ boxShadow: '0 0 4px var(--trace)' }}
+          />
+        </div>
+        <div
+          className="mt-4 font-display text-[11px] tracking-[0.2em] text-trace"
+          style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+        >
+          {stage.n}
+        </div>
+        <div className="mt-2 flex items-center gap-3">
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-sm border border-edge"
+            style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+          >
+            <Icon
+              className="h-4 w-4 text-trace"
+              style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
+            />
+          </div>
+          <h3 className="font-display text-xl tracking-[-0.01em] text-ink">{stage.label}</h3>
+        </div>
+        <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{stage.desc}</p>
+      </div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot } from 'lucide-react'
 
@@ -16,8 +16,15 @@ const PACKAGE_MANAGERS = [
  * One chassis, three inset bays:
  *   LEFT   · INPUT  — keyboard-key transducer + device-aware install affordance
  *   CENTER · SCOPE  — animated waveform (idle, gets richer when device flips)
- *                     + use-case caption ribbon underneath
- *   RIGHT  · OUTPUT — device screenshot framed inside an inset display well
+ *                     + decoded transcription line underneath
+ *   RIGHT  · OUTPUT — device screenshot + per-use-case artifact line
+ *
+ * The sub-hero (CinematicHero) carries a user-driven use-case roller.
+ * Clicking a row sets useCaseIdx; the entire chassis re-syncs:
+ *   - sub-hero shows the active action → outcome summary
+ *   - ScopeBay shows what was literally said (transcription)
+ *   - OutputBay shows what landed (artifact)
+ * Three views of the same scenario, decomposed across the pipeline.
  *
  * Above the bays: a single chassis meta-strip (eyebrow, channel, REV).
  * Between the bays: visible signal-path "wires" rendered in SVG that
@@ -42,15 +49,33 @@ const DEVICES = [
       'Speak any thought. Search it tomorrow.',
     ],
     useCases: [
-      { action: 'Voice a rough draft', outcome: 'Cleanup rule runs' },
-      { action: 'Record the meeting', outcome: 'Summary, every time' },
-      { action: 'Describe the bug', outcome: 'GitHub issue filed' },
+      {
+        action: 'Voice a rough draft',
+        outcome: 'Cleanup rule runs',
+        transcription:
+          'okay the intro is doing too much, lemme lead with the conflict instead, see if it lands',
+        artifact: 'Draft refined · 127→89 words · 3 cuts',
+      },
+      {
+        action: 'Record the meeting',
+        outcome: 'Summary, every time',
+        transcription:
+          'alex pushed back on the migration window, we settled on staging-first friday, jamie owns the rollback',
+        artifact: 'Meeting notes · 6 items · 4 owners',
+      },
+      {
+        action: 'Describe the bug',
+        outcome: 'GitHub issue filed',
+        transcription:
+          'cmd-shift-3 on the empty state crashes it, started after 0.4.1, can repro 2 of 3',
+        artifact: 'Issue #482 filed · 3 logs attached',
+      },
     ],
     install: {
       kind: 'dmg',
       eyebrow: 'INSTALL · MAC',
       title: 'Download .dmg',
-      meta: 'universal · 12 mb',
+      meta: '12 mb',
       href: '/downloads',
       Icon: Download,
     },
@@ -60,6 +85,17 @@ const DEVICES = [
       caption: 'Library, search, compose',
     },
     waveformBias: 0,
+    inputSpec: {
+      platform: 'macOS 13+',
+      release:  'v0.4.2 (142)',
+      channel:  'VOICE.IN',
+      status:   'ARMED',
+    },
+    features: [
+      'Global hotkey dictation',
+      'Per-app context aware',
+      'On-device whisper',
+    ],
   },
   {
     key: 'iphone',
@@ -70,15 +106,33 @@ const DEVICES = [
       'Snap and speak. Spec on your desk.',
     ],
     useCases: [
-      { action: 'Ramble five minutes', outcome: 'Researches, pings back' },
-      { action: 'Snap + voice an idea', outcome: 'Spec at your desk' },
-      { action: 'Describe the problem', outcome: 'Mac investigates' },
+      {
+        action: 'Ramble five minutes',
+        outcome: 'Researches, pings back',
+        transcription:
+          'why are we seeing churn spike in week three of trial, dig the cohort, check the onboarding redesign',
+        artifact: 'Brief queued · ETA ~12 min',
+      },
+      {
+        action: 'Snap + voice an idea',
+        outcome: 'Spec at your desk',
+        transcription:
+          'this latte cup curvature, i want this on the talkie hardware sketch, riff for a desk render',
+        artifact: 'Spec drafted · 1 ref image',
+      },
+      {
+        action: 'Describe the problem',
+        outcome: 'Mac investigates',
+        transcription:
+          'build keeps failing on the dependabot lockfile, pull the last 5 runs, see if it is a single transitive',
+        artifact: 'Mac picked it up · running',
+      },
     ],
     install: {
       kind: 'qr',
       eyebrow: 'INSTALL · iPHONE',
-      title: 'Scan the code',
-      meta: 'tap to expand →',
+      title: 'Get on App Store',
+      meta: 'ios 17+',
       href: 'https://apps.apple.com/us/app/talkie-mobile/id6755734109',
       Icon: QrCode,
     },
@@ -88,6 +142,17 @@ const DEVICES = [
       caption: 'Capture on the go',
     },
     waveformBias: 1,
+    inputSpec: {
+      platform: 'iOS 17+',
+      release:  'v0.4.2 (142)',
+      channel:  'MIC.IN',
+      status:   'ARMED',
+    },
+    features: [
+      'Always-on capture',
+      'Snap + describe',
+      'Background research',
+    ],
   },
   {
     key: 'watch',
@@ -98,15 +163,33 @@ const DEVICES = [
       'The 3am idea, still there at 9am.',
     ],
     useCases: [
-      { action: 'Tap mid-thought', outcome: 'Searchable by tonight' },
-      { action: 'Capture without stopping', outcome: 'Waiting on your Mac' },
-      { action: 'The 3am idea', outcome: 'Still there at 9am' },
+      {
+        action: 'Tap mid-thought',
+        outcome: 'Searchable by tonight',
+        transcription:
+          'what if install had a try-without-account path, lower friction first run, sign in after first capture',
+        artifact: 'Captured · indexed at 21:00',
+      },
+      {
+        action: 'Capture without stopping',
+        outcome: 'Waiting on your Mac',
+        transcription:
+          'follow up with marc on licensing, the simple non-commercial language was cleaner, ask if his team signs',
+        artifact: 'Waiting on Mac · 1 todo',
+      },
+      {
+        action: 'The 3am idea',
+        outcome: 'Still there at 9am',
+        transcription:
+          'that pricing tier we kept dancing around, it is just two tiers, solo and team, rest is over-engineering',
+        artifact: 'Logged · 3:14am · still here',
+      },
     ],
     install: {
       kind: 'handoff',
       eyebrow: 'INSTALL · WATCH',
-      title: 'Auto-installs with iPhone',
-      meta: 'pair via Watch app →',
+      title: 'Pairs with iPhone',
+      meta: 'watch app',
       href: '/mobile',
       Icon: Watch,
     },
@@ -118,25 +201,54 @@ const DEVICES = [
       caption: 'Glance on the wrist',
     },
     waveformBias: 2,
+    inputSpec: {
+      platform: 'watchOS 10+',
+      release:  'v0.4.2 (142)',
+      channel:  'DICTATE.IN',
+      status:   'PAIRED',
+    },
+    features: [
+      'Tap-to-capture',
+      'Glance summary',
+      'Auto-sync to Mac',
+    ],
   },
   {
     key: 'agents',
-    label: 'agents',
+    label: 'Agents',
     Icon: Bot,
     taglines: [
       'Voice the trigger. The agent picks it up.',
       'Wire a daily. Brief lands at 7am.',
     ],
     useCases: [
-      { action: 'Voice the trigger', outcome: 'Workflow runs while you sleep' },
-      { action: 'Wire a daily', outcome: 'Brief lands at 7am' },
-      { action: 'Sketch a recipe', outcome: 'Agent runs it for you' },
+      {
+        action: 'Voice the trigger',
+        outcome: 'Workflow runs while you sleep',
+        transcription:
+          'every weekday 6am, pull the top 3 github issues by reactions, draft a triage, drop in my morning inbox',
+        artifact: 'Workflow scheduled · daily 06:00',
+      },
+      {
+        action: 'Wire a daily',
+        outcome: 'Brief lands at 7am',
+        transcription:
+          '5-line brief on the macos voice ml landscape, apple wwdc signals, any new on-device frameworks',
+        artifact: 'Brief at 07:00 · 5 sources',
+      },
+      {
+        action: 'Sketch a recipe',
+        outcome: 'Agent runs it for you',
+        transcription:
+          'anytime someone tags me on a github issue, draft a 1-para reply with a clarifying question, hold for review',
+        artifact: 'Recipe armed · awaiting trigger',
+      },
     ],
     install: {
       kind: 'handoff',
       eyebrow: 'CONFIGURE · AGENTS',
-      title: 'Wire up a workflow',
-      meta: 'see what they do →',
+      title: 'Wire a workflow',
+      meta: 'workflows',
       href: '/workflows',
       Icon: Bot,
     },
@@ -146,6 +258,17 @@ const DEVICES = [
       caption: 'Workflows in motion',
     },
     waveformBias: 3,
+    inputSpec: {
+      platform: 'Workflow runtime',
+      release:  'v0.4.2',
+      channel:  'TRIGGER.IN',
+      status:   'WIRED',
+    },
+    features: [
+      'Voice trigger → action',
+      'Daily briefs · cron',
+      'Recipe runner · JSON',
+    ],
   },
 ]
 
@@ -155,11 +278,24 @@ const FLIP_IN_MS = 220
 
 export default function PanoramicHero() {
   const [deviceIdx, setDeviceIdx] = useState(0)
+  // useCaseIdx is the single source of truth for the synchronized
+  // pipeline: sub-hero summary roller, ScopeBay transcription, and
+  // OutputBay artifact all read from device.useCases[useCaseIdx]. The
+  // user drives advancement by clicking the roller — there is no auto-
+  // rotate (devices already auto-rotate; nesting two timers reads as
+  // busy). When the device flips, we reset to position 0 so each
+  // device starts on its first scenario.
+  const [useCaseIdx, setUseCaseIdx] = useState(0)
   const [flipPhase, setFlipPhase] = useState('idle') // 'idle' | 'out' | 'in'
   const [paused, setPaused] = useState(false)
   const flipTimers = useRef([])
 
   const device = DEVICES[deviceIdx]
+  const useCase = device.useCases[useCaseIdx % device.useCases.length]
+
+  useEffect(() => {
+    setUseCaseIdx(0)
+  }, [deviceIdx])
 
   // Auto-rotate. Pause on hover anywhere over the chassis so a viewer
   // can take in a single device without the rotation kicking off.
@@ -229,6 +365,8 @@ export default function PanoramicHero() {
       <CinematicHero
         device={device}
         flipPhase={flipPhase}
+        useCaseIdx={useCaseIdx}
+        onSelectUseCase={setUseCaseIdx}
         onCycle={() => jumpTo((prevIdx) => (prevIdx + 1) % DEVICES.length)}
         onPause={setPaused}
       />
@@ -248,24 +386,19 @@ export default function PanoramicHero() {
       {/* Three inset bays. Grid is fluid: collapses to single column on
           narrow viewports, but the panoramic reading is the design
           target — it's how the instrument tells its story. */}
-      <div className="relative grid grid-cols-1 gap-px bg-[var(--panel-edge-faint)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.4fr)_minmax(0,1fr)]">
-        {/* SIGNAL PATH WIRES — sit absolutely between the bays. Hidden
-            on small viewports where the bays stack vertically. */}
-        <SignalPathOverlay flipPhase={flipPhase} />
+      <div className="relative grid grid-cols-1 gap-px bg-[var(--panel-edge-dim)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.4fr)_minmax(0,1fr)]">
+        {/* SIGNAL PATH WIRES — rendered inside ScopeBay flanking the
+            screen well so they self-align with ScopePort jacks
+            regardless of bay height. See SignalWire below. */}
 
         {/* LEFT BAY · INPUT — keyboard-key transducer + install affordance */}
-        <InputBay
-          device={device}
-          flipPhase={flipPhase}
-          onJump={jumpTo}
-          deviceIdx={deviceIdx}
-        />
+        <InputBay device={device} flipPhase={flipPhase} />
 
-        {/* CENTER BAY · SCOPE — animated trace + use-case ribbon */}
-        <ScopeBay device={device} flipPhase={flipPhase} />
+        {/* CENTER BAY · SCOPE — animated trace + decoded transcription */}
+        <ScopeBay device={device} useCase={useCase} flipPhase={flipPhase} />
 
-        {/* RIGHT BAY · OUTPUT — device screenshot in inset well */}
-        <OutputBay device={device} flipPhase={flipPhase} />
+        {/* RIGHT BAY · OUTPUT — device screenshot + per-case artifact */}
+        <OutputBay device={device} useCase={useCase} />
       </div>
 
       {/* Chassis status footer — channel meter, signal-path label */}
@@ -278,13 +411,12 @@ export default function PanoramicHero() {
 // =============================================================================
 // Cinematic hero — centered title-card section that sits above the chassis.
 
-function CinematicHero({ device, flipPhase, onCycle, onPause }) {
-  const feature = device.useCases[0]
+function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle, onPause }) {
   return (
-    <section className="relative pb-14 pt-2 text-center md:pb-20 md:pt-6">
+    <section className="relative pb-6 pt-2 text-center md:pb-8 md:pt-6">
       {/* Brand placard — small amber eyebrow above the headline */}
       <p
-        className="mb-10 inline-block font-mono text-[10px] uppercase tracking-[0.32em] md:mb-14"
+        className="mb-6 inline-block font-mono text-[10px] uppercase tracking-[0.32em] md:mb-8"
         style={{
           color: 'var(--amber)',
           textShadow: '0 0 6px color-mix(in oklab, var(--amber) 50%, transparent)',
@@ -299,7 +431,7 @@ function CinematicHero({ device, flipPhase, onCycle, onPause }) {
           Sizing matches donor v1 verbatim (clamp 2.8rem → 5.6rem,
           tracking -0.025em, leading 0.92). */}
       <h1
-        className="mx-auto flex max-w-5xl flex-wrap items-end justify-center gap-x-[0.28em] gap-y-2 font-display text-[clamp(2.8rem,9vw,5.6rem)] font-normal leading-[0.92] tracking-[-0.025em] text-ink"
+        className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-2 font-display text-[clamp(2.8rem,9vw,5.6rem)] font-normal leading-[0.92] tracking-[-0.025em] text-ink"
         aria-label={`Talk to your ${device.label}`}
       >
         <span className="shrink-0">Talk to your</span>
@@ -311,24 +443,56 @@ function CinematicHero({ device, flipPhase, onCycle, onPause }) {
         />
       </h1>
 
-      {/* Single action → outcome row, donor-shape three-column grid:
-          right-aligned action / centered arrow / left-aligned outcome.
-          Fades with the flip choreography so it swaps with the device. */}
-      <div
-        className="mx-auto mt-10 grid w-full max-w-[40rem] grid-cols-[1fr_2.5rem_1fr] items-center gap-y-3 px-4 text-[15px] leading-relaxed md:mt-14"
-        style={{
-          opacity: flipPhase === 'idle' ? 1 : 0.4,
-          transition: 'opacity 220ms ease-out',
-        }}
-        aria-live="polite"
-      >
-        <span className="text-right text-ink-muted">{feature.action}</span>
-        <span aria-hidden className="select-none text-center text-ink-faint">
-          →
-        </span>
-        <span className="text-left text-ink">{feature.outcome}</span>
-      </div>
+      {/* Use-case roller — three rows visible (prev / current / next),
+          same donor-shape three-column grid. The active row drives the
+          entire chassis: ScopeBay's transcription and OutputBay's
+          artifact both read from useCases[useCaseIdx]. User-driven —
+          click a row to jump, no auto-rotate so the sub-hero stays
+          calm and lets the device rotor be the only auto-motion axis. */}
+      <HeroUseCaseRoller
+        useCases={device.useCases}
+        idx={useCaseIdx}
+        onSelect={onSelectUseCase}
+      />
     </section>
+  )
+}
+
+function HeroUseCaseRoller({ useCases, idx, onSelect }) {
+  const n = useCases.length
+  if (n === 0) return null
+  const at = (offset) => ((idx + offset) % n + n) % n
+  const rows = [-1, 0, 1].map((offset) => ({ offset, i: at(offset) }))
+
+  return (
+    <div
+      className="mx-auto mt-6 flex w-full max-w-[40rem] flex-col items-stretch px-4 md:mt-8"
+      aria-live="polite"
+    >
+      {rows.map(({ offset, i }) => {
+        const isActive = offset === 0
+        const uc = useCases[i]
+        return (
+          <button
+            key={`${idx}-${offset}-${i}`}
+            type="button"
+            onClick={() => !isActive && onSelect(i)}
+            aria-current={isActive ? 'true' : undefined}
+            className="grid grid-cols-[1fr_2.5rem_1fr] items-baseline rounded-sm px-2 py-1 text-[15px] leading-relaxed transition-opacity hover:opacity-90"
+            style={{
+              opacity: isActive ? 1 : 0.32,
+              cursor: isActive ? 'default' : 'pointer',
+            }}
+          >
+            <span className="text-right text-ink-muted">{uc.action}</span>
+            <span aria-hidden className="select-none text-center text-ink-faint">
+              →
+            </span>
+            <span className="text-left text-ink">{uc.outcome}</span>
+          </button>
+        )
+      })}
+    </div>
   )
 }
 
@@ -348,18 +512,12 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
         onFocus={() => onPause(true)}
         onBlur={() => onPause(false)}
         aria-label={`Cycle device — currently ${label}. Click to advance.`}
-        className="relative mb-[-0.28em] inline-flex min-w-[3.8em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] py-[0.18em] font-display text-[1em] font-normal leading-[1] tracking-[-0.01em]"
+        className="relative -mb-[0.10em] inline-flex w-[5em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-normal leading-[1] tracking-[-0.01em]"
         style={{
-          color: '#2a1f12',
-          background:
-            'linear-gradient(180deg, #f7ecd0 0%, #efdfb8 50%, #e8d5a3 100%)',
-          borderColor: 'color-mix(in oklab, #2a1f12 22%, transparent)',
-          boxShadow: [
-            'inset 0 1px 0 rgba(255, 248, 230, 0.85)',
-            'inset 0 -2px 0 rgba(80, 60, 30, 0.18)',
-            '0 1px 0 rgba(255, 255, 255, 0.4)',
-            '0 18px 40px -18px rgba(60, 40, 20, 0.4)',
-          ].join(', '),
+          color: 'var(--rolodex-ink)',
+          background: 'var(--rolodex-bg)',
+          borderColor: 'var(--rolodex-edge)',
+          boxShadow: 'var(--rolodex-shadow)',
           animation:
             flipPhase === 'out'
               ? 'flap-out 140ms ease-in forwards'
@@ -374,20 +532,20 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
           className="pointer-events-none absolute inset-x-0 top-1/2 h-px"
           style={{
             background:
-              'linear-gradient(90deg, transparent 0%, color-mix(in oklab, #2a1f12 22%, transparent) 12%, color-mix(in oklab, #2a1f12 22%, transparent) 88%, transparent 100%)',
+              'linear-gradient(90deg, transparent 0%, var(--rolodex-hinge) 12%, var(--rolodex-hinge) 88%, transparent 100%)',
           }}
         />
         {/* Top sheen — paper highlight */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
-          style={{ background: 'linear-gradient(180deg, rgba(255,248,230,0.55), transparent)' }}
+          style={{ background: 'linear-gradient(180deg, var(--rolodex-sheen), transparent)' }}
         />
         {/* Bottom drop shadow — card resting */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
-          style={{ background: 'linear-gradient(180deg, transparent, rgba(80,60,30,0.18))' }}
+          style={{ background: 'linear-gradient(180deg, transparent, var(--rolodex-rest))' }}
         />
         <span className="relative inline-block w-full text-center">{label}</span>
       </button>
@@ -424,8 +582,8 @@ function CornerFasteners() {
 
 function ChassisHeader({ device, deviceIdx, onJump }) {
   return (
-    <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-[var(--panel-edge-dim)] px-4 py-2.5 text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
-      <div className="flex items-center gap-2.5">
+    <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-[var(--panel-edge-dim)] px-4 py-2.5 text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
+      <div className="flex items-center gap-2.5 justify-self-start">
         <span
           aria-hidden
           className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--panel-trace)] animate-pulse"
@@ -438,17 +596,16 @@ function ChassisHeader({ device, deviceIdx, onJump }) {
         <span>CH-01 / VOICE.IN</span>
       </div>
 
-      {/* Device LED rotor — duplicate of the vertical DeviceRail
-          inside the input bay. Hidden by default in current
-          composition; show it back via the chassis-rotor toggle.
-          Visibility is CSS-controlled (display:none on the wrapper)
-          so SSR + pre-paint script can decide before first frame
-          and there's no FOUC. */}
-      <span className="chassis-rotor-host">
+      {/* Device LED rotor — center column of a 3-col grid so it sits
+          dead-center regardless of left/right column widths. With the
+          previous justify-between flex, asymmetric side widths
+          (TALKIE/SIGNAL/CH-01 wider than REV A.4/32.1KHZ) pushed the
+          rotor slightly off-axis. The grid pins it. */}
+      <div className="justify-self-center">
         <DeviceRotor deviceIdx={deviceIdx} onJump={onJump} />
-      </span>
+      </div>
 
-      <div className="flex items-center gap-2 opacity-80">
+      <div className="flex items-center gap-2 opacity-80 justify-self-end">
         <span>REV A.4</span>
         <span aria-hidden className="opacity-50">·</span>
         <span>32.1KHZ · MONO</span>
@@ -511,7 +668,7 @@ function DeviceRail({ deviceIdx, onJump }) {
       aria-label="Surface"
       aria-orientation="vertical"
       className="flex w-12 shrink-0 flex-col items-center justify-start gap-2 border-r py-5 sm:w-14 sm:py-6 lg:py-7"
-      style={{ borderColor: 'var(--panel-edge-faint)' }}
+      style={{ borderColor: 'var(--panel-edge-dim)' }}
     >
       {DEVICES.map((d, i) => {
         const isActive = i === deviceIdx
@@ -548,65 +705,175 @@ function DeviceRail({ deviceIdx, onJump }) {
   )
 }
 
-function InputBay({ device, flipPhase, onJump, deviceIdx }) {
-  const Icon = device.Icon
+function InputBay({ device, flipPhase }) {
   const Install = device.install
+
   return (
     <div className="relative flex bg-[var(--panel-bg)]">
-      <DeviceRail deviceIdx={deviceIdx} onJump={onJump} />
-      <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6 lg:p-7">
+      <div className="flex min-w-0 flex-1 flex-col gap-4 p-5 sm:p-6 lg:p-7">
+        {/* DECK 1: Header — eyebrow + device label (light) + jack info */}
         <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
-          <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-            · INPUT · {device.label.toUpperCase()}
+          <span>
+            <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+              · INPUT
+            </span>
+            <span className="opacity-70"> · {device.label.toUpperCase()}</span>
           </span>
           <span className="opacity-70">JACK 01</span>
         </div>
 
-        {/* Small device callsign — the Rolodex flipper lives in the
-            cinematic hero above, so the bay leads with the install
-            affordance. This is just a phosphor-toned line confirming
-            which device's install path is currently armed. */}
-        <div
-          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-[var(--panel-ink-muted)]"
-          style={{
-            opacity: flipPhase === 'idle' ? 1 : 0.5,
-            transition: 'opacity 220ms ease-out',
-          }}
-        >
-          <Icon
-            className="h-3.5 w-3.5"
+        {/* DECK 2: SPEC divider — same Y as ScopeBay's SIGNAL and
+            OutputBay's RUNNING ON line. No numbered badge: kept the
+            chassis dividers visually identical across all three bays
+            so the eye reads one continuous deck rhythm. */}
+        <SectionDivider label="SPEC" />
+
+        {/* DECK 3: Artifact — framed spec-sheet panel. Fixed 220px to
+            match ScopeBay's screen well and OutputBay's screenshot
+            well. Same frame grammar (rounded-md + border + recessed
+            shadow + corner brackets) so the three artifacts read as
+            siblings on a shared chassis rule. Inside: nutrition-label
+            spec rows on top, divider, capability bullets at bottom.
+            No flex-1 — the wrapper takes exactly 220px so the deck-4
+            divider below sits at the same Y across all three bays. */}
+        <div className="flex items-start">
+          <div
+            className="relative flex h-[220px] w-full flex-col overflow-hidden rounded-md border"
             style={{
-              color: 'var(--panel-trace)',
-              filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))',
+              borderColor: 'var(--screen-edge-dim)',
+              boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.04)',
             }}
-          />
-          <span>Configured for {device.label}</span>
+          >
+            <ScreenCornerBrackets />
+            <div className="relative flex flex-1 flex-col gap-3 px-3.5 py-3">
+              <SpecRows spec={device.inputSpec} />
+              <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.28em] text-[var(--panel-ink-subtle)]">
+                <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
+                <span>· CAPS ·</span>
+                <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
+              </div>
+              <FeatureList features={device.features} />
+            </div>
+          </div>
         </div>
 
-        {/* Sub-jack: device-aware install affordance. Morphs with rotation. */}
-        <DeviceInstallJack install={Install} flipPhase={flipPhase} />
+        {/* DECK 4: INSTALL divider — aligns with ScopeBay's DECODED
+            and OutputBay's SURFACE. */}
+        <SectionDivider label="INSTALL" />
 
-        {/* CLI install rail — Mac only. The DMG is the headline path; this
-            is the CLI alternative for developers who prefer global npm bins.
-            On non-Mac devices we keep the same vertical space (visibility
-            hidden) so the chassis row doesn't resize when the rotation
-            lands on a device that doesn't expose a CLI install. */}
-        <div
-          aria-hidden={Install.kind !== 'dmg'}
-          style={{ visibility: Install.kind === 'dmg' ? 'visible' : 'hidden' }}
-        >
-          <MacCliRail flipPhase={flipPhase} />
+        {/* Below deck 4: install jack + small CLI fallback (Mac only).
+            QR for iPhone was tried then dropped — the bottom row
+            reads cleaner without a tall supplement. The wrapper is
+            pinned at min-h-[26px] (the CLI link's height) so the
+            chassis stays the same height across all four devices —
+            iPhone/Watch/Agents have an empty 26px slot, Mac fills
+            it with the CLI affordance. */}
+        <DeviceInstallJack install={Install} />
+        <div className="min-h-[26px]">
+          {Install.kind === 'dmg' && <CliFallbackLink />}
         </div>
       </div>
     </div>
   )
 }
 
-function MacCliRail({ flipPhase }) {
+// Sub-rail: labeled chassis divider that separates stacked sections
+// inside a bay. Reads as a silkscreen separator with a numbered badge
+// on the left, label in the middle, hairlines on either side. The
+// badge anchors the section in the chassis hierarchy (01 / 02 / 03 / 04)
+// so the structure is legible even when content swaps on channel change.
+function SectionDivider({ label, num }) {
+  // Fixed min-height so badged + unbadged variants occupy the same
+  // vertical slot — critical for cross-bay deck alignment. The badge
+  // pill is ~14px tall; the bare-label variant is ~10px. min-h-[1.25rem]
+  // (20px) accommodates both, with items-center centering content.
+  return (
+    <div className="flex min-h-[1.25rem] items-center gap-2 text-[8px] uppercase tracking-[0.28em] text-[var(--panel-ink-subtle)]">
+      {num && (
+        <span
+          className="inline-flex shrink-0 items-center rounded-sm border px-1 py-px text-[7px] tracking-[0.2em] text-[var(--panel-ink-faint)]"
+          style={{ borderColor: 'var(--panel-edge-dim)' }}
+        >
+          {num}
+        </span>
+      )}
+      <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
+      <span>· {label} ·</span>
+      <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
+    </div>
+  )
+}
+
+// SPEC sheet — nutrition-label-style key/value rows. The data field
+// list (platform / release / channel / status) is intentionally short
+// and numerically dense so it reads as a printed device label rather
+// than free-form copy. STATUS lights up phosphor (armed/live signal).
+// Build numbers go in parentheses next to the version per the user's
+// "the way Mac does" note — collapses what was two rows into one.
+function SpecRows({ spec }) {
+  const rows = [
+    ['PLATFORM', spec.platform, false],
+    ['RELEASE',  spec.release,  false],
+    ['CHANNEL',  spec.channel,  false],
+    ['STATUS',   spec.status,   true],
+  ]
+  return (
+    <dl
+      className="grid grid-cols-[5.5em_1fr] gap-x-3 gap-y-1 text-[10px] uppercase tracking-[0.18em]"
+    >
+      {rows.map(([key, value, isStatus]) => (
+        <Fragment key={key}>
+          <dt className="text-[var(--panel-ink-subtle)]">{key}</dt>
+          <dd className="text-[var(--panel-ink)]">
+            {isStatus ? (
+              <span className="inline-flex items-center gap-1.5">
+                <span
+                  aria-hidden
+                  className="inline-block h-1 w-1 rounded-full"
+                  style={{
+                    background: 'var(--panel-trace)',
+                    boxShadow: '0 0 4px var(--panel-trace-glow)',
+                  }}
+                />
+                <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+                  {value}
+                </span>
+              </span>
+            ) : (
+              <span style={{ color: 'var(--panel-ink-dim)' }}>{value}</span>
+            )}
+          </dd>
+        </Fragment>
+      ))}
+    </dl>
+  )
+}
+
+// FEATURES — three short bullets describing what this input source can do.
+// Pure list, same fade as SPEC.
+function FeatureList({ features }) {
+  return (
+    <ul
+      className="flex flex-col gap-1.5 text-[11px] leading-snug text-[var(--panel-ink-dim)]"
+    >
+      {features.map((f) => (
+        <li key={f} className="flex items-start gap-2">
+          <span
+            aria-hidden
+            className="mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full"
+            style={{ background: 'var(--panel-trace)', boxShadow: '0 0 3px var(--panel-trace-glow)' }}
+          />
+          <span>{f}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function MacCliRail() {
   const [pmIndex, setPmIndex] = useState(0)
   const [copied, setCopied] = useState(false)
   const current = PACKAGE_MANAGERS[pmIndex]
-  const isMorphing = flipPhase !== 'idle'
 
   const onCopy = async () => {
     try {
@@ -619,13 +886,7 @@ function MacCliRail({ flipPhase }) {
   }
 
   return (
-    <div
-      className="-mt-2 flex flex-col gap-2"
-      style={{
-        opacity: isMorphing ? 0.4 : 1,
-        transition: 'opacity 200ms ease-out',
-      }}
-    >
+    <div className="-mt-2 flex flex-col gap-2">
       {/* Divider eyebrow — frames the rail as an alternative path */}
       <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.26em] text-[var(--panel-ink-subtle)]">
         <span className="h-px flex-1" style={{ background: 'var(--panel-edge-faint)' }} />
@@ -669,8 +930,7 @@ function MacCliRail({ flipPhase }) {
         <code
           className="flex-1 truncate rounded-sm px-2.5 py-1.5 text-[11px]"
           style={{
-            background: 'var(--panel-bg-deep)',
-            border: '1px solid var(--panel-edge-faint)',
+            border: '1px solid var(--panel-edge-dim)',
             color: 'var(--panel-ink-dim)',
           }}
         >
@@ -700,75 +960,104 @@ function MacCliRail({ flipPhase }) {
   )
 }
 
-function DeviceInstallJack({ install, flipPhase }) {
+// Single-line install affordance: "phosphor icon + title + meta + ↗".
+// Replaces the previous 3-line card with icon block. Reads as the
+// same "phosphor indicator + content" stripe as the ScopeBay
+// transcription (cursor + speech) and OutputBay artifact (LED + receipt)
+// so the third row across all bays has consistent visual rhythm.
+function DeviceInstallJack({ install }) {
   const Icon = install.Icon
-  const isMorphing = flipPhase !== 'idle'
   const isExternal = install.href.startsWith('http')
-  const Wrap = ({ children }) =>
-    isExternal ? (
-      <a
-        href={install.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group block rounded-sm border border-[var(--panel-edge-dim)] p-3 transition-all hover:border-[var(--panel-trace)]"
-        style={{
-          background: 'color-mix(in oklab, var(--panel-trace) 4%, transparent)',
-        }}
+  // min-w-0 + overflow-hidden on the flex link so children with
+  // truncate can actually shrink below their intrinsic content width.
+  // Without this, flex items default to min-width: auto and force the
+  // link (and its parent inner-col) to grow past the bay column,
+  // overflowing into the adjacent ScopeBay (clipped silently by the
+  // chassis overflow-hidden — but the install card was extending
+  // ~170px past the Watch bay's right edge before this fix).
+  const sharedClass =
+    'group flex min-w-0 items-center gap-2.5 overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] px-2.5 py-1.5 transition-colors hover:border-[var(--panel-trace)]'
+  const sharedStyle = {
+    background: 'color-mix(in oklab, var(--panel-trace) 4%, transparent)',
+  }
+  const inner = (
+    <>
+      <Icon
+        className="h-3.5 w-3.5 shrink-0 text-[var(--panel-trace)]"
+        style={{ filter: 'drop-shadow(0 0 3px var(--panel-trace-glow))' }}
+      />
+      <span className="min-w-0 flex-1 truncate text-[12px] text-[var(--panel-ink)]">
+        {install.title}
+      </span>
+      <span className="shrink-0 truncate text-[10px] uppercase tracking-[0.18em] text-[var(--panel-ink-faint)]">
+        {install.meta}
+      </span>
+      <span
+        aria-hidden
+        className="shrink-0 text-[12px] text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]"
       >
-        {children}
-      </a>
-    ) : (
-      <Link
-        href={install.href}
-        className="group block rounded-sm border border-[var(--panel-edge-dim)] p-3 transition-all hover:border-[var(--panel-trace)]"
-        style={{
-          background: 'color-mix(in oklab, var(--panel-trace) 4%, transparent)',
-        }}
-      >
-        {children}
-      </Link>
-    )
+        {isExternal ? '↗' : '→'}
+      </span>
+    </>
+  )
+  return isExternal ? (
+    <a
+      href={install.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={sharedClass}
+      style={sharedStyle}
+    >
+      {inner}
+    </a>
+  ) : (
+    <Link href={install.href} className={sharedClass} style={sharedStyle}>
+      {inner}
+    </Link>
+  )
+}
 
+// CLI fallback for Mac — points at the Downloads page where the npm /
+// bun / pnpm install commands live alongside the .dmg. Sized smaller
+// and dimmer than the primary install jack so it reads as a secondary
+// affordance rather than competing with the .dmg CTA.
+function CliFallbackLink() {
   return (
-    <div className="mt-1">
-      <Wrap>
-        <div
-          className="flex items-center gap-3"
-          style={{
-            opacity: isMorphing ? 0.4 : 1,
-            transform: isMorphing ? 'translateY(2px)' : 'none',
-            transition: 'opacity 200ms ease-out, transform 200ms ease-out',
-          }}
-        >
-          {install.kind === 'qr' ? (
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-[var(--panel-edge)] bg-white p-1">
-              <img src="/qr-app-store.svg" alt="QR" className="h-full w-full" />
-            </span>
-          ) : (
-            <span
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-[var(--panel-edge)]"
-              style={{
-                background: 'color-mix(in oklab, var(--panel-trace) 6%, transparent)',
-                boxShadow: '0 0 12px color-mix(in oklab, var(--panel-trace) 18%, transparent)',
-              }}
-            >
-              <Icon
-                className="h-4 w-4 text-[var(--panel-trace)]"
-                style={{ filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))' }}
-              />
-            </span>
-          )}
-          <span className="flex flex-col leading-tight">
-            <span className="text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-subtle)]">
-              {install.eyebrow}
-            </span>
-            <span className="mt-1 text-[13px] text-[var(--panel-ink)]">{install.title}</span>
-            <span className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[var(--panel-ink-faint)]">
-              {install.meta}
-            </span>
-          </span>
-        </div>
-      </Wrap>
+    <Link
+      href="/downloads"
+      className="group flex items-center gap-2 rounded-sm px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-[var(--panel-ink-subtle)] transition-colors hover:text-[var(--panel-trace)]"
+    >
+      <Terminal
+        className="h-3 w-3 shrink-0 text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]"
+      />
+      <span>Or install via CLI</span>
+      <span aria-hidden className="ml-auto shrink-0">↗</span>
+    </Link>
+  )
+}
+
+// QR panel for iPhone — supplements the "Get on App Store" jack with
+// a scannable code so a viewer with their phone in hand has a direct
+// path off the desktop screen. White surface is required for scanner
+// reliability; phosphor border ties it back to the chassis grammar.
+function QrPanel() {
+  return (
+    <div className="flex items-center gap-3 rounded-sm border border-[var(--panel-edge-dim)] p-2">
+      <div className="shrink-0 rounded-sm bg-white p-1">
+        <img
+          src="/qr-app-store.svg"
+          alt="App Store QR code"
+          className="block h-16 w-16"
+        />
+      </div>
+      <div className="flex min-w-0 flex-col gap-0.5">
+        <span className="text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-subtle)]">
+          · SCAN ·
+        </span>
+        <span className="text-[11px] leading-tight text-[var(--panel-ink-dim)]">
+          Open with your camera to install on iOS.
+        </span>
+      </div>
     </div>
   )
 }
@@ -777,100 +1066,103 @@ function DeviceInstallJack({ install, flipPhase }) {
 // CENTER BAY · animated waveform + use-case ribbon
 // -----------------------------------------------------------------------------
 
-function ScopeBay({ device, flipPhase }) {
-  // Regenerate-on-flip choreography. During flip-out, all sub-components
-  // fade together (so the bay reads as "channel changing"). During
-  // flip-in, they cascade with stagger delays so the bay re-scans on the
-  // new device — channel readout first, then waveform, then ribbon.
-  const isOut = flipPhase !== 'idle'
-  const inDelay = (ms) => (flipPhase === 'in' ? `${ms}ms` : '0ms')
-  const fadeStyle = (ms) => ({
-    opacity: isOut ? 0 : 1,
-    transform: isOut ? 'translateY(2px)' : 'translateY(0)',
-    transition: 'opacity 220ms ease-out, transform 220ms ease-out',
-    transitionDelay: inDelay(ms),
-  })
-
+function ScopeBay({ device, useCase, flipPhase }) {
+  // Four-deck structure mirroring InputBay and OutputBay so the chassis
+  // shares a horizontal grid:
+  //   1. Header (eyebrow + device + processor info)
+  //   2. Secondary divider (· SIGNAL ·)
+  //   3. Artifact — screen well + waveform (flex-1, fills remaining)
+  //   4. Detail divider (· DECODED ·) + use-case ribbon
+  // Structural chrome stays solid through device changes; only the
+  // waveform animates (flatline during flip-out → new bias on flip-in).
   return (
     <div
-      className="relative flex h-full min-h-[460px] flex-col bg-[var(--panel-bg-alt)] p-5 sm:p-6"
+      className="relative flex h-full flex-col gap-4 bg-[var(--panel-bg-alt)] p-5 sm:p-6 lg:p-7"
       style={{
         backgroundImage:
           'linear-gradient(var(--panel-edge-faint) 1px, transparent 1px), linear-gradient(90deg, var(--panel-edge-faint) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}
     >
-      {/* Header row — pinned to top */}
-      <div
-        className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]"
-        style={fadeStyle(0)}
-      >
-        <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-          · SCOPE
+      {/* DECK 1: Header — eyebrow + device label (light) on the left,
+          processor readout on the right. Same shape as InputBay's
+          "· INPUT · MAC | JACK 01" so the row reads as one continuous
+          chassis rule. */}
+      <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
+        <span>
+          <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+            · SCOPE
+          </span>
+          <span className="opacity-70"> · {device.label.toUpperCase()}</span>
         </span>
         <span className="opacity-70">PROC · SAY → DO</span>
       </div>
 
-      {/* Scope readout — small device callsign above the waveform.
-          The big "Talk to your {device}" H1 lives above the chassis
-          now; this is just the phosphor-toned channel label so the
-          signal still has a name. */}
-      <p
-        className="mt-3 inline-flex items-baseline gap-2 font-display text-[11px] uppercase tracking-[0.24em]"
-        style={{
-          color: 'var(--panel-ink-muted)',
-          ...fadeStyle(60),
-        }}
-      >
-        <span>CHANNEL</span>
-        <span
-          className="not-italic"
-          style={{
-            color: 'var(--panel-trace)',
-            textShadow: '0 0 8px var(--panel-trace-glow)',
-          }}
-        >
-          {device.label.toUpperCase()}
-        </span>
-      </p>
+      {/* DECK 2: Secondary line — light SIGNAL divider matching the
+          height/Y of InputBay's "02 · SPEC ·" divider. */}
+      <SectionDivider label="SIGNAL" />
 
-      {/* Animated trace — vertically centered in the bay so the
-          waveform's carrier line lands on the same Y as the wire-port
-          that enters from the input bay (both at bay midpoint).
-          Pinned to --screen-* tokens (always-dark CRT bezel) so the
-          phosphor display retains its instrument identity even when
-          the surrounding chassis flips to a cream/notepad treatment.
-          Corner brackets pick up --screen-edge so they tint with
-          whatever phosphor the active treatment uses. */}
-      <div
-        className="relative my-auto overflow-hidden rounded-md border bg-[var(--screen-bg)]"
-        style={{
-          ...fadeStyle(140),
-          borderColor: 'var(--screen-edge-dim)',
-          boxShadow: 'var(--screen-recess-shadow)',
-        }}
-      >
-        <ScopeWaveform bias={device.waveformBias} flipPhase={flipPhase} />
-        <ScreenCornerBrackets />
+      {/* DECK 3: Artifact — screen well + waveform. flex-1 absorbs
+          remaining bay height; items-start top-aligns the screen well
+          so it sits at the same Y as InputBay's spec rows and
+          OutputBay's screenshot. The SignalWires below are rendered as
+          siblings of the screen well (anchored to its vertical center
+          via top:50% on the wrapper) so they self-align with the
+          ScopePort jacks regardless of bay height. They extend out
+          past the wrapper into adjacent bays — visible because no
+          ancestor between here and the chassis is overflow-hidden.
+          No flex-1 on the artifact wrapper — keeps deck-4 at the
+          same Y as InputBay/OutputBay (see same comment elsewhere). */}
+      <div className="relative flex items-start">
+        <div className="relative w-full">
+          <ScopePort side="left" />
+          <ScopePort side="right" />
+          <SignalWire side="left" delayMs={0} />
+          <SignalWire side="right" delayMs={800} />
+          <div
+            className="relative h-[220px] overflow-hidden rounded-md border bg-[var(--screen-bg)] p-2.5 sm:p-3"
+            style={{
+              borderColor: 'var(--screen-edge-dim)',
+              boxShadow: 'var(--screen-recess-shadow)',
+            }}
+          >
+            <ScopeWaveform bias={device.waveformBias} flipPhase={flipPhase} />
+            <ScreenCornerBrackets />
+          </div>
+        </div>
       </div>
 
-      {/* Use-case caption ribbon — pinned to the bottom of the bay so
-          the waveform sits between header and ribbon at vertical center. */}
-      <div style={fadeStyle(220)}>
-        <UseCaseRibbon useCases={device.useCases} flipPhase={flipPhase} />
-      </div>
+      {/* DECK 4: Detail divider — DECODED rail anchors the bottom
+          region (use-case ribbon) as a distinct deck. Lines up with
+          InputBay's "04 · INSTALL ·" and OutputBay's "· SURFACE ·". */}
+      <SectionDivider label="DECODED" />
+
+      {/* Below deck 4: the transcription — what the user literally
+          said into the mic for the active use case. Driven by the
+          shared useCaseIdx in PanoramicHero, so it stays in sync with
+          the sub-hero summary roller and the OutputBay artifact. The
+          three together read as a pipeline: intent → signal → result. */}
+      <TranscriptionView text={useCase.transcription} />
     </div>
   )
 }
 
 function ScopeWaveform({ bias, flipPhase }) {
-  // Three deterministic curves — one per device. Pre-compute and swap
-  // by index. The "playhead" sweep gives each curve a sense of being
-  // an active capture even though there's no audio playing.
-  const curve = useMemo(() => buildWaveformCurve(bias), [bias])
+  // Live curve = device-specific waveform. Flat curve = no-signal jitter
+  // shown DURING channel changes (the OUT phase of the flip choreography).
+  // This is what real oscilloscopes do when you switch input sources —
+  // the trace collapses to thermal-noise flatline before the new signal
+  // pattern resolves. Replaces the previous opacity-fade approach which
+  // read as "the panel is changing"; this reads as "the SIGNAL is
+  // changing" — a more honest mental model.
+  const liveCurve = useMemo(() => buildWaveformCurve(bias), [bias])
+  const flatCurve = useMemo(() => buildFlatCurve(), [])
+
+  const isFlatline = flipPhase === 'out'
+  const curve = isFlatline ? flatCurve : liveCurve
 
   return (
-    <div className="relative h-[180px] sm:h-[210px]" aria-hidden>
+    <div className="relative h-full" aria-hidden>
       <svg
         viewBox={`0 0 1200 220`}
         width="100%"
@@ -897,7 +1189,8 @@ function ScopeWaveform({ bias, flipPhase }) {
           )
         })}
 
-        {/* Glow underlay */}
+        {/* Glow underlay — flatline phase uses a softer glow so the
+            no-signal state reads as quieter than the live curve. */}
         <polyline
           points={curve}
           fill="none"
@@ -905,9 +1198,16 @@ function ScopeWaveform({ bias, flipPhase }) {
           strokeWidth={6}
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ filter: 'blur(6px)', opacity: 0.45 }}
+          style={{
+            filter: 'blur(6px)',
+            opacity: isFlatline ? 0.18 : 0.45,
+            transition: 'opacity 200ms ease-out',
+          }}
         />
-        {/* Crisp top stroke */}
+        {/* Crisp top stroke — always visible at full opacity since the
+            curve itself swaps between flat and live (no fade-out
+            needed). The trace stays "on" through the channel change,
+            it just collapses to flatline mid-transition. */}
         <polyline
           points={curve}
           fill="none"
@@ -917,8 +1217,6 @@ function ScopeWaveform({ bias, flipPhase }) {
           strokeLinejoin="round"
           style={{
             filter: 'drop-shadow(0 0 2px var(--screen-trace-glow))',
-            opacity: flipPhase === 'idle' ? 1 : 0.4,
-            transition: 'opacity 200ms ease-out',
           }}
         />
 
@@ -935,6 +1233,67 @@ function ScopeWaveform({ bias, flipPhase }) {
         />
       </svg>
     </div>
+  )
+}
+
+function buildFlatCurve() {
+  // Flat-line at midline (y=110) with subtle thermal-noise jitter.
+  // Mimics what an oscilloscope shows with no signal on the input —
+  // a near-flat trace with small high-frequency wobble from amplifier
+  // noise. Two layered sine waves at different frequencies for organic
+  // texture (deterministic across renders so React reconciles cleanly).
+  const n = 360
+  const pts = []
+  for (let i = 0; i < n; i++) {
+    const nx = i / (n - 1)
+    const jitter =
+      Math.sin(nx * 71 + 0.7) * 1.4 +
+      Math.sin(nx * 197 + 2.1) * 0.6
+    const y = 110 + jitter
+    pts.push(`${(nx * 1200).toFixed(1)},${y.toFixed(1)}`)
+  }
+  return pts.join(' ')
+}
+
+// ScopePort — small phosphor-glowing jack on the screen well's left
+// and right edges. Aligns vertically with the SignalPathOverlay wires
+// (both anchored at top:50% of the bay row) so the wire endpoints
+// visually plug into the port's outer ring. Pure decoration —
+// pointer-events disabled.
+function ScopePort({ side }) {
+  const isLeft = side === 'left'
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute top-1/2 z-10 -translate-y-1/2"
+      style={{
+        [isLeft ? 'left' : 'right']: '-7px',
+      }}
+    >
+      {/* Outer jack ring — sits in the screen-bg color so it reads as a
+          recessed socket rather than a button. Inset shadow + outer
+          phosphor halo gives it depth. */}
+      <span
+        className="block h-3.5 w-3.5 rounded-full"
+        style={{
+          background: 'var(--screen-bg)',
+          border: '1px solid var(--screen-edge)',
+          boxShadow:
+            '0 0 6px var(--screen-trace-glow), inset 0 0 0 1px rgba(0,0,0,0.4)',
+        }}
+      />
+      {/* Inner trace dot — phosphor-colored conducting bit at the port
+          center. The wire endpoint dot from SignalPathOverlay (also
+          phosphor) lands beside this, so they read as connected. */}
+      <span
+        className="absolute left-1/2 top-1/2 block h-1.5 w-1.5 rounded-full"
+        style={{
+          background: 'var(--screen-trace)',
+          boxShadow: '0 0 4px var(--screen-trace-glow)',
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
+    </span>
   )
 }
 
@@ -999,29 +1358,33 @@ function buildWaveformCurve(bias) {
   return pts.join(' ')
 }
 
-function UseCaseRibbon({ useCases, flipPhase }) {
+// TranscriptionView — single voice-shaped line shown in the DECODED
+// deck of the ScopeBay. The leading "▮" is a phosphor cursor evoking
+// a live transcription. Italic + lowercase + comma-spliced text reads
+// as natural dictation rather than a typed prompt. No animation on
+// content swap (the user pushed back on excess motion); the cursor's
+// gentle pulse is the only moving piece, sourced from Tailwind's
+// `animate-pulse` and tinted with the panel trace color so it reads
+// as an instrument indicator instead of a generic loading dot.
+function TranscriptionView({ text }) {
   return (
     <div
-      className="grid grid-cols-1 gap-y-1.5 text-[12px] sm:gap-y-2"
-      style={{
-        opacity: flipPhase === 'idle' ? 1 : 0.5,
-        transform: flipPhase === 'idle' ? 'translateY(0)' : 'translateY(2px)',
-        transition: 'opacity 220ms ease-out, transform 220ms ease-out',
-      }}
-      aria-live="polite"
+      className="flex items-start gap-2 text-[12px] leading-relaxed"
+      style={{ color: 'var(--panel-ink-muted)' }}
     >
-      {useCases.map((u) => (
-        <div
-          key={u.action}
-          className="grid h-[1.6em] grid-cols-[1fr_1.4rem_1fr] items-baseline gap-x-2"
-        >
-          <span className="truncate text-right text-[var(--panel-ink-faint)]">{u.action}</span>
-          <span aria-hidden className="text-center text-[var(--panel-trace)]" style={{ textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-            →
-          </span>
-          <span className="truncate text-left text-[var(--panel-ink)]">{u.outcome}</span>
-        </div>
-      ))}
+      <span
+        aria-hidden
+        className="mt-[2px] inline-block animate-pulse"
+        style={{
+          color: 'var(--panel-trace)',
+          textShadow: '0 0 4px var(--panel-trace-glow)',
+          fontSize: '10px',
+          lineHeight: 1,
+        }}
+      >
+        ▮
+      </span>
+      <span className="italic">{text}</span>
     </div>
   )
 }
@@ -1030,122 +1393,127 @@ function UseCaseRibbon({ useCases, flipPhase }) {
 // RIGHT BAY · device screenshot in inset display well
 // -----------------------------------------------------------------------------
 
-function OutputBay({ device, flipPhase }) {
+function OutputBay({ device, useCase }) {
+  // Four-deck structure mirroring InputBay and ScopeBay:
+  //   1. Header (· OUTPUT · device | JACK 02)
+  //   2. Secondary line (RUNNING ON · device with live LED)
+  //   3. Artifact — screenshot well (flex-1, fills remaining)
+  //   4. Detail divider (· SURFACE ·) + caption
   return (
-    <div className="relative flex flex-col bg-[var(--panel-bg)] p-5 sm:p-6">
+    <div className="relative flex flex-col gap-4 bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+      {/* DECK 1: Header — eyebrow + device label (light) + jack info */}
       <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
-        <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-          · OUTPUT · SURFACE
+        <span>
+          <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+            · OUTPUT
+          </span>
+          <span className="opacity-70"> · {device.label.toUpperCase()}</span>
         </span>
         <span className="opacity-70">JACK 02</span>
       </div>
 
-      <div className="mt-3 inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.26em] text-[var(--panel-ink-faint)]">
+      {/* DECK 2: Secondary line — live status with LED. Same min-height
+          as SectionDivider so the deck-2 Y matches across all three
+          bays (Input's SPEC divider, Scope's SIGNAL divider, this). */}
+      <div className="flex min-h-[1.25rem] items-center gap-2 text-[8px] uppercase tracking-[0.28em] text-[var(--panel-ink-subtle)]">
         <span
           aria-hidden
-          className="inline-block h-1 w-1 rounded-full bg-[var(--panel-trace)]"
+          className="inline-block h-1 w-1 shrink-0 rounded-full bg-[var(--panel-trace)]"
           style={{ boxShadow: '0 0 4px var(--panel-trace)' }}
         />
-        <span>RUNNING ON · {device.label.toUpperCase()}</span>
+        <span>· RUNNING ON · {device.label.toUpperCase()} ·</span>
+        <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
       </div>
 
-      {/* Inset display well — the screenshot lives behind a recessed
-          frame with phosphor edge. The well itself looks like a sub-
-          screen on the chassis. */}
-      <div
-        className="relative mt-3 flex flex-1 items-center justify-center overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] bg-[var(--panel-bg-deep)] p-3"
-        style={{
-          boxShadow:
-            'inset 0 0 0 1px rgba(0,0,0,0.4), inset 0 8px 24px rgba(0,0,0,0.45)',
-          minHeight: '220px',
-        }}
-      >
-        {/* Phosphor scanline overlay */}
+      {/* DECK 3: Artifact — framed screenshot well. Fixed 220px to
+          match InputBay's spec sheet and ScopeBay's screen well; same
+          rounded-md + border + corner-bracket frame grammar so all
+          three artifacts read as siblings on a shared chassis rule.
+          Light bg + hairline recess (per the earlier "let shadow do
+          the work" pass — keeps the screenshot the visual focus).
+          No flex-1 — wrapper takes exactly 220px so the SURFACE
+          divider below stays in line with InputBay's INSTALL and
+          ScopeBay's DECODED dividers. */}
+      <div className="flex items-start">
+        <div
+          className="relative flex h-[220px] w-full items-center justify-center overflow-hidden rounded-md border"
+          style={{
+            background: 'var(--panel-bg-alt)',
+            borderColor: 'var(--screen-edge-dim)',
+            boxShadow:
+              'inset 0 1px 2px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.03)',
+          }}
+        >
+          <ScreenCornerBrackets />
+          <img
+            src={device.screenshot.src}
+            alt={device.screenshot.alt}
+            loading="lazy"
+            className="relative z-10 max-h-[200px] w-auto max-w-full rounded-[2px] object-contain"
+            style={{
+              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.18))',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* DECK 4: Detail divider — SURFACE rail aligns with InputBay's
+          INSTALL divider and ScopeBay's DECODED divider. */}
+      <SectionDivider label="SURFACE" />
+
+      {/* Below deck 4: the artifact — the receipt for what landed
+          on this surface. Driven by the shared useCaseIdx so it
+          matches the sub-hero summary and the ScopeBay transcription.
+          Sentence case (vs the previous uppercase caption) so per-
+          use-case detail can read naturally as a status line. */}
+      <div className="flex items-start gap-2 text-[11px] leading-snug text-[var(--panel-ink-dim)]">
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="mt-[5px] inline-block h-1 w-1 shrink-0 rounded-full"
           style={{
-            backgroundImage:
-              'linear-gradient(180deg, transparent 0%, transparent 49%, var(--panel-scanline) 50%, transparent 51%)',
-            backgroundSize: '100% 4px',
+            background: 'var(--panel-trace)',
+            boxShadow: '0 0 4px var(--panel-trace-glow)',
           }}
         />
-        <img
-          src={device.screenshot.src}
-          alt={device.screenshot.alt}
-          loading="lazy"
-          className="relative z-10 max-h-[220px] w-auto max-w-full rounded-[2px] object-contain"
-          style={{
-            opacity: flipPhase === 'idle' ? 1 : 0.45,
-            transform: flipPhase === 'idle' ? 'scale(1)' : 'scale(0.98)',
-            transition: 'opacity 220ms ease-out, transform 220ms ease-out',
-            filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.5))',
-          }}
-        />
-      </div>
-
-      <div className="mt-3 text-[10px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)]">
-        <span>{device.screenshot.caption}</span>
+        <span>{useCase.artifact}</span>
       </div>
     </div>
   )
 }
 
 // -----------------------------------------------------------------------------
-// SIGNAL PATH WIRES — small SVG overlays between the bays
+// SIGNAL PATH WIRES — phosphor segments flanking the scope screen well
 // -----------------------------------------------------------------------------
 
-function SignalPathOverlay({ flipPhase }) {
-  // Two horizontal "wires" sitting on the column dividers between the
-  // bays. Each wire is a thin phosphor segment with two junction dots,
-  // anchored at ~50% vertical so it visually crosses both adjacent
-  // bays. The chase animation (osc-chase) moves a tiny bright segment
-  // along each wire, selling "voltage moving" between the input
-  // transducer → scope → output surface.
-  //
-  // Anchoring strategy: each wire spans 56px horizontally, centered
-  // exactly on the column gap (the 1px panel-edge-faint divider in the
-  // grid). The grid columns are minmax(0, 0.95fr) | 1.4fr | 1fr so the
-  // dividers fall at predictable percentages. Using percent-based left
-  // positions keeps the wires aligned regardless of viewport width.
-  const wireBase = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '52px',
-    height: '14px',
-    pointerEvents: 'none',
-  }
-  // Column gap positions: input ends at ~28.4%, scope ends at ~70.6%
-  // (with the 0.95 / 1.4 / 1 ratios; 0.95/(0.95+1.4+1) = 28.4%,
-  // (0.95+1.4)/(...) = 70.1%). The 0.5 offset bias ports the line
-  // exactly onto the divider seam.
+// Each wire renders inside the screen-well wrapper (sibling of the
+// ScopePort jacks). With side="left" it sits flush against the
+// wrapper's left edge (right:100%) and extends 52px leftward into the
+// InputBay column; with side="right" it sits flush against the
+// wrapper's right edge (left:100%) and extends 52px rightward into the
+// OutputBay column.
+//
+// Vertical anchor: top:50% of the wrapper. The wrapper is just a
+// transparent container around ScopePorts + screen well, so its
+// vertical center equals the screen well's center, which equals each
+// ScopePort's center (the ports use top-1/2 too). The two endpoint
+// dots therefore sit on the same Y as the port dots — they read as
+// one continuous conductor regardless of screen-well height or where
+// the artifact deck sits in the bay.
+//
+// Visibility: hidden below lg, since at narrower widths the bays
+// stack vertically and there's nothing horizontal to bridge.
+function SignalWire({ side, delayMs }) {
+  const isLeft = side === 'left'
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 z-20 hidden lg:block"
+      className="pointer-events-none absolute z-20 hidden lg:block"
       style={{
-        opacity: flipPhase === 'idle' ? 1 : 0.35,
-        transition: 'opacity 220ms ease-out',
-      }}
-    >
-      <SignalWire leftPercent={28.4} delayMs={0} />
-      <SignalWire leftPercent={70.1} delayMs={800} />
-    </div>
-  )
-}
-
-function SignalWire({ leftPercent, delayMs }) {
-  return (
-    <div
-      style={{
-        position: 'absolute',
         top: '50%',
-        left: `${leftPercent}%`,
-        transform: 'translate(-50%, -50%)',
+        [isLeft ? 'right' : 'left']: '100%',
+        transform: 'translateY(-50%)',
         width: '52px',
         height: '14px',
-        pointerEvents: 'none',
       }}
     >
       {/* Static rail */}
@@ -1161,7 +1529,7 @@ function SignalWire({ leftPercent, delayMs }) {
           transform: 'translateY(-50%)',
         }}
       />
-      {/* Junction dots */}
+      {/* Junction dots — one at each end of the rail */}
       <span
         aria-hidden
         style={{
@@ -1193,8 +1561,7 @@ function SignalWire({ leftPercent, delayMs }) {
         }}
       />
       {/* Chase pulse — a small bright segment that walks left → right.
-          Uses a CSS keyframe defined inline-style via an animation
-          on a transform-positioned absolute span. */}
+          Uses the v4-wire-chase keyframe defined in the v4 stylesheet. */}
       <span
         aria-hidden
         style={{
@@ -1221,8 +1588,8 @@ function SignalWire({ leftPercent, delayMs }) {
 
 function ChassisFooter({ device }) {
   return (
-    <div className="relative flex flex-wrap items-center justify-between gap-3 border-t border-[var(--panel-edge-faint)] px-4 py-2 text-[9px] uppercase tracking-[0.22em] text-[var(--panel-ink-subtle)]">
-      <span className="flex items-center gap-2">
+    <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-t border-[var(--panel-edge-dim)] px-4 py-2 text-[9px] uppercase tracking-[0.22em] text-[var(--panel-ink-subtle)]">
+      <span className="flex items-center gap-2 justify-self-start">
         <span
           aria-hidden
           className="inline-block h-1 w-1 rounded-full"
@@ -1232,7 +1599,25 @@ function ChassisFooter({ device }) {
         <span aria-hidden className="opacity-50">·</span>
         <span>SIGNAL PATH · LOCAL ONLY</span>
       </span>
-      <span className="opacity-80">SURFACE · {device.label.toUpperCase()}</span>
+      {/* Stable, device-agnostic CTA — same link regardless of which
+          device is on the rolodex. Lives in the chassis bezel so it
+          reads as a property of the instrument rather than a property
+          of any one bay. Styled as a subtle button (border + faint
+          phosphor wash) rather than plain text so the click affordance
+          is legible without competing with the per-device install
+          jacks above. Centered via the 3-col grid. */}
+      <Link
+        href="/downloads"
+        className="group inline-flex items-center gap-2 justify-self-center rounded-sm border border-[var(--panel-edge-dim)] px-3 py-1 transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-trace)]"
+        style={{
+          background: 'color-mix(in oklab, var(--panel-trace) 4%, transparent)',
+        }}
+      >
+        <Download className="h-3 w-3 text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]" />
+        <span>ALL DOWNLOADS</span>
+        <span aria-hidden className="text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]">↗</span>
+      </Link>
+      <span className="opacity-80 justify-self-end">SURFACE · {device.label.toUpperCase()}</span>
     </div>
   )
 }

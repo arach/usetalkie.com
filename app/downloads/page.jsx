@@ -1,4 +1,4 @@
-import DownloadAllPage from '../../components/v2/DownloadAllPage'
+import DownloadAllPage from '../../components/DownloadAllPage'
 import MainShell from '../../components/MainShell'
 
 export const metadata = {

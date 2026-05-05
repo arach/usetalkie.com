@@ -16,26 +16,26 @@ const sections = [
 ]
 
 const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-zinc-800 overflow-hidden my-4 not-prose">
+  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
     {title && (
-      <div className="px-4 py-2 bg-zinc-800 border-b border-zinc-700">
-        <span className="text-xs font-mono text-zinc-400">{title}</span>
+      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
+        <span className="text-xs font-mono text-ink-muted">{title}</span>
       </div>
     )}
-    <pre className="p-4 bg-zinc-900 overflow-x-auto">
-      <code className="text-sm font-mono text-zinc-300">{children}</code>
+    <pre className="p-4 bg-panel-bg overflow-x-auto">
+      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
     </pre>
   </div>
 )
 
 const Step = ({ number, title, children }) => (
   <div className="flex gap-4 md:gap-6 not-prose">
-    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center">
-      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{number}</span>
+    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 dark:bg-amber/20 flex items-center justify-center">
+      <span className="text-sm font-bold text-amber">{number}</span>
     </div>
     <div className="flex-1 pb-6">
-      <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">{title}</h4>
-      <div className="text-zinc-600 dark:text-zinc-400 space-y-3">{children}</div>
+      <h4 className="text-lg font-bold text-ink mb-2">{title}</h4>
+      <div className="text-ink-muted space-y-3">{children}</div>
     </div>
   </div>
 )
@@ -80,19 +80,19 @@ export default function BridgeSetupPage() {
       {/* Prerequisites */}
       <h2 id="prerequisites">Prerequisites</h2>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-2">
           <Package className="w-5 h-5 text-orange-500" />
-          <h4 className="font-bold text-zinc-900 dark:text-white">Bun Runtime</h4>
+          <h4 className="font-bold text-ink">Bun Runtime</h4>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
+        <p className="text-sm text-ink-muted mb-3">
           Bun is a fast JavaScript runtime that TalkieServer uses. It's similar to Node.js but significantly faster.
         </p>
         <a
           href="https://bun.sh"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-medium text-amber hover:underline"
         >
           Install Bun <ExternalLink className="w-3 h-3" />
         </a>
@@ -111,26 +111,26 @@ export default function BridgeSetupPage() {
         When you enable iPhone connectivity, Talkie installs the following packages locally:
       </p>
 
-      <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden my-4 not-prose">
+      <div className="rounded-lg border border-edge overflow-hidden my-4 not-prose">
         <table className="w-full text-sm">
-          <thead className="bg-zinc-100 dark:bg-zinc-800">
+          <thead className="bg-surface dark:bg-panel-bg-alt">
             <tr>
-              <th className="px-4 py-3 text-left font-medium text-zinc-900 dark:text-white">Package</th>
-              <th className="px-4 py-3 text-left font-medium text-zinc-900 dark:text-white">Purpose</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Package</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Purpose</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-            <tr className="bg-white dark:bg-zinc-900">
-              <td className="px-4 py-3 font-mono text-zinc-800 dark:text-zinc-200">elysia</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Fast HTTP server framework</td>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 font-mono text-ink-dim dark:text-screen-ink-dim">elysia</td>
+              <td className="px-4 py-3 text-ink-muted">Fast HTTP server framework</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
-              <td className="px-4 py-3 font-mono text-zinc-800 dark:text-zinc-200">@elysiajs/cors</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Cross-origin request handling</td>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 font-mono text-ink-dim dark:text-screen-ink-dim">@elysiajs/cors</td>
+              <td className="px-4 py-3 text-ink-muted">Cross-origin request handling</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
-              <td className="px-4 py-3 font-mono text-zinc-800 dark:text-zinc-200">tweetnacl</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Cryptographic operations for secure pairing</td>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 font-mono text-ink-dim dark:text-screen-ink-dim">tweetnacl</td>
+              <td className="px-4 py-3 text-ink-muted">Cryptographic operations for secure pairing</td>
             </tr>
           </tbody>
         </table>
@@ -145,7 +145,7 @@ export default function BridgeSetupPage() {
 
       <div className="space-y-2 my-6">
         <Step number="1" title="Open Talkie Settings">
-          <p>Click the Talkie menu bar icon and select Settings, or press <code className="px-1.5 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded text-sm font-mono">⌘,</code></p>
+          <p>Click the Talkie menu bar icon and select Settings, or press <code className="px-1.5 py-0.5 bg-edge rounded text-sm font-mono">⌘,</code></p>
         </Step>
 
         <Step number="2" title="Navigate to iPhone Sync">
@@ -163,7 +163,7 @@ export default function BridgeSetupPage() {
 
         <Step number="4" title="Install Dependencies">
           <p>
-            When prompted, click "Install Dependencies" to run <code className="px-1.5 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded text-sm font-mono">bun install</code>. This downloads the required packages (typically takes a few seconds).
+            When prompted, click "Install Dependencies" to run <code className="px-1.5 py-0.5 bg-edge rounded text-sm font-mono">bun install</code>. This downloads the required packages (typically takes a few seconds).
           </p>
         </Step>
 
@@ -195,23 +195,23 @@ bun run src/server.ts`}
       <h2 id="troubleshooting">Troubleshooting</h2>
 
       <div className="space-y-4 my-6 not-prose">
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-2">"Bun not found"</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Install Bun from <a href="https://bun.sh" className="text-emerald-600 dark:text-emerald-400 hover:underline">bun.sh</a>, then restart Talkie.
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-2">"Bun not found"</h4>
+          <p className="text-sm text-ink-muted">
+            Install Bun from <a href="https://bun.sh" className="text-amber hover:underline">bun.sh</a>, then restart Talkie.
           </p>
         </div>
 
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-2">"Cannot find package 'elysia'"</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Dependencies are missing. Click "Install Dependencies" in settings, or run <code className="px-1 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded font-mono text-xs">bun install</code> manually.
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-2">"Cannot find package 'elysia'"</h4>
+          <p className="text-sm text-ink-muted">
+            Dependencies are missing. Click "Install Dependencies" in settings, or run <code className="px-1 py-0.5 bg-surface dark:bg-panel-bg-alt rounded font-mono text-xs">bun install</code> manually.
           </p>
         </div>
 
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-2">"Port 8765 already in use"</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-2">"Port 8765 already in use"</h4>
+          <p className="text-sm text-ink-muted">
             Another process is using the port. Restart Talkie — it will automatically clean up stray processes.
           </p>
         </div>
@@ -225,17 +225,17 @@ bun run src/server.ts`}
 
       <Link
         href="/docs/tailscale"
-        className="group flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors not-prose"
+        className="group flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors not-prose"
       >
         <div>
-          <span className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <span className="font-bold text-ink group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             Configure Tailscale
           </span>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-ink-muted mt-1">
             Set up secure networking between your Mac and iPhone
           </p>
         </div>
-        <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+        <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
       </Link>
     </DocsLayout>
   )

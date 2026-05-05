@@ -1,4 +1,5 @@
-import CapturePage from '../../components/CapturePage'
+import MobilePage from '../../components/MobilePage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Talkie for Mobile - Catch it while it is still live',
@@ -28,5 +29,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <CapturePage />
+  return (
+    <MainShell>
+      <MobilePage />
+    </MainShell>
+  )
 }

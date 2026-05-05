@@ -28,18 +28,18 @@ const sections = [
 ]
 
 const StepTypeCard = ({ name, enumCase, description, fields }) => (
-  <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
+  <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
     <div className="flex items-baseline justify-between mb-1">
-      <h4 className="font-bold text-zinc-900 dark:text-white">{name}</h4>
-      <code className="text-[10px] font-mono text-zinc-400">.{enumCase}</code>
+      <h4 className="font-bold text-ink">{name}</h4>
+      <code className="text-[10px] font-mono text-ink-muted">.{enumCase}</code>
     </div>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">{description}</p>
+    <p className="text-sm text-ink-muted mb-3">{description}</p>
     {fields && (
       <div className="space-y-1">
         {fields.map(([field, desc]) => (
           <div key={field} className="flex items-baseline gap-2 text-xs">
             <code className="font-mono text-orange-600 dark:text-orange-400 whitespace-nowrap">{field}</code>
-            <span className="text-zinc-500">{desc}</span>
+            <span className="text-ink-faint">{desc}</span>
           </div>
         ))}
       </div>
@@ -50,18 +50,18 @@ const StepTypeCard = ({ name, enumCase, description, fields }) => (
 const CategoryHeader = ({ id, title, count, color }) => (
   <div id={id} className="flex items-center gap-3 mt-8 mb-4 not-prose">
     <div className={`h-1 w-6 rounded-full ${color}`} />
-    <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-white">{title}</h3>
-    <span className="text-xs font-mono text-zinc-400">{count} steps</span>
+    <h3 className="text-sm font-bold uppercase tracking-wider text-ink">{title}</h3>
+    <span className="text-xs font-mono text-ink-muted">{count} steps</span>
   </div>
 )
 
 const ProviderRow = ({ name, budget, balanced, capable, context }) => (
-  <tr className="border-b border-zinc-100 dark:border-zinc-800">
-    <td className="py-2 pr-4 font-bold text-zinc-900 dark:text-white text-sm">{name}</td>
-    <td className="py-2 pr-4 text-xs font-mono text-zinc-500">{budget}</td>
-    <td className="py-2 pr-4 text-xs font-mono text-zinc-500">{balanced}</td>
-    <td className="py-2 pr-4 text-xs font-mono text-zinc-500">{capable}</td>
-    <td className="py-2 text-xs font-mono text-zinc-400">{context}</td>
+  <tr className="border-b border-edge-faint">
+    <td className="py-2 pr-4 font-bold text-ink text-sm">{name}</td>
+    <td className="py-2 pr-4 text-xs font-mono text-ink-faint">{budget}</td>
+    <td className="py-2 pr-4 text-xs font-mono text-ink-faint">{balanced}</td>
+    <td className="py-2 pr-4 text-xs font-mono text-ink-faint">{capable}</td>
+    <td className="py-2 text-xs font-mono text-ink-muted">{context}</td>
   </tr>
 )
 
@@ -90,30 +90,30 @@ export default function WorkflowsPage() {
       </p>
 
       <div className="grid md:grid-cols-3 gap-3 my-6 not-prose">
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex items-center gap-3 mb-3">
-            <Play className="w-5 h-5 text-emerald-500" />
-            <span className="font-bold text-zinc-900 dark:text-white">Triggers</span>
+            <Play className="w-5 h-5 text-amber" />
+            <span className="font-bold text-ink">Triggers</span>
           </div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-ink-muted">
             When does it run? After transcription, on keyword detection, or manually.
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex items-center gap-3 mb-3">
             <Filter className="w-5 h-5 text-blue-500" />
-            <span className="font-bold text-zinc-900 dark:text-white">Conditions</span>
+            <span className="font-bold text-ink">Conditions</span>
           </div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-ink-muted">
             Should it run? Gate on memo length, time of day, or transcript content.
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex items-center gap-3 mb-3">
             <Zap className="w-5 h-5 text-amber-500" />
-            <span className="font-bold text-zinc-900 dark:text-white">Steps</span>
+            <span className="font-bold text-ink">Steps</span>
           </div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-ink-muted">
             What does it do? Steps run in order. Each step can use output from previous steps.
           </p>
         </div>
@@ -202,7 +202,7 @@ export default function WorkflowsPage() {
       </div>
 
       {/* Apple Apps */}
-      <CategoryHeader id="steps-apple" title="Apple Apps" count="3" color="bg-emerald-500" />
+      <CategoryHeader id="steps-apple" title="Apple Apps" count="3" color="bg-amber" />
       <div className="grid md:grid-cols-2 gap-3 my-4 not-prose">
         <StepTypeCard
           name="Apple Notes"
@@ -373,37 +373,37 @@ export default function WorkflowsPage() {
       <div className="overflow-x-auto my-6 not-prose">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-700 text-left">
-              <th className="py-2 pr-4 font-bold text-zinc-900 dark:text-white">Variable</th>
-              <th className="py-2 font-bold text-zinc-900 dark:text-white">Description</th>
+            <tr className="border-b border-edge dark:border-screen-edge-dim text-left">
+              <th className="py-2 pr-4 font-bold text-ink">Variable</th>
+              <th className="py-2 font-bold text-ink">Description</th>
             </tr>
           </thead>
-          <tbody className="text-zinc-600 dark:text-zinc-400">
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+          <tbody className="text-ink-muted">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{TRANSCRIPT}}'}</code></td>
               <td className="py-2">Full transcription of the memo</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{TITLE}}'}</code></td>
               <td className="py-2">Memo title (sanitized for filenames)</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{DATE}}'}</code></td>
               <td className="py-2">Date in YYYY-MM-DD format</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{DATETIME}}'}</code></td>
               <td className="py-2">Date and time in YYYY-MM-DD_HH-mm format</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{OUTPUT}}'}</code></td>
               <td className="py-2">Output from the previous step</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{WORKFLOW_NAME}}'}</code></td>
               <td className="py-2">Name of the current workflow</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{stepOutputKey}}'}</code></td>
               <td className="py-2">Output from any named step (by its outputKey)</td>
             </tr>
@@ -418,25 +418,25 @@ export default function WorkflowsPage() {
       <div className="overflow-x-auto my-4 not-prose">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-700 text-left">
-              <th className="py-2 pr-4 font-bold text-zinc-900 dark:text-white">Expression</th>
-              <th className="py-2 font-bold text-zinc-900 dark:text-white">Result</th>
+            <tr className="border-b border-edge dark:border-screen-edge-dim text-left">
+              <th className="py-2 pr-4 font-bold text-ink">Expression</th>
+              <th className="py-2 font-bold text-ink">Result</th>
             </tr>
           </thead>
-          <tbody className="text-zinc-600 dark:text-zinc-400">
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+          <tbody className="text-ink-muted">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{NOW+1d}}'}</code></td>
               <td className="py-2">Tomorrow</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{NOW+2h}}'}</code></td>
               <td className="py-2">2 hours from now</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{NOW+30m}}'}</code></td>
               <td className="py-2">30 minutes from now</td>
             </tr>
-            <tr className="border-b border-zinc-100 dark:border-zinc-800">
+            <tr className="border-b border-edge-faint">
               <td className="py-2 pr-4"><code className="text-orange-600 dark:text-orange-400">{'{{NOW+1w}}'}</code></td>
               <td className="py-2">1 week from now</td>
             </tr>
@@ -456,12 +456,12 @@ export default function WorkflowsPage() {
       <div className="overflow-x-auto my-6 not-prose">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-700 text-left">
-              <th className="py-2 pr-4 font-bold text-zinc-900 dark:text-white">Provider</th>
-              <th className="py-2 pr-4 font-bold text-zinc-900 dark:text-white">Budget</th>
-              <th className="py-2 pr-4 font-bold text-zinc-900 dark:text-white">Balanced</th>
-              <th className="py-2 pr-4 font-bold text-zinc-900 dark:text-white">Capable</th>
-              <th className="py-2 font-bold text-zinc-900 dark:text-white">Context</th>
+            <tr className="border-b border-edge dark:border-screen-edge-dim text-left">
+              <th className="py-2 pr-4 font-bold text-ink">Provider</th>
+              <th className="py-2 pr-4 font-bold text-ink">Budget</th>
+              <th className="py-2 pr-4 font-bold text-ink">Balanced</th>
+              <th className="py-2 pr-4 font-bold text-ink">Capable</th>
+              <th className="py-2 font-bold text-ink">Context</th>
             </tr>
           </thead>
           <tbody>
@@ -479,12 +479,12 @@ export default function WorkflowsPage() {
         <strong>Auto-routing priority:</strong> Groq → Gemini → OpenAI → Anthropic → MLX. The system picks the first provider with a valid API key, respecting your cost tier preference.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-2 mb-2">
-          <Cpu className="w-4 h-4 text-emerald-500" />
-          <span className="text-sm font-bold text-zinc-900 dark:text-white">MLX runs entirely on-device</span>
+          <Cpu className="w-4 h-4 text-amber" />
+          <span className="text-sm font-bold text-ink">MLX runs entirely on-device</span>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-ink-muted">
           No API key needed. Models run on Apple Silicon via the Neural Engine. Best for: simple extraction, formatting, and privacy-critical workflows where nothing should leave the machine.
         </p>
       </div>
@@ -498,10 +498,10 @@ export default function WorkflowsPage() {
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">
         <div className="p-4 rounded-lg border border-emerald-200 dark:border-emerald-800/50 bg-emerald-50 dark:bg-emerald-950/30">
           <div className="flex items-center gap-2 mb-3">
-            <Shield className="w-4 h-4 text-emerald-500" />
+            <Shield className="w-4 h-4 text-amber" />
             <span className="text-sm font-bold text-emerald-900 dark:text-emerald-300">Allowed</span>
           </div>
-          <div className="space-y-1 text-xs font-mono text-emerald-700 dark:text-emerald-400">
+          <div className="space-y-1 text-xs font-mono text-emerald-700 dark:text-amber">
             <p><strong>Text:</strong> echo, cat, head, tail, wc, sort, grep, sed, awk, tr</p>
             <p><strong>Data:</strong> jq, base64, shasum</p>
             <p><strong>HTTP:</strong> curl</p>
@@ -550,14 +550,14 @@ export default function WorkflowsPage() {
           ].map(([num, label, desc], i) => (
             <div key={num} className="flex items-start gap-4">
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-900 dark:text-white">
+                <div className="w-8 h-8 rounded-full bg-surface dark:bg-panel-bg-alt flex items-center justify-center text-xs font-bold text-ink">
                   {num}
                 </div>
-                {i < 5 && <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800" />}
+                {i < 5 && <div className="w-px h-6 bg-edge" />}
               </div>
               <div className="pt-1">
-                <span className="text-sm font-bold text-zinc-900 dark:text-white">{label}</span>
-                <span className="text-sm text-zinc-500 ml-2">{desc}</span>
+                <span className="text-sm font-bold text-ink">{label}</span>
+                <span className="text-sm text-ink-faint ml-2">{desc}</span>
               </div>
             </div>
           ))}
@@ -573,12 +573,12 @@ export default function WorkflowsPage() {
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/data"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-rose-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-rose-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
               Your Data
             </span>
           </div>
@@ -586,15 +586,15 @@ export default function WorkflowsPage() {
 
         <Link
           href="/docs/api"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
               API Reference
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-cyan-500 group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>

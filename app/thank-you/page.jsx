@@ -1,4 +1,5 @@
 import ThankYouPage from '../../components/ThankYouPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Thank You | Talkie',
@@ -6,5 +7,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <ThankYouPage />
+  return (
+    <MainShell>
+      <ThankYouPage />
+    </MainShell>
+  )
 }

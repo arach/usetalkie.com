@@ -1,4 +1,5 @@
-import LivePage from '../../components/LivePage'
+import MacPage from '../../components/MacPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Talkie for Mac - Talk to your Mac',
@@ -29,5 +30,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <LivePage />
+  return (
+    <MainShell>
+      <MacPage />
+    </MainShell>
+  )
 }
