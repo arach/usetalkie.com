@@ -19,19 +19,15 @@ import {
 // Content data — re-authored from the donor FeaturesPage.
 // ---------------------------------------------------------------------------
 
-// Each step type gets a distinct accent hue so the 8-tile grid reads
-// as a varied panel rather than a single-tone wash. Hue choice is
-// loosely semantic (compute=cyan, terminal=amber, storage=emerald,
-// network=violet, comms=rose, time=sky, util=orange, alert=yellow).
 const STEP_TYPES = [
-  { icon: Cpu,        label: 'LLM',          desc: 'Summaries, extraction, restructuring',  accent: 'cyan',    rgb: '6,182,212' },
-  { icon: Terminal,   label: 'Shell',        desc: 'Run CLI tools — claude, gh, jq',         accent: 'amber',   rgb: '255,184,77' },
-  { icon: FileOutput, label: 'Save to File', desc: 'Write results to disk with aliases',     accent: 'emerald', rgb: '16,185,129' },
-  { icon: Globe,      label: 'Webhook',      desc: 'POST JSON or text to any endpoint',      accent: 'violet',  rgb: '139,92,246' },
-  { icon: Mail,       label: 'Email',        desc: 'Send results via Mail.app',              accent: 'rose',    rgb: '244,63,94' },
-  { icon: Calendar,   label: 'Calendar',     desc: 'Create events from a transcript',        accent: 'sky',     rgb: '14,165,233' },
-  { icon: Copy,       label: 'Clipboard',    desc: 'Copy results to system clipboard',       accent: 'orange',  rgb: '249,115,22' },
-  { icon: Bell,       label: 'Notification', desc: 'Native macOS alerts',                    accent: 'yellow',  rgb: '234,179,8' },
+  { icon: Cpu,        label: 'LLM',          desc: 'Summaries, extraction, restructuring' },
+  { icon: Terminal,   label: 'Shell',        desc: 'Run CLI tools — claude, gh, jq' },
+  { icon: FileOutput, label: 'Save to File', desc: 'Write results to disk with aliases' },
+  { icon: Globe,      label: 'Webhook',      desc: 'POST JSON or text to any endpoint' },
+  { icon: Mail,       label: 'Email',        desc: 'Send results via Mail.app' },
+  { icon: Calendar,   label: 'Calendar',     desc: 'Create events from a transcript' },
+  { icon: Copy,       label: 'Clipboard',    desc: 'Copy results to system clipboard' },
+  { icon: Bell,       label: 'Notification', desc: 'Native macOS alerts' },
 ]
 
 const ALIASES = [
@@ -139,7 +135,8 @@ function PipelineBlock({
     : amber
     ? 'var(--amber)'
     : 'var(--ink-muted)'
-  const strokeWidth = highlighted ? 1.4 : 1
+  // Thinner strokes for a cleaner schematic look
+  const strokeWidth = highlighted ? 0.85 : 0.55
   const fill = highlighted
     ? 'var(--trace-faint)'
     : amber
@@ -152,7 +149,7 @@ function PipelineBlock({
     : 'var(--ink)'
 
   return (
-    <g>
+    <g className="wf-block">
       <rect
         x={x}
         y={y}
@@ -161,13 +158,16 @@ function PipelineBlock({
         fill={fill}
         stroke={stroke}
         strokeWidth={strokeWidth}
+        rx="2"
+        ry="2"
         style={highlighted ? { filter: 'drop-shadow(0 0 4px var(--trace-glow))' } : undefined}
       />
       <text
         x={x + w / 2}
-        y={y + h / 2 - (subLabel ? 4 : 0)}
+        y={y + h / 2 - (subLabel ? 5 : 0)}
         fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
         fontSize="10"
+        fontWeight="600"
         fill={labelFill}
         textAnchor="middle"
         letterSpacing="1"
@@ -180,7 +180,7 @@ function PipelineBlock({
           x={x + w / 2}
           y={y + h / 2 + 10}
           fontFamily="ui-monospace, monospace"
-          fontSize="7"
+          fontSize="6.5"
           fill="var(--ink-faint)"
           textAnchor="middle"
           letterSpacing="1"
@@ -192,19 +192,8 @@ function PipelineBlock({
         const py = y + ((i + 1) * h) / (pinsLeft.length + 1)
         return (
           <g key={`l-${pin}-${i}`}>
-            <line x1={x} y1={py} x2={x - 8} y2={py} stroke={stroke} strokeWidth="0.8" />
-            <circle cx={x - 8} cy={py} r="1.5" fill={stroke} />
-            <text
-              x={x - 14}
-              y={py + 3}
-              fontFamily="ui-monospace, monospace"
-              fontSize="7"
-              fill="var(--ink-faint)"
-              letterSpacing="0.5"
-              textAnchor="end"
-            >
-              {pin}
-            </text>
+            <line x1={x} y1={py} x2={x - 6} y2={py} stroke={stroke} strokeWidth="0.5" strokeLinecap="round" />
+            <circle cx={x - 6} cy={py} r="1.1" fill={stroke} />
           </g>
         )
       })}
@@ -212,22 +201,43 @@ function PipelineBlock({
         const py = y + ((i + 1) * h) / (pinsRight.length + 1)
         return (
           <g key={`r-${pin}-${i}`}>
-            <line x1={x + w} y1={py} x2={x + w + 8} y2={py} stroke={stroke} strokeWidth="0.8" />
-            <circle cx={x + w + 8} cy={py} r="1.5" fill={stroke} />
-            <text
-              x={x + w + 14}
-              y={py + 3}
-              fontFamily="ui-monospace, monospace"
-              fontSize="7"
-              fill="var(--ink-faint)"
-              letterSpacing="0.5"
-              textAnchor="start"
-            >
-              {pin}
-            </text>
+            <line x1={x + w} y1={py} x2={x + w + 6} y2={py} stroke={stroke} strokeWidth="0.5" strokeLinecap="round" />
+            <circle cx={x + w + 6} cy={py} r="1.1" fill={stroke} />
           </g>
         )
       })}
+    </g>
+  )
+}
+
+// NetTag — small inline label that sits ON a wire with a fill-matched
+// background rect so it visually breaks the line. Like real schematic
+// wire tags. Resolves the "text overlapping lines" feedback.
+function NetTag({ x, y, label, color = 'var(--ink-faint)', fill = 'var(--surface)' }) {
+  // Approximate width based on character count; SVG measure-text is tricky
+  const w = Math.max(label.length * 5 + 8, 18)
+  return (
+    <g>
+      <rect
+        x={x - w / 2}
+        y={y - 5}
+        width={w}
+        height={10}
+        fill={fill}
+        rx="1.5"
+        ry="1.5"
+      />
+      <text
+        x={x}
+        y={y + 3}
+        fontFamily="ui-monospace, monospace"
+        fontSize="7"
+        fill={color}
+        textAnchor="middle"
+        letterSpacing="1"
+      >
+        {label}
+      </text>
     </g>
   )
 }
@@ -364,38 +374,46 @@ function PipelineSchematic() {
           pinsLeft={['IN']}
         />
 
-        {/* CAP trunk */}
-        <path d={capTrunk}  fill="none" stroke="var(--trace)" strokeWidth="1.4" style={{ filter: 'drop-shadow(0 0 2px var(--trace-glow))' }} />
-        <path d={trunkUp}   fill="none" stroke="var(--trace)" strokeWidth="1.0" strokeOpacity="0.65" markerEnd="url(#wf-arrow)" />
-        <path d={trunkMid}  fill="none" stroke="var(--trace)" strokeWidth="1.4" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 2px var(--trace-glow))' }} />
-        <path d={trunkDown} fill="none" stroke="var(--trace)" strokeWidth="1.0" strokeOpacity="0.65" markerEnd="url(#wf-arrow)" />
+        {/* Wire group — thin strokes, rounded joins, single accent.
+            Active path (capOutY → S2 → middle of router → OUT2) at full
+            opacity; secondary paths at 0.5 opacity. */}
+        <g fill="none" stroke="var(--trace)" strokeLinecap="round" strokeLinejoin="round">
+          {/* CAP trunk */}
+          <path d={capTrunk}  strokeWidth="0.9" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
+          <path d={trunkUp}   strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
+          <path d={trunkMid}  strokeWidth="0.9" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
+          <path d={trunkDown} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
 
-        {/* Step → Router */}
-        <path d={s1Route} fill="none" stroke="var(--trace)" strokeWidth="1.0" strokeOpacity="0.65" markerEnd="url(#wf-arrow)" />
-        <path d={s2Route} fill="none" stroke="var(--trace)" strokeWidth="1.4" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 2px var(--trace-glow))' }} />
-        <path d={s3Route} fill="none" stroke="var(--trace)" strokeWidth="1.0" strokeOpacity="0.65" markerEnd="url(#wf-arrow)" />
+          {/* Step → Router */}
+          <path d={s1Route} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
+          <path d={s2Route} strokeWidth="0.9" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
+          <path d={s3Route} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
 
-        {/* Router → Sinks */}
-        <path d={routeOut1} fill="none" stroke="var(--trace)" strokeWidth="1.0" strokeOpacity="0.65" markerEnd="url(#wf-arrow)" />
-        <path d={routeOut2} fill="none" stroke="var(--trace)" strokeWidth="1.4" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 2px var(--trace-glow))' }} />
-        <path d={routeOut3} fill="none" stroke="var(--trace)" strokeWidth="1.0" strokeOpacity="0.65" markerEnd="url(#wf-arrow)" />
+          {/* Router → Sinks */}
+          <path d={routeOut1} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
+          <path d={routeOut2} strokeWidth="0.9" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
+          <path d={routeOut3} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
+        </g>
 
-        {/* Net labels */}
-        <text x={155} y={capOutY - 8} fontFamily="ui-monospace, monospace" fontSize="8" fill="var(--ink-faint)" letterSpacing="1" textAnchor="middle">
-          BUS.IN
-        </text>
-        <text x={365} y={ROUTE.y - 6} fontFamily="ui-monospace, monospace" fontSize="8" fill="var(--trace)" letterSpacing="1" textAnchor="middle">
-          MIX
-        </text>
-        <text x={545} y={ROUTE.y - 6} fontFamily="ui-monospace, monospace" fontSize="8" fill="var(--ink-faint)" letterSpacing="1" textAnchor="middle">
-          SEND
-        </text>
+        {/* Net tags — boxed labels that sit ON the wire (fill matches
+            surface bg so the wire visually breaks around the label).
+            Resolves text-overlapping-wires issue. */}
+        <NetTag x={155} y={capOutY} label="BUS.IN" />
+        <NetTag x={365} y={routeInMidY} label="MIX" color="var(--trace)" />
+        <NetTag x={545} y={routeOutMidY} label="SEND" />
 
         {/* Legend */}
         <g transform="translate(20, 290)">
-          <line x1="0" y1="4" x2="20" y2="4" stroke="var(--trace)" strokeWidth="1.4" />
-          <text x="26" y="8" fontFamily="ui-monospace, monospace" fontSize="8" fill="var(--ink-faint)" letterSpacing="1">
-            solid = active patch · audit-logged · local by default
+          <line x1="0" y1="4" x2="20" y2="4" stroke="var(--trace)" strokeWidth="0.9" strokeLinecap="round" />
+          <text x="26" y="7" fontFamily="ui-monospace, monospace" fontSize="7.5" fill="var(--ink-faint)" letterSpacing="1">
+            solid = active patch
+          </text>
+          <line x1="160" y1="4" x2="180" y2="4" stroke="var(--trace)" strokeWidth="0.65" strokeOpacity="0.5" strokeLinecap="round" />
+          <text x="186" y="7" fontFamily="ui-monospace, monospace" fontSize="7.5" fill="var(--ink-faint)" letterSpacing="1">
+            faded = available
+          </text>
+          <text x="290" y="7" fontFamily="ui-monospace, monospace" fontSize="7.5" fill="var(--ink-faint)" letterSpacing="1">
+            · audit-logged · local by default
           </text>
         </g>
       </svg>
@@ -484,7 +502,6 @@ export default function WorkflowsPage() {
           <div className="mt-10 grid grid-cols-1 gap-0 overflow-hidden rounded-sm border border-edge sm:grid-cols-2 lg:grid-cols-4">
             {STEP_TYPES.map((step, i) => {
               const Icon = step.icon
-              const accentRgb = step.rgb
               return (
                 <div
                   key={step.label}
@@ -498,24 +515,15 @@ export default function WorkflowsPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className="flex h-8 w-8 items-center justify-center rounded-sm border transition-all duration-200 group-hover:scale-110"
-                      style={{
-                        borderColor: `rgba(${accentRgb}, 0.45)`,
-                        background: `rgba(${accentRgb}, 0.06)`,
-                      }}
+                      className="flex h-8 w-8 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
+                      style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
                     >
                       <Icon
-                        className="h-3.5 w-3.5 transition-all duration-200"
-                        style={{
-                          color: `rgb(${accentRgb})`,
-                          filter: `drop-shadow(0 0 3px rgba(${accentRgb}, 0.6))`,
-                        }}
+                        className="h-3.5 w-3.5 text-trace transition-all duration-200 group-hover:text-amber"
+                        style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
                       />
                     </div>
-                    <span
-                      className="font-mono text-[10px] uppercase tracking-[0.22em] transition-colors duration-200"
-                      style={{ color: `rgb(${accentRgb})` }}
-                    >
+                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
                       {step.label}
                     </span>
                   </div>
@@ -594,36 +602,30 @@ export default function WorkflowsPage() {
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.2fr]">
-            {/* Bullet column — colored bullets per item */}
-            <div className="rounded-md border border-screen-edge bg-screen-bg p-6 transition-all duration-200 hover:border-screen-edge-dim">
+            {/* Bullet column — single accent (amber) for unity, like @notes/@projects */}
+            <div className="rounded-md border border-screen-edge bg-screen-bg p-6 transition-all duration-200 hover:border-amber/40">
               <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-amber">
                 · WHAT IT GETS YOU
               </p>
               <ul className="mt-5 space-y-3 text-[13px] leading-relaxed text-screen-ink-dim">
-                <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.7)' }} />
-                  Executable allowlist for predictable, reviewable runs
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-500" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.7)' }} />
-                  Native Claude CLI integration via MCP
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-amber" style={{ boxShadow: '0 0 6px var(--trace-glow)' }} />
-                  Multi-line script templates with variable substitution
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" style={{ boxShadow: '0 0 6px rgba(139,92,246,0.7)' }} />
-                  Respectful PATH merge — brew, node, bun, claude
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" style={{ boxShadow: '0 0 6px rgba(244,63,94,0.7)' }} />
-                  Stdout captured back into the workflow as the next variable
-                </li>
+                {[
+                  'Executable allowlist for predictable, reviewable runs',
+                  'Native Claude CLI integration via MCP',
+                  'Multi-line script templates with variable substitution',
+                  'Respectful PATH merge — brew, node, bun, claude',
+                  'Stdout captured back into the workflow as the next variable',
+                ].map((label) => (
+                  <li key={label} className="flex gap-3">
+                    <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-amber" style={{ boxShadow: '0 0 6px var(--trace-glow)' }} />
+                    {label}
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Console panel — true editor look */}
+            {/* Console panel — single-accent syntax highlighting (amber for
+                keywords/strings/flags; dim ink for body; faint ink for
+                comments). Two colors max, no rainbow. */}
             <div
               className="relative overflow-hidden rounded-md border bg-screen-bg-deep transition-all duration-200 hover:border-amber/60"
               style={{
@@ -631,38 +633,38 @@ export default function WorkflowsPage() {
                 boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.55), 0 0 24px -8px rgba(255,184,77,0.20)',
               }}
             >
-              {/* macOS-style traffic lights + filename */}
+              {/* Header — neutral mac-style window chrome */}
               <div className="flex items-center justify-between border-b border-screen-edge-dim px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-screen-ink-faint">
                 <div className="flex items-center gap-2">
-                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-rose-500/80" />
-                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-amber/80" />
-                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
+                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-screen-ink-faint/40" />
+                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-screen-ink-faint/40" />
+                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-screen-ink-faint/40" />
                   <Terminal className="ml-2 h-3 w-3 text-amber" />
                   <span className="text-screen-ink-muted">step · shell · gh issue create</span>
                 </div>
-                <span className="text-emerald-400">READY</span>
+                <span className="text-amber">READY</span>
               </div>
               <pre className="overflow-x-auto p-5 font-mono text-[12px] leading-relaxed text-screen-ink-dim">
 {`# template: file an issue from a dictated bug report
-`}<span className="text-cyan-300">{`gh`}</span>{` `}<span className="text-violet-300">{`issue`}</span>{` `}<span className="text-violet-300">{`create`}</span>{` \\
-  `}<span className="text-amber">{`--repo`}</span>{`  `}<span className="text-emerald-300">{`"arach/talkie"`}</span>{` \\
-  `}<span className="text-amber">{`--title`}</span>{` `}<span className="text-emerald-300">{`"{{TITLE}}"`}</span>{` \\
-  `}<span className="text-amber">{`--body`}</span>{`  `}<span className="text-emerald-300">{`"{{TRANSCRIPT}}"`}</span>{` \\
-  `}<span className="text-amber">{`--label`}</span>{` `}<span className="text-emerald-300">{`"voice-memo"`}</span>{`
+`}<span className="text-amber">{`gh`}</span>{` issue create \\
+  --repo  `}<span className="text-amber">{`"arach/talkie"`}</span>{` \\
+  --title `}<span className="text-amber">{`"{{TITLE}}"`}</span>{` \\
+  --body  `}<span className="text-amber">{`"{{TRANSCRIPT}}"`}</span>{` \\
+  --label `}<span className="text-amber">{`"voice-memo"`}</span>{`
 
-# stdout becomes `}<span className="text-rose-300">{`{{LAST_OUTPUT}}`}</span>{` for the next step
-`}<span className="text-screen-ink-faint">{`# https://github.com/arach/talkie/issues/421`}</span>
+`}<span className="text-screen-ink-faint">{`# stdout becomes {{LAST_OUTPUT}} for the next step
+# https://github.com/arach/talkie/issues/421`}</span>
               </pre>
               <div className="flex items-center gap-2 border-t border-screen-edge-dim px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-screen-ink-faint">
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500"
-                  style={{ boxShadow: '0 0 6px rgba(16,185,129,0.8)' }}
+                  className="inline-block h-1.5 w-1.5 rounded-full bg-amber"
+                  style={{ boxShadow: '0 0 6px var(--trace-glow)' }}
                 />
-                <span className="text-emerald-400">EXIT 0</span>
-                <span className="text-screen-ink-faint">·</span>
+                <span className="text-amber">EXIT 0</span>
+                <span>·</span>
                 <span>412ms</span>
-                <span className="text-screen-ink-faint">·</span>
+                <span>·</span>
                 <span>audit:wf-01</span>
                 <span className="ml-auto flex items-center gap-1 text-amber">
                   <Zap className="h-3 w-3" /> dry-run available
