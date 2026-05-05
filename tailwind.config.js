@@ -38,6 +38,30 @@ export default {
         'edge-faint':   'var(--edge-faint)',
         'edge-subtle':  'var(--edge-subtle)',
 
+        // Panel — chassis bay surfaces. Stay dark across themes by design.
+        'panel-bg':           'var(--panel-bg)',
+        'panel-bg-alt':       'var(--panel-bg-alt)',
+        'panel-bg-deep':      'var(--panel-bg-deep)',
+        'panel-edge':         'var(--panel-edge)',
+        'panel-edge-dim':     'var(--panel-edge-dim)',
+        'panel-edge-faint':   'var(--panel-edge-faint)',
+        'panel-ink':          'var(--panel-ink)',
+        'panel-ink-dim':      'var(--panel-ink-dim)',
+        'panel-ink-muted':    'var(--panel-ink-muted)',
+
+        // Screen — scope CRT bezel surfaces. Always near-black across
+        // themes; light ink stays readable on dark in all modes.
+        'screen-bg':          'var(--screen-bg)',
+        'screen-bg-deep':     'var(--screen-bg-deep)',
+        'screen-edge':        'var(--screen-edge)',
+        'screen-edge-dim':    'var(--screen-edge-dim)',
+        'screen-edge-faint':  'var(--screen-edge-faint)',
+        'screen-ink':         'var(--screen-ink)',
+        'screen-ink-dim':     'var(--screen-ink-dim)',
+        'screen-ink-muted':   'var(--screen-ink-muted)',
+        'screen-ink-faint':   'var(--screen-ink-faint)',
+        'screen-trace':       'var(--screen-trace)',
+
         // Primary Tailwind-like shades ("Tailwind Shades")
         primary: {
           50:  '#eff6ff',

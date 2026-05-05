@@ -80,6 +80,13 @@ html { scroll-behavior: smooth; }
   --screen-trace-glow:  rgba(255, 184, 77, 0.50);
   --screen-trace-dim:   rgba(255, 184, 77, 0.18);
   --screen-trace-faint: rgba(255, 184, 77, 0.08);
+  /* Screen ink — body/numerals on the always-dark scope surface.
+   * Stays light across all theme/mode combos because the screen IS dark
+   * by design. Distinct from panel-ink which can flip polarity per theme. */
+  --screen-ink:         #f0ead8;
+  --screen-ink-dim:     #d8d2c0;
+  --screen-ink-muted:   #b8b0a0;
+  --screen-ink-faint:   #80786a;
   /* Inset shadow that sells "recessed glass" — soft dark vignette
    * inside the rim so the screen reads as below the chassis surface
    * rather than pasted on top. */

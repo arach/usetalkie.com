@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import SurfacesSubNav from './SurfacesSubNav'
+import MacDemoBay from './MacDemoBay'
 import MacHowItWorks from './MacHowItWorks'
 import MacFeatures from './MacFeatures'
 import MacUseCases from './MacUseCases'
@@ -51,6 +52,11 @@ export default function MacPage() {
           </p>
         </div>
       </section>
+
+      {/* DARK DEMO BEAT — break up the cream paper with a scope-bay
+          panel showing TALKIE LISTENING + WPM stats with multi-color
+          accents (rose REC, amber waveform, cyan/emerald readouts) */}
+      <MacDemoBay />
 
       {/* SECTIONS */}
       <MacHowItWorks />
