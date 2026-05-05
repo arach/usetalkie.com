@@ -175,10 +175,8 @@ export default function LiveTrace({
         <svg
           ref={svgRef}
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-          width="100%"
-          height="auto"
           preserveAspectRatio="none"
-          className="block"
+          className="block w-full h-auto"
         >
           {/* Major graticule lines (density derived from compact flag). */}
           {Array.from({ length: gridX }, (_, i) => {

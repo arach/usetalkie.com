@@ -55,10 +55,14 @@ const GRATICULE_FINE = {
     'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
   backgroundSize: '24px 24px',
 }
-const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+/* Text glows removed — letterforms render at their own weight without
+ * phosphor halos (per the design polish pass that cleaned up the
+ * install bays). Box-shadow constants on dots / components stay since
+ * those give chrome depth, not letterform softening. */
+const TRACE_GLOW_SOFT = {}
 const TRACE_GLOW_DOT = { boxShadow: '0 0 6px var(--trace)' }
 const TRACE_GLOW_DOT_SM = { boxShadow: '0 0 4px var(--trace)' }
-const HEADLINE_PHOSPHOR = { textShadow: '0 0 18px var(--trace-glow), 0 0 6px var(--trace-glow)' }
+const HEADLINE_PHOSPHOR = {}
 
 export default function PhilosophyPage() {
   return (
@@ -82,7 +86,6 @@ export default function PhilosophyPage() {
           <p className="philo-lede mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
             <span
               className="philo-dropcap float-left mr-2 -ml-1 font-display text-[64px] font-normal italic leading-[0.85] text-amber md:-ml-3 md:text-[76px]"
-              style={{ textShadow: '0 0 14px var(--trace-glow)' }}
             >
               Y
             </span>
@@ -223,36 +226,32 @@ export default function PhilosophyPage() {
         </div>
       </section>
 
-      {/* ========== FOOTER TIE-BACK ========== */}
+      {/* ========== FOOTER TIE-BACK ==========
+          DownloadBay sits centered on the page canvas (no surrounding
+          gray-tinted box, no two-column grid). The previous right-side
+          "SEE IT IN ACTION · Talk to your Mac" tile read as filler —
+          replaced with a small inline link below the bay for users who
+          want the full Mac page. */}
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            {/* Download — proper module, not a corny INSTALL chip */}
-            <div className="flex items-center justify-center rounded-md border border-edge bg-surface p-6 md:p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
-              <DownloadBay caption="Voice capture, local-first, auditable signal path." />
-            </div>
-
-            {/* Surfaces tie-back */}
+          <div className="mx-auto flex max-w-xl flex-col items-center gap-6">
+            {/* Tie-back link sits ABOVE the install bay so the flow reads
+             * "here's the related Mac context, then here's how to install"
+             * instead of "install, install, install, then... oh, learn more." */}
             <Link
               href="/mac"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
+              className="group inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.26em] text-ink-subtle transition-colors hover:text-trace"
             >
-              <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent transition-all duration-200 group-hover:scale-150 group-hover:border-amber group-hover:bg-amber"
-                />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
-                  SEE IT IN ACTION
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                Talk to your Mac.
-              </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
-                See how Talkie fits into the tools you already use. Keep reading <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-              </p>
+              <span>See it in action on Mac</span>
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
             </Link>
+
+            <DownloadBay caption="Voice capture, local-first, auditable signal path." />
           </div>
         </div>
       </section>
@@ -306,10 +305,7 @@ function PrincipleStack({ principle: p }) {
     <div className="group relative border-t border-edge-subtle py-14 transition-colors duration-200 hover:border-edge md:py-16">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
         <div className="flex flex-col gap-3">
-          <div
-            className="font-display text-[56px] font-normal leading-none tracking-[-0.04em] text-trace opacity-80 transition-opacity duration-200 group-hover:opacity-100"
-            style={{ textShadow: '0 0 24px var(--trace-glow), 0 0 8px var(--trace-glow)' }}
-          >
+          <div className="font-display text-[56px] font-normal leading-none tracking-[-0.04em] text-trace opacity-80 transition-opacity duration-200 group-hover:opacity-100">
             {p.n}
           </div>
 
@@ -323,7 +319,6 @@ function PrincipleStack({ principle: p }) {
           >
             <Icon
               className="h-4 w-4 text-trace transition-transform duration-200"
-              style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
               aria-hidden
             />
           </div>

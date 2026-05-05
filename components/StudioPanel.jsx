@@ -149,8 +149,11 @@ export default function StudioPanel() {
   const [mounted, setMounted] = useState(false)
   const [open, setOpen]       = useState(false)
 
-  const [theme, setTheme]               = useState('warm')
-  const [tone, setTone]                 = useState('phosphor')
+  /* Public defaults — Modern + Slate. The pre-paint script in
+   * app/layout.jsx applies the same defaults synchronously before
+   * first paint; these are the React-state mirror. */
+  const [theme, setTheme]               = useState('modern')
+  const [tone, setTone]                 = useState('slate')
   const [font, setFont]                 = useState(DEFAULT_FONT)
   const [weight, setWeight]             = useState(DEFAULT_WEIGHT)
   const [tracking, setTracking]         = useState(DEFAULT_TRACK)
@@ -182,26 +185,31 @@ export default function StudioPanel() {
     } catch {}
   }, [])
 
-  // Apply theme — flips data-theme on html (warm = no attribute)
+  /* Apply theme — flips data-theme on html. Picking the public
+   * default (modern) clears localStorage so fresh visitors stay
+   * cookie-clean; warm/linen explicitly persist. */
   const applyTheme = (next) => {
     setTheme(next)
     const root = document.documentElement
     if (next === 'modern' || next === 'linen') root.setAttribute('data-theme', next)
     else root.removeAttribute('data-theme')
     try {
-      if (next === 'warm') localStorage.removeItem('design-theme')
+      if (next === 'modern') localStorage.removeItem('design-theme')
       else localStorage.setItem('design-theme', next)
     } catch {}
   }
 
-  // Apply tone — flips data-osci-style (phosphor = no attribute, default)
+  /* Apply tone — flips data-osci-style. Picking slate (the public
+   * default tone) clears localStorage; everything else explicitly
+   * persists. Phosphor is now an explicit choice (writes "phosphor")
+   * since slate took over the no-localStorage default state. */
   const applyTone = (next) => {
     setTone(next)
     const root = document.documentElement
     if (next === 'phosphor') root.removeAttribute('data-osci-style')
     else root.setAttribute('data-osci-style', next)
     try {
-      if (next === 'phosphor') localStorage.removeItem('osci-style')
+      if (next === 'slate') localStorage.removeItem('osci-style')
       else localStorage.setItem('osci-style', next)
     } catch {}
   }
@@ -249,8 +257,9 @@ export default function StudioPanel() {
   }, [mounted, open])
 
   const reset = () => {
-    applyTheme('warm')
-    applyTone('phosphor')
+    /* Reset returns to the public default — Modern + Slate. */
+    applyTheme('modern')
+    applyTone('slate')
     setFont(DEFAULT_FONT)
     setWeight(DEFAULT_WEIGHT)
     setTracking(DEFAULT_TRACK)

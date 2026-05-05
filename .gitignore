@@ -16,3 +16,5 @@ logs/
 !.gitignore
 !.github/
 !.gitkeep
+# OpenScout local state
+.openscout/project.json

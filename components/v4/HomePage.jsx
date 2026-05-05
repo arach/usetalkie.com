@@ -152,8 +152,8 @@ const GRATICULE_FINE = {
 // Amber takes over the chrome on cream surfaces (per brief): eyebrows,
 // FlowStep numbers, pricing $0, header live dot. This makes the cream
 // canvas a chromatic event without bleeding phosphor into light mode.
-const AMBER_GLOW_SOFT = { textShadow: '0 0 4px rgba(196, 125, 28, 0.32)' }
-const AMBER_GLOW_DOT = { boxShadow: '0 0 6px rgba(196, 125, 28, 0.45)' }
+const AMBER_GLOW_SOFT = { textShadow: '0 0 4px color-mix(in oklab, var(--amber) 32%, transparent)' }
+const AMBER_GLOW_DOT = { boxShadow: '0 0 6px color-mix(in oklab, var(--amber) 45%, transparent)' }
 const AMBER_TINT = { background: 'color-mix(in oklab, var(--amber) 8%, transparent)' }
 const AMBER_TINT_SUBTLE = { background: 'color-mix(in oklab, var(--amber) 5%, transparent)' }
 
@@ -322,7 +322,7 @@ export default function HomePage() {
               >
                 <ShieldCheck
                   className="h-3 w-3"
-                  style={{ color: 'var(--amber)', filter: 'drop-shadow(0 0 3px rgba(196,125,28,0.32))' }}
+                  style={{ color: 'var(--amber)', filter: 'drop-shadow(0 0 3px color-mix(in oklab, var(--amber) 32%, transparent))' }}
                 />
                 {label}
               </span>
@@ -397,7 +397,7 @@ export default function HomePage() {
                     style={{
                       color: 'var(--amber)',
                       textShadow:
-                        '0 0 18px rgba(196,125,28,0.35), 0 0 6px rgba(196,125,28,0.45)',
+                        '0 0 18px color-mix(in oklab, var(--amber) 35%, transparent), 0 0 6px color-mix(in oklab, var(--amber) 45%, transparent)',
                     }}
                   >
                     $0
@@ -587,7 +587,7 @@ function CaptureModeCard({ mode, index }) {
                 className="h-4 w-4"
                 style={{
                   color: 'var(--amber)',
-                  filter: 'drop-shadow(0 0 4px rgba(196,125,28,0.32))',
+                  filter: 'drop-shadow(0 0 4px color-mix(in oklab, var(--amber) 32%, transparent))',
                 }}
               />
             </div>
@@ -625,7 +625,7 @@ function FlowStep({ step }) {
           style={{
             color: 'var(--amber)',
             textShadow:
-              '0 0 18px rgba(196,125,28,0.30), 0 0 6px rgba(196,125,28,0.40)',
+              '0 0 18px color-mix(in oklab, var(--amber) 30%, transparent), 0 0 6px color-mix(in oklab, var(--amber) 40%, transparent)',
           }}
         >
           {step.id}
@@ -667,7 +667,7 @@ function OwnershipCard({ card }) {
               className="h-4 w-4"
               style={{
                 color: 'var(--amber)',
-                filter: 'drop-shadow(0 0 4px rgba(196,125,28,0.32))',
+                filter: 'drop-shadow(0 0 4px color-mix(in oklab, var(--amber) 32%, transparent))',
               }}
             />
           </div>

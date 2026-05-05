@@ -650,27 +650,32 @@ html[data-osci-style="field-notebook"]:not(.dark) {
  * edges all stay Modern's defaults — only the bay surface goes
  * silvery. */
 html[data-theme="modern"][data-osci-style="slate"]:not(.dark) {
-  --panel-bg:           #ebebeb;
-  --panel-bg-alt:       #e0e0e0;
-  --panel-edge:         rgba(0, 0, 0, 0.30);
-  --panel-edge-dim:     rgba(0, 0, 0, 0.18);
-  --panel-edge-faint:   rgba(0, 0, 0, 0.10);
-  --panel-edge-subtle:  rgba(0, 0, 0, 0.06);
+  /* Surfaces sit between Modern's --panel-bg (#fafafa, the "too light"
+   * baseline) and the prior Slate (#ebebeb, the "too dark" overshoot).
+   * #f2f2f2 + #e8e8e8 lands in the harmonious middle. Chrome (edges,
+   * inset highlights, drop shadows) is bumped up so the lighter panel
+   * fill still reads as a distinct material surface, not a wash. */
+  --panel-bg:           #f2f2f2;
+  --panel-bg-alt:       #ededed;
+  --panel-edge:         rgba(0, 0, 0, 0.34);
+  --panel-edge-dim:     rgba(0, 0, 0, 0.20);
+  --panel-edge-faint:   rgba(0, 0, 0, 0.12);
+  --panel-edge-subtle:  rgba(0, 0, 0, 0.07);
   --panel-ink:          #1a1a1a;
   --panel-ink-dim:      #2a2a2a;
   --panel-ink-muted:    #4a4a4a;
   --panel-ink-faint:    #6b6b6b;
   --panel-ink-subtle:   #858585;
   --panel-trace:        #1a1a1a;
-  --panel-trace-glow:   rgba(26, 26, 26, 0.20);
-  --panel-trace-dim:    rgba(26, 26, 26, 0.12);
-  --panel-trace-faint:  rgba(26, 26, 26, 0.06);
+  --panel-trace-glow:   rgba(26, 26, 26, 0.22);
+  --panel-trace-dim:    rgba(26, 26, 26, 0.14);
+  --panel-trace-faint:  rgba(26, 26, 26, 0.07);
   --panel-scanline:     rgba(26, 26, 26, 0.03);
   --panel-chassis-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.40),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.14),
-    0 10px 28px -12px rgba(0, 0, 0, 0.22),
-    0 3px 10px -4px rgba(0, 0, 0, 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 12px 32px -12px rgba(0, 0, 0, 0.26),
+    0 4px 12px -4px rgba(0, 0, 0, 0.16);
 
   /* Scope-bay context — softer dark palette (no inversion, no
    * dramatic flip). The standard hierarchy is preserved — screen

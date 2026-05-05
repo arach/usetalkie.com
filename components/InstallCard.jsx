@@ -218,7 +218,6 @@ export default function InstallCard() {
                     background: active
                       ? 'color-mix(in oklab, var(--panel-trace) 10%, transparent)'
                       : 'transparent',
-                    textShadow: active ? '0 0 4px var(--panel-trace-glow)' : undefined,
                   }}
                   onMouseEnter={(e) => {
                     if (!active) e.currentTarget.style.color = 'var(--panel-ink-muted)'
@@ -245,7 +244,7 @@ export default function InstallCard() {
           >
             <span
               className="select-none mr-2"
-              style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}
+              style={{ color: 'var(--panel-trace)' }}
             >
               $
             </span>
@@ -273,9 +272,9 @@ export default function InstallCard() {
               <>
                 <Check
                   className="h-3 w-3"
-                  style={{ color: 'var(--panel-trace)', filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))' }}
+                  style={{ color: 'var(--panel-trace)' }}
                 />
-                <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+                <span style={{ color: 'var(--panel-trace)' }}>
                   COPIED
                 </span>
               </>

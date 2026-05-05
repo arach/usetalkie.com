@@ -96,19 +96,20 @@ export default function RootLayout({ children }) {
               var useDark = stored ? stored === 'dark' : prefersDark;
               var root = document.documentElement;
               if (useDark) root.classList.add('dark'); else root.classList.remove('dark');
-              var osci = localStorage.getItem('osci-style');
-              if (osci) root.setAttribute('data-osci-style', osci);
               var rotor = localStorage.getItem('chassis-rotor');
               if (rotor === 'on') root.setAttribute('data-chassis-rotor', 'on');
 
               /* Design-theme resolver chain — applies before first paint.
                  Precedence (highest wins): URL ?theme=... > localStorage
-                 'design-theme' > 'warm' (default). URL param sticks to
-                 localStorage so a campaign link visit persists. */
+                 'design-theme' > 'modern' (public default). URL param
+                 sticks to localStorage so a campaign link visit persists.
+                 Returning visitors with explicit warm/linen preference
+                 keep theirs; only no-localStorage visitors get the new
+                 modern default. */
               var url = new URLSearchParams(location.search);
               var urlTheme = url.get('theme');
               var validThemes = ['warm', 'linen', 'modern'];
-              var theme = null;
+              var theme = 'modern';
               if (urlTheme && validThemes.indexOf(urlTheme) !== -1) {
                 theme = urlTheme;
                 localStorage.setItem('design-theme', theme);
@@ -117,6 +118,17 @@ export default function RootLayout({ children }) {
                 if (savedTheme && validThemes.indexOf(savedTheme) !== -1) theme = savedTheme;
               }
               if (theme === 'modern' || theme === 'linen') root.setAttribute('data-theme', theme);
+
+              /* Tone resolver — saved value wins. If none saved AND theme
+                 is Modern, default to "slate" (the Modern-paired tone).
+                 On Warm/Linen with no saved tone, no attribute = phosphor
+                 (the original chassis identity). */
+              var osci = localStorage.getItem('osci-style');
+              if (osci) {
+                root.setAttribute('data-osci-style', osci);
+              } else if (theme === 'modern') {
+                root.setAttribute('data-osci-style', 'slate');
+              }
             } catch (e) {}
           `,
           }}

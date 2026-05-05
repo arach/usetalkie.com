@@ -39,11 +39,9 @@ export default function HeroWaveform({
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      width="100%"
-      height="auto"
       preserveAspectRatio="none"
       aria-hidden
-      className="block"
+      className="block w-full h-auto"
     >
       {/* Major graticule lines */}
       {Array.from({ length: 7 }, (_, i) => {

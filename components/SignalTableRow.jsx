@@ -39,10 +39,13 @@ export default function SignalTableRow({
   const stage = `T+${String(index + 1).padStart(2, '0')}`
 
   // Phosphor active state — tinted background + subtle glow halo.
+  // Background mix dialed back from 7% → 4% so the active row reads
+  // as a softer highlight rather than a heavy wash, especially on
+  // Slate where Modern's white canvas amplifies any tint.
   const activeStyle = active
     ? {
-        background: 'color-mix(in oklab, var(--trace) 7%, transparent)',
-        boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--trace) 28%, transparent), 0 0 14px color-mix(in oklab, var(--trace-glow) 50%, transparent)',
+        background: 'color-mix(in oklab, var(--trace) 4%, transparent)',
+        boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--trace) 22%, transparent), 0 0 12px color-mix(in oklab, var(--trace-glow) 40%, transparent)',
       }
     : undefined
 
