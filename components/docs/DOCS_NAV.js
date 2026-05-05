@@ -1,4 +1,4 @@
-import { FEATURES } from '../../../shared/config/features'
+import { FEATURES } from '../../shared/config/features'
 
 /**
  * Single source of truth for the v2 docs navigation.

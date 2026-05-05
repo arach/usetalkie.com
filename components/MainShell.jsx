@@ -1,5 +1,5 @@
-import SiteShell from './v2/SiteShell'
-import { NarratorProvider, NarratorDock } from './v2/narrator'
+import SiteShell from './SiteShell'
+import { NarratorProvider, NarratorDock } from './narrator'
 
 /**
  * Shared shell for top-level routes (`/`, `/downloads`, etc.). Wraps the

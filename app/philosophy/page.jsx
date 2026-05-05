@@ -1,4 +1,5 @@
-import ManifestoPage from '../../components/ManifestoPage'
+import PhilosophyPage from '../../components/PhilosophyPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Philosophy — Talkie',
@@ -6,5 +7,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <ManifestoPage />
+  return (
+    <MainShell>
+      <PhilosophyPage />
+    </MainShell>
+  )
 }

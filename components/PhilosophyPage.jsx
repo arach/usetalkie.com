@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Mic, Lock, Layers } from 'lucide-react'
 import { NarrateTrigger } from './narrator'
-import { supportingLine, TAGLINE_PHILOSOPHY } from '../../content/v2/tagline'
+import { supportingLine, TAGLINE_PHILOSOPHY } from '../content/tagline'
 
 /**
  * Philosophy — v2 oscilloscope canvas.

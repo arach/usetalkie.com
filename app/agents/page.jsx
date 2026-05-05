@@ -1,4 +1,5 @@
-import FeaturesPage from '../../components/FeaturesPage'
+import AgentsPage from '../../components/AgentsPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Talkie for Agents — Voice-initiated workflows',
@@ -6,5 +7,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <FeaturesPage />
+  return (
+    <MainShell>
+      <AgentsPage />
+    </MainShell>
+  )
 }

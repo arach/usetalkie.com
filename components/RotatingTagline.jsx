@@ -1,7 +1,7 @@
 "use client"
 
-import { useRotation } from '../../lib/useRotation'
-import { TAGLINE_VARIANTS } from '../../content/v2/tagline'
+import { useRotation } from '../lib/useRotation'
+import { TAGLINE_VARIANTS } from '../content/tagline'
 
 /**
  * RotatingTagline — fades through fills of "A ___ is all you need.",

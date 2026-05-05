@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
-import { supportingLine, ANCHOR_VARIANT } from '../../content/v2/tagline'
+import { supportingLine, ANCHOR_VARIANT } from '../content/tagline'
 
 const PRIMARY_NAV = [
   { label: 'Workflows',  href: '/workflows' },

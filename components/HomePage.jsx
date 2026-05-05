@@ -17,7 +17,7 @@ import InstallCard from './InstallCard'
 import SignalTable from './SignalTable'
 import RotatingTagline from './RotatingTagline'
 import RotatingDevices from './RotatingDevices'
-import capturesCatalog from '../../content/v2/captures.json'
+import capturesCatalog from '../content/captures.json'
 
 /**
  * HomePage — body of /v2. Pure server component.

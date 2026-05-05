@@ -1,4 +1,5 @@
 import DemoPage from '../../components/DemoPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Demo - Talkie',
@@ -11,5 +12,9 @@ export const metadata = {
 }
 
 export default function Demo() {
-  return <DemoPage />
+  return (
+    <MainShell>
+      <DemoPage />
+    </MainShell>
+  )
 }

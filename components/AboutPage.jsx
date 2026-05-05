@@ -1,282 +1,429 @@
-"use client"
-import React, { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Github, Linkedin, Mail, MapPin, Building2, Sparkles, Check, Loader2 } from 'lucide-react'
-import { trackSignup } from '../lib/analytics'
+import { Building2, MapPin, Sparkles, Github, Linkedin, Mail } from 'lucide-react'
+import { supportingLine, TAGLINE_ABOUT } from '../content/tagline'
 
-const ConsoleHeader = ({ label, green }) => (
-  <div className="mb-6 select-none">
-    <h2 className={`text-xs font-mono font-bold uppercase transition-colors ${green ? 'text-emerald-600 dark:text-emerald-500' : 'text-zinc-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-500'}`}>&gt; {label}</h2>
-    <div className={`w-full border-b mt-2 transition-colors ${green ? 'border-emerald-500/30' : 'border-zinc-300 dark:border-zinc-700 group-hover:border-emerald-500/30'}`}></div>
-  </div>
-)
+/**
+ * About — v2 oscilloscope canvas.
+ *
+ * Server component. Theme flips entirely via CSS variables on `html.dark`,
+ * consumed through semantic Tailwind tokens (canvas, surface, ink, trace,
+ * edge). Inline `style` is reserved for token-resistant primitives:
+ * graticule grids referencing `var(--trace-faint)`, phosphor glow
+ * shadows referencing `var(--trace-glow)`, and trace-tinted surfaces
+ * via `color-mix`.
+ *
+ * Sections: HERO · STORY · OPERATOR (founder card) · CONNECT.
+ *
+ * Newsletter form was dropped on purpose — the donor used `useState` and
+ * a fetch handler, both forbidden in this server-only port. Email + social
+ * links are surfaced instead, which covers the same intent (reach out)
+ * without flipping the file to a client component.
+ */
+
+// Reused inline style fragments — declared once so JSX stays readable.
+const GRATICULE = {
+  backgroundImage:
+    'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+  backgroundSize: '48px 48px',
+}
+const GRATICULE_FINE = {
+  backgroundImage:
+    'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+  backgroundSize: '24px 24px',
+}
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+const TRACE_GLOW_DOT = { boxShadow: '0 0 6px var(--trace)' }
+const HEADLINE_PHOSPHOR = { textShadow: '0 0 18px var(--trace-glow), 0 0 6px var(--trace-glow)' }
+const TRACE_TINT = { background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }
+const TRACE_TINT_FAINT = { background: 'color-mix(in oklab, var(--trace) 4%, transparent)' }
+
+const STORY_PARAGRAPHS = [
+  'Typing is a bottleneck. The faster you can get ideas out of your head and into your tools, the more you can leverage AI to amplify your work. Voice is the unlock.',
+  'I was a power user of early voice tools like SuperWhisper and Wispr Flow — they were great and opened my eyes to what was possible. But none of them treated developers as first-class citizens. So I built Talkie for engineers and tech-forward people who want control: open data, everything is a file, fully pluggable and hookable.',
+  'A native macOS app that lives in your menu bar, transcribes locally with state-of-the-art models, and gets out of your way. No subscriptions, no cloud dependency. Press a key, talk, your words appear wherever you’re typing.',
+  'Dictation is just the beginning. When you take voice-first workflows seriously, a whole surface opens up: memory, analysis, automation, context. That’s where Talkie is headed.',
+]
+
+const FOUNDER_STATS = [
+  { icon: Building2, label: '4 ventures · 1 exit' },
+  { icon: MapPin, label: 'Montreal / SF' },
+  { icon: Sparkles, label: 'AI pilled, voice pilled' },
+]
 
 export default function AboutPage() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('idle') // idle, loading, success, error
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault()
-    setStatus('loading')
-
-    try {
-      const res = await fetch('https://app.usetalkie.com/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-
-      if (res.ok) {
-        setStatus('success')
-        setEmail('')
-        trackSignup('newsletter', 'general', 'about')
-      } else {
-        setStatus('error')
-      }
-    } catch {
-      setStatus('error')
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-black dark:hover:text-white transition-colors group"
-          >
-            <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5" />
-            BACK
-          </Link>
+    <>
+      {/* ========== HERO ========== */}
+      <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-          <div className="flex items-center gap-3">
-            <div className="h-3 w-px bg-zinc-300 dark:bg-zinc-700"></div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-900 dark:text-white">ABOUT</span>
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-28">
+          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+            · ABOUT · OPERATOR LOG
+          </p>
+
+          <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
+            Voice is the unlock.<br />
+            <span className="italic text-trace" style={HEADLINE_PHOSPHOR}>
+              Typing is the bottleneck.
+            </span>
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+            Talkie is a native macOS app for engineers and tech-forward operators who want
+            control over their tools. Local-first, open data, fully hookable. One person
+            building it, in the open, for people who think the same way.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
+            <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-trace" style={TRACE_GLOW_DOT} />
+            <span>SOLO BUILT</span>
+            <span aria-hidden className="text-edge-dim">/</span>
+            <span>LOCAL FIRST</span>
+            <span aria-hidden className="text-edge-dim">/</span>
+            <span>OPEN DATA</span>
           </div>
         </div>
-      </nav>
+      </section>
 
-      <main className="pt-24 pb-24 px-6">
-        <article className="mx-auto max-w-3xl">
+      {/* ========== STORY ========== */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-          {/* THE STORY */}
-          <div className="mb-12 group">
-            <ConsoleHeader label="THE STORY" />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+            · THE STORY
+          </p>
+          <h2 className="mt-3 max-w-3xl font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
+            You don&apos;t get the full value of AI unless you can communicate at high velocity.
+          </h2>
 
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white leading-tight uppercase mb-4">
-              You don't get the full value of AI unless you can communicate at high velocity.
-            </h1>
-
-            <div className="space-y-3 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              <p>
-                Typing is a bottleneck. The faster you can get ideas out of your head and into your tools,
-                the more you can leverage AI to amplify your work. Voice is the unlock.
+          <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-[160px_1fr] md:gap-16">
+            {/* Side rail — line index */}
+            <div className="flex flex-col gap-3">
+              <div
+                className="font-display text-[56px] font-normal leading-none tracking-[-0.04em] text-trace opacity-80"
+                style={{ textShadow: '0 0 24px var(--trace-glow), 0 0 8px var(--trace-glow)' }}
+              >
+                01
+              </div>
+              <p
+                className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
+                style={TRACE_GLOW_SOFT}
+              >
+                · LOG ENTRY
               </p>
-              <p>
-                I was a power user of early voice tools like SuperWhisper and Wispr Flow - they were great
-                and opened my eyes to what was possible. But none of them treated developers as first-class
-                citizens. So I built Talkie for engineers and tech-forward people who want control: open data,
-                everything is a file, fully pluggable and hookable. Your data. I want you to tinker.
-              </p>
-              <p>
-                A native macOS app that lives in your menu bar, transcribes locally with state-of-the-art AI,
-                and gets out of your way. No subscriptions, no cloud dependency. Just press a key, talk, and
-                your words appear wherever you're typing.
-              </p>
-              <p>
-                Dictation is just the beginning. When you take voice-first workflows seriously, a whole surface
-                opens up: memory, analysis, automation, context. That's where Talkie is headed.
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-subtle">
+                BY ARACH T.
               </p>
             </div>
+
+            {/* Prose */}
+            <div className="space-y-5 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+              {STORY_PARAGRAPHS.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+
+              <div
+                className="mt-8 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
+                style={TRACE_GLOW_SOFT}
+              >
+                <span aria-hidden className="inline-block h-px w-8" style={{ background: 'var(--trace-dim)' }} />
+                <span>BUILT FOR TINKERERS</span>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
 
-          {/* THE FOUNDER */}
-          <div className="mb-12 group">
-            <ConsoleHeader label="THE FOUNDER" />
+      {/* ========== OPERATOR (FOUNDER) ========== */}
+      <section className="relative border-t border-edge-faint bg-canvas">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
 
-            <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 backdrop-blur-xl p-6">
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                {/* Profile photo */}
-                <img
-                  src="/arach-circle.png"
-                  alt="Arach Tchoupani"
-                  className="w-28 h-28 md:w-36 md:h-36 rounded-lg object-cover flex-shrink-0 transition-transform duration-300 hover:rotate-3"
-                />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+            · THE OPERATOR
+          </p>
+          <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+            Who&apos;s behind it.
+          </h2>
 
-                <div className="flex-1">
-                  <h3 className="text-base font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-0.5">
-                    Arach Tchoupani
-                  </h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3">
-                    Founder & Developer
-                  </p>
+          <div
+            className="relative mt-12 overflow-hidden rounded-md border border-edge bg-surface"
+            style={TRACE_TINT_FAINT}
+          >
+            <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
 
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-4">
-                    15+ years in tech, from software engineer to CTO. Previously co-founded
-                    Breathe Life (acquired 2022), worked at Meta on Creators and Facebook.
-                    Now focused on AI-powered tools that make work feel more natural.
-                    Based in Montreal, visits SF often.
-                  </p>
+            <div className="relative grid grid-cols-1 gap-8 p-6 md:grid-cols-[auto_1fr] md:gap-10 md:p-10">
+              {/* Portrait + ID strip */}
+              <div className="flex flex-col items-start gap-4">
+                <div className="relative">
+                  {/* Phosphor halo */}
+                  <span
+                    aria-hidden
+                    className="absolute -inset-1 rounded-md"
+                    style={{ boxShadow: '0 0 24px var(--trace-glow)' }}
+                  />
+                  <img
+                    src="/arach-circle.png"
+                    alt="Arach Tchoupani"
+                    className="relative h-32 w-32 rounded-md border border-edge object-cover md:h-40 md:w-40"
+                  />
+                </div>
 
-                  {/* Stats */}
-                  <div className="flex flex-wrap gap-4 mb-4">
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                      <Building2 className="w-3.5 h-3.5" />
-                      <span>4 ventures, 1 exit</span>
+                <div className="flex flex-col gap-1 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+                  <span>ID · 001</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-trace" style={TRACE_GLOW_DOT} />
+                    SIGNAL ACTIVE
+                  </span>
+                </div>
+              </div>
+
+              {/* Bio */}
+              <div className="flex flex-col">
+                <h3 className="font-display text-2xl font-normal leading-tight tracking-[-0.01em] text-ink md:text-3xl">
+                  Arach Tchoupani
+                </h3>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+                  · FOUNDER &amp; ENGINEER
+                </p>
+
+                <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-muted">
+                  15+ years in tech, from software engineer to CTO. Previously co-founded
+                  Breathe Life (acquired 2022), worked at Meta on Creators and Facebook.
+                  Now focused on AI-powered tools that make work feel more natural. Based
+                  in Montreal, in SF often.
+                </p>
+
+                {/* Stat strip */}
+                <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+                  {FOUNDER_STATS.map(({ icon: Icon, label }) => (
+                    <div
+                      key={label}
+                      className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-subtle"
+                    >
+                      <Icon className="h-3.5 w-3.5 text-trace" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} aria-hidden />
+                      <span>{label}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                      <MapPin className="w-3.5 h-3.5" />
-                      <span>Montreal / SF</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>AI pilled, voice pilled</span>
-                    </div>
-                  </div>
+                  ))}
+                </div>
 
-                  {/* Social Links */}
-                  <div className="flex flex-wrap gap-2">
-                    <a
-                      href="https://x.com/arach"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-                    >
-                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                      </svg>
-                      @arach
-                    </a>
-                    <a
-                      href="https://github.com/arach"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-                    >
-                      <Github className="w-3.5 h-3.5" />
-                      arach
-                    </a>
-                    <a
-                      href="https://linkedin.com/in/arach"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-                    >
-                      <Linkedin className="w-3.5 h-3.5" />
-                      arach
-                    </a>
-                    <a
-                      href="https://arach.io"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded text-xs text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-                    >
-                      arach.io
-                    </a>
-                  </div>
+                {/* Channels */}
+                <div className="mt-7 flex flex-wrap gap-2">
+                  <ChannelLink href="https://x.com/arach" label="@arach">
+                    <XIcon />
+                  </ChannelLink>
+                  <ChannelLink href="https://github.com/arach" label="github/arach">
+                    <Github className="h-3.5 w-3.5" aria-hidden />
+                  </ChannelLink>
+                  <ChannelLink href="https://linkedin.com/in/arach" label="linkedin/arach">
+                    <Linkedin className="h-3.5 w-3.5" aria-hidden />
+                  </ChannelLink>
+                  <ChannelLink href="https://arach.io" label="arach.io" />
                 </div>
               </div>
             </div>
           </div>
-
-          {/* CONNECT */}
-          <div className="group">
-            <ConsoleHeader label="CONNECT" />
-
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
-              I love hearing from users. Feedback, ideas, questions, or just a quick hello. Don't be a stranger.
-            </p>
-
-            <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 p-6">
-              {/* Newsletter */}
-              <div className="mb-6">
-                <p className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-500 mb-2">Newsletter</p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                  I send occasional updates on new features and what I'm working on. No spam, unsubscribe anytime.
-                </p>
-                {status === 'success' ? (
-                  <div className="inline-flex items-center gap-2 px-4 py-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded text-sm text-emerald-700 dark:text-emerald-400">
-                    <Check className="w-4 h-4" />
-                    You're subscribed. Thanks for joining.
-                  </div>
-                ) : (
-                  <form className="flex gap-2 max-w-md" onSubmit={handleSubscribe}>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
-                      required
-                      disabled={status === 'loading'}
-                      className="flex-1 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 disabled:opacity-50"
-                    />
-                    <button
-                      type="submit"
-                      disabled={status === 'loading'}
-                      className="px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors disabled:opacity-50 flex items-center gap-2"
-                    >
-                      {status === 'loading' ? (
-                        <>
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                          Subscribing
-                        </>
-                      ) : (
-                        'Subscribe'
-                      )}
-                    </button>
-                  </form>
-                )}
-              </div>
-
-              {/* Social & Contact */}
-              <div className="flex flex-wrap gap-3 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-                <a
-                  href="https://x.com/usetalkieapp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                  @usetalkieapp
-                </a>
-                <a
-                  href="mailto:hey@usetalkie.com"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 rounded text-xs font-bold uppercase tracking-wider hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-                >
-                  <Mail className="w-4 h-4" />
-                  hey@usetalkie.com
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </article>
-      </main>
-
-      {/* Footer */}
-      <footer className="py-12 bg-zinc-100 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-3xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <img src="/talkie-icon.png" alt="Talkie" className="h-5 w-5 rounded" />
-            <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 dark:text-white">Talkie</span>
-          </div>
-          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] font-mono uppercase text-zinc-500">
-            <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors font-bold">
-              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              @usetalkieapp
-            </a>
-            <a href="mailto:hey@usetalkie.com" className="hover:text-black dark:hover:text-white transition-colors">Email</a>
-            <a href="/philosophy" className="hover:text-black dark:hover:text-white transition-colors">Philosophy</a>
-            <a href="/support" className="hover:text-black dark:hover:text-white transition-colors">Support</a>
-            <a href="/privacypolicy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
-          </div>
-          <p className="text-[10px] font-mono uppercase text-zinc-400">&copy; {new Date().getFullYear()} Talkie Systems Inc.</p>
         </div>
-      </footer>
-    </div>
+      </section>
+
+      {/* ========== CONNECT ========== */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
+
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-end">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+                · CONNECT
+              </p>
+              <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+                Don&apos;t be a stranger.
+              </h2>
+              <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-muted">
+                Feedback, ideas, questions, or just a quick hello — they all land in the
+                same inbox and they all get read. The fastest channels are below.
+              </p>
+            </div>
+
+            <div
+              aria-hidden
+              className="hidden h-px w-32 md:block"
+              style={{ background: 'var(--trace-dim)' }}
+            />
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+            <ConnectCard
+              code="CH-01"
+              label="EMAIL"
+              heading="hey@usetalkie.com"
+              body="Direct line. Bug reports, feature ideas, partnership stuff — all of it."
+              href="mailto:hey@usetalkie.com"
+              icon={<Mail className="h-3.5 w-3.5" aria-hidden />}
+              cta="OPEN MAIL"
+            />
+            <ConnectCard
+              code="CH-02"
+              label="X / TWITTER"
+              heading="@usetalkieapp"
+              body="Product updates, what's shipping, what's next. Reply for the fastest reply."
+              href="https://x.com/usetalkieapp"
+              icon={<XIcon />}
+              cta="FOLLOW"
+              external
+            />
+            <ConnectCard
+              code="CH-03"
+              label="PHILOSOPHY"
+              heading="Why Talkie exists."
+              body="The principles behind the tool — local-first, sovereign, low-friction."
+              href="/philosophy"
+              cta="READ"
+              highlight
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ========== FOOTER TIE-BACK ========== */}
+      <section className="relative border-t border-edge-faint bg-canvas">
+        <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
+            {/* This is Talkie */}
+            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
+              <div>
+                <p
+                  className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
+                  style={TRACE_GLOW_SOFT}
+                >
+                  · THIS IS TALKIE
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
+                  A selfie. For your thoughts.<br />
+                  <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_ABOUT)}</span>
+                </h3>
+                <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+                  Voice capture, local-first, auditable signal path. Your words stay on your devices.
+                </p>
+              </div>
+              <Link
+                href="/mac"
+                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                style={{
+                  ...TRACE_TINT,
+                  textShadow: '0 0 6px var(--trace-glow)',
+                }}
+              >
+                SEE THE MAC <span aria-hidden>→</span>
+              </Link>
+            </div>
+
+            {/* Mobile tie-back */}
+            <Link
+              href="/mobile"
+              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
+            >
+              <div className="flex items-center gap-2.5">
+                <span
+                  aria-hidden
+                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent"
+                />
+                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                  ON THE GO
+                </span>
+              </div>
+              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
+                Talkie for Mobile.
+              </h3>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+                The capture device that&apos;s always with you. Keep reading <span aria-hidden>→</span>
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
+/* ── Sub-components ─────────────────────────────────────────────────── */
+
+function ChannelLink({ href, label, children }) {
+  const isExternal = href.startsWith('http')
+  const externalProps = isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {}
+
+  return (
+    <a
+      href={href}
+      {...externalProps}
+      className="inline-flex items-center gap-1.5 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all hover:-translate-y-0.5 hover:text-trace"
+      style={TRACE_TINT_FAINT}
+    >
+      {children}
+      <span>{label}</span>
+    </a>
+  )
+}
+
+function ConnectCard({ code, label, heading, body, href, icon, cta, external = false, highlight = false }) {
+  const externalProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {}
+  const isInternal = href.startsWith('/')
+
+  const inner = (
+    <>
+      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
+      <div className="relative flex h-full flex-col">
+        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+          <span>
+            {code} / {label}
+          </span>
+          <span aria-hidden className="inline-block h-1 w-1 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+        </div>
+
+        <h3 className="mt-5 font-display text-xl font-normal leading-snug tracking-[-0.01em] text-ink">
+          {heading}
+        </h3>
+
+        <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{body}</p>
+
+        <div
+          className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-trace"
+          style={TRACE_GLOW_SOFT}
+        >
+          {icon}
+          <span>{cta}</span>
+          <span aria-hidden>→</span>
+        </div>
+      </div>
+    </>
+  )
+
+  const className = `group relative block overflow-hidden rounded-md border p-5 transition-all hover:-translate-y-0.5 ${
+    highlight ? 'border-edge' : 'border-edge-dim bg-surface'
+  }`
+  const cardStyle = highlight ? TRACE_TINT_FAINT : undefined
+
+  if (isInternal) {
+    return (
+      <Link href={href} className={className} style={cardStyle}>
+        {inner}
+      </Link>
+    )
+  }
+
+  return (
+    <a href={href} {...externalProps} className={className} style={cardStyle}>
+      {inner}
+    </a>
+  )
+}
+
+function XIcon() {
+  return (
+    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
   )
 }

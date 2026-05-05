@@ -1,5 +1,6 @@
 import { getAllIdeas } from '../../lib/ideas'
 import IdeasPage from '../../components/IdeasPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Ideas - Talkie',

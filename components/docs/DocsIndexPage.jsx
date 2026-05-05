@@ -1,196 +1,161 @@
-"use client"
-import React from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, Server, Globe, Book, Lightbulb, Boxes, Database, Workflow, Code2, Puzzle, Route, Terminal, Download, Clock } from 'lucide-react'
-import Container from '../Container'
-import { FEATURES } from '../../shared/config/features'
+import { DOCS_NAV } from './DOCS_NAV'
 
-// Feature flags
-const SHOW_TAILSCALE_DOCS = FEATURES.SHOW_TAILSCALE_DOCS
+/**
+ * v2 Docs index — the landing page at /docs.
+ *
+ * Pure server component. Reads the canonical nav structure from
+ * DOCS_NAV.js so this list never drifts from the sidebar.
+ *
+ * Visual language matches the oscilloscope canvas: graticule overlay
+ * on the header, cream/phosphor tokens, font-mono eyebrows, no chip
+ * colors borrowed from the donor (the donor used emerald/violet/rose
+ * accent fills which fight the trace token).
+ */
 
-const DocCard = ({ href, icon: Icon, title, description, color }) => (
-  <Link
-    href={href}
-    className="group block p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all hover:shadow-lg"
-  >
-    <div className={`inline-flex p-3 rounded-lg ${color} mb-4`}>
-      <Icon className="w-6 h-6" />
-    </div>
-    <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-      {title}
-    </h3>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-      {description}
-    </p>
-    <div className="flex items-center gap-1 text-sm font-medium text-emerald-600 dark:text-emerald-400">
-      Read guide <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-    </div>
-  </Link>
-)
+const GRATICULE = {
+  backgroundImage:
+    'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+  backgroundSize: '48px 48px',
+}
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
+function DocCard({ slug, title, description, href }) {
+  return (
+    <Link
+      href={href}
+      className="group relative flex h-full flex-col justify-between rounded-sm border border-edge-faint bg-canvas p-5 transition-all hover:-translate-y-px hover:border-edge"
+    >
+      <div>
+        <p
+          className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors group-hover:text-trace"
+        >
+          /docs/{slug}
+        </p>
+        <h3 className="mt-3 font-display text-xl font-normal leading-tight tracking-[-0.01em] text-ink">
+          {title}
+        </h3>
+        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{description}</p>
+      </div>
+
+      <div className="mt-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
+        <span
+          aria-hidden
+          className="inline-block h-1 w-1 rounded-full bg-trace"
+          style={{ boxShadow: '0 0 4px var(--trace)' }}
+        />
+        <span>Read guide</span>
+        <span aria-hidden className="transition-transform group-hover:translate-x-1">
+          →
+        </span>
+      </div>
+    </Link>
+  )
+}
 
 export default function DocsIndexPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
-        <Container className="h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-black dark:hover:text-white transition-colors group"
-          >
-            <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5" />
-            BACK
-          </Link>
+    <>
+      {/* ========== HEADER ========== */}
+      <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="h-3 w-px bg-zinc-300 dark:bg-zinc-700"></div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-900 dark:text-white">DOCS</span>
-          </div>
-        </Container>
-      </nav>
-
-      <main className="pt-24 pb-32 px-6">
-        <Container>
-          {/* Header */}
-          <div className="max-w-2xl mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 mb-6">
-              <Book className="w-4 h-4 text-emerald-500" />
-              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Documentation</span>
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">
-              Documentation
-            </h1>
-
-            <p className="text-lg text-zinc-600 dark:text-zinc-400">
-              Learn how Talkie works, from high-level concepts to technical deep dives. Whether you're getting started or building integrations.
-            </p>
+        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.26em] text-ink-faint">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+              style={{ boxShadow: '0 0 6px var(--trace)' }}
+            />
+            <span style={TRACE_GLOW_SOFT} className="text-trace">
+              DOCUMENTATION
+            </span>
+            <span className="opacity-50">·</span>
+            <span>SIGNAL · REFERENCE</span>
           </div>
 
-          {/* Start Here */}
-          <div className="mb-16">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-6">
-              Start Here
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl">
-              <DocCard
-                href="/docs/overview"
-                icon={Lightbulb}
-                title="Overview"
-                description="What makes Talkie different? Local-first design, privacy by default, and a philosophy of ownership."
-                color="bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400"
-              />
+          <h1 className="mt-6 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
+            How Talkie works.
+          </h1>
 
-              <DocCard
-                href="/docs/architecture"
-                icon={Boxes}
-                title="Architecture"
-                description="Multi-process design explained. How Talkie, TalkieAgent, TalkieEngine, and TalkieServer work together."
-                color="bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400"
-              />
+          <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-ink-muted">
+            From the philosophy to the wire format. Read top-to-bottom for the full
+            picture, or jump straight to the surface you need.
+          </p>
+        </div>
+      </section>
 
-              <DocCard
-                href="/docs/lifecycle"
-                icon={Route}
-                title="Lifecycle"
-                description="The journey from voice to action. Understand each phase and where you can plug in custom logic."
-                color="bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400"
-              />
+      {/* ========== SECTIONS ========== */}
+      <section className="relative bg-canvas-alt">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
+          <div className="space-y-14 md:space-y-16">
+            {DOCS_NAV.map((group, idx) => {
+              const visible = group.items.filter((item) => !item.hidden)
+              if (visible.length === 0) return null
+              const channel = String(idx + 1).padStart(2, '0')
+              return (
+                <div key={group.label}>
+                  <div className="flex items-baseline gap-3 font-mono">
+                    <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                      CH·{channel}
+                    </span>
+                    <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--edge-faint)' }} />
+                    <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim">
+                      {group.label}
+                    </span>
+                  </div>
 
-              <DocCard
-                href="/docs/data"
-                icon={Database}
-                title="Your Data"
-                description="Where your data lives, how to export it, and what formats we use. Your recordings, your control."
-                color="bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400"
-              />
-            </div>
-          </div>
-
-          {/* Power Users */}
-          <div className="mb-16">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-6">
-              Power Users
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl">
-              <DocCard
-                href="/docs/workflows"
-                icon={Workflow}
-                title="Workflows"
-                description="Build automated pipelines with 21 step types, 6 LLM providers, and a template variable system."
-                color="bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
-              />
-
-              <DocCard
-                href="/docs/cli"
-                icon={Terminal}
-                title="Talkie CLI"
-                description="Access memos, dictations, search, and workflows from the command line. Built for agents and power users."
-                color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-              />
-
-              <DocCard
-                href="/docs/extensibility"
-                icon={Puzzle}
-                title="Extensibility"
-                description="Webhooks, custom workflows, and building your own integrations. Talkie is designed to be extended."
-                color="bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400"
-              />
-            </div>
-          </div>
-
-          {/* Coming Soon */}
-          <div className="mb-16">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-6">
-              Coming Soon
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl">
-              <div className="block p-6 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50 opacity-60">
-                <div className="inline-flex p-3 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 mb-4">
-                  <Code2 className="w-6 h-6" />
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {visible.map((item) => (
+                      <DocCard
+                        key={item.slug}
+                        slug={item.slug}
+                        title={item.title}
+                        description={item.description}
+                        href={item.href}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">API Reference</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4">
-                  TalkieServer endpoints, URL schemes, and integration with external tools.
+              )
+            })}
+          </div>
+
+          {/* Bottom CTA tile */}
+          <div className="mt-20 rounded-sm border border-edge-faint bg-canvas px-6 py-8 md:px-8 md:py-10">
+            <div className="flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-xl">
+                <p
+                  className="font-mono text-[9px] uppercase tracking-[0.26em] text-trace"
+                  style={TRACE_GLOW_SOFT}
+                >
+                  · NEXT
                 </p>
-                <div className="flex items-center gap-1 text-sm font-medium text-zinc-400 dark:text-zinc-600">
-                  <Clock className="w-4 h-4" /> Coming soon
-                </div>
+                <h2 className="mt-2 font-display text-2xl font-normal leading-tight tracking-[-0.01em] text-ink">
+                  Ready to plug in the mic?
+                </h2>
+                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+                  Download Talkie for Mac and turn voice into action — local-first,
+                  auditable, yours.
+                </p>
               </div>
 
-              <div className="block p-6 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50 opacity-60">
-                <div className="inline-flex p-3 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mb-4">
-                  <Server className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">TalkieServer Setup</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4">
-                  Local bridge server for iPhone connectivity, Bun, and Tailscale networking.
-                </p>
-                <div className="flex items-center gap-1 text-sm font-medium text-zinc-400 dark:text-zinc-600">
-                  <Clock className="w-4 h-4" /> Coming soon
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Capture Intent CTA */}
-          <div className="max-w-3xl">
-            <div className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-500/5 dark:to-zinc-900 text-center">
-              <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">Ready to try it?</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
-                Download Talkie for Mac and start turning voice into action.
-              </p>
               <Link
-                href="/download"
-                className="inline-flex items-center gap-2 h-11 px-6 rounded-lg bg-emerald-600 dark:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 dark:hover:bg-emerald-400 hover:scale-105 transition-all shadow-lg shadow-emerald-500/20"
+                href="/downloads"
+                className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
+                style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
               >
-                <Download className="w-4 h-4" />
-                Download Talkie
+                <span
+                  aria-hidden
+                  className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+                  style={{ boxShadow: '0 0 4px var(--trace)' }}
+                />
+                DOWNLOAD · MAC <span>→</span>
               </Link>
             </div>
           </div>
-        </Container>
-      </main>
-    </div>
+        </div>
+      </section>
+    </>
   )
 }

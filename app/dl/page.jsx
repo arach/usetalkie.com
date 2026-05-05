@@ -1,4 +1,5 @@
 import DownloadPage from '../../components/DownloadPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Download Talkie - Private voice capture for Mac',
@@ -10,5 +11,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <DownloadPage />
+  return (
+    <MainShell>
+      <DownloadPage />
+    </MainShell>
+  )
 }

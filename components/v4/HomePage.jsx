@@ -13,8 +13,8 @@ import {
   Lock,
   ArrowRight,
 } from 'lucide-react'
-import SignalTable from '../v2/SignalTable'
-import capturesCatalog from '../../content/v2/captures.json'
+import SignalTable from '../SignalTable'
+import capturesCatalog from '../../content/captures.json'
 import PanoramicHero from './PanoramicHero'
 import OsciStyleToggle from './OsciStyleToggle'
 

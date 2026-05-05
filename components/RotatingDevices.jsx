@@ -1,6 +1,6 @@
 "use client"
 
-import { useRotation } from '../../lib/useRotation'
+import { useRotation } from '../lib/useRotation'
 
 /**
  * RotatingDevices — renders a device list with one phosphor-highlighted,

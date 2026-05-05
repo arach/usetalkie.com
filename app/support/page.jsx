@@ -1,4 +1,5 @@
 import SupportPage from '../../components/SupportPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Support — Talkie',
@@ -13,5 +14,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <SupportPage />
+  return (
+    <MainShell>
+      <SupportPage />
+    </MainShell>
+  )
 }

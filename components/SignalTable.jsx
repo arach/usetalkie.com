@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { playPressTick, playPasteTick } from '../../lib/sfx'
+import { playPressTick, playPasteTick } from '../lib/sfx'
 import { Play } from 'lucide-react'
 import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'

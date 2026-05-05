@@ -1,5 +1,5 @@
 "use client"
-import { trackAppStoreClick, trackDownload } from '../../lib/analytics'
+import { trackAppStoreClick, trackDownload } from '../lib/analytics'
 
 /**
  * v2 TrackedAnchor — fires a GA event on click, then lets the browser follow

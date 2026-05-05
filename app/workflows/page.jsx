@@ -1,4 +1,5 @@
-import FeaturesPage from '../../components/FeaturesPage'
+import WorkflowsPage from '../../components/WorkflowsPage'
+import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Workflows — Talkie',
@@ -6,5 +7,9 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <FeaturesPage />
+  return (
+    <MainShell>
+      <WorkflowsPage />
+    </MainShell>
+  )
 }

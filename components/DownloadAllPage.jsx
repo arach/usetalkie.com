@@ -1,221 +1,300 @@
-"use client"
-import React, { useState } from 'react'
-import { Download, Terminal, Laptop, CheckCircle2, Smartphone, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
-import { trackDownload, trackAppStoreClick } from '../lib/analytics'
+import {
+  Cpu,
+  Download,
+  Laptop,
+  ShieldCheck,
+  Smartphone,
+  Terminal,
+  Waves,
+} from 'lucide-react'
+import CopyCommand from './CopyCommand'
 import PackageManagerTabs from './PackageManagerTabs'
+import QRExpand from './QRExpand'
+import TrackedAnchor from './TrackedAnchor'
 
-const GITHUB_DMG_URL = 'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
+/**
+ * v2 DownloadAllPage — body of /downloads. All-platforms, all-channels view.
+ *
+ * Composition:
+ *   1. Channel hero — eyebrow + headline + supporting copy
+ *   2. Two-channel grid:
+ *      · CH-A · MAC      — package-manager tabs + DMG fallback + curl
+ *      · CH-B · IPHONE   — App Store CTA + QR code
+ *   3. Trust strip — system requirements / signing / data posture
+ *   4. Cross-link to canonical /download for the simple install path
+ *
+ * Pure server component. Three small client islands are embedded:
+ *   - <PackageManagerTabs />  tab switcher + clipboard
+ *   - <CopyCommand />          curl + cli-only clipboard
+ *   - <TrackedAnchor />        GA event before navigation (DMG + App Store)
+ *
+ * Theme is fully token-driven; inline `style` only for CSS-var refs the
+ * Tailwind config does not yet expose (--trace-glow + color-mix gradients).
+ */
+
+const DMG_URL =
+  'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
 const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
 const CLI_ONLY_CMD = 'bun add -g @talkie/cli'
-const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
+const APP_STORE_URL =
+  'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
-function CopyableCommand({ command, label, id, copiedCmd, onCopy }) {
+function Graticule({ opacity = 0.3 }) {
   return (
-    <button
-      onClick={() => onCopy(command, id)}
-      className="group w-full bg-zinc-950 border border-zinc-700 dark:border-zinc-700 rounded-lg p-3 font-mono text-sm text-emerald-400 whitespace-nowrap overflow-x-auto text-left transition-colors hover:border-emerald-500/60 cursor-pointer shadow-inner"
-      title="Click to copy"
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0"
+      style={{
+        opacity,
+        backgroundImage:
+          'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+        backgroundSize: '48px 48px',
+      }}
+    />
+  )
+}
+
+function ChannelEyebrow({ children }) {
+  return (
+    <p
+      className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
+      style={{ textShadow: '0 0 4px var(--trace-glow)' }}
     >
-      <span className="text-emerald-500 font-bold select-none">&gt; </span>
-      <span className="text-zinc-100">{command}</span>
-      <span className="float-right text-[10px] font-sans uppercase tracking-wider text-zinc-500 group-hover:text-emerald-400 transition-colors ml-4">
-        {copiedCmd === id ? '✓ copied' : 'copy'}
+      {children}
+    </p>
+  )
+}
+
+function ChannelHeader({ icon: Icon, channel, title, meta }) {
+  return (
+    <div className="flex items-start justify-between border-b border-edge-dim px-5 py-4">
+      <div className="flex items-center gap-3">
+        <span
+          aria-hidden
+          className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt text-trace"
+          style={{ boxShadow: '0 0 8px var(--trace-faint)' }}
+        >
+          <Icon className="h-4 w-4" />
+        </span>
+        <div>
+          <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+            {channel}
+          </p>
+          <p className="mt-0.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ink">
+            {title}
+          </p>
+        </div>
+      </div>
+      <p className="text-right font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+        {meta}
+      </p>
+    </div>
+  )
+}
+
+function StatRow({ icon: Icon, label, value }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        aria-hidden
+        className="flex h-6 w-6 items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt text-trace"
+        style={{ boxShadow: '0 0 6px var(--trace-faint)' }}
+      >
+        <Icon className="h-3 w-3" />
       </span>
-    </button>
+      <div className="min-w-0">
+        <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+          {label}
+        </p>
+        <p className="mt-0.5 font-mono text-[11px] text-ink">{value}</p>
+      </div>
+    </div>
   )
 }
 
 export default function DownloadAllPage() {
-  const [downloading, setDownloading] = useState(false)
-  const [copiedCmd, setCopiedCmd] = useState(null)
-
-  const handleDownload = () => {
-    setDownloading(true)
-    trackDownload('latest', 'download_page')
-  }
-
-  const handleCopy = async (text, id) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopiedCmd(id)
-      setTimeout(() => setCopiedCmd(null), 2000)
-    } catch (err) {
-      console.error('Failed to copy:', err)
-    }
-  }
-
-  const handleAppStoreClick = () => {
-    trackAppStoreClick('download_page')
-  }
-
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-black text-zinc-900 dark:text-zinc-100 font-sans flex items-center justify-center p-6">
-      <div className="absolute inset-0 bg-grid-fade pointer-events-none opacity-30" />
+    <>
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
+        <Graticule />
+        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+          <ChannelEyebrow>· INSTALL / ALL CHANNELS</ChannelEyebrow>
+          <h1 className="mt-4 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
+            Pick a surface.<br />
+            <span className="italic text-ink-muted">Same signal.</span>
+          </h1>
+          <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
+            Talkie ships on Mac and iPhone. Both surfaces speak to the same
+            local-first store. Install one, or both — they sync through your
+            own iCloud, never ours.
+          </p>
+        </div>
+      </section>
 
-      <div className="relative z-10 max-w-5xl w-full">
+      {/* TWO-CHANNEL GRID */}
+      <section className="relative bg-canvas-alt font-mono">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
 
-        {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-3 group">
-            <img
-              src="/talkie-icon.png"
-              alt="Talkie"
-              className="h-12 w-12 rounded-lg transition-transform group-hover:scale-105"
+            {/* ── CH-A · MAC ─────────────────────────────────────────────── */}
+            <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-soft">
+              <ChannelHeader
+                icon={Laptop}
+                channel="· CH-A · MAC"
+                title="Talkie for Mac"
+                meta="macOS 26+ · Apple Silicon"
+              />
+
+              <div className="space-y-6 p-5 md:p-6">
+                {/* Primary: package-manager tabs */}
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Terminal className="h-3.5 w-3.5 text-trace" />
+                    <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                      · PRIMARY · PACKAGE MANAGER
+                    </p>
+                  </div>
+                  <div className="mt-3">
+                    <PackageManagerTabs />
+                  </div>
+                  <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-faint">
+                    Installs the app, the CLI, and launches Talkie.
+                  </p>
+                </div>
+
+                {/* Secondary: DMG */}
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    · OR · DIRECT DMG
+                  </p>
+                  <TrackedAnchor
+                    href={DMG_URL}
+                    event={{ type: 'download', release: 'latest', source: 'v2_downloads_page' }}
+                    className="mt-3 inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-edge bg-canvas-alt px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink transition-all hover:-translate-y-0.5 hover:border-trace hover:text-trace"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    <span>DOWNLOAD DMG</span>
+                  </TrackedAnchor>
+                </div>
+
+                {/* Tertiary: curl one-liner */}
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    · OR · CURL
+                  </p>
+                  <div className="mt-3">
+                    <CopyCommand command={CLI_INSTALL_CMD} />
+                  </div>
+                </div>
+
+                {/* CLI-only */}
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    · CLI ONLY
+                  </p>
+                  <div className="mt-3">
+                    <CopyCommand command={CLI_ONLY_CMD} variant="ghost" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── CH-B · IPHONE ──────────────────────────────────────────── */}
+            <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-soft">
+              <ChannelHeader
+                icon={Smartphone}
+                channel="· CH-B · IPHONE"
+                title="Talkie Mobile"
+                meta="iOS 18+"
+              />
+
+              <div className="space-y-6 p-5 md:p-6">
+                {/* Primary: App Store */}
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    · PRIMARY · APP STORE
+                  </p>
+                  <TrackedAnchor
+                    href={APP_STORE_URL}
+                    event={{ type: 'appStore', source: 'v2_downloads_page' }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3 text-[11px] uppercase tracking-[0.26em] text-trace transition-all hover:-translate-y-0.5"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>OPEN APP STORE</span>
+                    <span aria-hidden>↗</span>
+                  </TrackedAnchor>
+                </div>
+
+                {/* Or scan */}
+                <div>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    · OR · SCAN
+                  </p>
+                  <QRExpand
+                    src="/qr-app-store.svg"
+                    alt="QR code to download Talkie on the App Store"
+                    caption="Point camera · open App Store"
+                    className="mt-3"
+                  />
+                </div>
+
+                {/* Cross-channel note */}
+                <div className="rounded-sm border border-edge-faint bg-canvas-alt px-4 py-3">
+                  <p className="font-mono text-[10px] leading-relaxed text-ink-muted">
+                    iPhone captures sync to your Mac through your own iCloud
+                    Private DB. No Talkie servers in the path.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Trust strip */}
+          <div className="mt-10 grid grid-cols-1 gap-4 rounded-md border border-edge-faint bg-canvas px-5 py-5 sm:grid-cols-3">
+            <StatRow
+              icon={Cpu}
+              label="REQUIRES"
+              value="macOS 26 · iOS 18+"
             />
-            <span className="text-2xl font-bold tracking-tight font-mono uppercase">
-              Talkie
+            <StatRow
+              icon={ShieldCheck}
+              label="SIGNED"
+              value="Notarized · App Store"
+            />
+            <StatRow
+              icon={Waves}
+              label="DATA"
+              value="Local-first · Your iCloud"
+            />
+          </div>
+
+          {/* Cross-link to canonical */}
+          <Link
+            href="/downloads"
+            className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-trace"
+          >
+            <div>
+              <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                · QUICK INSTALL
+              </p>
+              <p className="mt-1.5 font-mono text-[12px] text-ink">
+                Just want the Mac DMG and the one-liner?
+              </p>
+            </div>
+            <span
+              className="font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-transform group-hover:translate-x-0.5"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
+              CANONICAL INSTALL →
             </span>
           </Link>
         </div>
-
-        {/* Two columns */}
-        <div className="grid md:grid-cols-2 gap-6">
-
-          {/* Mac */}
-          <div className="bg-white dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl overflow-hidden">
-            <div className="border-b border-zinc-100 dark:border-zinc-800 bg-stone-50 dark:bg-zinc-950/50 p-6 text-center">
-              <Laptop className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
-              <h2 className="text-lg font-bold uppercase tracking-tight">Mac</h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono mt-1">
-                macOS 26+ • Apple Silicon
-              </p>
-            </div>
-
-            <div className="p-6 space-y-4">
-              {/* Terminal install — primary */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Terminal className="w-3.5 h-3.5 text-emerald-500" />
-                  <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                    Install via terminal
-                  </p>
-                </div>
-                <PackageManagerTabs />
-                <p className="text-[10px] font-mono text-zinc-400 mt-1.5">
-                  Installs the app, CLI, and launches Talkie.
-                </p>
-              </div>
-
-              {/* DMG download — secondary */}
-              <a
-                href={GITHUB_DMG_URL}
-                onClick={handleDownload}
-                className="w-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-zinc-100 py-3 px-4 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] border border-zinc-200 dark:border-zinc-700"
-              >
-                <Download className="w-4 h-4" />
-                <span>{downloading ? 'Downloading...' : 'Download DMG'}</span>
-              </a>
-
-              {/* curl — alternative */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Terminal className="w-3.5 h-3.5 text-zinc-400" />
-                  <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                    Or via curl
-                  </p>
-                </div>
-                <CopyableCommand
-                  command={CLI_INSTALL_CMD}
-                  label="One-liner"
-                  id="curl"
-                  copiedCmd={copiedCmd}
-                  onCopy={handleCopy}
-                />
-              </div>
-
-              {/* Trust badges + CLI-only link */}
-              <div className="pt-2 flex items-center justify-between">
-                <div className="flex items-center gap-4 text-[10px] font-mono uppercase text-zinc-400">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                    <span>Signed & Notarized</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                    <span>Local-first</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleCopy(CLI_ONLY_CMD, 'cli')}
-                  className="text-[10px] font-mono text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
-                  title="Copy CLI-only install command"
-                >
-                  {copiedCmd === 'cli' ? '✓ copied' : 'CLI only →'}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* iPhone */}
-          <div className="bg-white dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl overflow-hidden">
-            <div className="border-b border-zinc-100 dark:border-zinc-800 bg-stone-50 dark:bg-zinc-950/50 p-6 text-center">
-              <Smartphone className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto mb-3" />
-              <h2 className="text-lg font-bold uppercase tracking-tight">iPhone</h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono mt-1">
-                iOS 18+
-              </p>
-            </div>
-
-            <div className="p-6 space-y-5">
-              {/* App Store link */}
-              <a
-                href={APP_STORE_URL}
-                onClick={handleAppStoreClick}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-3 px-4 text-xs font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Download className="w-4 h-4" />
-                <span>App Store</span>
-              </a>
-
-              {/* QR code */}
-              <div>
-                <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3">
-                  Or scan with your phone
-                </p>
-                <div className="flex justify-center">
-                  <div className="bg-white rounded-xl p-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
-                    <img
-                      src="/qr-app-store.svg"
-                      alt="QR code to download Talkie on the App Store"
-                      className="w-40 h-40"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Footer links */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs font-mono uppercase text-zinc-500">
-          <Link href="/docs" className="hover:text-zinc-900 dark:hover:text-white transition-colors">
-            Documentation
-          </Link>
-          <span className="text-zinc-300 dark:text-zinc-700">•</span>
-          <Link href="/security" className="hover:text-zinc-900 dark:hover:text-white transition-colors">
-            Security
-          </Link>
-          <span className="text-zinc-300 dark:text-zinc-700">•</span>
-          <Link href="/philosophy" className="hover:text-zinc-900 dark:hover:text-white transition-colors">
-            Philosophy
-          </Link>
-          <span className="text-zinc-300 dark:text-zinc-700">•</span>
-          <a href="mailto:hello@usetalkie.com" className="hover:text-zinc-900 dark:hover:text-white transition-colors">
-            Support
-          </a>
-        </div>
-
-        <div className="mt-6 text-center">
-          <p className="text-[10px] font-mono uppercase text-zinc-400 max-w-md mx-auto">
-            Your data stays yours • Local-first • Private by default
-          </p>
-        </div>
-
-      </div>
-    </div>
+      </section>
+    </>
   )
 }
