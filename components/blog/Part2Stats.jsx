@@ -16,19 +16,22 @@ export default function Part2Stats() {
         {stats.map(({ value, label, icon: Icon }) => (
           <div
             key={label}
-            className="flex flex-col items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 py-4 px-3"
+            className="group flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-4 px-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/40"
           >
-            <Icon className="w-4 h-4 text-zinc-400 dark:text-zinc-500 mb-1" />
-            <span className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+            <Icon className="w-4 h-4 text-ink-subtle mb-1 transition-transform duration-200 group-hover:scale-110" />
+            <span
+              className="text-2xl sm:text-3xl font-bold text-trace font-mono tabular-nums"
+              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+            >
               {value}
             </span>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 text-center">
+            <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-ink-faint text-center">
               {label}
             </span>
           </div>
         ))}
       </div>
-      <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 mt-3">
+      <p className="text-center text-sm text-ink-muted mt-3">
         Trained on a Mac Mini M4. Runs on-device, offline.
       </p>
     </div>

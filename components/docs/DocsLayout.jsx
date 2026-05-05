@@ -72,10 +72,10 @@ function SidebarSection({ section, activeSlug }) {
                 <Link
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  className={`relative block rounded-sm px-3 py-1.5 text-[13px] transition-colors ${
+                  className={`group relative block rounded-sm px-3 py-1.5 text-[13px] transition-all duration-200 ${
                     active
                       ? 'bg-canvas-alt text-ink'
-                      : 'text-ink-muted hover:bg-canvas-alt hover:text-ink'
+                      : 'text-ink-muted hover:translate-x-0.5 hover:bg-canvas-alt hover:text-amber'
                   }`}
                   style={
                     active
@@ -114,7 +114,7 @@ function TocRail({ toc }) {
           <li key={item.id} className={item.level === 3 ? 'pl-6' : 'pl-3'}>
             <a
               href={`#${item.id}`}
-              className="block py-0.5 text-[12.5px] text-ink-muted transition-colors hover:text-trace"
+              className="block py-0.5 text-[12.5px] text-ink-muted transition-all duration-200 hover:translate-x-0.5 hover:text-amber"
             >
               {item.label}
             </a>
@@ -136,13 +136,13 @@ function PrevNext({ slug }) {
       {prev ? (
         <Link
           href={prev.href}
-          className="group flex flex-col rounded-sm border border-edge-faint p-4 transition-colors hover:border-edge"
+          className="group flex flex-col rounded-sm border border-edge-faint p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
         >
           <span
-            className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle group-hover:text-trace"
+            className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber"
             style={TRACE_GLOW_SOFT}
           >
-            ← Previous
+            <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span> Previous
           </span>
           <span className="mt-2 font-display text-base text-ink">{prev.title}</span>
         </Link>
@@ -152,13 +152,13 @@ function PrevNext({ slug }) {
       {next ? (
         <Link
           href={next.href}
-          className="group flex flex-col rounded-sm border border-edge-faint p-4 text-right transition-colors hover:border-edge sm:text-right"
+          className="group flex flex-col rounded-sm border border-edge-faint p-4 text-right transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] sm:text-right"
         >
           <span
-            className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle group-hover:text-trace"
+            className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber"
             style={TRACE_GLOW_SOFT}
           >
-            Next →
+            Next <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
           </span>
           <span className="mt-2 font-display text-base text-ink">{next.title}</span>
         </Link>
@@ -178,10 +178,10 @@ export default function DocsLayout({ slug, title, description, toc, children }) 
           <div className="space-y-6">
             <Link
               href="/docs"
-              className="block px-3 font-mono text-[10px] uppercase tracking-[0.26em] text-trace transition-colors hover:text-ink"
+              className="group block px-3 font-mono text-[10px] uppercase tracking-[0.26em] text-trace transition-colors duration-200 hover:text-amber"
               style={TRACE_GLOW_SOFT}
             >
-              ← Docs index
+              <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span> Docs index
             </Link>
             {DOCS_NAV.map((section) => (
               <SidebarSection key={section.label} section={section} activeSlug={slug} />

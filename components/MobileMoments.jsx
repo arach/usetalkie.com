@@ -112,12 +112,18 @@ function MomentRow({ moment, index, total }) {
 
   return (
     <div
-      className="group flex items-center gap-3 px-4 py-4 transition-colors duration-200 hover:bg-canvas-alt"
+      className="group relative flex items-center gap-3 px-4 py-4 transition-all duration-200 hover:bg-canvas-alt"
       style={{
         borderBottom: !isBottomRow ? '1px solid var(--edge-subtle)' : 'none',
         borderRight: !hideRightBorder ? '1px solid var(--edge-subtle)' : 'none',
       }}
     >
+      {/* left rail glow on hover — appears as a thin trace stripe */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-2 bottom-2 w-0.5 origin-top scale-y-0 rounded-r-sm bg-trace transition-transform duration-300 group-hover:scale-y-100"
+        style={{ boxShadow: '0 0 6px var(--trace-glow)' }}
+      />
       {/* line number */}
       <span className="font-mono text-[9px] uppercase tracking-[0.22em] tabular-nums text-ink-subtle transition-colors duration-200 group-hover:text-trace">
         {num}

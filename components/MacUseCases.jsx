@@ -71,7 +71,7 @@ function UseCaseCard({ useCase, index }) {
   const barWidth = Math.max(18, Math.round(useCase.amplitude * 100))
 
   return (
-    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-50 transition-opacity duration-300 group-hover:opacity-90"
@@ -87,14 +87,14 @@ function UseCaseCard({ useCase, index }) {
           <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
             <span
               aria-hidden
-              className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
+              className="inline-block h-1 w-1 rounded-full bg-trace transition-all duration-200 group-hover:scale-[1.75]"
               style={{
                 boxShadow: '0 0 4px var(--trace)',
                 animation: 'osc-uc-pulse 2.6s ease-in-out infinite',
                 animationDelay: `${(index % 4) * 0.3}s`,
               }}
             />
-            <Icon className="h-3 w-3 text-ink-faint transition-colors duration-200 group-hover:text-trace" />
+            <Icon className="h-3 w-3 text-ink-faint transition-colors duration-200 group-hover:text-amber" />
             <span className="text-ink-dim transition-colors duration-200 group-hover:text-ink">{useCase.app.toUpperCase()}</span>
             <span className="text-ink-subtle">/</span>
             <span className="text-ink-faint">{useCase.time}</span>

@@ -130,15 +130,15 @@ const colorMap = {
     },
   },
   amber: {
-    iconClass: 'text-amber-400/80',
-    iconStyle: undefined,
-    outputClass: 'text-amber-400/90',
+    iconClass: 'text-amber',
+    iconStyle: { textShadow: '0 0 4px color-mix(in oklab, var(--amber) 35%, transparent)' },
+    outputClass: 'text-amber',
     outputStyle: undefined,
-    badgeClass: 'text-amber-400/90 border-amber-400/30',
-    badgeStyle: { background: 'color-mix(in oklab, rgb(251 191 36) 8%, transparent)' },
+    badgeClass: 'text-amber border-amber/30',
+    badgeStyle: { background: 'color-mix(in oklab, var(--amber) 8%, transparent)' },
     cardStyle: {
-      background: 'color-mix(in oklab, rgb(251 191 36) 5%, transparent)',
-      boxShadow: 'inset 0 0 0 1px color-mix(in oklab, rgb(251 191 36) 26%, transparent)',
+      background: 'color-mix(in oklab, var(--amber) 5%, transparent)',
+      boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--amber) 26%, transparent)',
     },
   },
   ink: {

@@ -120,9 +120,19 @@ export default function AboutPage() {
 
             {/* Prose */}
             <div className="space-y-5 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              {STORY_PARAGRAPHS.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
+              {STORY_PARAGRAPHS.map((para, i) =>
+                i === 0 ? (
+                  <p
+                    key={i}
+                    className="first-letter:float-left first-letter:mr-2 first-letter:font-display first-letter:text-[56px] first-letter:font-normal first-letter:leading-[0.9] first-letter:text-trace"
+                    style={{ '--tw-prose-first-letter-shadow': 'var(--trace-glow)' }}
+                  >
+                    {para}
+                  </p>
+                ) : (
+                  <p key={i}>{para}</p>
+                ),
+              )}
 
               <div
                 className="mt-8 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
@@ -201,9 +211,9 @@ export default function AboutPage() {
                   {FOUNDER_STATS.map(({ icon: Icon, label }) => (
                     <div
                       key={label}
-                      className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-subtle"
+                      className="group/stat inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-subtle transition-colors duration-200 hover:text-ink-dim"
                     >
-                      <Icon className="h-3.5 w-3.5 text-trace" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} aria-hidden />
+                      <Icon className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover/stat:scale-110" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} aria-hidden />
                       <span>{label}</span>
                     </div>
                   ))}
@@ -292,7 +302,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
             {/* This is Talkie */}
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
+            <div className="group flex flex-col justify-between rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
               <div>
                 <p
                   className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
@@ -304,41 +314,41 @@ export default function AboutPage() {
                   A selfie. For your thoughts.<br />
                   <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_ABOUT)}</span>
                 </h3>
-                <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+                <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
                   Voice capture, local-first, auditable signal path. Your words stay on your devices.
                 </p>
               </div>
               <Link
                 href="/mac"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                className="group/btn mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60"
                 style={{
                   ...TRACE_TINT,
                   textShadow: '0 0 6px var(--trace-glow)',
                 }}
               >
-                SEE THE MAC <span aria-hidden>→</span>
+                SEE THE MAC <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">→</span>
               </Link>
             </div>
 
             {/* Mobile tie-back */}
             <Link
               href="/mobile"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
+              className="group block rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
             >
               <div className="flex items-center gap-2.5">
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent"
+                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent transition-all duration-200 group-hover:scale-150 group-hover:border-amber group-hover:bg-amber"
                 />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
                   ON THE GO
                 </span>
               </div>
               <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                 Talkie for Mobile.
               </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                The capture device that&apos;s always with you. Keep reading <span aria-hidden>→</span>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+                The capture device that&apos;s always with you. Keep reading <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </p>
             </Link>
           </div>
@@ -358,10 +368,10 @@ function ChannelLink({ href, label, children }) {
     <a
       href={href}
       {...externalProps}
-      className="inline-flex items-center gap-1.5 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all hover:-translate-y-0.5 hover:text-trace"
+      className="group inline-flex items-center gap-1.5 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-amber"
       style={TRACE_TINT_FAINT}
     >
-      {children}
+      <span className="inline-flex transition-transform duration-200 group-hover:scale-110">{children}</span>
       <span>{label}</span>
     </a>
   )
@@ -375,32 +385,32 @@ function ConnectCard({ code, label, heading, body, href, icon, cta, external = f
     <>
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
       <div className="relative flex h-full flex-col">
-        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
           <span>
             {code} / {label}
           </span>
-          <span aria-hidden className="inline-block h-1 w-1 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+          <span aria-hidden className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150" style={{ boxShadow: '0 0 4px var(--trace)' }} />
         </div>
 
         <h3 className="mt-5 font-display text-xl font-normal leading-snug tracking-[-0.01em] text-ink">
           {heading}
         </h3>
 
-        <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{body}</p>
+        <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{body}</p>
 
         <div
           className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-trace"
           style={TRACE_GLOW_SOFT}
         >
-          {icon}
+          <span className="inline-flex transition-transform duration-200 group-hover:scale-110">{icon}</span>
           <span>{cta}</span>
-          <span aria-hidden>→</span>
+          <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
         </div>
       </div>
     </>
   )
 
-  const className = `group relative block overflow-hidden rounded-md border p-5 transition-all hover:-translate-y-0.5 ${
+  const className = `group relative block overflow-hidden rounded-md border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] ${
     highlight ? 'border-edge' : 'border-edge-dim bg-surface'
   }`
   const cardStyle = highlight ? TRACE_TINT_FAINT : undefined

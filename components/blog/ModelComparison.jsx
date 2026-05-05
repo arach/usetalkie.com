@@ -2,6 +2,10 @@
 
 import { useState } from 'react'
 
+const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
+
+// Color discipline: trace = primary/best, amber = secondary/shipped, neutral = unspecified.
+// All values resolve via tokens so the table flips with the canvas theme.
 const models = [
   {
     name: 'Qwen2.5-1.5B',
@@ -10,7 +14,7 @@ const models = [
     exact: null,
     effective: 97,
     training: 'MLX, local',
-    color: 'emerald',
+    tone: 'primary',
     note: 'Part 1 baseline. Highest effective accuracy.',
   },
   {
@@ -20,7 +24,7 @@ const models = [
     exact: 79.2,
     effective: null,
     training: 'Unsloth, Colab T4',
-    color: 'zinc',
+    tone: 'neutral',
     note: 'Partial eval (510/630 cases). Multimodal overhead, session timed out before completion.',
     partial: true,
   },
@@ -31,32 +35,41 @@ const models = [
     exact: 67.8,
     effective: 93.3,
     training: 'MLX, Mac Mini M4',
-    color: 'blue',
+    tone: 'secondary',
     note: 'Shipped model. Full parameter budget on text, 10 minutes to train.',
   },
 ]
 
-const colorMap = {
-  emerald: {
-    bar: 'bg-emerald-500',
-    text: 'text-emerald-600 dark:text-emerald-400',
-    border: 'border-emerald-500/40 dark:border-emerald-500/25',
-    bg: 'bg-emerald-50/50 dark:bg-emerald-950/20',
-    badge: 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/50',
+const toneMap = {
+  primary: {
+    barBg: 'var(--trace)',
+    barShadow: '0 0 6px var(--trace-glow)',
+    text: 'text-trace',
+    textGlow: TRACE_GLOW_SOFT,
+    cardBg: 'color-mix(in oklab, var(--trace) 6%, transparent)',
+    cardBorder: 'color-mix(in oklab, var(--trace) 35%, transparent)',
+    badgeBg: 'color-mix(in oklab, var(--trace) 10%, transparent)',
+    badgeColor: 'var(--trace)',
   },
-  blue: {
-    bar: 'bg-blue-500',
-    text: 'text-blue-600 dark:text-blue-400',
-    border: 'border-blue-500/40 dark:border-blue-500/25',
-    bg: 'bg-blue-50/50 dark:bg-blue-950/20',
-    badge: 'text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50',
+  secondary: {
+    barBg: 'var(--amber)',
+    barShadow: '0 0 6px color-mix(in oklab, var(--amber) 50%, transparent)',
+    text: 'text-amber',
+    textGlow: { textShadow: '0 0 4px color-mix(in oklab, var(--amber) 35%, transparent)' },
+    cardBg: 'color-mix(in oklab, var(--amber) 7%, transparent)',
+    cardBorder: 'color-mix(in oklab, var(--amber) 35%, transparent)',
+    badgeBg: 'color-mix(in oklab, var(--amber) 10%, transparent)',
+    badgeColor: 'var(--amber)',
   },
-  zinc: {
-    bar: 'bg-zinc-400 dark:bg-zinc-500',
-    text: 'text-zinc-600 dark:text-zinc-400',
-    border: 'border-zinc-300 dark:border-zinc-700',
-    bg: 'bg-zinc-50 dark:bg-zinc-800/50',
-    badge: 'text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800',
+  neutral: {
+    barBg: 'color-mix(in oklab, var(--ink-faint) 50%, transparent)',
+    barShadow: 'none',
+    text: 'text-ink-muted',
+    textGlow: undefined,
+    cardBg: 'color-mix(in oklab, var(--ink-faint) 6%, transparent)',
+    cardBorder: 'var(--edge)',
+    badgeBg: 'color-mix(in oklab, var(--ink-faint) 12%, transparent)',
+    badgeColor: 'var(--ink-muted)',
   },
 }
 
@@ -65,19 +78,24 @@ export default function ModelComparison() {
   const [metric, setMetric] = useState('effective')
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-5">
+    <div className="not-prose my-8 rounded-lg border border-edge-dim bg-canvas-alt p-5">
       {/* Metric toggle */}
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs text-zinc-400 dark:text-zinc-500">Showing:</span>
+        <span className="text-xs text-ink-faint">Showing:</span>
         {['effective', 'exact'].map(m => (
           <button
             key={m}
             onClick={() => setMetric(m)}
-            className={`text-[11px] font-mono px-2 py-0.5 rounded transition-all ${
+            className={`text-[11px] font-mono px-2 py-0.5 rounded transition-all duration-200 border ${
               metric === m
-                ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium'
-                : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-400'
+                ? 'border-amber/50 text-amber font-medium'
+                : 'border-transparent text-ink-faint hover:text-ink-muted hover:border-edge-dim'
             }`}
+            style={
+              metric === m
+                ? { background: 'color-mix(in oklab, var(--amber) 8%, transparent)' }
+                : undefined
+            }
           >
             {m === 'effective' ? 'Effective accuracy' : 'Exact match'}
           </button>
@@ -87,49 +105,60 @@ export default function ModelComparison() {
       {/* Model bars */}
       <div className="space-y-3">
         {models.map((model, i) => {
-          const colors = colorMap[model.color]
+          const c = toneMap[model.tone]
           const value = metric === 'effective' ? model.effective : model.exact
           const isActive = active === i
 
           return (
             <div
               key={model.name}
-              className={`rounded-lg border p-3 cursor-default transition-all ${
-                isActive ? `${colors.border} ${colors.bg}` : 'border-transparent'
-              }`}
+              className="rounded-lg border p-3 cursor-default transition-all duration-200"
+              style={{
+                borderColor: isActive ? c.cardBorder : 'transparent',
+                background: isActive ? c.cardBg : 'transparent',
+              }}
               onMouseEnter={() => setActive(i)}
               onMouseLeave={() => setActive(null)}
             >
               <div className="flex items-baseline justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                  <span className="text-xs font-semibold text-ink">
                     {model.name}
                   </span>
-                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${colors.badge}`}>
+                  <span
+                    className="text-[10px] font-mono px-1.5 py-0.5 rounded"
+                    style={{ background: c.badgeBg, color: c.badgeColor }}
+                  >
                     {model.type}
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-400">{model.params}</span>
+                  <span className="text-[10px] font-mono text-ink-faint">{model.params}</span>
                 </div>
-                <span className={`text-sm font-mono font-medium ${colors.text}`}>
+                <span
+                  className={`text-sm font-mono font-medium ${c.text}`}
+                  style={c.textGlow}
+                >
                   {value != null ? `${value}%` : '—'}
                 </span>
               </div>
 
               {/* Bar */}
-              <div className="h-2 w-full rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+              <div className="h-2 w-full rounded-full overflow-hidden border border-edge-faint" style={{ background: 'var(--canvas)' }}>
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${colors.bar} ${
-                    value == null ? 'opacity-20' : ''
-                  }`}
-                  style={{ width: `${value ?? 0}%` }}
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${value ?? 0}%`,
+                    background: c.barBg,
+                    boxShadow: c.barShadow,
+                    opacity: value == null ? 0.2 : 1,
+                  }}
                 />
               </div>
 
               {/* Detail on hover */}
               {isActive && (
                 <div className="mt-2 flex items-center justify-between">
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{model.note}</p>
-                  <span className="text-[10px] font-mono text-zinc-400 shrink-0 ml-3">{model.training}</span>
+                  <p className="text-xs text-ink-muted">{model.note}</p>
+                  <span className="text-[10px] font-mono text-ink-faint shrink-0 ml-3">{model.training}</span>
                 </div>
               )}
             </div>

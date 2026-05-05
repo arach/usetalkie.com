@@ -4,7 +4,7 @@ import MacDemoBay from './MacDemoBay'
 import MacHowItWorks from './MacHowItWorks'
 import MacFeatures from './MacFeatures'
 import MacUseCases from './MacUseCases'
-import InstallCard from './InstallCard'
+import DownloadBay from './DownloadBay'
 
 /**
  * MacPage — body of /mac. Pure server component.
@@ -64,24 +64,12 @@ export default function MacPage() {
       <MacFeatures />
       <MacUseCases />
 
-      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
-      <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
-          <div className="text-center">
-            <p
-              className="text-[10px] uppercase tracking-[0.26em] text-trace"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              · CATCH IT · KEEP IT
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-              Talk to your Mac.
-              <span className="italic text-ink-muted"> A mic is all you need.</span>
-            </h2>
-          </div>
-          <div className="mt-10">
-            <InstallCard />
-          </div>
+      {/* DOWNLOAD — clear, focused install footer (replaces the bigger
+          patch-bay chassis here; that one lives on /downloads where
+          multi-platform is the page) */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt">
+        <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
+          <DownloadBay caption="Capture a thought. Shape a draft. Search what you said. Workflows do the rest." />
         </div>
       </section>
     </>

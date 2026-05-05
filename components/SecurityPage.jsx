@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import InstallCard from './InstallCard'
+import DownloadBay from './DownloadBay'
 import { SecurityInfographic } from './SecurityInfographic'
 import {
   ShieldCheck,
@@ -122,10 +122,10 @@ function ExternalDocsLink({ href, children }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all hover:-translate-y-0.5 hover:text-ink hover:border-edge"
+      className="group inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-ink hover:shadow-[0_0_18px_-6px_var(--trace-glow)]"
     >
       {children}
-      <ExternalLink className="h-3 w-3" />
+      <ExternalLink className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
     </a>
   )
 }
@@ -818,23 +818,23 @@ export default function SecurityPage() {
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· 05 / ADVANCED DATA PROTECTION</Eyebrow>
 
-          <div className="relative mt-6 overflow-hidden rounded-sm border border-edge bg-surface p-8 md:p-12">
+          <div className="group relative mt-6 overflow-hidden rounded-sm border border-edge bg-surface p-8 transition-all duration-200 hover:border-amber/50 hover:shadow-[0_0_28px_-6px_var(--trace-glow)] md:p-12">
             <Graticule opacity={0.4} />
 
             <ShieldCheck
               aria-hidden
-              className="pointer-events-none absolute right-8 top-8 text-trace opacity-[0.04]"
+              className="pointer-events-none absolute right-8 top-8 text-trace opacity-[0.04] transition-opacity duration-300 group-hover:opacity-[0.08]"
               style={{ width: 160, height: 160 }}
             />
 
             <div className="relative max-w-2xl">
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+                  className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace"
                   style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
                 >
                   <ShieldCheck
-                    className="h-4 w-4 text-trace"
+                    className="h-4 w-4 text-trace transition-transform duration-300 group-hover:animate-pulse"
                     style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
                   />
                 </div>
@@ -947,11 +947,11 @@ export default function SecurityPage() {
           </div>
 
           {/* Bottom statement */}
-          <div className="mt-10 rounded-sm border border-edge-dim bg-surface p-6 text-center">
+          <div className="group mt-10 rounded-sm border border-edge-dim bg-surface p-6 text-center transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
             <p className="font-display text-lg font-normal tracking-[-0.01em] text-ink">
               We don&apos;t run a cloud that stores your library.
             </p>
-            <p className="mx-auto mt-2 max-w-md text-[14px] leading-relaxed text-ink-muted">
+            <p className="mx-auto mt-2 max-w-md text-[14px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
               By design, Talkie is built around local storage, iCloud custody, and provider choice.
               That keeps your memos, transcripts, and unfinished thoughts on your side of the line.
             </p>
@@ -959,19 +959,10 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
+      {/* DOWNLOAD — focused install footer */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
-          <div className="text-center">
-            <Eyebrow>· LOCAL-FIRST · YOUR KEYS</Eyebrow>
-            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-              Stay private.
-              <span className="italic text-ink-muted"> Stay in flow.</span>
-            </h2>
-          </div>
-          <div className="mt-10">
-            <InstallCard />
-          </div>
+        <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
+          <DownloadBay caption="Audio stays on device. Transcripts land in your local SQLite. iCloud sync runs through your keys, not ours." />
         </div>
       </section>
     </>

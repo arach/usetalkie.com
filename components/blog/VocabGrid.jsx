@@ -27,13 +27,13 @@ export default function VocabGrid() {
         {vocab.map(({ spoken, symbol }) => (
           <div
             key={spoken}
-            className="flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-3 px-2"
+            className="group flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-3 px-2 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace/30"
           >
             <span className="text-[11px] italic text-ink-muted">
               {spoken}
             </span>
             <span
-              className="text-lg font-mono font-bold text-trace"
+              className="text-lg font-mono font-bold text-trace transition-transform duration-200 group-hover:scale-110"
               style={TRACE_GLOW_SOFT}
             >
               {symbol}

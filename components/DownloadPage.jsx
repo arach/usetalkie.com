@@ -120,16 +120,16 @@ export default function DownloadPage() {
                 </p>
                 <a
                   href={DMG_URL}
-                  className="mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3.5 text-[11px] uppercase tracking-[0.26em] text-trace transition-all hover:-translate-y-0.5"
+                  className="group/btn mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3.5 text-[11px] uppercase tracking-[0.26em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
                   style={{
                     background:
                       'color-mix(in oklab, var(--trace) 8%, transparent)',
                     textShadow: '0 0 6px var(--trace-glow)',
                   }}
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4 transition-transform duration-200 group-hover/btn:scale-110" />
                   <span>DOWNLOAD TALKIE FOR MAC</span>
-                  <span aria-hidden>→</span>
+                  <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">→</span>
                 </a>
               </div>
 
@@ -143,7 +143,7 @@ export default function DownloadPage() {
                     href={DMG_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block flex-1 truncate rounded-sm border border-edge-dim bg-canvas-alt px-3 py-2.5 font-mono text-[12px] text-trace transition-colors hover:border-trace"
+                    className="block flex-1 truncate rounded-sm border border-edge-dim bg-canvas-alt px-3 py-2.5 font-mono text-[12px] text-trace transition-colors duration-200 hover:border-amber/60 hover:text-amber"
                     title={DMG_URL}
                   >
                     {DMG_DISPLAY}
@@ -191,7 +191,7 @@ export default function DownloadPage() {
           {/* Cross-link */}
           <Link
             href="/downloads"
-            className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-trace"
+            className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
           >
             <div>
               <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">

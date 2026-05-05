@@ -42,20 +42,28 @@ html { scroll-behavior: smooth; }
   --panel-bg:           #1c1814;
   --panel-bg-alt:       #221d18;
   --panel-bg-deep:      #14110d;
-  --panel-edge:         rgba(255, 184, 77, 0.22);
-  --panel-edge-dim:     rgba(255, 184, 77, 0.14);
-  --panel-edge-faint:   rgba(255, 184, 77, 0.08);
-  --panel-edge-subtle:  rgba(255, 184, 77, 0.06);
+  --panel-edge:         rgba(232, 154, 60, 0.24);
+  --panel-edge-dim:     rgba(232, 154, 60, 0.15);
+  --panel-edge-faint:   rgba(232, 154, 60, 0.08);
+  --panel-edge-subtle:  rgba(232, 154, 60, 0.06);
   --panel-ink:          #f0ead8;
   --panel-ink-dim:      #d8d2c0;
   --panel-ink-muted:    #b8b0a0;
   --panel-ink-faint:    #80786a;
   --panel-ink-subtle:   #6e675b;
-  --panel-trace:        #ffb84d;
-  --panel-trace-glow:   rgba(255, 184, 77, 0.50);
-  --panel-trace-dim:    rgba(255, 184, 77, 0.18);
-  --panel-trace-faint:  rgba(255, 184, 77, 0.08);
-  --panel-scanline:     rgba(255, 184, 77, 0.04);
+  /* Phosphor trace — deeper amber-bronze (#e89a3c) instead of the
+   * earlier neon-yellow #ffb84d. The yellow read as too electric
+   * when it dominated full panels (e.g., the InstallCard chassis
+   * was painting every label, eyebrow, icon, and active state in
+   * one yellow note). Shifting the hue toward orange-leaning amber
+   * keeps the warm-instrument identity but feels more like a copper
+   * filament than a neon LED. The reduced saturation also stops the
+   * accent from overpowering the panel-ink labels around it. */
+  --panel-trace:        #e89a3c;
+  --panel-trace-glow:   rgba(232, 154, 60, 0.50);
+  --panel-trace-dim:    rgba(232, 154, 60, 0.18);
+  --panel-trace-faint:  rgba(232, 154, 60, 0.08);
+  --panel-scanline:     rgba(232, 154, 60, 0.04);
   /* Multi-stop chassis shadow: top-edge highlight (catches light),
    * bottom-edge inset (shadow), then two outer drop shadows that
    * ground the chassis to the surface beneath it. */
@@ -73,13 +81,13 @@ html { scroll-behavior: smooth; }
    * "active instrument display" — waveform, LED readout, status pill. */
   --screen-bg:          #0a0907;
   --screen-bg-deep:     #060504;
-  --screen-edge:        rgba(255, 184, 77, 0.22);
-  --screen-edge-dim:    rgba(255, 184, 77, 0.14);
-  --screen-edge-faint:  rgba(255, 184, 77, 0.08);
-  --screen-trace:       #ffb84d;
-  --screen-trace-glow:  rgba(255, 184, 77, 0.50);
-  --screen-trace-dim:   rgba(255, 184, 77, 0.18);
-  --screen-trace-faint: rgba(255, 184, 77, 0.08);
+  --screen-edge:        rgba(232, 154, 60, 0.24);
+  --screen-edge-dim:    rgba(232, 154, 60, 0.15);
+  --screen-edge-faint:  rgba(232, 154, 60, 0.08);
+  --screen-trace:       #e89a3c;
+  --screen-trace-glow:  rgba(232, 154, 60, 0.50);
+  --screen-trace-dim:   rgba(232, 154, 60, 0.18);
+  --screen-trace-faint: rgba(232, 154, 60, 0.08);
   /* Screen ink — body/numerals on the always-dark scope surface.
    * Stays light across all theme/mode combos because the screen IS dark
    * by design. Distinct from panel-ink which can flip polarity per theme. */
@@ -362,20 +370,20 @@ html[data-theme="linen"]:not(.dark) {
   --panel-bg:           #2c2620;
   --panel-bg-alt:       #332d26;
   --panel-bg-deep:      #1f1a14;
-  --panel-edge:         rgba(255, 184, 77, 0.22);
-  --panel-edge-dim:     rgba(255, 184, 77, 0.15);
-  --panel-edge-faint:   rgba(255, 184, 77, 0.09);
-  --panel-edge-subtle:  rgba(255, 184, 77, 0.06);
+  --panel-edge:         rgba(232, 154, 60, 0.24);
+  --panel-edge-dim:     rgba(232, 154, 60, 0.16);
+  --panel-edge-faint:   rgba(232, 154, 60, 0.09);
+  --panel-edge-subtle:  rgba(232, 154, 60, 0.06);
   --panel-ink:          #f5efe0;
   --panel-ink-dim:      #e2dcca;
   --panel-ink-muted:    #c4bba8;
   --panel-ink-faint:    #968d7c;
   --panel-ink-subtle:   #807868;
-  --panel-trace:        #ffb84d;
-  --panel-trace-glow:   rgba(255, 184, 77, 0.45);
-  --panel-trace-dim:    rgba(255, 184, 77, 0.16);
-  --panel-trace-faint:  rgba(255, 184, 77, 0.07);
-  --panel-scanline:     rgba(255, 184, 77, 0.03);
+  --panel-trace:        #e89a3c;
+  --panel-trace-glow:   rgba(232, 154, 60, 0.45);
+  --panel-trace-dim:    rgba(232, 154, 60, 0.16);
+  --panel-trace-faint:  rgba(232, 154, 60, 0.07);
+  --panel-scanline:     rgba(232, 154, 60, 0.03);
   --panel-chassis-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     inset 0 -1px 0 rgba(0, 0, 0, 0.32),
@@ -387,13 +395,13 @@ html[data-theme="linen"]:not(.dark) {
    * lightens; the screen itself keeps the same depth as Warm. */
   --screen-bg:          #0a0907;
   --screen-bg-deep:     #060504;
-  --screen-edge:        rgba(255, 184, 77, 0.20);
-  --screen-edge-dim:    rgba(255, 184, 77, 0.13);
-  --screen-edge-faint:  rgba(255, 184, 77, 0.07);
-  --screen-trace:       #ffb84d;
-  --screen-trace-glow:  rgba(255, 184, 77, 0.45);
-  --screen-trace-dim:   rgba(255, 184, 77, 0.16);
-  --screen-trace-faint: rgba(255, 184, 77, 0.07);
+  --screen-edge:        rgba(232, 154, 60, 0.22);
+  --screen-edge-dim:    rgba(232, 154, 60, 0.14);
+  --screen-edge-faint:  rgba(232, 154, 60, 0.08);
+  --screen-trace:       #e89a3c;
+  --screen-trace-glow:  rgba(232, 154, 60, 0.45);
+  --screen-trace-dim:   rgba(232, 154, 60, 0.16);
+  --screen-trace-faint: rgba(232, 154, 60, 0.07);
   --screen-recess-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.50),
     inset 0 0 0 1px rgba(0, 0, 0, 0.28);

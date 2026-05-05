@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   Cpu,
   Download,
@@ -72,10 +71,10 @@ function ChannelHeader({ icon: Icon, channel, title, meta }) {
       <div className="flex items-center gap-3">
         <span
           aria-hidden
-          className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt text-trace"
+          className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt text-trace transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
           style={{ boxShadow: '0 0 8px var(--trace-faint)' }}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-4 w-4 transition-transform duration-200" />
         </span>
         <div>
           <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
@@ -139,7 +138,7 @@ export default function DownloadAllPage() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
 
             {/* ── CH-A · MAC ─────────────────────────────────────────────── */}
-            <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-soft">
+            <div className="group relative overflow-hidden rounded-md border border-edge bg-surface shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
               <ChannelHeader
                 icon={Laptop}
                 channel="· CH-A · MAC"
@@ -172,9 +171,9 @@ export default function DownloadAllPage() {
                   <TrackedAnchor
                     href={DMG_URL}
                     event={{ type: 'download', release: 'latest', source: 'v2_downloads_page' }}
-                    className="mt-3 inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-edge bg-canvas-alt px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink transition-all hover:-translate-y-0.5 hover:border-trace hover:text-trace"
+                    className="group/btn mt-3 inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-edge bg-canvas-alt px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-amber"
                   >
-                    <Download className="h-3.5 w-3.5" />
+                    <Download className="h-3.5 w-3.5 transition-transform duration-200 group-hover/btn:scale-110" />
                     <span>DOWNLOAD DMG</span>
                   </TrackedAnchor>
                 </div>
@@ -202,7 +201,7 @@ export default function DownloadAllPage() {
             </div>
 
             {/* ── CH-B · IPHONE ──────────────────────────────────────────── */}
-            <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-soft">
+            <div className="group relative overflow-hidden rounded-md border border-edge bg-surface shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
               <ChannelHeader
                 icon={Smartphone}
                 channel="· CH-B · IPHONE"
@@ -221,11 +220,11 @@ export default function DownloadAllPage() {
                     event={{ type: 'appStore', source: 'v2_downloads_page' }}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3 text-[11px] uppercase tracking-[0.26em] text-trace transition-all hover:-translate-y-0.5"
+                    className="group/btn mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3 text-[11px] uppercase tracking-[0.26em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
                   >
-                    <Download className="h-4 w-4" />
+                    <Download className="h-4 w-4 transition-transform duration-200 group-hover/btn:scale-110" />
                     <span>OPEN APP STORE</span>
-                    <span aria-hidden>↗</span>
+                    <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">↗</span>
                   </TrackedAnchor>
                 </div>
 
@@ -272,27 +271,6 @@ export default function DownloadAllPage() {
               value="Local-first · Your iCloud"
             />
           </div>
-
-          {/* Cross-link to canonical */}
-          <Link
-            href="/downloads"
-            className="group mt-8 flex items-center justify-between gap-4 rounded-md border border-edge-dim bg-canvas px-5 py-4 transition-all hover:-translate-y-0.5 hover:border-trace"
-          >
-            <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                · QUICK INSTALL
-              </p>
-              <p className="mt-1.5 font-mono text-[12px] text-ink">
-                Just want the Mac DMG and the one-liner?
-              </p>
-            </div>
-            <span
-              className="font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-transform group-hover:translate-x-0.5"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              CANONICAL INSTALL →
-            </span>
-          </Link>
         </div>
       </section>
     </>

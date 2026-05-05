@@ -93,9 +93,33 @@ export default function CaptureIsland({ phase = 'idle', eyebrow }) {
                 </>
               )}
             </span>
+            {/* Tiny 3-bar level meter — only during REC. Sells "live
+                input" without needing a real audio signal. Three
+                offset breathing bars, all tokenized phosphor. */}
+            {phase === 'recording' && (
+              <span
+                aria-hidden
+                className="ml-0.5 inline-flex items-end gap-[2px]"
+                style={{ height: 8 }}
+              >
+                <span className="capture-island-meter-bar block w-[2px] rounded-sm bg-trace" style={{ animationDelay: '0s', boxShadow: '0 0 3px var(--trace-glow)' }} />
+                <span className="capture-island-meter-bar block w-[2px] rounded-sm bg-trace" style={{ animationDelay: '0.18s', boxShadow: '0 0 3px var(--trace-glow)' }} />
+                <span className="capture-island-meter-bar block w-[2px] rounded-sm bg-trace" style={{ animationDelay: '0.36s', boxShadow: '0 0 3px var(--trace-glow)' }} />
+              </span>
+            )}
           </>
         )}
       </div>
+      <style>{`
+        @keyframes capture-island-meter-bar {
+          0%, 100% { height: 3px; opacity: 0.55; }
+          50%      { height: 8px; opacity: 1; }
+        }
+        .capture-island-meter-bar {
+          height: 3px;
+          animation: capture-island-meter-bar 0.9s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   )
 }

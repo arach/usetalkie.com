@@ -2,22 +2,24 @@
 
 import { useState } from 'react'
 
+// Color discipline: 1 accent (amber) for the center hub, neutral ink for everything else.
+// Differentiation between topic nodes and daily notes is carried by *size*, not hue.
 const nodes = [
   // Center
-  { id: 'voice', label: 'Voice Memos', x: 300, y: 200, size: 'lg', color: 'emerald' },
+  { id: 'voice', label: 'Voice Memos', x: 300, y: 200, size: 'lg', kind: 'hub' },
   // Topics (outer ring)
-  { id: 'engine', label: 'API\nRedesign', x: 100, y: 80, size: 'md', color: 'blue' },
-  { id: 'scout', label: 'Mobile App', x: 300, y: 50, size: 'md', color: 'violet' },
-  { id: 'marketing', label: 'Marketing\nStrategy', x: 500, y: 80, size: 'md', color: 'amber' },
-  { id: 'product', label: 'Product\nLaunch', x: 530, y: 220, size: 'md', color: 'rose' },
-  { id: 'business', label: 'Pricing\nModel', x: 480, y: 350, size: 'md', color: 'cyan' },
-  { id: 'workflow', label: 'Onboarding\nFlow', x: 120, y: 340, size: 'md', color: 'orange' },
-  { id: 'health', label: 'Health &\nSustainability', x: 70, y: 220, size: 'sm', color: 'lime' },
+  { id: 'engine', label: 'API\nRedesign', x: 100, y: 80, size: 'md', kind: 'topic' },
+  { id: 'scout', label: 'Mobile App', x: 300, y: 50, size: 'md', kind: 'topic' },
+  { id: 'marketing', label: 'Marketing\nStrategy', x: 500, y: 80, size: 'md', kind: 'topic' },
+  { id: 'product', label: 'Product\nLaunch', x: 530, y: 220, size: 'md', kind: 'topic' },
+  { id: 'business', label: 'Pricing\nModel', x: 480, y: 350, size: 'md', kind: 'topic' },
+  { id: 'workflow', label: 'Onboarding\nFlow', x: 120, y: 340, size: 'md', kind: 'topic' },
+  { id: 'health', label: 'Health &\nSustainability', x: 70, y: 220, size: 'sm', kind: 'topic' },
   // Daily notes (small dots)
-  { id: 'day1', label: 'Mar 9', x: 200, y: 130, size: 'xs', color: 'zinc' },
-  { id: 'day2', label: 'Mar 10', x: 400, y: 140, size: 'xs', color: 'zinc' },
-  { id: 'day3', label: 'Mar 14', x: 190, y: 280, size: 'xs', color: 'zinc' },
-  { id: 'day4', label: 'Mar 15', x: 410, y: 280, size: 'xs', color: 'zinc' },
+  { id: 'day1', label: 'Mar 9', x: 200, y: 130, size: 'xs', kind: 'note' },
+  { id: 'day2', label: 'Mar 10', x: 400, y: 140, size: 'xs', kind: 'note' },
+  { id: 'day3', label: 'Mar 14', x: 190, y: 280, size: 'xs', kind: 'note' },
+  { id: 'day4', label: 'Mar 15', x: 410, y: 280, size: 'xs', kind: 'note' },
 ]
 
 const edges = [
@@ -44,60 +46,23 @@ const edges = [
   { from: 'product', to: 'business', strength: 1 },
 ]
 
-const colorMap = {
-  emerald: {
-    fill: 'fill-emerald-500 dark:fill-emerald-400',
-    bg: 'rgba(16,185,129,0.12)',
-    stroke: 'rgba(16,185,129,0.5)',
-    text: 'fill-emerald-900 dark:fill-emerald-100',
+// Two-tone palette: amber for the center hub, ink-muted for orbiting topics + notes.
+// All values resolve via currentColor cascade or var(--token), so themes flip cleanly.
+const kindMap = {
+  hub: {
+    bg: 'color-mix(in oklab, var(--amber) 14%, transparent)',
+    stroke: 'color-mix(in oklab, var(--amber) 55%, transparent)',
+    textColor: 'var(--amber)',
   },
-  blue: {
-    fill: 'fill-blue-500 dark:fill-blue-400',
-    bg: 'rgba(59,130,246,0.1)',
-    stroke: 'rgba(59,130,246,0.4)',
-    text: 'fill-blue-900 dark:fill-blue-100',
+  topic: {
+    bg: 'color-mix(in oklab, var(--ink-faint) 14%, transparent)',
+    stroke: 'color-mix(in oklab, var(--ink-faint) 45%, transparent)',
+    textColor: 'var(--ink)',
   },
-  violet: {
-    fill: 'fill-violet-500 dark:fill-violet-400',
-    bg: 'rgba(139,92,246,0.1)',
-    stroke: 'rgba(139,92,246,0.4)',
-    text: 'fill-violet-900 dark:fill-violet-100',
-  },
-  amber: {
-    fill: 'fill-amber-500 dark:fill-amber-400',
-    bg: 'rgba(245,158,11,0.1)',
-    stroke: 'rgba(245,158,11,0.4)',
-    text: 'fill-amber-900 dark:fill-amber-100',
-  },
-  rose: {
-    fill: 'fill-rose-500 dark:fill-rose-400',
-    bg: 'rgba(244,63,94,0.1)',
-    stroke: 'rgba(244,63,94,0.4)',
-    text: 'fill-rose-900 dark:fill-rose-100',
-  },
-  cyan: {
-    fill: 'fill-cyan-500 dark:fill-cyan-400',
-    bg: 'rgba(6,182,212,0.1)',
-    stroke: 'rgba(6,182,212,0.4)',
-    text: 'fill-cyan-900 dark:fill-cyan-100',
-  },
-  orange: {
-    fill: 'fill-orange-500 dark:fill-orange-400',
-    bg: 'rgba(249,115,22,0.1)',
-    stroke: 'rgba(249,115,22,0.4)',
-    text: 'fill-orange-900 dark:fill-orange-100',
-  },
-  lime: {
-    fill: 'fill-lime-500 dark:fill-lime-400',
-    bg: 'rgba(132,204,22,0.1)',
-    stroke: 'rgba(132,204,22,0.4)',
-    text: 'fill-lime-900 dark:fill-lime-100',
-  },
-  zinc: {
-    fill: 'fill-zinc-400 dark:fill-zinc-500',
-    bg: 'rgba(161,161,170,0.08)',
-    stroke: 'rgba(161,161,170,0.3)',
-    text: 'fill-zinc-600 dark:fill-zinc-400',
+  note: {
+    bg: 'color-mix(in oklab, var(--ink-faint) 8%, transparent)',
+    stroke: 'color-mix(in oklab, var(--ink-faint) 30%, transparent)',
+    textColor: 'var(--ink-muted)',
   },
 }
 
@@ -126,25 +91,25 @@ export default function MindMap() {
 
   return (
     <div className="not-prose my-10">
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 overflow-hidden">
+      <div className="rounded-xl border border-edge-dim bg-canvas-alt overflow-hidden transition-colors duration-200">
         {/* Header */}
-        <div className="px-4 py-2.5 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-2">
+        <div className="px-4 py-2.5 border-b border-edge-faint flex items-center gap-2">
           <div className="flex gap-1">
-            <div className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-            <div className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-            <div className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+            <div className="w-2.5 h-2.5 rounded-full bg-edge" />
+            <div className="w-2.5 h-2.5 rounded-full bg-edge" />
+            <div className="w-2.5 h-2.5 rounded-full bg-edge" />
           </div>
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500 ml-2">
+          <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-ink-faint ml-2">
             Knowledge Graph — 7 topics from 10 voice memos
           </span>
         </div>
 
         {/* SVG */}
-        <svg viewBox="0 0 600 420" className="w-full" style={{ minHeight: 280 }}>
+        <svg viewBox="0 0 600 420" className="w-full" style={{ minHeight: 280, color: 'var(--ink-faint)' }}>
           <defs>
             <radialGradient id="glow-center" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(16,185,129,0.15)" />
-              <stop offset="100%" stopColor="rgba(16,185,129,0)" />
+              <stop offset="0%" stopColor="var(--amber)" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="var(--amber)" stopOpacity="0" />
             </radialGradient>
           </defs>
 
@@ -157,6 +122,7 @@ export default function MindMap() {
             const to = nodeMap[edge.to]
             const isActive = hovered && (hovered === edge.from || hovered === edge.to)
             const isDimmed = hovered && !isActive
+            const hoveredKind = hovered ? nodeMap[hovered].kind : null
 
             return (
               <line
@@ -167,9 +133,9 @@ export default function MindMap() {
                 y2={to.y}
                 strokeWidth={edge.strength === 2 ? 1.5 : 0.8}
                 className={`transition-opacity duration-200 ${
-                  isDimmed ? 'opacity-5' : isActive ? 'opacity-60' : 'opacity-20'
+                  isDimmed ? 'opacity-5' : isActive ? 'opacity-70' : 'opacity-25'
                 }`}
-                stroke={isActive ? colorMap[nodeMap[hovered].color]?.stroke || '#888' : '#888'}
+                stroke={isActive && hoveredKind === 'hub' ? 'var(--amber)' : 'currentColor'}
               />
             )
           })}
@@ -177,9 +143,10 @@ export default function MindMap() {
           {/* Nodes */}
           {nodes.map(node => {
             const s = sizeMap[node.size]
-            const c = colorMap[node.color]
+            const c = kindMap[node.kind]
             const isActive = hovered === node.id || connectedToHovered.has(node.id)
             const isDimmed = hovered && !isActive && hovered !== node.id
+            const isHover = hovered === node.id
 
             const lines = node.label.split('\n')
 
@@ -198,9 +165,10 @@ export default function MindMap() {
                   cy={node.y}
                   r={s.r}
                   fill={c.bg}
-                  stroke={c.stroke}
-                  strokeWidth={isActive || hovered === node.id ? 2 : 1}
+                  stroke={isHover ? 'var(--amber)' : c.stroke}
+                  strokeWidth={isActive || isHover ? 2 : 1}
                   className="transition-all duration-200"
+                  style={isHover ? { filter: 'drop-shadow(0 0 6px color-mix(in oklab, var(--amber) 45%, transparent))' } : undefined}
                 />
                 {/* Label */}
                 {lines.map((line, li) => (
@@ -213,7 +181,7 @@ export default function MindMap() {
                     fontSize={s.fontSize}
                     fontWeight={s.fontWeight}
                     fontFamily="var(--font-sans)"
-                    className={c.text}
+                    fill={c.textColor}
                   >
                     {line}
                   </text>
@@ -224,17 +192,17 @@ export default function MindMap() {
         </svg>
 
         {/* Legend */}
-        <div className="px-4 py-2.5 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap gap-x-4 gap-y-1">
-          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" /> Center hub
+        <div className="px-4 py-2.5 border-t border-edge-faint flex flex-wrap gap-x-4 gap-y-1">
+          <span className="text-[10px] text-ink-faint font-mono flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-amber" style={{ boxShadow: '0 0 4px var(--amber)' }} /> Center hub
           </span>
-          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-violet-500" /> Topic nodes
+          <span className="text-[10px] text-ink-faint font-mono flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full" style={{ background: 'var(--ink-muted)' }} /> Topic nodes
           </span>
-          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-zinc-400" /> Daily notes
+          <span className="text-[10px] text-ink-faint font-mono flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full" style={{ background: 'var(--ink-faint)' }} /> Daily notes
           </span>
-          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono flex items-center gap-1.5 ml-auto">
+          <span className="text-[10px] text-ink-subtle font-mono flex items-center gap-1.5 ml-auto">
             Hover to explore connections
           </span>
         </div>

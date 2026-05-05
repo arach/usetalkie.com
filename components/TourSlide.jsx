@@ -64,7 +64,7 @@ export default function TourSlide({ slug }) {
     function handleKey(e) {
       if (e.key === 'ArrowLeft' && prev) router.push(`/tour/${prev.slug}/`)
       if (e.key === 'ArrowRight' && next) router.push(`/tour/${next.slug}/`)
-      if (e.key === 'Escape') router.push('/v2')
+      if (e.key === 'Escape') router.push('/')
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
@@ -78,7 +78,7 @@ export default function TourSlide({ slug }) {
             TOUR SLIDE NOT FOUND
           </p>
           <Link
-            href="/v2"
+            href="/"
             className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-trace hover:underline"
           >
             <span aria-hidden>←</span> BACK HOME
@@ -102,10 +102,10 @@ export default function TourSlide({ slug }) {
       {/* ========== TOP BAR ========== */}
       <div className="flex items-center justify-between border-b border-edge-faint px-4 py-3 md:px-8">
         <Link
-          href="/v2"
-          className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors hover:text-trace"
+          href="/"
+          className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors duration-200 hover:text-amber"
         >
-          <span aria-hidden>←</span>
+          <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>
           <span>BACK TO TOUR</span>
         </Link>
 
@@ -211,9 +211,9 @@ export default function TourSlide({ slug }) {
           {prev ? (
             <Link
               href={`/tour/${prev.slug}/`}
-              className="group flex items-center gap-3 text-ink-faint transition-colors hover:text-trace"
+              className="group flex items-center gap-3 text-ink-faint transition-colors duration-200 hover:text-amber"
             >
-              <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+              <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" aria-hidden />
               <div className="text-left">
                 <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
                   PREVIOUS
@@ -237,7 +237,7 @@ export default function TourSlide({ slug }) {
           {next ? (
             <Link
               href={`/tour/${next.slug}/`}
-              className="group flex items-center gap-3 text-right text-ink-faint transition-colors hover:text-trace"
+              className="group flex items-center gap-3 text-right text-ink-faint transition-colors duration-200 hover:text-amber"
             >
               <div>
                 <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
@@ -245,7 +245,7 @@ export default function TourSlide({ slug }) {
                 </span>
                 <span className="text-[12px]">{next.title}</span>
               </div>
-              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
             </Link>
           ) : (
             <span aria-hidden />

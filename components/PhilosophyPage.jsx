@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Mic, Lock, Layers } from 'lucide-react'
 import { NarrateTrigger } from './narrator'
 import { supportingLine, TAGLINE_PHILOSOPHY } from '../content/tagline'
+import DownloadBay from './DownloadBay'
 
 /**
  * Philosophy — v2 oscilloscope canvas.
@@ -78,8 +79,14 @@ export default function PhilosophyPage() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Your ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
+          <p className="philo-lede mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+            <span
+              className="philo-dropcap float-left mr-2 -ml-1 font-display text-[64px] font-normal italic leading-[0.85] text-amber md:-ml-3 md:text-[76px]"
+              style={{ textShadow: '0 0 14px var(--trace-glow)' }}
+            >
+              Y
+            </span>
+            our ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
             unrelated. Builders know this rhythm well. Sparks arrive fast, unpolished, and usually at inconvenient
             times. And without a way to catch them in the moment, they slip away just as quickly.
           </p>
@@ -93,9 +100,12 @@ export default function PhilosophyPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            · OBSERVATIONS
-          </p>
+          <div className="flex items-center gap-3">
+            <span aria-hidden className="block h-px w-10" style={{ background: 'var(--trace-dim)' }} />
+            <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+              OBSERVATIONS
+            </p>
+          </div>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
             The pattern we saw.
           </h2>
@@ -129,9 +139,12 @@ export default function PhilosophyPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            · PRINCIPLES
-          </p>
+          <div className="flex items-center gap-3">
+            <span aria-hidden className="block h-px w-10" style={{ background: 'var(--trace-dim)' }} />
+            <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+              PRINCIPLES
+            </p>
+          </div>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
             What we stand for.
           </h2>
@@ -165,20 +178,20 @@ export default function PhilosophyPage() {
               <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
             </div>
 
-            <blockquote className="mt-10 text-center">
-              <p className="font-display text-3xl font-normal italic leading-[1.2] tracking-[-0.02em] text-ink md:text-4xl">
-                <span className="text-trace" style={{ textShadow: '0 0 8px var(--trace-glow)' }}>
-                  &ldquo;
-                </span>
+            <blockquote
+              className="relative mt-12 pl-6 md:pl-10"
+              style={{
+                borderLeft: '2px solid var(--amber)',
+                boxShadow: 'inset 2px 0 12px -8px var(--trace-glow)',
+              }}
+            >
+              <p className="font-display text-3xl font-normal italic leading-[1.18] tracking-[-0.02em] text-ink md:text-[40px]">
                 Your voice is the fastest path from thought to action. Don&apos;t let the tools slow you down.
-                <span className="text-trace" style={{ textShadow: '0 0 8px var(--trace-glow)' }}>
-                  &rdquo;
-                </span>
               </p>
             </blockquote>
 
             {/* Bottom rule with phosphor dot */}
-            <div className="mt-10 flex items-center gap-4">
+            <div className="mt-12 flex items-center gap-4">
               <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
               <span
                 aria-hidden
@@ -214,54 +227,30 @@ export default function PhilosophyPage() {
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            {/* This is Talkie */}
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
-              <div>
-                <p
-                  className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
-                  style={TRACE_GLOW_SOFT}
-                >
-                  · THIS IS TALKIE
-                </p>
-                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  A selfie. For your thoughts.<br />
-                  <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_PHILOSOPHY)}</span>
-                </h3>
-                <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
-                  Voice capture, local-first, auditable signal path. Your words stay on your devices.
-                </p>
-              </div>
-              <Link
-                href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
-                style={{
-                  background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
-                  textShadow: '0 0 6px var(--trace-glow)',
-                }}
-              >
-                INSTALL <span aria-hidden>→</span>
-              </Link>
+            {/* Download — proper module, not a corny INSTALL chip */}
+            <div className="flex items-center justify-center rounded-md border border-edge bg-surface p-6 md:p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
+              <DownloadBay caption="Voice capture, local-first, auditable signal path." />
             </div>
 
             {/* Surfaces tie-back */}
             <Link
               href="/mac"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
+              className="group block rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
             >
               <div className="flex items-center gap-2.5">
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent"
+                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent transition-all duration-200 group-hover:scale-150 group-hover:border-amber group-hover:bg-amber"
                 />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
                   SEE IT IN ACTION
                 </span>
               </div>
               <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                 Talk to your Mac.
               </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                See how Talkie fits into the tools you already use. Keep reading <span aria-hidden>→</span>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+                See how Talkie fits into the tools you already use. Keep reading <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </p>
             </Link>
           </div>
@@ -279,7 +268,7 @@ export default function PhilosophyPage() {
 function ObservationCard({ code, label, heading, body, highlight = false }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-md border p-5 ${
+      className={`group relative overflow-hidden rounded-md border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] ${
         highlight ? 'border-edge' : 'border-edge-dim bg-surface'
       }`}
       style={
@@ -290,13 +279,13 @@ function ObservationCard({ code, label, heading, body, highlight = false }) {
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
       <div className="relative">
-        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
           <span>
             {code} / {label}
           </span>
           <span
             aria-hidden
-            className="inline-block h-1 w-1 rounded-full bg-trace"
+            className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
             style={TRACE_GLOW_DOT_SM}
           />
         </div>
@@ -305,7 +294,7 @@ function ObservationCard({ code, label, heading, body, highlight = false }) {
           {heading}
         </h3>
 
-        <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{body}</p>
+        <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{body}</p>
       </div>
     </div>
   )
@@ -314,11 +303,11 @@ function ObservationCard({ code, label, heading, body, highlight = false }) {
 function PrincipleStack({ principle: p }) {
   const Icon = p.icon
   return (
-    <div className="relative border-t border-edge-subtle py-14 md:py-16">
+    <div className="group relative border-t border-edge-subtle py-14 transition-colors duration-200 hover:border-edge md:py-16">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
         <div className="flex flex-col gap-3">
           <div
-            className="font-display text-[56px] font-normal leading-none tracking-[-0.04em] text-trace opacity-80"
+            className="font-display text-[56px] font-normal leading-none tracking-[-0.04em] text-trace opacity-80 transition-opacity duration-200 group-hover:opacity-100"
             style={{ textShadow: '0 0 24px var(--trace-glow), 0 0 8px var(--trace-glow)' }}
           >
             {p.n}
@@ -329,11 +318,11 @@ function PrincipleStack({ principle: p }) {
           </p>
 
           <div
-            className="mt-2 inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+            className="mt-2 inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
             style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
           >
             <Icon
-              className="h-4 w-4 text-trace"
+              className="h-4 w-4 text-trace transition-transform duration-200"
               style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
               aria-hidden
             />
@@ -344,13 +333,13 @@ function PrincipleStack({ principle: p }) {
           <h3 className="font-display text-3xl font-normal leading-snug tracking-[-0.02em] text-ink md:text-4xl">
             {p.headline}
           </h3>
-          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-muted">{p.body}</p>
+          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{p.body}</p>
 
           <div
             className="mt-6 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
             style={TRACE_GLOW_SOFT}
           >
-            <span aria-hidden className="inline-block h-px w-8" style={{ background: 'var(--trace-dim)' }} />
+            <span aria-hidden className="inline-block h-px w-8 transition-all duration-200 group-hover:w-12" style={{ background: 'var(--trace-dim)' }} />
             <span>{p.tag}</span>
           </div>
         </div>

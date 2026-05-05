@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import InstallCard from './InstallCard'
+import DownloadBay from './DownloadBay'
 import {
   Mic,
   Bot,
@@ -188,7 +188,7 @@ export default function AgentsPage() {
         {/* CSS-only chase glow — no client state */}
         <style>{`
           @keyframes osc-loop-chase {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+            0%, 100% { box-shadow: 0 0 0 0 transparent; }
             40%,60%  { box-shadow: 0 0 24px 0 var(--trace-glow); }
           }
           .osc-loop-node[data-i="0"] { animation: osc-loop-chase 3s ease-in-out 0s infinite; }
@@ -226,7 +226,7 @@ export default function AgentsPage() {
 
           <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
             {RECIPES.map((r) => (
-              <RecipeCard key={r.code} recipe={r} />
+              <RecipeCard key={r.code} recipe={r} accent="amber" />
             ))}
           </div>
         </div>
@@ -348,7 +348,7 @@ export default function AgentsPage() {
               return (
                 <div
                   key={t.label}
-                  className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5"
+                  className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
                 >
                   <div
                     aria-hidden
@@ -361,7 +361,7 @@ export default function AgentsPage() {
                   />
                   <div className="relative flex items-start gap-4">
                     <div
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-edge"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace/60"
                       style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
                     >
                       <Icon
@@ -371,7 +371,7 @@ export default function AgentsPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-baseline justify-between">
-                        <h3 className="font-display text-lg tracking-[-0.01em] text-ink">{t.label}</h3>
+                        <h3 className="font-display text-lg tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-trace">{t.label}</h3>
                         <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
                           TRG-{String(i + 1).padStart(2, '0')}
                         </span>
@@ -386,24 +386,10 @@ export default function AgentsPage() {
         </div>
       </section>
 
-      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
-      <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
-          <div className="text-center">
-            <p
-              className="text-[10px] uppercase tracking-[0.26em] text-trace"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              · WIRE UP YOUR FIRST AGENT
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-              Speak the trigger.
-              <span className="italic text-ink-muted"> Watch the chain run.</span>
-            </h2>
-          </div>
-          <div className="mt-10">
-            <InstallCard />
-          </div>
+      {/* DOWNLOAD — focused install footer */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt">
+        <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
+          <DownloadBay caption="Wire up your first agent in three minutes. macOS 26+, Apple Silicon, Claude CLI optional." />
         </div>
       </section>
     </>
@@ -413,7 +399,7 @@ export default function AgentsPage() {
 function RecipeCard({ recipe }) {
   const Icon = recipe.icon
   return (
-    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-trace">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-50"
@@ -427,15 +413,15 @@ function RecipeCard({ recipe }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
-              style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
+              style={{ background: 'color-mix(in oklab, var(--amber) 6%, transparent)' }}
             >
               <Icon
-                className="h-4 w-4 text-trace"
+                className="h-4 w-4 text-amber transition-all duration-200"
                 style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
               />
             </div>
-            <h3 className="font-display text-lg tracking-[-0.01em] text-ink">{recipe.title}</h3>
+            <h3 className="font-display text-lg tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-amber">{recipe.title}</h3>
           </div>
           <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
             {recipe.code}
@@ -451,9 +437,9 @@ function RecipeCard({ recipe }) {
         </p>
 
         <div className="mt-4 flex items-center gap-2" aria-hidden>
-          <span className="block h-px w-6 bg-trace opacity-40" />
+          <span className="block h-px w-6 bg-amber opacity-40 transition-all duration-200 group-hover:w-10 group-hover:opacity-70" />
           <span
-            className="text-[11px] leading-none text-trace"
+            className="text-[11px] leading-none text-amber transition-transform duration-200 group-hover:translate-x-0.5"
             style={{ textShadow: '0 0 4px var(--trace-glow)' }}
           >
             →
@@ -470,11 +456,11 @@ function LoopNode({ index, icon: Icon, label, sub }) {
   return (
     <div
       data-i={index}
-      className="osc-loop-node relative flex flex-col items-center gap-3 rounded-sm border border-edge-dim bg-canvas p-5"
+      className="osc-loop-node group relative flex flex-col items-center gap-3 rounded-sm border border-edge-dim bg-canvas-alt p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace/60"
     >
       <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">{sub}</span>
       <div
-        className="flex h-14 w-14 items-center justify-center rounded-md border border-edge"
+        className="flex h-14 w-14 items-center justify-center rounded-md border border-edge transition-all duration-200 group-hover:scale-110"
         style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
       >
         <Icon

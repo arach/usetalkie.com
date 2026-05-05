@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import InstallCard from './InstallCard'
+import DownloadBay from './DownloadBay'
 import {
   Mic,
   CornerDownLeft,
@@ -245,10 +245,10 @@ export default function FeaturesPage() {
                   return (
                     <li
                       key={step.label}
-                      className="flex items-start gap-3 border-b border-edge-subtle px-4 py-3 last:border-b-0"
+                      className="group/row flex items-start gap-3 border-b border-edge-subtle px-4 py-3 transition-colors duration-200 last:border-b-0 hover:bg-canvas-alt/40"
                     >
                       <div
-                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-edge"
+                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover/row:scale-110 group-hover/row:border-trace/60"
                         style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
                       >
                         <Icon
@@ -258,7 +258,7 @@ export default function FeaturesPage() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-baseline justify-between gap-3">
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink">
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink transition-colors duration-200 group-hover/row:text-trace">
                             {step.label}
                           </span>
                           <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
@@ -305,7 +305,7 @@ export default function FeaturesPage() {
                 {ALIASES.map((a) => (
                   <li
                     key={a.token}
-                    className="flex items-center gap-3 rounded-sm border border-edge-subtle bg-canvas px-3 py-2 text-[12px]"
+                    className="group/row flex items-center gap-3 rounded-sm border border-edge-subtle bg-canvas-alt px-3 py-2 text-[12px] transition-all duration-200 hover:border-trace/40"
                   >
                     <span
                       className="font-semibold text-trace"
@@ -313,8 +313,8 @@ export default function FeaturesPage() {
                     >
                       {a.token}
                     </span>
-                    <span className="text-ink-subtle">→</span>
-                    <span className="truncate text-ink-muted">{a.target}</span>
+                    <span className="text-ink-subtle transition-transform duration-200 group-hover/row:translate-x-0.5">→</span>
+                    <span className="truncate text-ink-muted transition-colors duration-200 group-hover/row:text-ink">{a.target}</span>
                   </li>
                 ))}
               </ul>
@@ -379,7 +379,7 @@ export default function FeaturesPage() {
               return (
                 <div
                   key={p.title}
-                  className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5"
+                  className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
                 >
                   <div
                     aria-hidden
@@ -393,11 +393,11 @@ export default function FeaturesPage() {
                   <div className="relative">
                     <div className="flex items-center justify-between">
                       <div
-                        className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
-                        style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+                        className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
+                        style={{ background: 'color-mix(in oklab, var(--amber) 6%, transparent)' }}
                       >
                         <Icon
-                          className="h-4 w-4 text-trace"
+                          className="h-4 w-4 text-amber transition-all duration-200"
                           style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
                         />
                       </div>
@@ -405,7 +405,7 @@ export default function FeaturesPage() {
                         SEC-{String(i + 1).padStart(2, '0')}
                       </span>
                     </div>
-                    <h3 className="mt-4 font-display text-lg tracking-[-0.01em] text-ink">{p.title}</h3>
+                    <h3 className="mt-4 font-display text-lg tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-amber">{p.title}</h3>
                     <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{p.body}</p>
                   </div>
                 </div>
@@ -415,24 +415,10 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
-      <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
-          <div className="text-center">
-            <p
-              className="text-[10px] uppercase tracking-[0.26em] text-trace"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              · ONE INSTRUMENT · MANY PATCHES
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-              Hand the chain to an agent.
-              <span className="italic text-ink-muted"> Speak the trigger.</span>
-            </h2>
-          </div>
-          <div className="mt-10">
-            <InstallCard />
-          </div>
+      {/* DOWNLOAD — focused install footer */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt">
+        <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
+          <DownloadBay caption="Speak the trigger. The chain runs locally on your Mac — your CLI, your shell, your Claude, your keys." />
         </div>
       </section>
     </>
@@ -443,10 +429,10 @@ function CaptureCard({ feature, index }) {
   const Icon = feature.icon
   const chNum = String(index + 1).padStart(2, '0')
   return (
-    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-trace">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 opacity-50 transition-opacity duration-200 group-hover:opacity-70"
         style={{
           backgroundImage:
             'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
@@ -457,15 +443,15 @@ function CaptureCard({ feature, index }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
-              style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
+              style={{ background: 'color-mix(in oklab, var(--amber) 6%, transparent)' }}
             >
               <Icon
-                className="h-4 w-4 text-trace"
+                className="h-4 w-4 text-amber transition-all duration-200"
                 style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
               />
             </div>
-            <h3 className="font-display text-lg tracking-[-0.01em] text-ink">{feature.title}</h3>
+            <h3 className="font-display text-lg tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-amber">{feature.title}</h3>
           </div>
           <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">CH-{chNum}</span>
         </div>
@@ -479,7 +465,7 @@ function CaptureCard({ feature, index }) {
 function StageCard({ stage }) {
   const Icon = stage.icon
   return (
-    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-50"
@@ -494,7 +480,7 @@ function StageCard({ stage }) {
           <span>{stage.sub}</span>
           <span
             aria-hidden
-            className="inline-block h-1 w-1 rounded-full bg-trace"
+            className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
             style={{ boxShadow: '0 0 4px var(--trace)' }}
           />
         </div>
@@ -506,7 +492,7 @@ function StageCard({ stage }) {
         </div>
         <div className="mt-2 flex items-center gap-3">
           <div
-            className="flex h-10 w-10 items-center justify-center rounded-sm border border-edge"
+            className="flex h-10 w-10 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace/60"
             style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
           >
             <Icon

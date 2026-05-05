@@ -44,8 +44,10 @@ export default function DomainGrid() {
         {domains.map(({ name, example, done }) => (
           <div
             key={name}
-            className={`rounded-lg border p-4 ${
-              done ? 'border-trace/40' : 'border-dashed border-edge bg-canvas-alt/50 opacity-70'
+            className={`group rounded-lg border p-4 transition-all duration-200 ${
+              done
+                ? 'border-trace/40 hover:-translate-y-0.5 hover:border-trace/60'
+                : 'border-dashed border-edge bg-canvas-alt/50 opacity-70 hover:opacity-90'
             }`}
             style={
               done
@@ -60,7 +62,7 @@ export default function DomainGrid() {
             <div className="flex items-center gap-2 mb-2">
               {done && (
                 <Check
-                  className="w-3.5 h-3.5 text-trace"
+                  className="w-3.5 h-3.5 text-trace transition-transform duration-200 group-hover:scale-110"
                   style={TRACE_GLOW_SOFT}
                 />
               )}

@@ -112,12 +112,11 @@ export default function InstallCard() {
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm transition-transform group-hover:-translate-y-0.5"
             style={{
               background: 'var(--panel-bg-deep)',
-              border: '1px solid var(--panel-edge)',
-              color: 'var(--panel-trace)',
-              boxShadow: '0 0 12px color-mix(in oklab, var(--panel-trace) 14%, transparent)',
+              border: '1px solid var(--panel-edge-dim)',
+              color: 'var(--panel-ink-dim)',
             }}
           >
-            <Download className="h-4 w-4" style={{ filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))' }} />
+            <Download className="h-4 w-4" />
           </span>
           <span className="flex flex-col leading-tight">
             <span
@@ -194,7 +193,7 @@ export default function InstallCard() {
           >
             <Terminal
               className="h-3 w-3"
-              style={{ color: 'var(--panel-trace)', filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))' }}
+              style={{ color: 'var(--panel-ink-muted)' }}
             />
             CLI · DEVELOPERS
           </div>

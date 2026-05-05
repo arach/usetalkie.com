@@ -240,16 +240,16 @@ export default function SupportPage() {
 
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* Email channel */}
-              <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-6">
+              <div className="group relative overflow-hidden rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
                 <div className="relative flex h-full flex-col">
                   <div className="flex items-center gap-2.5">
                     <span
                       aria-hidden
-                      className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+                      className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
                       style={TRACE_GLOW_DOT}
                     />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
                       CHANNEL · 01 / EMAIL
                     </span>
                   </div>
@@ -257,7 +257,7 @@ export default function SupportPage() {
                   <h3 className="mt-4 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                     Send a message.
                   </h3>
-                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
                     Reach the team at{' '}
                     <span className="font-mono text-ink">hello@usetalkie.com</span>. Include your
                     macOS version and a short description — most replies land within a day.
@@ -265,28 +265,28 @@ export default function SupportPage() {
 
                   <a
                     href="mailto:hello@usetalkie.com?subject=Talkie%20Support"
-                    className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                    className="group/btn mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60"
                     style={{
                       background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
                       textShadow: '0 0 6px var(--trace-glow)',
                     }}
                   >
-                    <Mail className="h-3.5 w-3.5" aria-hidden />
-                    OPEN MAIL <span aria-hidden>→</span>
+                    <Mail className="h-3.5 w-3.5 transition-transform duration-200 group-hover/btn:scale-110" aria-hidden />
+                    OPEN MAIL <span aria-hidden className="inline-block transition-transform duration-200 group-hover/btn:translate-x-0.5">→</span>
                   </a>
                 </div>
               </div>
 
               {/* Reference channel */}
-              <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-6">
+              <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/40 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
                 <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
                 <div className="relative flex h-full flex-col">
                   <div className="flex items-center gap-2.5">
                     <span
                       aria-hidden
-                      className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent"
+                      className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim bg-transparent transition-all duration-200 group-hover:scale-150 group-hover:border-amber group-hover:bg-amber"
                     />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber">
                       CHANNEL · 02 / REFERENCE
                     </span>
                   </div>
@@ -294,7 +294,7 @@ export default function SupportPage() {
                   <h3 className="mt-4 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                     Read the docs.
                   </h3>
-                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
                     Long-form documentation, CLI reference, and security architecture for engineers
                     who want to know exactly what Talkie does and where data lives.
                   </p>
@@ -302,15 +302,15 @@ export default function SupportPage() {
                   <div className="mt-6 flex flex-wrap items-center gap-3">
                     <Link
                       href="/docs"
-                      className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                      className="group/lnk inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:text-amber hover:border-amber/50"
                     >
-                      DOCUMENTATION <span aria-hidden>↗</span>
+                      DOCUMENTATION <span aria-hidden className="inline-block transition-transform duration-200 group-hover/lnk:-translate-y-0.5 group-hover/lnk:translate-x-0.5">↗</span>
                     </Link>
                     <Link
                       href="/security"
-                      className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                      className="group/lnk inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:text-amber hover:border-amber/50"
                     >
-                      SECURITY <span aria-hidden>→</span>
+                      SECURITY <span aria-hidden className="inline-block transition-transform duration-200 group-hover/lnk:translate-x-0.5">→</span>
                     </Link>
                   </div>
                 </div>
@@ -359,15 +359,15 @@ function KBSection({ section }) {
 function KBCard({ article }) {
   const Icon = article.icon
   return (
-    <article className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+    <article className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
       <div className="relative">
         <div
-          className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
           style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
         >
           <Icon
-            className="h-4 w-4 text-trace"
+            className="h-4 w-4 text-trace transition-transform duration-200"
             style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
             aria-hidden
           />
@@ -376,7 +376,7 @@ function KBCard({ article }) {
         <h3 className="mt-4 font-display text-lg font-normal leading-snug tracking-[-0.01em] text-ink">
           {article.title}
         </h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{article.body}</p>
+        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{article.body}</p>
       </div>
     </article>
   )

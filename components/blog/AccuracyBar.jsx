@@ -7,7 +7,7 @@ const TRACE_FILL_DIM = { background: 'color-mix(in oklab, var(--trace) 45%, var(
 const segments = [
   { label: 'Exact match', pct: 76.2, style: TRACE_FILL },
   { label: 'Near match (>90%)', pct: 21.0, style: TRACE_FILL_DIM },
-  { label: 'Partial (70–90%)', pct: 2.4, className: 'bg-amber-400/80' },
+  { label: 'Partial (70–90%)', pct: 2.4, style: { background: 'var(--amber)', opacity: 0.8 } },
   { label: 'Wrong (<70%)', pct: 0.5, className: 'bg-red-500/80' },
 ]
 

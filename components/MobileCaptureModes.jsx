@@ -118,10 +118,12 @@ function ModeCard({ mode }) {
 
         {/* display */}
         <div
-          className="mt-4 flex items-center justify-center rounded-sm border border-edge bg-surface p-5 transition-colors duration-200 group-hover:border-trace/60"
+          className="mt-4 flex items-center justify-center rounded-sm border border-edge bg-surface p-5 transition-all duration-300 group-hover:border-trace/60 group-hover:shadow-[inset_0_0_18px_-4px_var(--trace-glow)]"
           style={{ minHeight: '160px' }}
         >
-          <Display />
+          <div className="transition-transform duration-300 group-hover:scale-[1.04]">
+            <Display />
+          </div>
         </div>
 
         {/* title + icon */}

@@ -56,7 +56,7 @@ export default function SiteShell({ children }) {
     <>
       <header className="sticky top-0 z-40 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
         <div className="mx-auto flex h-12 max-w-6xl items-center justify-between px-4 md:px-6">
-          <Link href="/v2" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <span
               aria-hidden
               className="inline-block h-2 w-2 rounded-full bg-trace animate-pulse"

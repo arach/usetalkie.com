@@ -112,21 +112,37 @@ function IdeaRow({ idea }) {
   return (
     <Link
       href={`/ideas/${idea.slug}`}
-      className="group relative block overflow-hidden rounded-md border border-edge-dim bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-edge"
+      className="group relative block overflow-hidden rounded-md border border-edge-dim bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
+
+      {/* Hairline accent that fills in on hover — left-edge stroke */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-amber transition-transform duration-300 ease-out group-hover:scale-y-100"
+        style={{ boxShadow: '0 0 6px color-mix(in oklab, var(--amber) 40%, transparent)' }}
+      />
 
       <div className="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
         <div className="min-w-0 flex-1">
           {/* meta row */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-            <time dateTime={idea.date}>{formatDate(idea.date)}</time>
+            <time dateTime={idea.date} className="transition-colors duration-200 group-hover:text-amber">{formatDate(idea.date)}</time>
+
+            {idea.readMinutes && (
+              <>
+                <span aria-hidden className="opacity-50">·</span>
+                <span className="text-ink-faint transition-colors duration-200 group-hover:text-ink-muted tabular-nums">
+                  {idea.readMinutes} MIN
+                </span>
+              </>
+            )}
 
             {entryBadge && (
               <>
                 <span aria-hidden className="opacity-50">·</span>
                 <span
-                  className="inline-flex items-center rounded-sm border border-edge px-2 py-0.5 text-trace"
+                  className="inline-flex items-center rounded-sm border border-edge px-2 py-0.5 text-trace transition-colors duration-200 group-hover:border-amber/60"
                   style={{
                     background: 'color-mix(in oklab, var(--trace) 5%, transparent)',
                     ...TRACE_GLOW_SOFT,
@@ -151,7 +167,7 @@ function IdeaRow({ idea }) {
                 <span aria-hidden className="opacity-50">·</span>
                 <div className="flex flex-wrap gap-1.5">
                   {tags.slice(0, 4).map((tag) => (
-                    <span key={tag} className="text-ink-faint">
+                    <span key={tag} className="text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">
                       #{tag}
                     </span>
                   ))}
@@ -160,12 +176,12 @@ function IdeaRow({ idea }) {
             )}
           </div>
 
-          <h2 className="mt-3 font-display text-2xl font-normal leading-snug tracking-[-0.01em] text-ink transition-colors group-hover:text-trace md:text-3xl">
+          <h2 className="mt-3 font-display text-2xl font-normal leading-snug tracking-[-0.01em] text-ink transition-colors duration-200 group-hover:text-amber md:text-3xl">
             {idea.title}
           </h2>
 
           {idea.description && (
-            <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink-muted">
+            <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
               {idea.description}
             </p>
           )}
@@ -175,14 +191,14 @@ function IdeaRow({ idea }) {
         <div className="flex shrink-0 items-center gap-2 self-end md:self-center">
           <span
             aria-hidden
-            className="inline-block h-1.5 w-1.5 rounded-full bg-trace opacity-60 transition-opacity group-hover:opacity-100"
+            className="inline-block h-1.5 w-1.5 rounded-full bg-trace opacity-60 transition-all duration-200 group-hover:scale-150 group-hover:opacity-100"
             style={TRACE_GLOW_DOT}
           />
           <span
-            className="font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle transition-colors group-hover:text-trace"
+            className="font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle transition-colors duration-200 group-hover:text-amber"
             style={TRACE_GLOW_SOFT}
           >
-            READ <span aria-hidden>→</span>
+            READ <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
           </span>
         </div>
       </div>

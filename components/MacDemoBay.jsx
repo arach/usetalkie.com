@@ -18,13 +18,14 @@
 export default function MacDemoBay() {
   return (
     <section className="relative border-t border-b border-panel-edge-dim bg-panel-bg-deep font-mono">
-      {/* Faint scanline overlay for CRT feel */}
+      {/* Faint scanline overlay for CRT feel — theme-aware via panel-scanline
+          (amber on Warm, transparent on Modern so the dark chassis stays clean) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-30"
+        className="pointer-events-none absolute inset-0 opacity-60"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,184,77,0.04) 3px, rgba(255,184,77,0.04) 4px)',
+            'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
         }}
       />
       <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
@@ -40,15 +41,17 @@ export default function MacDemoBay() {
           />
           <span className="text-[10px] uppercase tracking-[0.28em] text-rose-400">REC</span>
           <span className="text-screen-ink-faint">·</span>
-          <span className="text-[10px] uppercase tracking-[0.28em] text-amber">TALKIE LISTENING</span>
+          <span className="text-[10px] uppercase tracking-[0.28em] text-screen-trace">TALKIE LISTENING</span>
           <span className="ml-auto text-[10px] uppercase tracking-[0.26em] text-cyan-400 tabular-nums">
             00:00:08.412
           </span>
         </div>
 
-        {/* Demo waveform pane */}
+        {/* Demo waveform pane — graticule grid uses screen-trace tinted at low
+            opacity so the grid recolors with theme (amber on Warm, emerald on
+            Modern). hover:border becomes the active screen-trace too. */}
         <div
-          className="group/pane mt-6 relative overflow-hidden rounded-md border border-screen-edge bg-screen-bg p-8 transition-all duration-300 hover:border-amber/60"
+          className="group/pane mt-6 relative overflow-hidden rounded-md border border-screen-edge bg-screen-bg p-8 transition-all duration-300 hover:border-screen-trace/60"
           style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(0,0,0,0.30)' }}
         >
           <div
@@ -56,30 +59,32 @@ export default function MacDemoBay() {
             className="pointer-events-none absolute inset-0 opacity-40"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(255,184,77,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,184,77,0.06) 1px, transparent 1px)',
+                'linear-gradient(var(--screen-trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--screen-trace-faint) 1px, transparent 1px)',
               backgroundSize: '32px 32px',
             }}
           />
           <div className="relative">
-            {/* Quote / utterance line */}
+            {/* Quote / utterance line — cursor color flips with theme via screen-trace */}
             <p className="text-[13px] leading-relaxed text-screen-ink-dim">
               <span className="text-screen-ink-faint">&gt; </span>
               okay the intro is doing too much, lemme lead with the conflict instead, see if it lands
-              <span aria-hidden className="ml-1 inline-block h-3 w-1.5 -mb-0.5 align-middle bg-amber" style={{ animation: 'mac-cursor-blink 0.9s steps(2) infinite' }} />
+              <span aria-hidden className="ml-1 inline-block h-3 w-1.5 -mb-0.5 align-middle bg-screen-trace" style={{ animation: 'mac-cursor-blink 0.9s steps(2) infinite' }} />
             </p>
 
-            {/* Waveform SVG */}
+            {/* Waveform SVG — currentColor cascades from style-set screen-trace,
+                so the gradient stops + rect fills all flip per theme. */}
             <svg
               viewBox="0 0 1200 160"
               className="mt-6 w-full h-24"
               preserveAspectRatio="none"
               aria-hidden
+              style={{ color: 'var(--screen-trace)' }}
             >
               <defs>
                 <linearGradient id="mac-wave-grad" x1="0" x2="1" y1="0" y2="0">
-                  <stop offset="0%" stopColor="rgba(255,184,77,0.20)" />
-                  <stop offset="50%" stopColor="rgba(255,184,77,0.95)" />
-                  <stop offset="100%" stopColor="rgba(255,184,77,0.20)" />
+                  <stop offset="0%" stopColor="currentColor" stopOpacity="0.20" />
+                  <stop offset="50%" stopColor="currentColor" stopOpacity="0.95" />
+                  <stop offset="100%" stopColor="currentColor" stopOpacity="0.20" />
                 </linearGradient>
               </defs>
               {Array.from({ length: 80 }).map((_, i) => {
@@ -110,8 +115,8 @@ export default function MacDemoBay() {
                 <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-cyan-500 align-middle" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.7)' }} />
                 32.1 kHz · MONO
               </span>
-              <span className="text-amber">
-                <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-amber align-middle" style={{ boxShadow: '0 0 6px var(--trace-glow)' }} />
+              <span className="text-screen-trace">
+                <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-screen-trace align-middle" style={{ boxShadow: '0 0 6px var(--screen-trace-glow)' }} />
                 APPLE NEURAL
               </span>
               <span className="ml-auto text-screen-ink-faint">CURSOR · CMD-OPT-T</span>
@@ -133,26 +138,30 @@ export default function MacDemoBay() {
               The ceiling for most typists. Thoughts evaporate while fingers catch up.
             </div>
           </div>
-          {/* Talkie — fast / amber phosphor */}
+          {/* Talkie — fast / screen-trace phosphor (theme-aware: bronze on Warm,
+              emerald on Modern, green on dark mode) */}
           <div
-            className="group/stat relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5"
+            className="group/stat relative overflow-hidden rounded-md border border-screen-trace/40 bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5"
             style={{
-              borderColor: 'rgba(255,184,77,0.42)',
-              boxShadow: 'inset 0 0 0 1px rgba(255,184,77,0.08), 0 0 20px -8px rgba(255,184,77,0.35)',
+              boxShadow:
+                'inset 0 0 0 1px color-mix(in oklab, var(--screen-trace) 8%, transparent), 0 0 20px -8px color-mix(in oklab, var(--screen-trace) 35%, transparent)',
             }}
           >
             <div
               aria-hidden
               className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-40 transition-opacity duration-300 group-hover/stat:opacity-70"
-              style={{ background: 'radial-gradient(circle, rgba(255,184,77,0.45) 0%, transparent 65%)' }}
+              style={{
+                background:
+                  'radial-gradient(circle, color-mix(in oklab, var(--screen-trace) 45%, transparent) 0%, transparent 65%)',
+              }}
             />
             <div className="relative">
-              <div className="text-[9px] uppercase tracking-[0.28em] text-amber">
+              <div className="text-[9px] uppercase tracking-[0.28em] text-screen-trace">
                 TALKIE · WPM
               </div>
               <div
-                className="mt-3 font-display text-5xl font-normal tracking-tight text-amber transition-transform duration-200 group-hover/stat:scale-[1.04]"
-                style={{ textShadow: '0 0 12px var(--trace-glow)', transformOrigin: 'left center' }}
+                className="mt-3 font-display text-5xl font-normal tracking-tight text-screen-trace transition-transform duration-200 group-hover/stat:scale-[1.04]"
+                style={{ textShadow: '0 0 12px var(--screen-trace-glow)', transformOrigin: 'left center' }}
               >
                 200+
               </div>
