@@ -45,6 +45,7 @@ const TONES = [
   { key: 'ember-notepad',  label: 'Ember Note'  },
   { key: 'cream-desk',     label: 'Cream'       },
   { key: 'field-notebook', label: 'Notepad'     },
+  { key: 'slate',          label: 'Slate'       },
 ]
 
 const FONTS = [
@@ -332,8 +333,11 @@ export default function StudioPanel() {
             <Segmented options={THEMES} active={theme} onChange={applyTheme} />
           </Section>
 
-          {/* Tone */}
-          <Section label="Tone" hint={theme === 'modern' ? 'no effect on Modern' : undefined}>
+          {/* Tone — most variants override panel-* tokens (theme-agnostic),
+              so they have visible effect on Modern too. Metallic is the only
+              one strictly theme-scoped (modern). No hint — let users discover
+              tone-theme combinations by trying them. */}
+          <Section label="Tone">
             <Segmented options={TONES} active={tone} onChange={applyTone} compact />
           </Section>
 

@@ -643,6 +643,46 @@ html[data-osci-style="field-notebook"]:not(.dark) {
     0 3px 10px -4px rgba(26, 22, 18, 0.12);
 }
 
+/* Slate — Notepad recolored. Same chassis-shadow recipe verbatim
+ * (4 honest layers, no chrome-bevel theatrics), warm beige fills
+ * swapped for neutral gray, warm-dark shadow/ink tints swapped for
+ * neutral-dark. Strict --panel-* scope: page canvas, body trace,
+ * edges all stay Modern's defaults — only the bay surface goes
+ * silvery. */
+html[data-theme="modern"][data-osci-style="slate"]:not(.dark) {
+  --panel-bg:           #ebebeb;
+  --panel-bg-alt:       #e0e0e0;
+  --panel-edge:         rgba(0, 0, 0, 0.30);
+  --panel-edge-dim:     rgba(0, 0, 0, 0.18);
+  --panel-edge-faint:   rgba(0, 0, 0, 0.10);
+  --panel-edge-subtle:  rgba(0, 0, 0, 0.06);
+  --panel-ink:          #1a1a1a;
+  --panel-ink-dim:      #2a2a2a;
+  --panel-ink-muted:    #4a4a4a;
+  --panel-ink-faint:    #6b6b6b;
+  --panel-ink-subtle:   #858585;
+  --panel-trace:        #1a1a1a;
+  --panel-trace-glow:   rgba(26, 26, 26, 0.20);
+  --panel-trace-dim:    rgba(26, 26, 26, 0.12);
+  --panel-trace-faint:  rgba(26, 26, 26, 0.06);
+  --panel-scanline:     rgba(26, 26, 26, 0.03);
+  --panel-chassis-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.40),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.14),
+    0 10px 28px -12px rgba(0, 0, 0, 0.22),
+    0 3px 10px -4px rgba(0, 0, 0, 0.12);
+
+  /* Scope-bay context — softer dark palette (no inversion, no
+   * dramatic flip). The standard hierarchy is preserved — screen
+   * remains darker than its container — but every value is lifted
+   * away from pure-black toward soft-charcoal so the bay reads as
+   * dark MATERIAL rather than dark VOID. Pure neutral tones (no
+   * green tint) match Slate's neutral-gray chassis family. */
+  --panel-bg-deep:      #1c1c1c;
+  --screen-bg:          #161616;
+  --screen-bg-deep:     #0e0e0e;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
  * Animation vocabulary — motion as message.
  * Each utility maps to a specific thing the site is telling the user.
