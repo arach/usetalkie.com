@@ -16,7 +16,6 @@ import {
 import SignalTable from '../SignalTable'
 import capturesCatalog from '../../content/captures.json'
 import PanoramicHero from './PanoramicHero'
-import OsciStyleToggle from './OsciStyleToggle'
 
 /**
  * v4 HomePage — synthesis composition.
@@ -169,7 +168,6 @@ const AMBER_TINT_SUBTLE = { background: 'color-mix(in oklab, var(--amber) 5%, tr
 export default function HomePage() {
   return (
     <>
-      <OsciStyleToggle />
       {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />

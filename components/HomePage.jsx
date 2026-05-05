@@ -603,16 +603,14 @@ function FlowStep({ step }) {
     <div className="grid grid-cols-1 gap-6 border-t border-edge-faint py-10 md:grid-cols-[140px_1fr] md:gap-10 md:py-12">
       <div>
         <div
-          className="font-display text-5xl font-normal leading-none tracking-[-0.04em] text-trace opacity-90"
-          style={{ textShadow: '0 0 18px var(--trace-glow), 0 0 6px var(--trace-glow)' }}
+          className="font-display text-5xl font-normal leading-none tracking-[-0.04em] text-ink-muted"
         >
           {step.id}
         </div>
         <div
-          className="mt-3 inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.24em] text-trace"
-          style={TRACE_GLOW_SOFT}
+          className="mt-3 inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle"
         >
-          <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--trace-dim)' }} />
+          <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--edge-dim)' }} />
           STAGE · {step.id}
         </div>
       </div>

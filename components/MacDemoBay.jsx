@@ -19,13 +19,15 @@ export default function MacDemoBay() {
   return (
     <section className="relative border-t border-b border-panel-edge-dim bg-panel-bg-deep font-mono">
       {/* Faint scanline overlay for CRT feel — theme-aware via panel-scanline
-          (amber on Warm, transparent on Modern so the dark chassis stays clean) */}
+          (amber on Warm, emerald on Modern). Drifts via scan-drift keyframe
+          for live-CRT motion; period-aligned so the loop is seamless. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
           backgroundImage:
             'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
+          animation: 'scan-drift 0.8s linear infinite',
         }}
       />
       <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
@@ -170,26 +172,28 @@ export default function MacDemoBay() {
               </div>
             </div>
           </div>
-          {/* Multiplier — emerald / pop */}
+          {/* Multiplier — cyan readout (matches the bay's existing cyan anchor
+              on the 32.1 kHz · MONO chip; keeps the bay a 3-tone scope: red REC,
+              green/amber TRACE, cyan READOUT — theme-robust on Warm + Modern). */}
           <div
             className="group/stat relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5"
             style={{
-              borderColor: 'rgba(16,185,129,0.42)',
-              boxShadow: 'inset 0 0 0 1px rgba(16,185,129,0.08)',
+              borderColor: 'rgba(6,182,212,0.42)',
+              boxShadow: 'inset 0 0 0 1px rgba(6,182,212,0.08)',
             }}
           >
             <div
               aria-hidden
               className="pointer-events-none absolute -bottom-12 -left-12 h-32 w-32 rounded-full opacity-30 transition-opacity duration-300 group-hover/stat:opacity-60"
-              style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, transparent 65%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.5) 0%, transparent 65%)' }}
             />
             <div className="relative">
-              <div className="text-[9px] uppercase tracking-[0.28em] text-emerald-400">
+              <div className="text-[9px] uppercase tracking-[0.28em] text-cyan-400">
                 FASTER · ×
               </div>
               <div
-                className="mt-3 font-display text-5xl font-normal tracking-tight text-emerald-400 transition-transform duration-200 group-hover/stat:scale-[1.04]"
-                style={{ textShadow: '0 0 12px rgba(16,185,129,0.55)', transformOrigin: 'left center' }}
+                className="mt-3 font-display text-5xl font-normal tracking-tight text-cyan-400 transition-transform duration-200 group-hover/stat:scale-[1.04]"
+                style={{ textShadow: '0 0 12px rgba(6,182,212,0.55)', transformOrigin: 'left center' }}
               >
                 5×
               </div>

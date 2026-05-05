@@ -63,7 +63,7 @@ export default function DownloadBay({ caption }) {
           className="col-start-1 row-start-1 h-7 w-7 shrink-0 text-amber transition-transform duration-200 group-hover/dl:scale-110"
           style={{ filter: 'drop-shadow(0 0 6px var(--panel-trace-glow))' }}
         />
-        <span className="col-start-2 row-start-1 font-display text-3xl leading-none tracking-tight text-screen-ink md:text-4xl">
+        <span className="col-start-2 row-start-1 font-display text-3xl leading-none tracking-tight text-panel-ink md:text-4xl">
           Talkie for{' '}
           <span className="italic text-amber" style={{ textShadow: '0 0 12px var(--panel-trace-glow)' }}>
             Mac
@@ -73,7 +73,7 @@ export default function DownloadBay({ caption }) {
           className="col-start-2 row-start-2 text-center text-[10px] uppercase tracking-[0.26em] transition-opacity duration-200 group-hover/dl:opacity-0"
           style={{ color: 'var(--panel-ink-faint)' }}
         >
-          macOS 26+
+          macOS 26+ · iOS 26+
         </span>
         <span
           aria-hidden

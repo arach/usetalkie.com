@@ -258,7 +258,7 @@ export default function DownloadAllPage() {
             <StatRow
               icon={Cpu}
               label="REQUIRES"
-              value="macOS 26 · iOS 18+"
+              value="macOS 26+ · iOS 26+"
             />
             <StatRow
               icon={ShieldCheck}
