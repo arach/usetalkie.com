@@ -78,8 +78,14 @@ export default function PhilosophyPage() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Your ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
+          <p className="philo-lede mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+            <span
+              className="philo-dropcap float-left mr-2 -ml-1 font-display text-[64px] font-normal italic leading-[0.85] text-amber md:-ml-3 md:text-[76px]"
+              style={{ textShadow: '0 0 14px var(--trace-glow)' }}
+            >
+              Y
+            </span>
+            our ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
             unrelated. Builders know this rhythm well. Sparks arrive fast, unpolished, and usually at inconvenient
             times. And without a way to catch them in the moment, they slip away just as quickly.
           </p>
@@ -93,9 +99,12 @@ export default function PhilosophyPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            · OBSERVATIONS
-          </p>
+          <div className="flex items-center gap-3">
+            <span aria-hidden className="block h-px w-10" style={{ background: 'var(--trace-dim)' }} />
+            <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+              OBSERVATIONS
+            </p>
+          </div>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
             The pattern we saw.
           </h2>
@@ -129,9 +138,12 @@ export default function PhilosophyPage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            · PRINCIPLES
-          </p>
+          <div className="flex items-center gap-3">
+            <span aria-hidden className="block h-px w-10" style={{ background: 'var(--trace-dim)' }} />
+            <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+              PRINCIPLES
+            </p>
+          </div>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
             What we stand for.
           </h2>
@@ -165,20 +177,20 @@ export default function PhilosophyPage() {
               <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
             </div>
 
-            <blockquote className="mt-10 text-center">
-              <p className="font-display text-3xl font-normal italic leading-[1.2] tracking-[-0.02em] text-ink md:text-4xl">
-                <span className="text-trace" style={{ textShadow: '0 0 8px var(--trace-glow)' }}>
-                  &ldquo;
-                </span>
+            <blockquote
+              className="relative mt-12 pl-6 md:pl-10"
+              style={{
+                borderLeft: '2px solid var(--amber)',
+                boxShadow: 'inset 2px 0 12px -8px var(--trace-glow)',
+              }}
+            >
+              <p className="font-display text-3xl font-normal italic leading-[1.18] tracking-[-0.02em] text-ink md:text-[40px]">
                 Your voice is the fastest path from thought to action. Don&apos;t let the tools slow you down.
-                <span className="text-trace" style={{ textShadow: '0 0 8px var(--trace-glow)' }}>
-                  &rdquo;
-                </span>
               </p>
             </blockquote>
 
             {/* Bottom rule with phosphor dot */}
-            <div className="mt-10 flex items-center gap-4">
+            <div className="mt-12 flex items-center gap-4">
               <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
               <span
                 aria-hidden

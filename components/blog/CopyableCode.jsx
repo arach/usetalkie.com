@@ -18,9 +18,12 @@ export default function CopyableCode({ lang = '', code, label }) {
   if (isOneLiner) {
     return (
       <div className="not-prose my-4">
-        <div className="inline-flex items-center gap-3 bg-zinc-950 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-4 py-2.5 w-full">
-          <code className="text-[13px] font-mono text-zinc-300 flex-1">{code}</code>
-          <CopyButton text={code} />
+        <div
+          className="inline-flex items-center gap-3 rounded-lg border px-4 py-2.5 w-full"
+          style={{ background: 'var(--panel-bg)', borderColor: 'var(--panel-edge-dim)' }}
+        >
+          <code className="text-[13px] font-mono flex-1" style={{ color: 'var(--screen-ink-dim)' }}>{code}</code>
+          <CopyButton text={code} onPanel />
         </div>
       </div>
     )
@@ -28,17 +31,32 @@ export default function CopyableCode({ lang = '', code, label }) {
 
   return (
     <div className="not-prose my-6">
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+      <div
+        className="rounded-xl overflow-hidden border"
+        style={{ borderColor: 'var(--panel-edge-dim)' }}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-2 bg-zinc-100 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-800">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+        <div
+          className="flex items-center justify-between px-4 py-2 border-b"
+          style={{ background: 'var(--panel-bg-alt)', borderColor: 'var(--panel-edge-faint)' }}
+        >
+          <span
+            className="text-[10px] font-mono uppercase tracking-[0.22em]"
+            style={{ color: 'var(--panel-ink-faint)' }}
+          >
             {label || lang || 'code'}
           </span>
-          <CopyButton text={code} />
+          <CopyButton text={code} onPanel />
         </div>
         {/* Code body */}
-        <div className="bg-zinc-950 dark:bg-zinc-900 px-5 py-4 overflow-x-auto">
-          <pre className="text-[13px] font-mono leading-relaxed text-zinc-300">
+        <div
+          className="px-5 py-4 overflow-x-auto"
+          style={{ background: 'var(--panel-bg)' }}
+        >
+          <pre
+            className="text-[13px] font-mono leading-relaxed"
+            style={{ color: 'var(--screen-ink-dim)' }}
+          >
             <code>{code}</code>
           </pre>
         </div>

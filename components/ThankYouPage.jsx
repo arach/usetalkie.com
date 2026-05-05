@@ -109,11 +109,7 @@ export default function ThankYouPage() {
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <a
               href="https://app.usetalkie.com/dl"
-              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
-              style={{
-                background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
-                textShadow: '0 0 6px var(--trace-glow)',
-              }}
+              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
             >
               <Laptop className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" aria-hidden />
               DOWNLOAD · MAC
@@ -121,7 +117,7 @@ export default function ThankYouPage() {
             </a>
             <a
               href="https://app.usetalkie.com/testflight"
-              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:text-amber hover:border-amber/50"
+              className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
             >
               <Smartphone className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" aria-hidden />
               TESTFLIGHT · iPHONE
@@ -162,7 +158,7 @@ export default function ThankYouPage() {
 function NextStep({ step }) {
   const Icon = step.icon
   return (
-    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/40">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
       <div className="relative flex items-start gap-4">
         <div

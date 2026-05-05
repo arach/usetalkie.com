@@ -56,8 +56,8 @@ export default function PipelineFlow() {
         return (
           <div key={stage.name}>
             <div
-              className={`rounded-lg border p-4 ${
-                stage.highlight ? 'border-trace/40' : 'border-edge-dim bg-canvas-alt'
+              className={`group rounded-lg border p-4 transition-all duration-200 hover:-translate-y-0.5 ${
+                stage.highlight ? 'border-trace/40 hover:border-trace/60' : 'border-edge-dim bg-canvas-alt hover:border-amber/40'
               }`}
               style={
                 stage.highlight
@@ -71,7 +71,7 @@ export default function PipelineFlow() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <Icon
-                  className={`w-4 h-4 shrink-0 ${
+                  className={`w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110 ${
                     stage.highlight ? 'text-trace' : 'text-ink-subtle'
                   }`}
                   style={stage.highlight ? TRACE_GLOW_SOFT : undefined}

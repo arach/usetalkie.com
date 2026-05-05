@@ -56,29 +56,35 @@ export default function VersionCompare({
     <figure className="not-prose my-12 lg:-mx-16 xl:-mx-32">
       <header className="mb-3 flex items-center gap-3">
         {label && (
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-ink-faint">
             {label}
           </span>
         )}
         <span
-          className="hidden sm:block flex-1 h-px bg-gradient-to-r from-zinc-200 to-transparent dark:from-zinc-800"
           aria-hidden
+          className="hidden sm:block flex-1 h-px"
+          style={{ background: 'var(--edge-faint)' }}
         />
         <div
           role="tablist"
           aria-label="Toggle screenshot mode"
-          className="inline-flex overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800 text-[10px] font-mono font-bold uppercase tracking-wider"
+          className="inline-flex overflow-hidden rounded-md border border-edge-dim text-[10px] font-mono font-bold uppercase tracking-[0.18em]"
         >
           <button
             type="button"
             role="tab"
             aria-selected={mode === 'light'}
             onClick={() => setMode('light')}
-            className={`px-3 py-1 transition-colors ${
+            className={`px-3 py-1 transition-colors duration-200 ${
               mode === 'light'
-                ? 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400'
-                : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
+                ? 'text-amber'
+                : 'text-ink-faint hover:text-ink-muted'
             }`}
+            style={
+              mode === 'light'
+                ? { background: 'color-mix(in oklab, var(--amber) 10%, transparent)' }
+                : undefined
+            }
           >
             Light
           </button>
@@ -87,11 +93,16 @@ export default function VersionCompare({
             role="tab"
             aria-selected={mode === 'dark'}
             onClick={() => setMode('dark')}
-            className={`px-3 py-1 transition-colors border-l border-zinc-200 dark:border-zinc-800 ${
+            className={`px-3 py-1 transition-colors duration-200 border-l border-edge-dim ${
               mode === 'dark'
-                ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
-                : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
+                ? 'text-amber'
+                : 'text-ink-faint hover:text-ink-muted'
             }`}
+            style={
+              mode === 'dark'
+                ? { background: 'color-mix(in oklab, var(--amber) 10%, transparent)' }
+                : undefined
+            }
           >
             Dark
           </button>
@@ -102,7 +113,7 @@ export default function VersionCompare({
         {versions.map((v, i) => (
           <div
             key={i}
-            className="overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900"
+            className="group overflow-hidden rounded-md border border-edge-dim bg-canvas-alt transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
           >
             <button
               type="button"
@@ -112,27 +123,28 @@ export default function VersionCompare({
                 mode,
               })}
               aria-label={`Expand ${v.label} (${mode} mode)`}
-              className="group relative block aspect-[16/10] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950 cursor-zoom-in"
+              className="relative block aspect-[16/10] w-full overflow-hidden cursor-zoom-in"
+              style={{ background: 'var(--panel-bg-deep)' }}
             >
               <img
                 src={mode === 'light' ? v.light : v.dark}
                 alt={`${v.label} — ${mode} mode`}
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-200"
+                className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.01]"
               />
               <span
                 aria-hidden
-                className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-sm border border-white/30 bg-black/50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-white opacity-0 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
+                className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-sm border border-white/30 bg-black/50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-white opacity-0 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
               >
                 ⤢ expand
               </span>
             </button>
-            <figcaption className="flex items-baseline justify-between gap-3 border-t border-zinc-200 px-3 py-2 dark:border-zinc-800">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+            <figcaption className="flex items-baseline justify-between gap-3 border-t border-edge-faint px-3 py-2">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-ink transition-colors duration-200 group-hover:text-amber">
                 {v.label}
               </span>
               {v.caption && (
-                <span className="text-[10px] text-zinc-500 dark:text-zinc-500 truncate">
+                <span className="text-[10px] text-ink-faint truncate">
                   {v.caption}
                 </span>
               )}

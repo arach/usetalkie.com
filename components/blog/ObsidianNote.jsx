@@ -11,22 +11,22 @@ import CopyButton from './CopyButton'
 export default function ObsidianNote({ title, content }) {
   return (
     <div className="not-prose my-8">
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-700/60 overflow-hidden shadow-sm">
+      <div className="rounded-xl border border-edge-dim overflow-hidden shadow-sm">
         {/* Title bar — mimics Obsidian's note chrome */}
-        <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-700/60">
+        <div className="flex items-center gap-2 px-4 py-2 bg-canvas-alt border-b border-edge-faint">
           <div className="flex gap-1 mr-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-400/60 dark:bg-red-500/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60 dark:bg-yellow-500/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-400/60 dark:bg-green-500/40" />
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'color-mix(in oklab, var(--ink-faint) 35%, transparent)' }} />
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'color-mix(in oklab, var(--ink-faint) 35%, transparent)' }} />
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'color-mix(in oklab, var(--ink-faint) 35%, transparent)' }} />
           </div>
-          <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+          <span className="text-xs text-ink-muted font-mono">
             {title}
           </span>
           {content && <CopyButton text={content} className="ml-auto" />}
         </div>
 
         {/* Note body */}
-        <div className="bg-white dark:bg-[#1e1e2e] px-5 py-4 font-mono text-[13px] leading-relaxed text-zinc-700 dark:text-zinc-300">
+        <div className="bg-surface px-5 py-4 font-mono text-[13px] leading-relaxed text-ink-dim">
           {content && <ObsidianContent content={content} />}
         </div>
       </div>
@@ -60,8 +60,8 @@ function Line({ text }) {
     const content = headingMatch[2]
     const sizes = { 1: 'text-lg font-bold', 2: 'text-base font-semibold', 3: 'text-sm font-medium' }
     return (
-      <div className={`${sizes[level]} text-zinc-900 dark:text-zinc-100 ${level > 1 ? 'mt-3' : 'mt-1'}`}>
-        <span className="text-zinc-300 dark:text-zinc-600 mr-1">{headingMatch[1]}</span>
+      <div className={`${sizes[level]} text-ink ${level > 1 ? 'mt-3' : 'mt-1'}`}>
+        <span className="text-ink-faint mr-1">{headingMatch[1]}</span>
         <WikilinkText text={content} />
       </div>
     )
@@ -70,7 +70,7 @@ function Line({ text }) {
   // Blockquote
   if (text.startsWith('>')) {
     return (
-      <div className="border-l-2 border-emerald-500/50 dark:border-emerald-400/40 pl-3 text-zinc-500 dark:text-zinc-400 italic text-xs">
+      <div className="border-l-2 pl-3 text-ink-muted italic text-xs" style={{ borderColor: 'color-mix(in oklab, var(--amber) 50%, transparent)' }}>
         <WikilinkText text={text.slice(1).trim()} />
       </div>
     )
@@ -80,7 +80,7 @@ function Line({ text }) {
   if (text.match(/^[-*]\s/)) {
     return (
       <div className="flex gap-2 pl-1">
-        <span className="text-zinc-400 dark:text-zinc-500 select-none">-</span>
+        <span className="text-ink-faint select-none">-</span>
         <span><WikilinkText text={text.slice(2)} /></span>
       </div>
     )
@@ -101,7 +101,10 @@ function WikilinkText({ text }) {
           return (
             <span
               key={i}
-              className="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/10 px-1 py-0.5 rounded hover:bg-violet-100 dark:hover:bg-violet-500/20 cursor-pointer transition-colors"
+              className="text-amber px-1 py-0.5 rounded cursor-pointer transition-colors duration-200"
+              style={{ background: 'color-mix(in oklab, var(--amber) 10%, transparent)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'color-mix(in oklab, var(--amber) 18%, transparent)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'color-mix(in oklab, var(--amber) 10%, transparent)' }}
             >
               {wikilinkMatch[1]}
             </span>
@@ -114,7 +117,7 @@ function WikilinkText({ text }) {
           const boldMatch = bp.match(/^\*\*([^*]+)\*\*$/)
           if (boldMatch) {
             return (
-              <span key={`${i}-${j}`} className="font-semibold text-zinc-900 dark:text-zinc-100">
+              <span key={`${i}-${j}`} className="font-semibold text-ink">
                 {boldMatch[1]}
               </span>
             )

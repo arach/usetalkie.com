@@ -519,14 +519,14 @@ export default function HomePage() {
             {/* Tie-back to philosophy */}
             <Link
               href="/philosophy"
-              className="group block rounded-md border border-edge bg-surface p-8 transition-all hover:-translate-y-0.5"
+              className="group block rounded-md border border-edge bg-surface p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace"
             >
               <div className="flex items-center gap-2.5">
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim"
+                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim transition-colors duration-200 group-hover:border-trace group-hover:bg-trace"
                 />
-                <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-trace">
                   FURTHER READING
                 </span>
               </div>
@@ -534,7 +534,7 @@ export default function HomePage() {
                 Why local-first matters.
               </h3>
               <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
-                The philosophy behind a tool that stays out of your way and keeps your voice on your side. Keep reading <span aria-hidden>→</span>
+                The philosophy behind a tool that stays out of your way and keeps your voice on your side. Keep reading <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </p>
             </Link>
           </div>
@@ -562,19 +562,22 @@ function CaptureModeCard({ mode, index }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-colors duration-200 group-hover:border-trace"
               style={TRACE_TINT_SUBTLE}
             >
               <Icon
-                className="h-4 w-4 text-trace"
+                className="h-4 w-4 text-trace transition-transform duration-200 group-hover:scale-110"
                 style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
               />
             </div>
-            <span className="text-[9px] uppercase tracking-[0.24em] text-ink-faint">
+            <span className="text-[9px] uppercase tracking-[0.24em] text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">
               {mode.eyebrow}
             </span>
           </div>
-          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+          <span
+            className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle transition-colors duration-200 group-hover:text-trace"
+            style={{ textShadow: '0 0 0 transparent' }}
+          >
             CH-{ch}
           </span>
         </div>
@@ -626,21 +629,21 @@ function FlowStep({ step }) {
 function OwnershipCard({ card }) {
   const Icon = card.icon
   return (
-    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+    <div className="group/own relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-colors duration-200 hover:border-trace">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
       <div className="relative">
         <div className="flex items-center justify-between">
           <div
-            className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+            className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-colors duration-200 group-hover/own:border-trace"
             style={TRACE_TINT_SUBTLE}
           >
             <Icon
-              className="h-4 w-4 text-trace"
+              className="h-4 w-4 text-trace transition-transform duration-200 group-hover/own:scale-110"
               style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
             />
           </div>
           <span
-            className="rounded-sm border border-edge-dim px-1.5 py-0.5 text-[9px] uppercase tracking-[0.22em] text-trace"
+            className="rounded-sm border border-edge-dim px-1.5 py-0.5 text-[9px] uppercase tracking-[0.22em] text-trace transition-colors duration-200 group-hover/own:border-trace"
             style={TRACE_GLOW_SOFT}
           >
             {card.pin}

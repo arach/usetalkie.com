@@ -15,9 +15,9 @@ export default function StatsRow() {
         {stats.map(({ value, label, icon: Icon }) => (
           <div
             key={label}
-            className="flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-5 px-4"
+            className="group flex flex-col items-center gap-1 rounded-lg border border-edge-dim bg-canvas-alt py-5 px-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/40"
           >
-            <Icon className="w-4 h-4 text-ink-subtle mb-1" />
+            <Icon className="w-4 h-4 text-ink-subtle mb-1 transition-transform duration-200 group-hover:scale-110" />
             <span
               className="text-4xl font-bold text-trace font-mono tabular-nums"
               style={{ textShadow: '0 0 4px var(--trace-glow)' }}

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import InstallCard from './InstallCard'
+import DownloadBay from './DownloadBay'
 import {
   Mic,
   Cpu,
@@ -295,10 +295,20 @@ function PipelineSchematic() {
       <div className="relative flex items-center justify-between border-b border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">
         <span>WF-01 / TALKIE.WORKFLOW.PATCHBAY</span>
         <span className="flex items-center gap-1.5">
-          <span aria-hidden className="inline-block h-1 w-1 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace-glow)' }} />
+          <span
+            aria-hidden
+            className="inline-block h-1 w-1 rounded-full bg-trace"
+            style={{ boxShadow: '0 0 4px var(--trace-glow)', animation: 'wf-rev-pulse 2.4s ease-in-out infinite' }}
+          />
           REV A.0
         </span>
       </div>
+      <style>{`
+        @keyframes wf-rev-pulse {
+          0%, 100% { opacity: 0.55; box-shadow: 0 0 3px var(--trace-glow); }
+          50%      { opacity: 1;    box-shadow: 0 0 7px var(--trace-glow); }
+        }
+      `}</style>
 
       <svg
         viewBox="0 0 720 320"
@@ -541,13 +551,13 @@ export default function WorkflowsPage() {
 
           {/* Models + variables row */}
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="rounded-sm border border-edge-dim bg-surface p-5">
+            <div className="rounded-sm border border-edge-dim bg-surface p-5 transition-all duration-200 hover:border-amber/40">
               <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">· MODELS</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {MODELS.map((m) => (
                   <span
                     key={m}
-                    className="rounded-sm border border-edge-dim px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim"
+                    className="rounded-sm border border-edge-dim px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
                   >
                     {m}
                   </span>
@@ -558,13 +568,13 @@ export default function WorkflowsPage() {
               </p>
             </div>
 
-            <div className="rounded-sm border border-edge-dim bg-surface p-5">
+            <div className="rounded-sm border border-edge-dim bg-surface p-5 transition-all duration-200 hover:border-trace/40">
               <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">· VARIABLES</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {VARIABLES.map((v) => (
                   <span
                     key={v}
-                    className="rounded-sm border border-edge-dim px-2.5 py-1 font-mono text-[10px] tracking-[0.06em] text-trace"
+                    className="rounded-sm border border-edge-dim px-2.5 py-1 font-mono text-[10px] tracking-[0.06em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-trace/50"
                     style={{ textShadow: '0 0 4px var(--trace-glow)' }}
                   >
                     {v}
@@ -587,10 +597,10 @@ export default function WorkflowsPage() {
       <section className="relative border-t border-b border-panel-edge-dim bg-panel-bg-deep">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-30"
+          className="pointer-events-none absolute inset-0 opacity-60"
           style={{
             backgroundImage:
-              'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,184,77,0.04) 3px, rgba(255,184,77,0.04) 4px)',
+              'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
           }}
         />
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
@@ -631,10 +641,9 @@ export default function WorkflowsPage() {
                 keywords/strings/flags; dim ink for body; faint ink for
                 comments). Two colors max, no rainbow. */}
             <div
-              className="relative overflow-hidden rounded-md border bg-screen-bg-deep transition-all duration-200 hover:border-amber/60"
+              className="relative overflow-hidden rounded-md border border-screen-edge bg-screen-bg-deep transition-all duration-200 hover:border-screen-trace/60"
               style={{
-                borderColor: 'rgba(255,184,77,0.32)',
-                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.55), 0 0 24px -8px rgba(255,184,77,0.20)',
+                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.55), 0 0 24px -8px var(--screen-trace-glow)',
               }}
             >
               {/* Header — neutral mac-style window chrome */}
@@ -814,21 +823,10 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== INSTALL — patch-bay chassis (shared with /, /mac, /mobile) ========== */}
+      {/* ========== DOWNLOAD — focused install footer ========== */}
       <section className="relative border-t border-edge-faint bg-canvas">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
-          <div className="text-center">
-            <Eyebrow>· READY TO WIRE</Eyebrow>
-            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-              Workflows run on your Mac.
-            </h2>
-            <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
-              Patch the menu-bar instrument once — every hotkey-triggered capture flows through the same patch bay.
-            </p>
-          </div>
-          <div className="mt-10">
-            <InstallCard />
-          </div>
+        <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
+          <DownloadBay caption="One hotkey. One transcript. Routed to the file, the issue, the journal, the agent — anywhere your patch bay sends it." />
         </div>
       </section>
     </>

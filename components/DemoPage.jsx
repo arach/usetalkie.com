@@ -260,10 +260,10 @@ export default function DemoPage() {
 function ClipFrame({ src, label, channel, durationLabel, narrow = false }) {
   return (
     <div className={`relative mt-8 ${narrow ? 'mx-auto max-w-3xl' : ''}`}>
-      <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-3 md:p-4">
+      <div className="group/clip relative overflow-hidden rounded-md border border-edge-dim bg-surface p-3 transition-all duration-200 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] md:p-4">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-40"
+          className="pointer-events-none absolute inset-0 opacity-40 transition-opacity duration-300 group-hover/clip:opacity-70"
           style={{
             backgroundImage:
               'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
@@ -276,18 +276,18 @@ function ClipFrame({ src, label, channel, durationLabel, narrow = false }) {
           <div className="flex items-center gap-2">
             <span
               aria-hidden
-              className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover/clip:scale-150"
               style={{ boxShadow: '0 0 4px var(--trace)' }}
             />
-            <span className="text-ink-dim">CH-{channel}</span>
+            <span className="text-ink-dim transition-colors duration-200 group-hover/clip:text-ink">CH-{channel}</span>
             <span className="text-ink-subtle">/</span>
-            <span>{label}</span>
+            <span className="transition-colors duration-200 group-hover/clip:text-amber">{label}</span>
           </div>
           <span>{durationLabel}</span>
         </div>
 
         {/* Video viewport */}
-        <div className="relative overflow-hidden rounded-sm border border-edge bg-canvas">
+        <div className="relative overflow-hidden rounded-sm border border-edge bg-canvas transition-colors duration-200 group-hover/clip:border-amber/40">
           <video
             src={src}
             controls
@@ -299,7 +299,7 @@ function ClipFrame({ src, label, channel, durationLabel, narrow = false }) {
 
         {/* Footer ticks */}
         <div className="relative mt-3 flex items-center gap-3 text-[8px] uppercase tracking-[0.22em] text-ink-subtle">
-          <Play className="h-2.5 w-2.5 text-trace" />
+          <Play className="h-2.5 w-2.5 text-trace transition-transform duration-200 group-hover/clip:scale-110" />
           <span>SIGNAL · READY</span>
           <span className="text-ink-faint">·</span>
           <span>LOCAL PLAYBACK</span>

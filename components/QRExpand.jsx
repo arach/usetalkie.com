@@ -38,12 +38,30 @@ export default function QRExpand({
 
   return (
     <>
-      <div className={className}>
-        <div className="flex items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt p-5">
-          <div className="rounded-sm border border-edge-faint bg-white p-3">
-            <img src={src} alt={alt} className="block h-36 w-36" />
+      <div className={`group ${className}`}>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="block w-full transition-all duration-300 hover:-translate-y-0.5"
+          aria-label="Expand QR code"
+        >
+          <div className="relative flex items-center justify-center rounded-sm border border-edge-dim bg-canvas-alt p-5 transition-all duration-300 group-hover:border-trace group-hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
+            <div className="rounded-sm border border-edge-faint bg-white p-3 transition-transform duration-300 group-hover:scale-[1.02]">
+              <img src={src} alt={alt} className="block h-36 w-36" />
+            </div>
+            {/* Eyebrow — only readable on hover; slides in from above */}
+            <span
+              aria-hidden
+              className="qr-expand-eyebrow pointer-events-none absolute left-1/2 top-2 rounded-sm border border-trace/50 bg-canvas-overlay/85 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.26em] text-trace opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100"
+              style={{
+                textShadow: '0 0 4px var(--trace-glow)',
+                transform: 'translate(-50%, -6px)',
+              }}
+            >
+              SCAN WITH PHONE
+            </span>
           </div>
-        </div>
+        </button>
 
         <div className="mt-2 flex items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
           {caption && <span>{caption}</span>}
@@ -51,14 +69,14 @@ export default function QRExpand({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-sm border border-edge-faint bg-canvas-alt px-2 py-1 text-trace transition-all hover:border-trace hover:-translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-sm border border-edge-faint bg-canvas-alt px-2 py-1 text-trace transition-all duration-200 hover:-translate-y-px hover:border-trace hover:shadow-[0_0_18px_-4px_var(--trace-glow)]"
             style={{
               textShadow: '0 0 4px var(--trace-glow)',
               boxShadow: '0 0 10px color-mix(in oklab, var(--trace-glow) 18%, transparent)',
             }}
             aria-label="Expand QR code"
           >
-            <Maximize2 className="h-3 w-3" />
+            <Maximize2 className="h-3 w-3 transition-transform duration-200 group-hover:scale-110" />
             <span>EXPAND</span>
           </button>
         </div>
@@ -89,7 +107,7 @@ export default function QRExpand({
           {/* QR card — phosphor frame, click swallowed so backdrop click still closes. */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-[min(90vw,520px)] rounded-md border border-edge bg-canvas-overlay p-6 backdrop-blur-md"
+            className="qr-expand-card relative max-w-[min(90vw,520px)] rounded-md border border-edge bg-canvas-overlay p-6 backdrop-blur-md"
             style={{
               boxShadow:
                 '0 0 32px color-mix(in oklab, var(--trace-glow) 30%, transparent), 0 1px 2px rgba(0,0,0,0.06)',
@@ -119,6 +137,22 @@ export default function QRExpand({
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes qr-expand-pop {
+          0%   { opacity: 0; transform: scale(0.86) translateY(6px); }
+          60%  { opacity: 1; transform: scale(1.03) translateY(-1px); }
+          100% { opacity: 1; transform: scale(1)    translateY(0); }
+        }
+        .qr-expand-card {
+          animation: qr-expand-pop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        /* Eyebrow eases down on group-hover; transform animated via
+           inline style so the -50% X centering survives. */
+        .group:hover .qr-expand-eyebrow {
+          transform: translate(-50%, -2px) !important;
+        }
+      `}</style>
     </>
   )
 }

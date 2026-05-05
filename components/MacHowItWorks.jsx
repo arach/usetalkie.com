@@ -104,11 +104,11 @@ function StageCard({ stage }) {
   const Icon = stage.icon
   return (
     <div
-      className="relative flex h-full flex-col overflow-hidden rounded-md border border-edge-dim bg-surface p-4 md:p-5"
+      className="group relative flex h-full flex-col overflow-hidden rounded-md border border-edge-dim bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] md:p-5"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 opacity-50 transition-opacity duration-300 group-hover:opacity-90"
         style={{
           backgroundImage:
             'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
@@ -118,10 +118,10 @@ function StageCard({ stage }) {
 
       <div className="relative flex h-full flex-col">
         <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-          <span>{stage.sub}</span>
+          <span className="transition-colors duration-200 group-hover:text-amber">{stage.sub}</span>
           <span
             aria-hidden
-            className="inline-block h-1 w-1 rounded-full bg-trace"
+            className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-[1.75]"
             style={{ boxShadow: '0 0 4px var(--trace)' }}
           />
         </div>
@@ -135,11 +135,11 @@ function StageCard({ stage }) {
 
         <div className="mt-2 flex items-center gap-3">
           <div
-            className="flex h-10 w-10 items-center justify-center rounded-sm border border-edge"
+            className="flex h-10 w-10 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
             style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
           >
             <Icon
-              className="h-4 w-4 text-trace"
+              className="h-4 w-4 text-trace transition-transform duration-200"
               style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
             />
           </div>
@@ -147,6 +147,14 @@ function StageCard({ stage }) {
         </div>
 
         <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{stage.desc}</p>
+
+        {/* Directional motion cue — chevron slides on hover */}
+        <div className="mt-auto flex items-center gap-2 pt-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden>
+          <span className="block h-px w-6 bg-amber/40" />
+          <ArrowRight
+            className="h-3 w-3 text-amber transition-transform duration-200 group-hover:translate-x-1"
+          />
+        </div>
       </div>
     </div>
   )

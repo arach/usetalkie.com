@@ -120,9 +120,19 @@ export default function AboutPage() {
 
             {/* Prose */}
             <div className="space-y-5 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              {STORY_PARAGRAPHS.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
+              {STORY_PARAGRAPHS.map((para, i) =>
+                i === 0 ? (
+                  <p
+                    key={i}
+                    className="first-letter:float-left first-letter:mr-2 first-letter:font-display first-letter:text-[56px] first-letter:font-normal first-letter:leading-[0.9] first-letter:text-trace"
+                    style={{ '--tw-prose-first-letter-shadow': 'var(--trace-glow)' }}
+                  >
+                    {para}
+                  </p>
+                ) : (
+                  <p key={i}>{para}</p>
+                ),
+              )}
 
               <div
                 className="mt-8 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace"

@@ -90,7 +90,8 @@ export default function TrainingCurve() {
         <polyline
           points={polyline(data, 'val')}
           fill="none"
-          className="stroke-amber-400/80"
+          stroke="var(--amber)"
+          strokeOpacity="0.8"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -127,7 +128,7 @@ export default function TrainingCurve() {
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Train loss</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-amber-400/80 rounded" />
+          <span className="w-3 h-0.5 rounded" style={{ background: 'var(--amber)', opacity: 0.8 }} />
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Val loss</span>
         </div>
         <div className="flex items-center gap-1.5">
