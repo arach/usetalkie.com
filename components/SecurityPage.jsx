@@ -589,18 +589,13 @@ export default function SecurityPage() {
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             {/* Stored — semantic green accent: this is the SAFE/OK column */}
             <div
-              className="relative overflow-hidden rounded-sm border border-emerald-700/40 bg-surface p-6"
+              className="sec-card group relative overflow-hidden rounded-sm border border-emerald-700/40 bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-600/70 hover:shadow-[0_0_24px_-6px_rgba(16,185,129,0.45)]"
               style={{ boxShadow: 'inset 0 0 0 1px rgba(16, 185, 129, 0.06)' }}
             >
               <Graticule opacity={0.5} />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-12 -left-12 h-32 w-32 rounded-full opacity-30"
-                style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.35) 0%, transparent 65%)' }}
-              />
               <div className="relative">
-                <div className="mb-1 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.26em] text-emerald-700">
-                  <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.7)' }} />
+                <div className="mb-1 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.26em] text-emerald-700 transition-colors duration-200 group-hover:text-emerald-600">
+                  <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 transition-transform duration-200 group-hover:scale-125" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.7)' }} />
                   STORED
                 </div>
                 <h3 className="font-display text-lg font-normal tracking-[-0.01em] text-ink">
@@ -608,17 +603,17 @@ export default function SecurityPage() {
                 </h3>
                 <ul className="mt-6 space-y-3">
                   {STORED_ITEMS.map((label) => (
-                    <li key={label} className="flex items-start gap-3">
+                    <li key={label} className="flex items-start gap-3 transition-colors duration-200 group-hover:[&_span]:text-ink-dim">
                       <Check
-                        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600"
+                        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600 transition-transform duration-200 group-hover:scale-110"
                         style={{ filter: 'drop-shadow(0 0 3px rgba(16,185,129,0.55))' }}
                       />
-                      <span className="text-[13px] leading-snug text-ink-muted">{label}</span>
+                      <span className="text-[13px] leading-snug text-ink-muted transition-colors duration-200">{label}</span>
                     </li>
                   ))}
                 </ul>
                 <div
-                  className="mt-6 border-t border-emerald-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-emerald-700"
+                  className="mt-6 border-t border-emerald-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-emerald-700 transition-colors duration-200 group-hover:text-emerald-600"
                 >
                   ON-DEVICE · LOCAL-FIRST
                 </div>
@@ -627,18 +622,13 @@ export default function SecurityPage() {
 
             {/* Not stored — semantic rose accent: this is the BLOCKED/NEVER column */}
             <div
-              className="relative overflow-hidden rounded-sm border border-rose-700/40 bg-surface p-6"
+              className="sec-card group relative overflow-hidden rounded-sm border border-rose-700/40 bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-600/70 hover:shadow-[0_0_24px_-6px_rgba(244,63,94,0.45)]"
               style={{ boxShadow: 'inset 0 0 0 1px rgba(244, 63, 94, 0.06)' }}
             >
               <Graticule opacity={0.5} />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-30"
-                style={{ background: 'radial-gradient(circle, rgba(244,63,94,0.35) 0%, transparent 65%)' }}
-              />
               <div className="relative">
-                <div className="mb-1 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.26em] text-rose-700">
-                  <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-rose-500" style={{ boxShadow: '0 0 6px rgba(244,63,94,0.7)' }} />
+                <div className="mb-1 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.26em] text-rose-700 transition-colors duration-200 group-hover:text-rose-600">
+                  <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-rose-500 transition-transform duration-200 group-hover:scale-125" style={{ boxShadow: '0 0 6px rgba(244,63,94,0.7)' }} />
                   NOT STORED
                 </div>
                 <h3 className="font-display text-lg font-normal tracking-[-0.01em] text-ink">
@@ -647,12 +637,12 @@ export default function SecurityPage() {
                 <ul className="mt-6 space-y-3">
                   {NOT_STORED_ITEMS.map((label) => (
                     <li key={label} className="flex items-start gap-3">
-                      <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600" />
-                      <span className="text-[13px] leading-snug text-ink-muted">{label}</span>
+                      <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-600 transition-transform duration-200 group-hover:scale-110" />
+                      <span className="text-[13px] leading-snug text-ink-muted transition-colors duration-200">{label}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 border-t border-rose-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-rose-700">
+                <div className="mt-6 border-t border-rose-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-rose-700 transition-colors duration-200 group-hover:text-rose-600">
                   TALKIE SYSTEMS · NO ACCESS
                 </div>
               </div>
@@ -675,18 +665,18 @@ export default function SecurityPage() {
               return (
                 <div
                   key={p.num}
-                  className="grid grid-cols-1 gap-6 border-t border-edge-faint py-8 md:grid-cols-[80px_1fr]"
+                  className="group grid grid-cols-1 gap-6 border-t border-edge-faint py-8 transition-colors duration-200 hover:border-edge md:grid-cols-[80px_1fr]"
                 >
                   <div className="flex items-start gap-4 md:flex-col md:gap-3">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.26em] text-ink-subtle">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-trace">
                       {p.num}
                     </span>
                     <div
-                      className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+                      className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace"
                       style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
                     >
                       <Icon
-                        className="h-4 w-4 text-trace"
+                        className="h-4 w-4 text-trace transition-transform duration-200"
                         style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
                       />
                     </div>
@@ -696,7 +686,7 @@ export default function SecurityPage() {
                     <h3 className="font-display text-xl font-normal tracking-[-0.01em] text-ink">
                       <span className="italic">{p.title}</span>
                     </h3>
-                    <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+                    <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
                       {p.body}
                     </p>
                   </div>
@@ -731,13 +721,13 @@ export default function SecurityPage() {
 
           <div className="mt-10 grid grid-cols-1 gap-0 overflow-hidden rounded-sm border border-edge lg:grid-cols-3">
             {/* Talkie Systems — No Access */}
-            <div className="flex flex-col border-b border-edge-faint bg-surface p-8 lg:border-b-0 lg:border-r">
-              <div className="mb-1 self-end rounded-sm border border-edge-dim px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-amber">
+            <div className="group flex flex-col border-b border-edge-faint bg-surface p-8 transition-colors duration-200 hover:bg-canvas-alt lg:border-b-0 lg:border-r">
+              <div className="mb-1 self-end rounded-sm border border-edge-dim px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-amber transition-colors duration-200 group-hover:border-amber/60">
                 No Access
               </div>
               <div className="mt-6 flex flex-col items-center text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-sm border border-edge-dim">
-                  <CloudOff className="h-6 w-6 text-ink-faint" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-sm border border-edge-dim transition-all duration-200 group-hover:scale-110 group-hover:border-amber/50">
+                  <CloudOff className="h-6 w-6 text-ink-faint transition-colors duration-200 group-hover:text-amber" />
                 </div>
                 <h3 className="mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-ink">
                   Talkie Systems Inc.
@@ -782,20 +772,20 @@ export default function SecurityPage() {
             </div>
 
             {/* You & Apple ID — Full Custody */}
-            <div className="flex flex-col bg-surface p-8">
+            <div className="group flex flex-col bg-surface p-8 transition-colors duration-200 hover:bg-canvas-alt">
               <div
-                className="mb-1 self-end rounded-sm border border-edge px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-trace"
+                className="mb-1 self-end rounded-sm border border-edge px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-trace transition-colors duration-200 group-hover:border-trace"
                 style={{ textShadow: '0 0 4px var(--trace-glow)' }}
               >
                 Full Custody
               </div>
               <div className="mt-6 flex flex-col items-center text-center">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-sm border border-edge"
+                  className="flex h-12 w-12 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace"
                   style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
                 >
                   <Database
-                    className="h-6 w-6 text-trace"
+                    className="h-6 w-6 text-trace transition-transform duration-200"
                     style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
                   />
                 </div>
@@ -898,14 +888,14 @@ export default function SecurityPage() {
                 href="https://support.apple.com/en-us/108756"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                className="group/adp mt-8 inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-trace"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 5%, transparent)',
                   textShadow: '0 0 6px var(--trace-glow)',
                 }}
               >
                 Learn about ADP
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-3 w-3 transition-transform duration-200 group-hover/adp:translate-x-0.5 group-hover/adp:-translate-y-0.5" />
               </a>
             </div>
           </div>
@@ -936,7 +926,7 @@ export default function SecurityPage() {
             {COMPARISON_ROWS.map((row, i) => (
               <div
                 key={row.feature}
-                className={`grid grid-cols-3 border-b border-edge-subtle px-4 py-3.5 text-[12px] last:border-0 ${
+                className={`group grid grid-cols-3 border-b border-edge-subtle px-4 py-3.5 text-[12px] transition-colors duration-150 last:border-0 hover:bg-surface ${
                   i % 2 === 0 ? 'bg-canvas' : 'bg-canvas-alt'
                 }`}
               >
@@ -945,12 +935,12 @@ export default function SecurityPage() {
                 </div>
                 <div className="flex items-center gap-2 text-trace">
                   <span
-                    className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace"
+                    className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
                     style={{ boxShadow: '0 0 4px var(--trace)' }}
                   />
                   <span className="text-[11px]">{row.talkie}</span>
                 </div>
-                <div className="text-[11px] text-ink-faint">{row.other}</div>
+                <div className="text-[11px] text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">{row.other}</div>
               </div>
             ))}
           </div>
@@ -974,23 +964,24 @@ export default function SecurityPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Link
               href="/philosophy"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all hover:-translate-y-0.5"
+              className="group block rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
             >
               <div className="flex items-center gap-2.5">
-                <span className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                <span className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim transition-colors duration-200 group-hover:border-trace group-hover:bg-trace" />
+                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-trace">
                   FURTHER READING
                 </span>
               </div>
               <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
                 Why local-first matters.
               </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                The philosophy behind building a tool that stays out of your way. Keep reading →
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+                The philosophy behind building a tool that stays out of your way. Keep reading{' '}
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
               </p>
             </Link>
 
-            <div className="flex flex-col justify-between rounded-md border border-edge bg-surface p-6">
+            <div className="group flex flex-col justify-between rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
               <div>
                 <Eyebrow>· READY TO INSTALL</Eyebrow>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
@@ -1002,7 +993,7 @@ export default function SecurityPage() {
               </div>
               <Link
                 href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-trace"
                 style={{
                   background: 'color-mix(in oklab, var(--trace) 5%, transparent)',
                   textShadow: '0 0 6px var(--trace-glow)',
@@ -1010,7 +1001,7 @@ export default function SecurityPage() {
                 }}
               >
                 GO TO INSTALL
-                <span>→</span>
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
               </Link>
             </div>
           </div>

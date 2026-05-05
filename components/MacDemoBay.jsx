@@ -48,7 +48,7 @@ export default function MacDemoBay() {
 
         {/* Demo waveform pane */}
         <div
-          className="mt-6 relative overflow-hidden rounded-md border border-screen-edge bg-screen-bg p-8"
+          className="group/pane mt-6 relative overflow-hidden rounded-md border border-screen-edge bg-screen-bg p-8 transition-all duration-300 hover:border-amber/60"
           style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(0,0,0,0.30)' }}
         >
           <div
@@ -122,11 +122,11 @@ export default function MacDemoBay() {
         {/* WPM stats row */}
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Keyboard — slow / muted */}
-          <div className="relative rounded-md border border-screen-edge bg-screen-bg p-6">
-            <div className="text-[9px] uppercase tracking-[0.28em] text-screen-ink-faint">
+          <div className="group/stat relative rounded-md border border-screen-edge bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-screen-ink-faint">
+            <div className="text-[9px] uppercase tracking-[0.28em] text-screen-ink-faint transition-colors duration-200 group-hover/stat:text-screen-ink-muted">
               KEYBOARD · WPM
             </div>
-            <div className="mt-3 font-display text-5xl font-normal tracking-tight text-screen-ink-dim">
+            <div className="mt-3 font-display text-5xl font-normal tracking-tight text-screen-ink-dim transition-colors duration-200 group-hover/stat:text-screen-ink">
               ~40
             </div>
             <div className="mt-2 text-[11px] leading-snug text-screen-ink-muted">
@@ -135,7 +135,7 @@ export default function MacDemoBay() {
           </div>
           {/* Talkie — fast / amber phosphor */}
           <div
-            className="relative overflow-hidden rounded-md border bg-screen-bg p-6"
+            className="group/stat relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5"
             style={{
               borderColor: 'rgba(255,184,77,0.42)',
               boxShadow: 'inset 0 0 0 1px rgba(255,184,77,0.08), 0 0 20px -8px rgba(255,184,77,0.35)',
@@ -143,7 +143,7 @@ export default function MacDemoBay() {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-40"
+              className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-40 transition-opacity duration-300 group-hover/stat:opacity-70"
               style={{ background: 'radial-gradient(circle, rgba(255,184,77,0.45) 0%, transparent 65%)' }}
             />
             <div className="relative">
@@ -151,19 +151,19 @@ export default function MacDemoBay() {
                 TALKIE · WPM
               </div>
               <div
-                className="mt-3 font-display text-5xl font-normal tracking-tight text-amber"
-                style={{ textShadow: '0 0 12px var(--trace-glow)' }}
+                className="mt-3 font-display text-5xl font-normal tracking-tight text-amber transition-transform duration-200 group-hover/stat:scale-[1.04]"
+                style={{ textShadow: '0 0 12px var(--trace-glow)', transformOrigin: 'left center' }}
               >
                 200+
               </div>
-              <div className="mt-2 text-[11px] leading-snug text-screen-ink-muted">
+              <div className="mt-2 text-[11px] leading-snug text-screen-ink-muted transition-colors duration-200 group-hover/stat:text-screen-ink-dim">
                 Speak as fast as you think. Cleanup runs after, not in your head.
               </div>
             </div>
           </div>
           {/* Multiplier — emerald / pop */}
           <div
-            className="relative overflow-hidden rounded-md border bg-screen-bg p-6"
+            className="group/stat relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5"
             style={{
               borderColor: 'rgba(16,185,129,0.42)',
               boxShadow: 'inset 0 0 0 1px rgba(16,185,129,0.08)',
@@ -171,7 +171,7 @@ export default function MacDemoBay() {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute -bottom-12 -left-12 h-32 w-32 rounded-full opacity-30"
+              className="pointer-events-none absolute -bottom-12 -left-12 h-32 w-32 rounded-full opacity-30 transition-opacity duration-300 group-hover/stat:opacity-60"
               style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, transparent 65%)' }}
             />
             <div className="relative">
@@ -179,12 +179,12 @@ export default function MacDemoBay() {
                 FASTER · ×
               </div>
               <div
-                className="mt-3 font-display text-5xl font-normal tracking-tight text-emerald-400"
-                style={{ textShadow: '0 0 12px rgba(16,185,129,0.55)' }}
+                className="mt-3 font-display text-5xl font-normal tracking-tight text-emerald-400 transition-transform duration-200 group-hover/stat:scale-[1.04]"
+                style={{ textShadow: '0 0 12px rgba(16,185,129,0.55)', transformOrigin: 'left center' }}
               >
                 5×
               </div>
-              <div className="mt-2 text-[11px] leading-snug text-screen-ink-muted">
+              <div className="mt-2 text-[11px] leading-snug text-screen-ink-muted transition-colors duration-200 group-hover/stat:text-screen-ink-dim">
                 Capture-to-doc time, measured against keyboard-only flow.
               </div>
             </div>

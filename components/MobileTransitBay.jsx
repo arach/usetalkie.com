@@ -50,7 +50,7 @@ export default function MobileTransitBay() {
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* iPhone — amber */}
           <div
-            className="relative overflow-hidden rounded-md border bg-screen-bg p-6"
+            className="group/ch relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_-6px_rgba(255,184,77,0.5)]"
             style={{
               borderColor: 'rgba(255,184,77,0.42)',
               boxShadow: 'inset 0 0 0 1px rgba(255,184,77,0.06)',
@@ -58,7 +58,7 @@ export default function MobileTransitBay() {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-40"
+              className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-40 transition-opacity duration-300 group-hover/ch:opacity-70"
               style={{ background: 'radial-gradient(circle, rgba(255,184,77,0.4) 0%, transparent 65%)' }}
             />
             <div className="relative">
@@ -87,7 +87,7 @@ export default function MobileTransitBay() {
 
           {/* Watch — emerald */}
           <div
-            className="relative overflow-hidden rounded-md border bg-screen-bg p-6"
+            className="group/ch relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_-6px_rgba(16,185,129,0.5)]"
             style={{
               borderColor: 'rgba(16,185,129,0.42)',
               boxShadow: 'inset 0 0 0 1px rgba(16,185,129,0.06)',
@@ -95,7 +95,7 @@ export default function MobileTransitBay() {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute -top-12 -left-12 h-32 w-32 rounded-full opacity-40"
+              className="pointer-events-none absolute -top-12 -left-12 h-32 w-32 rounded-full opacity-40 transition-opacity duration-300 group-hover/ch:opacity-70"
               style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.45) 0%, transparent 65%)' }}
             />
             <div className="relative">
@@ -125,7 +125,7 @@ export default function MobileTransitBay() {
 
           {/* Ambient — cyan */}
           <div
-            className="relative overflow-hidden rounded-md border bg-screen-bg p-6"
+            className="group/ch relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_-6px_rgba(6,182,212,0.5)]"
             style={{
               borderColor: 'rgba(6,182,212,0.42)',
               boxShadow: 'inset 0 0 0 1px rgba(6,182,212,0.06)',
@@ -133,7 +133,7 @@ export default function MobileTransitBay() {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute -bottom-12 -right-12 h-32 w-32 rounded-full opacity-40"
+              className="pointer-events-none absolute -bottom-12 -right-12 h-32 w-32 rounded-full opacity-40 transition-opacity duration-300 group-hover/ch:opacity-70"
               style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.45) 0%, transparent 65%)' }}
             />
             <div className="relative">

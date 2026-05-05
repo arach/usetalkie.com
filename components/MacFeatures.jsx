@@ -64,10 +64,10 @@ function FeatureCard({ feature, index }) {
   const chNum = String(index + 1).padStart(2, '0')
 
   return (
-    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-trace">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 opacity-50 transition-opacity duration-300 group-hover:opacity-90"
         style={{
           backgroundImage:
             'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
@@ -79,24 +79,24 @@ function FeatureCard({ feature, index }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge"
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace"
               style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
             >
               <Icon
-                className="h-4 w-4 text-trace"
+                className="h-4 w-4 text-trace transition-transform duration-200"
                 style={{ filter: 'drop-shadow(0 0 4px var(--trace-glow))' }}
               />
             </div>
             <h3 className="font-display text-lg tracking-[-0.01em] text-ink">{feature.title}</h3>
           </div>
-          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+          <span className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle transition-colors duration-200 group-hover:text-trace">
             CH-{chNum}
           </span>
         </div>
 
-        <div className="mt-4 h-px w-full bg-edge-subtle" />
+        <div className="mt-4 h-px w-full bg-edge-subtle transition-colors duration-200 group-hover:bg-trace/30" />
 
-        <p className="mt-4 flex-1 text-[13px] leading-relaxed text-ink-muted">{feature.body}</p>
+        <p className="mt-4 flex-1 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{feature.body}</p>
 
         <div className="mt-5 w-full">
           <FeatureSparkline shape={feature.shape} />

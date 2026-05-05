@@ -112,40 +112,40 @@ function MomentRow({ moment, index, total }) {
 
   return (
     <div
-      className="flex items-center gap-3 px-4 py-4"
+      className="group flex items-center gap-3 px-4 py-4 transition-colors duration-200 hover:bg-canvas-alt"
       style={{
         borderBottom: !isBottomRow ? '1px solid var(--edge-subtle)' : 'none',
         borderRight: !hideRightBorder ? '1px solid var(--edge-subtle)' : 'none',
       }}
     >
       {/* line number */}
-      <span className="font-mono text-[9px] uppercase tracking-[0.22em] tabular-nums text-ink-subtle">
+      <span className="font-mono text-[9px] uppercase tracking-[0.22em] tabular-nums text-ink-subtle transition-colors duration-200 group-hover:text-trace">
         {num}
       </span>
 
       {/* icon */}
       <div
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-edge"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-trace"
         style={{
           background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
         }}
       >
         <Icon
-          className="h-3.5 w-3.5 text-trace"
+          className="h-3.5 w-3.5 text-trace transition-transform duration-200"
           strokeWidth={1.5}
           style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
         />
       </div>
 
       {/* text */}
-      <p className="flex-1 text-[14px] leading-snug text-ink-dim">
+      <p className="flex-1 text-[14px] leading-snug text-ink-dim transition-colors duration-200 group-hover:text-ink">
         {moment.text}
       </p>
 
       {/* pulse dot */}
       <span
         aria-hidden
-        className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace"
+        className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
         style={{
           boxShadow: '0 0 4px var(--trace)',
           animation: 'osc-moment-pulse 2.8s ease-in-out infinite',

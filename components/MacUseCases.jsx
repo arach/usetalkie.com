@@ -71,10 +71,10 @@ function UseCaseCard({ useCase, index }) {
   const barWidth = Math.max(18, Math.round(useCase.amplitude * 100))
 
   return (
-    <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5">
+    <div className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 opacity-50 transition-opacity duration-300 group-hover:opacity-90"
         style={{
           backgroundImage:
             'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
@@ -87,30 +87,30 @@ function UseCaseCard({ useCase, index }) {
           <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
             <span
               aria-hidden
-              className="inline-block h-1 w-1 rounded-full bg-trace"
+              className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
               style={{
                 boxShadow: '0 0 4px var(--trace)',
                 animation: 'osc-uc-pulse 2.6s ease-in-out infinite',
                 animationDelay: `${(index % 4) * 0.3}s`,
               }}
             />
-            <Icon className="h-3 w-3 text-ink-faint" />
-            <span className="text-ink-dim">{useCase.app.toUpperCase()}</span>
+            <Icon className="h-3 w-3 text-ink-faint transition-colors duration-200 group-hover:text-trace" />
+            <span className="text-ink-dim transition-colors duration-200 group-hover:text-ink">{useCase.app.toUpperCase()}</span>
             <span className="text-ink-subtle">/</span>
             <span className="text-ink-faint">{useCase.time}</span>
           </div>
         </div>
 
-        <p className="mt-5 font-display text-[17px] italic leading-snug tracking-[-0.01em] text-ink-muted">
+        <p className="mt-5 font-display text-[17px] italic leading-snug tracking-[-0.01em] text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
           <span className="text-ink-subtle">&ldquo;</span>
           {useCase.action}
           <span className="text-ink-subtle">&rdquo;</span>
         </p>
 
         <div className="mt-4 flex items-center gap-2" aria-hidden>
-          <span className="block h-px w-6 bg-trace opacity-40" />
+          <span className="block h-px w-6 bg-trace opacity-40 transition-all duration-200 group-hover:w-10 group-hover:opacity-80" />
           <span
-            className="text-[11px] leading-none text-trace"
+            className="text-[11px] leading-none text-trace transition-transform duration-200 group-hover:translate-x-1"
             style={{ textShadow: '0 0 4px var(--trace-glow)' }}
           >
             →
@@ -123,14 +123,14 @@ function UseCaseCard({ useCase, index }) {
           <span className="text-[8px] uppercase tracking-[0.22em] text-ink-subtle">AMPL</span>
           <div className="relative h-1 flex-1 overflow-hidden rounded-sm bg-edge-subtle">
             <div
-              className="absolute inset-y-0 left-0 bg-trace"
+              className="absolute inset-y-0 left-0 bg-trace transition-all duration-300 group-hover:brightness-125"
               style={{
                 width: `${barWidth}%`,
                 boxShadow: '0 0 6px var(--trace)',
               }}
             />
           </div>
-          <span className="text-[8px] uppercase tracking-[0.22em] tabular-nums text-ink-faint">
+          <span className="text-[8px] uppercase tracking-[0.22em] tabular-nums text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">
             {String(barWidth).padStart(2, '0')}%
           </span>
         </div>
