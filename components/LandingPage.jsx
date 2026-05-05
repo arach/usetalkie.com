@@ -60,10 +60,14 @@ const USE_CASES = {
   ],
 }
 
+/* Generic device categories rather than Apple brand names — the
+ * rolodex is brand-agnostic framing ("Talk to your X" works for any
+ * surface). Mac/iPhone-specific copy stays on the per-product pages. */
 const HERO_STORIES = [
-  { surface: 'Mac' },
+  { surface: 'Computer' },
   { surface: 'Phone' },
   { surface: 'Watch' },
+  { surface: 'Agents' },
 ]
 
 const CAPTURE_MODES = [
@@ -454,7 +458,7 @@ export default function LandingPage() {
           <Container className="relative z-10">
             <div className={`mx-auto max-w-4xl text-center transition-[opacity,transform] duration-700 ease-out ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
               <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white/90 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] shadow-[0_12px_40px_rgba(2,6,23,0.06)] dark:border-white/10 dark:bg-zinc-900/70">
-                {[{ label: 'Mac', idx: 0 }, { label: 'iPhone', idx: 1 }, { label: 'Watch', idx: 2 }].map(({ label, idx }, i, arr) => (
+                {[{ label: 'Computer', idx: 0 }, { label: 'Phone', idx: 1 }, { label: 'Watch', idx: 2 }, { label: 'Agents', idx: 3 }].map(({ label, idx }, i, arr) => (
                   <React.Fragment key={label}>
                     <button
                       onClick={() => jumpToSurface(idx)}

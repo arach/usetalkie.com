@@ -39,10 +39,13 @@ const PACKAGE_MANAGERS = [
  * canvas hosts amber accents (eyebrow above the chassis) per the brief.
  */
 
+/* Generic device-category labels (Mac → Computer, iPhone → Phone)
+ * for brand-agnostic rolodex framing. Per-product pages keep the
+ * Apple-specific naming where install / OS-version copy demands it. */
 const DEVICES = [
   {
     key: 'mac',
-    label: 'Mac',
+    label: 'Computer',
     Icon: Laptop,
     taglines: [
       'Voice a rough draft. Watch it tighten.',
@@ -99,7 +102,7 @@ const DEVICES = [
   },
   {
     key: 'iphone',
-    label: 'iPhone',
+    label: 'Phone',
     Icon: Smartphone,
     taglines: [
       'Ramble for five minutes. Get a research brief.',

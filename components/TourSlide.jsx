@@ -64,7 +64,7 @@ export default function TourSlide({ slug }) {
     function handleKey(e) {
       if (e.key === 'ArrowLeft' && prev) router.push(`/tour/${prev.slug}/`)
       if (e.key === 'ArrowRight' && next) router.push(`/tour/${next.slug}/`)
-      if (e.key === 'Escape') router.push('/')
+      if (e.key === 'Escape') router.push('/tour#gallery')
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
@@ -102,11 +102,11 @@ export default function TourSlide({ slug }) {
       {/* ========== TOP BAR ========== */}
       <div className="flex items-center justify-between border-b border-edge-faint px-4 py-3 md:px-8">
         <Link
-          href="/"
+          href="/tour#gallery"
           className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors duration-200 hover:text-amber"
         >
           <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>
-          <span>BACK TO TOUR</span>
+          <span>BACK TO GALLERY</span>
         </Link>
 
         <div className="flex items-center gap-3">

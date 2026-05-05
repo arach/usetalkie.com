@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Download, Terminal, Check, Copy } from 'lucide-react'
+import { Download, Terminal, Check, Copy, Maximize2, X } from 'lucide-react'
 
 /**
  * InstallCard — patch-bay-styled install panel.
@@ -45,6 +45,21 @@ function ChassisFasteners() {
 export default function InstallCard() {
   const [pmIndex, setPmIndex] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [qrExpanded, setQrExpanded] = useState(false)
+
+  /* QR lightbox keyboard + body-scroll handling — Escape closes,
+   * body scroll locks while the modal is up. */
+  useEffect(() => {
+    if (!qrExpanded) return
+    const onKey = (e) => { if (e.key === 'Escape') setQrExpanded(false) }
+    window.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [qrExpanded])
   const current = PACKAGE_MANAGERS[pmIndex]
 
   const onCopy = async () => {
@@ -108,15 +123,23 @@ export default function InstallCard() {
           onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--panel-bg)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--panel-bg-alt)' }}
         >
+          {/* Mac icon — Download glyph in --screen-trace (brand-color
+           * pop: emerald on Modern, amber on Warm) against the dark
+           * icon-square. The trace-on-dark pairing is the page's
+           * "instrument readout" idiom — same vocabulary as the LIVE
+           * dot and waveform trace. Subtle inset top-highlight + outer
+           * drop give the square just enough lift to feel pressed in
+           * without being theatrical. */}
           <span
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm transition-transform group-hover:-translate-y-0.5"
+            className="flex h-20 w-20 shrink-0 items-center justify-center rounded-sm transition-transform group-hover:-translate-y-0.5"
             style={{
-              background: 'var(--panel-bg-deep)',
+              background: '#262626',
               border: '1px solid var(--panel-edge-dim)',
-              color: 'var(--panel-ink-dim)',
+              color: 'var(--screen-trace)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 6px -2px rgba(0, 0, 0, 0.30)',
             }}
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-8 w-8" />
           </span>
           <span className="flex flex-col leading-tight">
             <span
@@ -137,17 +160,23 @@ export default function InstallCard() {
           </span>
         </Link>
 
-        <a
-          href={APP_STORE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* iPhone card — split into TWO interactive zones:
+         *   1. QR (button)    → opens lightbox so phone cameras can
+         *                       scan a properly-sized code
+         *   2. Label (link)   → opens App Store URL
+         * Wrapping the whole card in <a> like before sent every QR
+         * tap straight to the App Store — defeating the QR's purpose. */}
+        <div
           className="group flex items-center gap-4 p-5 transition-colors"
           style={{ background: 'var(--panel-bg-alt)' }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--panel-bg)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--panel-bg-alt)' }}
         >
-          <span
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-white p-1.5"
+          <button
+            type="button"
+            onClick={() => setQrExpanded(true)}
+            aria-label="Expand QR code to scan with phone"
+            className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded-sm bg-white p-2 transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.18)]"
             style={{ border: '1px solid var(--panel-edge)' }}
           >
             <img
@@ -155,8 +184,20 @@ export default function InstallCard() {
               alt="QR code for Talkie on the App Store"
               className="h-full w-full"
             />
-          </span>
-          <span className="flex flex-col leading-tight">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -bottom-1 -right-1 inline-flex h-4 w-4 items-center justify-center rounded-sm border bg-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              style={{ borderColor: 'var(--panel-edge)' }}
+            >
+              <Maximize2 className="h-2.5 w-2.5" style={{ color: 'var(--panel-ink-muted)' }} />
+            </span>
+          </button>
+          <a
+            href={APP_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col leading-tight"
+          >
             <span
               className="text-[9px] uppercase tracking-[0.24em]"
               style={{ color: 'var(--panel-ink-subtle)' }}
@@ -170,11 +211,45 @@ export default function InstallCard() {
               className="mt-1 text-[10px] uppercase tracking-[0.18em]"
               style={{ color: 'var(--panel-ink-faint)' }}
             >
-              scan or tap →
+              tap to open · scan to install
             </span>
-          </span>
-        </a>
+          </a>
+        </div>
       </div>
+
+      {/* QR lightbox — backdrop click + Escape close. Big QR (288px)
+       * lands well within phone-camera reading range from arm's length. */}
+      {qrExpanded && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="QR code expanded for scanning"
+          onClick={() => setQrExpanded(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 backdrop-blur-md"
+        >
+          <button
+            type="button"
+            onClick={() => setQrExpanded(false)}
+            aria-label="Close expanded QR code"
+            className="absolute right-6 top-6 inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge bg-canvas-overlay text-ink-muted transition-all hover:border-trace hover:text-trace"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="rounded-md bg-white p-8 shadow-2xl"
+          >
+            <img
+              src="/qr-app-store.svg"
+              alt="QR code for Talkie on the App Store"
+              className="block h-72 w-72"
+            />
+            <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.26em] text-zinc-700">
+              Scan with phone · opens App Store
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* CLI rail */}
       <div
@@ -234,17 +309,23 @@ export default function InstallCard() {
         </div>
 
         <div className="flex items-stretch gap-2 px-4 py-3">
+          {/* CLI bar — softer dark code surface (not punishing pure-black).
+           * #2e2e2e lands in the "code editor dark" range across themes,
+           * paired with --screen-ink-dim (cream) for readable install
+           * text. Slightly lighter than the Mac icon-square (#262626)
+           * — bigger surface tolerates lighter dark before reading
+           * washed out. */}
           <code
             className="flex-1 truncate rounded-sm px-3 py-2 text-[12px]"
             style={{
-              background: 'var(--panel-bg-deep)',
+              background: '#2e2e2e',
               border: '1px solid var(--panel-edge-faint)',
-              color: 'var(--panel-ink-dim)',
+              color: 'var(--screen-ink-dim)',
             }}
           >
             <span
               className="select-none mr-2"
-              style={{ color: 'var(--panel-trace)' }}
+              style={{ color: 'var(--screen-trace)' }}
             >
               $
             </span>

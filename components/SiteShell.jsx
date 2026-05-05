@@ -3,6 +3,7 @@ import ThemeToggle from './ThemeToggle'
 import { supportingLine, ANCHOR_VARIANT } from '../content/tagline'
 
 const PRIMARY_NAV = [
+  { label: 'Tour',       href: '/tour' },
   { label: 'Workflows',  href: '/workflows' },
   { label: 'Philosophy', href: '/philosophy' },
   { label: 'Ideas',      href: '/ideas' },
