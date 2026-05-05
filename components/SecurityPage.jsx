@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import InstallCard from './InstallCard'
 import { SecurityInfographic } from './SecurityInfographic'
 import {
   ShieldCheck,
@@ -958,52 +959,18 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      {/* ========== TIE-BACK ========== */}
+      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
-        <div className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Link
-              href="/philosophy"
-              className="group block rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
-            >
-              <div className="flex items-center gap-2.5">
-                <span className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim transition-colors duration-200 group-hover:border-trace group-hover:bg-trace" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-trace">
-                  FURTHER READING
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                Why local-first matters.
-              </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
-                The philosophy behind building a tool that stays out of your way. Keep reading{' '}
-                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </p>
-            </Link>
-
-            <div className="group flex flex-col justify-between rounded-md border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-trace hover:shadow-[0_0_22px_-6px_var(--trace-glow)]">
-              <div>
-                <Eyebrow>· READY TO INSTALL</Eyebrow>
-                <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  Download Talkie for Mac.
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                  DMG, App Store, or a single CLI command.
-                </p>
-              </div>
-              <Link
-                href="/downloads"
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-sm border border-edge px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:border-trace"
-                style={{
-                  background: 'color-mix(in oklab, var(--trace) 5%, transparent)',
-                  textShadow: '0 0 6px var(--trace-glow)',
-                  boxShadow: '0 0 18px color-mix(in oklab, var(--trace) 8%, transparent)',
-                }}
-              >
-                GO TO INSTALL
-                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </Link>
-            </div>
+        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
+          <div className="text-center">
+            <Eyebrow>· LOCAL-FIRST · YOUR KEYS</Eyebrow>
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
+              Stay private.
+              <span className="italic text-ink-muted"> Stay in flow.</span>
+            </h2>
+          </div>
+          <div className="mt-10">
+            <InstallCard />
           </div>
         </div>
       </section>
