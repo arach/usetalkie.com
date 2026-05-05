@@ -19,15 +19,19 @@ import {
 // Content data — re-authored from the donor FeaturesPage.
 // ---------------------------------------------------------------------------
 
+// Each step type gets a distinct accent hue so the 8-tile grid reads
+// as a varied panel rather than a single-tone wash. Hue choice is
+// loosely semantic (compute=cyan, terminal=amber, storage=emerald,
+// network=violet, comms=rose, time=sky, util=orange, alert=yellow).
 const STEP_TYPES = [
-  { icon: Cpu,        label: 'LLM',          desc: 'Summaries, extraction, restructuring' },
-  { icon: Terminal,   label: 'Shell',        desc: 'Run CLI tools — claude, gh, jq' },
-  { icon: FileOutput, label: 'Save to File', desc: 'Write results to disk with aliases' },
-  { icon: Globe,      label: 'Webhook',      desc: 'POST JSON or text to any endpoint' },
-  { icon: Mail,       label: 'Email',        desc: 'Send results via Mail.app' },
-  { icon: Calendar,   label: 'Calendar',     desc: 'Create events from a transcript' },
-  { icon: Copy,       label: 'Clipboard',    desc: 'Copy results to system clipboard' },
-  { icon: Bell,       label: 'Notification', desc: 'Native macOS alerts' },
+  { icon: Cpu,        label: 'LLM',          desc: 'Summaries, extraction, restructuring',  accent: 'cyan',    rgb: '6,182,212' },
+  { icon: Terminal,   label: 'Shell',        desc: 'Run CLI tools — claude, gh, jq',         accent: 'amber',   rgb: '255,184,77' },
+  { icon: FileOutput, label: 'Save to File', desc: 'Write results to disk with aliases',     accent: 'emerald', rgb: '16,185,129' },
+  { icon: Globe,      label: 'Webhook',      desc: 'POST JSON or text to any endpoint',      accent: 'violet',  rgb: '139,92,246' },
+  { icon: Mail,       label: 'Email',        desc: 'Send results via Mail.app',              accent: 'rose',    rgb: '244,63,94' },
+  { icon: Calendar,   label: 'Calendar',     desc: 'Create events from a transcript',        accent: 'sky',     rgb: '14,165,233' },
+  { icon: Copy,       label: 'Clipboard',    desc: 'Copy results to system clipboard',       accent: 'orange',  rgb: '249,115,22' },
+  { icon: Bell,       label: 'Notification', desc: 'Native macOS alerts',                    accent: 'yellow',  rgb: '234,179,8' },
 ]
 
 const ALIASES = [
@@ -480,10 +484,11 @@ export default function WorkflowsPage() {
           <div className="mt-10 grid grid-cols-1 gap-0 overflow-hidden rounded-sm border border-edge sm:grid-cols-2 lg:grid-cols-4">
             {STEP_TYPES.map((step, i) => {
               const Icon = step.icon
+              const accentRgb = step.rgb
               return (
                 <div
                   key={step.label}
-                  className={`relative bg-surface p-5 ${
+                  className={`group relative bg-surface p-5 transition-all duration-200 hover:bg-canvas-alt ${
                     i % 4 !== 3 ? 'lg:border-r lg:border-edge-faint' : ''
                   } ${i % 2 !== 1 ? 'sm:border-r sm:border-edge-faint' : ''} ${
                     i < STEP_TYPES.length - (STEP_TYPES.length % 4 || 4)
@@ -493,19 +498,30 @@ export default function WorkflowsPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className="flex h-8 w-8 items-center justify-center rounded-sm border border-edge"
-                      style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
+                      className="flex h-8 w-8 items-center justify-center rounded-sm border transition-all duration-200 group-hover:scale-110"
+                      style={{
+                        borderColor: `rgba(${accentRgb}, 0.45)`,
+                        background: `rgba(${accentRgb}, 0.06)`,
+                      }}
                     >
                       <Icon
-                        className="h-3.5 w-3.5 text-trace"
-                        style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
+                        className="h-3.5 w-3.5 transition-all duration-200"
+                        style={{
+                          color: `rgb(${accentRgb})`,
+                          filter: `drop-shadow(0 0 3px rgba(${accentRgb}, 0.6))`,
+                        }}
                       />
                     </div>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink">
+                    <span
+                      className="font-mono text-[10px] uppercase tracking-[0.22em] transition-colors duration-200"
+                      style={{ color: `rgb(${accentRgb})` }}
+                    >
                       {step.label}
                     </span>
                   </div>
-                  <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">{step.desc}</p>
+                  <p className="mt-3 text-[12px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+                    {step.desc}
+                  </p>
                 </div>
               )
             })}
@@ -551,76 +567,106 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== SHELL CONSOLE ========== */}
-      <section className="relative border-t border-edge-faint bg-canvas-alt">
-        <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 03 / SHELL STEP</Eyebrow>
-          <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            Your terminal, on the end of a sentence.
+      {/* ========== SHELL CONSOLE — dark scope-bay beat ==========
+           Flips to dark panel-bg-deep so the syntax-highlighted code
+           reads as a real terminal. Code colors brighten to neon-grade
+           cyan / emerald / amber / rose for visual pop the cream
+           background couldn't carry. */}
+      <section className="relative border-t border-b border-panel-edge-dim bg-panel-bg-deep">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,184,77,0.04) 3px, rgba(255,184,77,0.04) 4px)',
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-amber" style={{ textShadow: '0 0 4px var(--trace-glow)' }}>
+            · 03 / SHELL STEP
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-screen-ink">
+            Your terminal, <span className="italic text-amber">on the end of a sentence.</span>
           </h2>
-          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-screen-ink-muted">
             Shell steps run real binaries on your machine. There is an executable allowlist and a respectful
             PATH merge — brew, node, bun, Claude CLI all resolve the way they do in your terminal.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.2fr]">
-            {/* Bullet column */}
-            <div className="rounded-sm border border-edge bg-surface p-6">
-              <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+            {/* Bullet column — colored bullets per item */}
+            <div className="rounded-md border border-screen-edge bg-screen-bg p-6 transition-all duration-200 hover:border-screen-edge-dim">
+              <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-amber">
                 · WHAT IT GETS YOU
               </p>
-              <ul className="mt-5 space-y-3 text-[13px] leading-relaxed text-ink-muted">
+              <ul className="mt-5 space-y-3 text-[13px] leading-relaxed text-screen-ink-dim">
                 <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.7)' }} />
                   Executable allowlist for predictable, reviewable runs
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-500" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.7)' }} />
                   Native Claude CLI integration via MCP
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-amber" style={{ boxShadow: '0 0 6px var(--trace-glow)' }} />
                   Multi-line script templates with variable substitution
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" style={{ boxShadow: '0 0 6px rgba(139,92,246,0.7)' }} />
                   Respectful PATH merge — brew, node, bun, claude
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace)' }} />
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" style={{ boxShadow: '0 0 6px rgba(244,63,94,0.7)' }} />
                   Stdout captured back into the workflow as the next variable
                 </li>
               </ul>
             </div>
 
-            {/* Console panel */}
-            <div className="relative overflow-hidden rounded-sm border border-edge bg-surface">
-              <div className="flex items-center justify-between border-b border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+            {/* Console panel — true editor look */}
+            <div
+              className="relative overflow-hidden rounded-md border bg-screen-bg-deep transition-all duration-200 hover:border-amber/60"
+              style={{
+                borderColor: 'rgba(255,184,77,0.32)',
+                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.55), 0 0 24px -8px rgba(255,184,77,0.20)',
+              }}
+            >
+              {/* macOS-style traffic lights + filename */}
+              <div className="flex items-center justify-between border-b border-screen-edge-dim px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-screen-ink-faint">
                 <div className="flex items-center gap-2">
-                  <Terminal className="h-3 w-3 text-trace" />
-                  <span>STEP · SHELL · gh issue create</span>
+                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-rose-500/80" />
+                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-amber/80" />
+                  <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
+                  <Terminal className="ml-2 h-3 w-3 text-amber" />
+                  <span className="text-screen-ink-muted">step · shell · gh issue create</span>
                 </div>
-                <span>READY</span>
+                <span className="text-emerald-400">READY</span>
               </div>
-              <pre className="overflow-x-auto p-5 font-mono text-[12px] leading-relaxed text-ink-dim">
+              <pre className="overflow-x-auto p-5 font-mono text-[12px] leading-relaxed text-screen-ink-dim">
 {`# template: file an issue from a dictated bug report
-`}<span style={{ color: 'var(--amber)' }}>{`gh`}</span>{` issue create \\
-  --repo `}<span style={{ color: 'var(--trace)' }}>{`"arach/talkie"`}</span>{` \\
-  --title `}<span style={{ color: 'var(--trace)' }}>{`"{{TITLE}}"`}</span>{` \\
-  --body  `}<span style={{ color: 'var(--trace)' }}>{`"{{TRANSCRIPT}}"`}</span>{` \\
-  --label `}<span style={{ color: 'var(--trace)' }}>{`"voice-memo"`}</span>{`
+`}<span className="text-cyan-300">{`gh`}</span>{` `}<span className="text-violet-300">{`issue`}</span>{` `}<span className="text-violet-300">{`create`}</span>{` \\
+  `}<span className="text-amber">{`--repo`}</span>{`  `}<span className="text-emerald-300">{`"arach/talkie"`}</span>{` \\
+  `}<span className="text-amber">{`--title`}</span>{` `}<span className="text-emerald-300">{`"{{TITLE}}"`}</span>{` \\
+  `}<span className="text-amber">{`--body`}</span>{`  `}<span className="text-emerald-300">{`"{{TRANSCRIPT}}"`}</span>{` \\
+  `}<span className="text-amber">{`--label`}</span>{` `}<span className="text-emerald-300">{`"voice-memo"`}</span>{`
 
-# stdout becomes {{LAST_OUTPUT}} for the next step
-`}<span style={{ color: 'var(--ink-faint)' }}>{`# https://github.com/arach/talkie/issues/421`}</span>
+# stdout becomes `}<span className="text-rose-300">{`{{LAST_OUTPUT}}`}</span>{` for the next step
+`}<span className="text-screen-ink-faint">{`# https://github.com/arach/talkie/issues/421`}</span>
               </pre>
-              <div className="flex items-center gap-2 border-t border-edge-dim px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+              <div className="flex items-center gap-2 border-t border-screen-edge-dim px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-screen-ink-faint">
                 <span
                   aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
-                  style={{ boxShadow: '0 0 4px var(--trace)' }}
+                  className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500"
+                  style={{ boxShadow: '0 0 6px rgba(16,185,129,0.8)' }}
                 />
-                <span>EXIT 0 · 412ms · audit:wf-01</span>
-                <span className="ml-auto"><Zap className="inline h-3 w-3 text-amber" /> dry-run available</span>
+                <span className="text-emerald-400">EXIT 0</span>
+                <span className="text-screen-ink-faint">·</span>
+                <span>412ms</span>
+                <span className="text-screen-ink-faint">·</span>
+                <span>audit:wf-01</span>
+                <span className="ml-auto flex items-center gap-1 text-amber">
+                  <Zap className="h-3 w-3" /> dry-run available
+                </span>
               </div>
             </div>
           </div>
