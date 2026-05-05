@@ -594,10 +594,13 @@ export default function WorkflowsPage() {
            reads as a real terminal. Code colors brighten to neon-grade
            cyan / emerald / amber / rose for visual pop the cream
            background couldn't carry. */}
-      <section className="relative border-t border-b border-panel-edge-dim bg-panel-bg-deep">
+      <section
+        className="relative border-t border-b border-panel-edge-dim"
+        style={{ background: 'var(--panel-bg-deep)' }}
+      >
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-60"
+          className="pointer-events-none absolute inset-0 opacity-30"
           style={{
             backgroundImage:
               'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
