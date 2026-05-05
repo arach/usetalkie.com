@@ -18,10 +18,10 @@ const sections = [
 ]
 
 const FeatureCard = ({ icon: Icon, title, description, color }) => (
-  <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
+  <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
     <Icon className={`w-6 h-6 ${color} mb-3`} />
-    <h4 className="font-bold text-zinc-900 dark:text-white mb-2">{title}</h4>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400">{description}</p>
+    <h4 className="font-bold text-ink mb-2">{title}</h4>
+    <p className="text-sm text-ink-muted">{description}</p>
   </div>
 )
 
@@ -46,7 +46,7 @@ export default function OverviewPage() {
           icon={Shield}
           title="Local-First"
           description="Your voice data never leaves your devices. All transcription happens on your Mac."
-          color="text-emerald-500"
+          color="text-amber"
         />
         <FeatureCard
           icon={Cpu}
@@ -70,61 +70,61 @@ export default function OverviewPage() {
       </p>
 
       <div className="my-6 space-y-4 not-prose">
-        <div className="flex gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">1</div>
           <div>
-            <h4 className="font-bold text-zinc-900 dark:text-white">Everything is a file</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <h4 className="font-bold text-ink">Everything is a file</h4>
+            <p className="text-sm text-ink-muted mt-1">
               Your data lives in readable formats on disk. SQLite databases, JSON exports, audio files—all accessible and portable.
             </p>
           </div>
         </div>
 
-        <div className="flex gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">2</div>
           <div>
-            <h4 className="font-bold text-zinc-900 dark:text-white">Small, focused data stores</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <h4 className="font-bold text-ink">Small, focused data stores</h4>
+            <p className="text-sm text-ink-muted mt-1">
               Instead of one monolithic database, each component owns its data. Memos in one place, live dictations in another. Clear boundaries, easy to reason about.
             </p>
           </div>
         </div>
 
-        <div className="flex gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">3</div>
           <div>
-            <h4 className="font-bold text-zinc-900 dark:text-white">Data stores exposed by default</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <h4 className="font-bold text-ink">Data stores exposed by default</h4>
+            <p className="text-sm text-ink-muted mt-1">
               We don't hide your data in opaque containers. Browse your recordings, query your databases, export anything. Your data, your access.
             </p>
           </div>
         </div>
 
-        <div className="flex gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">4</div>
           <div>
-            <h4 className="font-bold text-zinc-900 dark:text-white">Well-defined lifecycles</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <h4 className="font-bold text-ink">Well-defined lifecycles</h4>
+            <p className="text-sm text-ink-muted mt-1">
               Every recording flows through clear phases: capture → transcription → routing → storage. Each phase has hooks where you can plug in custom logic.
             </p>
           </div>
         </div>
 
-        <div className="flex gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">5</div>
           <div>
-            <h4 className="font-bold text-zinc-900 dark:text-white">Protect the critical path</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <h4 className="font-bold text-ink">Protect the critical path</h4>
+            <p className="text-sm text-ink-muted mt-1">
               Recording and transcription are sacred. Nothing should block them—not sync, not workflows, not UI rendering. The happy path is always fast.
             </p>
           </div>
         </div>
 
-        <div className="flex gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">6</div>
           <div>
-            <h4 className="font-bold text-zinc-900 dark:text-white">Smart defaults, full control</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <h4 className="font-bold text-ink">Smart defaults, full control</h4>
+            <p className="text-sm text-ink-muted mt-1">
               Talkie works great out of the box. But when you want to customize—workflows, shortcuts, data locations, export formats—everything is configurable.
             </p>
           </div>
@@ -175,12 +175,12 @@ export default function OverviewPage() {
       </p>
 
       <h3 id="xpc">XPC (Inter-Process Communication)</h3>
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-2">
           <Network className="w-5 h-5 text-blue-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Talkie ↔ TalkieAgent ↔ TalkieEngine</span>
+          <span className="font-bold text-ink">Talkie ↔ TalkieAgent ↔ TalkieEngine</span>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-ink-muted">
           XPC is Apple's secure inter-process communication mechanism. It provides automatic
           process lifecycle management, type-safe messaging, and sandboxing support.
           All native macOS components use XPC.
@@ -188,12 +188,12 @@ export default function OverviewPage() {
       </div>
 
       <h3 id="http">HTTP (Local Server)</h3>
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-2">
-          <Network className="w-5 h-5 text-emerald-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">TalkieServer ↔ iPhone</span>
+          <Network className="w-5 h-5 text-amber" />
+          <span className="font-bold text-ink">TalkieServer ↔ iPhone</span>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-ink-muted">
           TalkieServer exposes HTTP endpoints that the iPhone app connects to.
           All traffic flows over Tailscale's encrypted WireGuard tunnel.
           This enables cross-device sync without any cloud intermediary.
@@ -208,17 +208,17 @@ export default function OverviewPage() {
 
       <Link
         href="/docs/architecture"
-        className="group flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-violet-300 dark:hover:border-violet-500/50 transition-colors not-prose"
+        className="group flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-violet-300 dark:hover:border-violet-500/50 transition-colors not-prose"
       >
         <div>
-          <span className="font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+          <span className="font-bold text-ink group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
             Architecture Deep Dive
           </span>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-ink-muted mt-1">
             Detailed look at each component and how they work together
           </p>
         </div>
-        <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" />
+        <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-violet-500 group-hover:translate-x-1 transition-all" />
       </Link>
     </DocsLayout>
   )

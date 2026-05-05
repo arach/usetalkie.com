@@ -16,27 +16,27 @@ const sections = [
 ]
 
 const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-zinc-800 overflow-hidden my-4 not-prose">
+  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
     {title && (
-      <div className="px-4 py-2 bg-zinc-800 border-b border-zinc-700">
-        <span className="text-xs font-mono text-zinc-400">{title}</span>
+      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
+        <span className="text-xs font-mono text-ink-muted">{title}</span>
       </div>
     )}
-    <pre className="p-4 bg-zinc-900 overflow-x-auto">
-      <code className="text-sm font-mono text-zinc-300">{children}</code>
+    <pre className="p-4 bg-panel-bg overflow-x-auto">
+      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
     </pre>
   </div>
 )
 
 const IntegrationCard = ({ icon: Icon, name, description, color }) => (
-  <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
+  <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
     <div className="flex items-start gap-3">
       <div className={`flex-shrink-0 w-10 h-10 rounded-lg ${color} flex items-center justify-center`}>
         <Icon className="w-5 h-5" />
       </div>
       <div className="flex-1">
-        <h4 className="font-bold text-zinc-900 dark:text-white mb-1">{name}</h4>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{description}</p>
+        <h4 className="font-bold text-ink mb-1">{name}</h4>
+        <p className="text-sm text-ink-muted">{description}</p>
       </div>
     </div>
   </div>
@@ -74,7 +74,7 @@ export default function ExtensibilityPage() {
           icon={Plug}
           name="URL Schemes"
           description="Deep link into Talkie from other apps, scripts, or Shortcuts. Control recording and access memos."
-          color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+          color="bg-emerald-100 dark:bg-amber/20 text-amber"
         />
         <IntegrationCard
           icon={GitBranch}
@@ -97,22 +97,22 @@ export default function ExtensibilityPage() {
       </p>
 
       <h3 id="events">Available Events</h3>
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
-        <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-2">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
+        <ul className="text-sm text-ink-muted space-y-2">
           <li className="flex items-start gap-3">
-            <code className="text-xs bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded font-mono">memo.created</code>
+            <code className="text-xs bg-surface dark:bg-panel-bg-alt px-2 py-0.5 rounded font-mono">memo.created</code>
             <span>Fires when a new memo is saved with transcription</span>
           </li>
           <li className="flex items-start gap-3">
-            <code className="text-xs bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded font-mono">memo.updated</code>
+            <code className="text-xs bg-surface dark:bg-panel-bg-alt px-2 py-0.5 rounded font-mono">memo.updated</code>
             <span>Fires when a memo is edited or metadata changes</span>
           </li>
           <li className="flex items-start gap-3">
-            <code className="text-xs bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded font-mono">workflow.completed</code>
+            <code className="text-xs bg-surface dark:bg-panel-bg-alt px-2 py-0.5 rounded font-mono">workflow.completed</code>
             <span>Fires when a workflow finishes executing</span>
           </li>
           <li className="flex items-start gap-3">
-            <code className="text-xs bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded font-mono">dictation.ended</code>
+            <code className="text-xs bg-surface dark:bg-panel-bg-alt px-2 py-0.5 rounded font-mono">dictation.ended</code>
             <span>Fires when a live dictation session ends</span>
           </li>
         </ul>
@@ -148,12 +148,12 @@ export default function ExtensibilityPage() {
         Beyond the built-in workflows, you can create your own. Workflows are JSON files stored in your Application Support directory.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-3">
           <Box className="w-5 h-5 text-amber-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Workflow Location</span>
+          <span className="font-bold text-ink">Workflow Location</span>
         </div>
-        <code className="block text-sm font-mono bg-zinc-100 dark:bg-zinc-800 px-3 py-2 rounded text-zinc-700 dark:text-zinc-300">
+        <code className="block text-sm font-mono bg-surface dark:bg-panel-bg-alt px-3 py-2 rounded text-ink-dim">
           ~/Library/Application Support/Talkie/Workflows/
         </code>
       </div>
@@ -214,7 +214,7 @@ export default function ExtensibilityPage() {
           </div>
           <Link
             href="/ideas/file-based-context-system"
-            className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-amber-600 text-white font-bold text-xs uppercase tracking-wider hover:bg-amber-700 transition-colors"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-amber-600 text-screen-ink font-bold text-xs uppercase tracking-wider hover:bg-amber-700 transition-colors"
           >
             Read RFC
             <ArrowRight className="w-4 h-4" />
@@ -229,39 +229,39 @@ export default function ExtensibilityPage() {
       </p>
 
       <div className="grid md:grid-cols-2 gap-3 my-6 not-prose">
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Notion</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-1">Notion</h4>
+          <p className="text-sm text-ink-muted">
             Send transcriptions to Notion databases via webhook action
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Obsidian</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-1">Obsidian</h4>
+          <p className="text-sm text-ink-muted">
             Create notes in your vault using the "Save to File" action
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Slack</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-1">Slack</h4>
+          <p className="text-sm text-ink-muted">
             Post summaries to channels via Slack webhooks
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Raycast</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-1">Raycast</h4>
+          <p className="text-sm text-ink-muted">
             Quick access via URL schemes and AppleScript
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Things / Todoist</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-1">Things / Todoist</h4>
+          <p className="text-sm text-ink-muted">
             Create tasks from voice notes via URL schemes or webhooks
           </p>
         </div>
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Zapier / Make / n8n</h4>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <h4 className="font-bold text-ink mb-1">Zapier / Make / n8n</h4>
+          <p className="text-sm text-ink-muted">
             Connect to 1000+ services via workflow automation platforms
           </p>
         </div>
@@ -272,12 +272,12 @@ export default function ExtensibilityPage() {
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/api"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-amber-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-amber-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
               API Reference
             </span>
           </div>
@@ -285,15 +285,15 @@ export default function ExtensibilityPage() {
 
         <Link
           href="/ideas/file-based-context-system"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-amber dark:group-hover:text-amber transition-colors">
               File-Based Context
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-amber group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>

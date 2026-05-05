@@ -16,29 +16,29 @@ const sections = [
 ]
 
 const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-zinc-800 overflow-hidden my-4 not-prose">
+  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
     {title && (
-      <div className="px-4 py-2 bg-zinc-800 border-b border-zinc-700">
-        <span className="text-xs font-mono text-zinc-400">{title}</span>
+      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
+        <span className="text-xs font-mono text-ink-muted">{title}</span>
       </div>
     )}
-    <pre className="p-4 bg-zinc-900 overflow-x-auto">
-      <code className="text-sm font-mono text-zinc-300">{children}</code>
+    <pre className="p-4 bg-panel-bg overflow-x-auto">
+      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
     </pre>
   </div>
 )
 
 const ModelCard = ({ name, description, fields }) => (
-  <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
-    <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">{name}</h4>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">{description}</p>
+  <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
+    <h4 className="text-lg font-bold text-ink mb-2">{name}</h4>
+    <p className="text-sm text-ink-muted mb-4">{description}</p>
     <div className="space-y-2">
       {fields.map((field, i) => (
         <div key={i} className="flex items-center gap-2 text-sm">
-          <code className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded font-mono text-zinc-700 dark:text-zinc-300">
+          <code className="px-2 py-0.5 bg-surface dark:bg-panel-bg-alt rounded font-mono text-ink-dim">
             {field.name}
           </code>
-          <span className="text-zinc-500">{field.type}</span>
+          <span className="text-ink-faint">{field.type}</span>
         </div>
       ))}
     </div>
@@ -86,15 +86,15 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
       </p>
 
       <h3 id="audio-files">Audio Files</h3>
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-3">
           <FolderOpen className="w-5 h-5 text-amber-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Audio Storage</span>
+          <span className="font-bold text-ink">Audio Storage</span>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
+        <p className="text-sm text-ink-muted mb-2">
           Voice recordings are stored as M4A files (AAC codec) for good quality at reasonable file sizes.
         </p>
-        <code className="text-xs text-zinc-500 font-mono">
+        <code className="text-xs text-ink-faint font-mono">
           ~/Library/Application Support/Talkie/Audio/
         </code>
       </div>
@@ -147,26 +147,26 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
 
       {/* Export Options */}
       <h2 id="exports">Export Options</h2>
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-3">
-          <Download className="w-5 h-5 text-emerald-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Available Formats</span>
+          <Download className="w-5 h-5 text-amber" />
+          <span className="font-bold text-ink">Available Formats</span>
         </div>
-        <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-2">
+        <ul className="text-sm text-ink-muted space-y-2">
           <li className="flex items-center gap-2">
-            <span className="w-16 font-mono text-zinc-500">.txt</span>
+            <span className="w-16 font-mono text-ink-faint">.txt</span>
             Plain text transcription
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-16 font-mono text-zinc-500">.md</span>
+            <span className="w-16 font-mono text-ink-faint">.md</span>
             Markdown with frontmatter metadata
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-16 font-mono text-zinc-500">.json</span>
+            <span className="w-16 font-mono text-ink-faint">.json</span>
             Full data with all metadata fields
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-16 font-mono text-zinc-500">.m4a</span>
+            <span className="w-16 font-mono text-ink-faint">.m4a</span>
             Original audio recording
           </li>
         </ul>
@@ -181,12 +181,12 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
         Talkie uses a <strong>GRDB-primary</strong> architecture. The local SQLite database is always the source of truth. Sync (when enabled) is an additive layer on top.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-3">
           <Lock className="w-5 h-5 text-blue-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Sync Flow</span>
+          <span className="font-bold text-ink">Sync Flow</span>
         </div>
-        <ol className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1 list-decimal list-inside">
+        <ol className="text-sm text-ink-muted space-y-1 list-decimal list-inside">
           <li>App writes to local GRDB database</li>
           <li>Change observer detects new/updated records</li>
           <li>Sync bridge pushes changes to CloudKit (if enabled)</li>
@@ -202,12 +202,12 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/architecture"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-amber-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-amber-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
               Architecture
             </span>
           </div>
@@ -215,15 +215,15 @@ sqlite3 ~/Library/Application\\ Support/Talkie/talkie_grdb.sqlite ".tables"`}
 
         <Link
           href="/docs/workflows"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
               Workflows
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-indigo-500 group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>

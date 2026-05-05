@@ -19,18 +19,18 @@ const sections = [
 ]
 
 const ComponentCard = ({ id, icon: Icon, name, subtitle, responsibilities, color }) => (
-  <div id={id} className="p-6 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose scroll-mt-20">
+  <div id={id} className="p-6 rounded-lg border border-edge bg-canvas-alt not-prose scroll-mt-20">
     <div className="flex items-start gap-4">
       <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${color} flex items-center justify-center`}>
         <Icon className="w-6 h-6" />
       </div>
       <div className="flex-1">
-        <h4 className="text-lg font-bold text-zinc-900 dark:text-white">{name}</h4>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{subtitle}</p>
+        <h4 className="text-lg font-bold text-ink">{name}</h4>
+        <p className="text-sm text-ink-faint mb-3">{subtitle}</p>
         <ul className="space-y-1">
           {responsibilities.map((item, i) => (
-            <li key={i} className="text-sm text-zinc-600 dark:text-zinc-400 flex items-start gap-2">
-              <span className="text-zinc-400 dark:text-zinc-600">-</span>
+            <li key={i} className="text-sm text-ink-muted flex items-start gap-2">
+              <span className="text-ink-muted dark:text-ink-faint">-</span>
               {item}
             </li>
           ))}
@@ -93,7 +93,7 @@ export default function ArchitecturePage() {
             "Keyboard simulation for text insertion",
             "Hotkey handling and interstitial UI",
           ]}
-          color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+          color="bg-emerald-100 dark:bg-amber/20 text-amber"
         />
 
         <ComponentCard
@@ -131,12 +131,12 @@ export default function ArchitecturePage() {
         XPC (Cross-Process Communication) is Apple's secure mechanism for processes to talk to each other. Talkie uses XPC to communicate with TalkieAgent and TalkieEngine.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-3">
           <MessageSquare className="w-5 h-5 text-blue-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Why XPC?</span>
+          <span className="font-bold text-ink">Why XPC?</span>
         </div>
-        <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
+        <ul className="text-sm text-ink-muted space-y-1">
           <li>• <strong>Security</strong> — Each process runs with minimal permissions</li>
           <li>• <strong>Crash isolation</strong> — A helper crash doesn't take down the main app</li>
           <li>• <strong>Lifecycle management</strong> — macOS handles process start/stop</li>
@@ -168,12 +168,12 @@ export default function ArchitecturePage() {
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/overview"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-violet-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-violet-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
               Overview
             </span>
           </div>
@@ -181,15 +181,15 @@ export default function ArchitecturePage() {
 
         <Link
           href="/docs/data"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
               Your Data
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-rose-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-rose-500 group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>

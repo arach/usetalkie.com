@@ -28,22 +28,22 @@ const Phase = ({ icon: Icon, name, description, timing, color, children, isLast 
 
     <div className="flex gap-4">
       {/* Icon */}
-      <div className={`flex-shrink-0 w-12 h-12 rounded-xl ${color} flex items-center justify-center shadow-sm border border-white/50 dark:border-zinc-700/50 z-10`}>
+      <div className={`flex-shrink-0 w-12 h-12 rounded-xl ${color} flex items-center justify-center shadow-sm border border-white/50 dark:border-screen-edge-dim/50 z-10`}>
         <Icon className="w-6 h-6" />
       </div>
 
       {/* Content */}
       <div className="flex-1 pb-8">
         <div className="flex items-center gap-3 mb-1">
-          <h4 className="text-lg font-display font-semibold text-zinc-900 dark:text-white">{name}</h4>
+          <h4 className="text-lg font-display font-semibold text-ink">{name}</h4>
           {timing && (
-            <span className="flex items-center gap-1 text-xs font-mono text-zinc-400">
+            <span className="flex items-center gap-1 text-xs font-mono text-ink-muted">
               <Clock className="w-3 h-3" />
               {timing}
             </span>
           )}
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">{description}</p>
+        <p className="text-sm text-ink-muted mb-3">{description}</p>
         {children}
       </div>
     </div>
@@ -53,12 +53,12 @@ const Phase = ({ icon: Icon, name, description, timing, color, children, isLast 
 // Step within a phase
 const Step = ({ number, label, detail, hookPoint }) => (
   <div className="flex items-start gap-3 py-2">
-    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-      <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">{number}</span>
+    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-surface dark:bg-panel-bg-alt flex items-center justify-center">
+      <span className="text-xs font-bold text-ink-faint">{number}</span>
     </div>
     <div className="flex-1">
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">{label}</span>
+        <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">{label}</span>
         {hookPoint && (
           <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider rounded bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-500/30">
             Hook
@@ -66,7 +66,7 @@ const Step = ({ number, label, detail, hookPoint }) => (
         )}
       </div>
       {detail && (
-        <span className="text-xs text-zinc-500 dark:text-zinc-500 block mt-0.5">{detail}</span>
+        <span className="text-xs text-ink-faint dark:text-ink-faint block mt-0.5">{detail}</span>
       )}
     </div>
   </div>
@@ -100,12 +100,12 @@ export default function LifecyclePage() {
       </p>
 
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">
-        <div className="p-4 rounded-lg border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-500/5">
-          <h4 className="font-bold text-emerald-700 dark:text-emerald-400 mb-2">Dictation</h4>
-          <p className="text-sm text-emerald-600 dark:text-emerald-300/80">
+        <div className="p-4 rounded-lg border border-emerald-200 dark:border-amber/30 bg-emerald-50/50 dark:bg-amber/5">
+          <h4 className="font-bold text-emerald-700 dark:text-amber mb-2">Dictation</h4>
+          <p className="text-sm text-amber dark:text-emerald-300/80">
             Press hotkey, speak, release. Text appears where your cursor is. Fast, in-flow, ephemeral.
           </p>
-          <p className="text-xs text-emerald-500/70 mt-2 font-mono">~500ms to paste</p>
+          <p className="text-xs text-amber/70 mt-2 font-mono">~500ms to paste</p>
         </div>
         <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-500/5">
           <h4 className="font-bold text-blue-700 dark:text-blue-400 mb-2">Memo</h4>
@@ -129,7 +129,7 @@ export default function LifecyclePage() {
           name="Capture"
           description="Audio flows from microphone to temporary file. Context is captured to know where you were when you started speaking."
           timing="~50ms setup"
-          color="bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+          color="bg-emerald-100 dark:bg-amber/20 text-amber"
         >
           <div id="phase-capture" className="space-y-0">
             <Step number="1" label="Hotkey detected" detail="Carbon event handler fires immediately" />
@@ -219,51 +219,51 @@ export default function LifecyclePage() {
         When you create a memo (via the main Talkie app), the recording follows a similar path but ends differently:
       </p>
 
-      <div className="my-6 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
+      <div className="my-6 p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center">
               <Mic className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Record</span>
-              <span className="text-xs text-zinc-500 block">Audio captured via AVAudioRecorder</span>
+              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Record</span>
+              <span className="text-xs text-ink-faint block">Audio captured via AVAudioRecorder</span>
             </div>
           </div>
           <div className="flex justify-center">
-            <ArrowDown className="w-4 h-4 text-zinc-300" />
+            <ArrowDown className="w-4 h-4 text-screen-ink-dim" />
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
               <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Transcribe</span>
-              <span className="text-xs text-zinc-500 block">Sent to TalkieEngine via EngineClient</span>
+              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Transcribe</span>
+              <span className="text-xs text-ink-faint block">Sent to TalkieEngine via EngineClient</span>
             </div>
           </div>
           <div className="flex justify-center">
-            <ArrowDown className="w-4 h-4 text-zinc-300" />
+            <ArrowDown className="w-4 h-4 text-screen-ink-dim" />
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center">
-              <Database className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-amber/20 flex items-center justify-center">
+              <Database className="w-4 h-4 text-amber" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Save as Memo</span>
-              <span className="text-xs text-zinc-500 block">Stored in GRDB with audio file reference</span>
+              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Save as Memo</span>
+              <span className="text-xs text-ink-faint block">Stored in GRDB with audio file reference</span>
             </div>
           </div>
           <div className="flex justify-center">
-            <ArrowDown className="w-4 h-4 text-zinc-300" />
+            <ArrowDown className="w-4 h-4 text-screen-ink-dim" />
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center">
               <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
-              <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Trigger Workflows</span>
-              <span className="text-xs text-zinc-500 block">Auto-run workflows execute in order</span>
+              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Trigger Workflows</span>
+              <span className="text-xs text-ink-faint block">Auto-run workflows execute in order</span>
             </div>
           </div>
         </div>
@@ -275,29 +275,29 @@ export default function LifecyclePage() {
       </p>
 
       <div className="my-6 not-prose">
-        <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <div className="text-xs font-mono text-zinc-500 mb-3">Workflow Execution Flow</div>
+        <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
+          <div className="text-xs font-mono text-ink-faint mb-3">Workflow Execution Flow</div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-zinc-400">1.</span>
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Load workflow definition (JSON)</span>
+              <span className="text-xs font-mono text-ink-muted">1.</span>
+              <span className="text-sm text-ink-dim">Load workflow definition (JSON)</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-zinc-400">2.</span>
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Build context from memo (transcript, title, date)</span>
+              <span className="text-xs font-mono text-ink-muted">2.</span>
+              <span className="text-sm text-ink-dim">Build context from memo (transcript, title, date)</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-zinc-400">3.</span>
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Execute steps sequentially</span>
+              <span className="text-xs font-mono text-ink-muted">3.</span>
+              <span className="text-sm text-ink-dim">Execute steps sequentially</span>
               <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold uppercase rounded bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400">Hook</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-zinc-400">4.</span>
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Each step output becomes available to next step</span>
+              <span className="text-xs font-mono text-ink-muted">4.</span>
+              <span className="text-sm text-ink-dim">Each step output becomes available to next step</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-zinc-400">5. </span>
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">Save workflow run record with results</span>
+              <span className="text-xs font-mono text-ink-muted">5. </span>
+              <span className="text-sm text-ink-dim">Save workflow run record with results</span>
             </div>
           </div>
         </div>
@@ -314,44 +314,44 @@ export default function LifecyclePage() {
       </p>
 
       <div className="my-6 overflow-x-auto not-prose">
-        <table className="w-full text-sm border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-          <thead className="bg-zinc-100 dark:bg-zinc-800">
+        <table className="w-full text-sm border border-edge rounded-lg overflow-hidden">
+          <thead className="bg-surface dark:bg-panel-bg-alt">
             <tr>
-              <th className="px-4 py-3 text-left font-medium text-zinc-900 dark:text-white">Hook</th>
-              <th className="px-4 py-3 text-left font-medium text-zinc-900 dark:text-white">Phase</th>
-              <th className="px-4 py-3 text-left font-medium text-zinc-900 dark:text-white">Use Cases</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Hook</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Phase</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Use Cases</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-            <tr className="bg-white dark:bg-zinc-900">
+            <tr className="bg-canvas-alt">
               <td className="px-4 py-3 font-mono text-violet-600 dark:text-violet-400">onCaptureStart</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Capture</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Auto-route based on app, disable in certain contexts</td>
+              <td className="px-4 py-3 text-ink-muted">Capture</td>
+              <td className="px-4 py-3 text-ink-muted">Auto-route based on app, disable in certain contexts</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
+            <tr className="bg-canvas-alt">
               <td className="px-4 py-3 font-mono text-violet-600 dark:text-violet-400">onTranscriptionComplete</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Transcription</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Custom corrections, keyword detection, content filtering</td>
+              <td className="px-4 py-3 text-ink-muted">Transcription</td>
+              <td className="px-4 py-3 text-ink-muted">Custom corrections, keyword detection, content filtering</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
+            <tr className="bg-canvas-alt">
               <td className="px-4 py-3 font-mono text-violet-600 dark:text-violet-400">beforeRoute</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Routing</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Intercept commands ("hey talkie"), transform output</td>
+              <td className="px-4 py-3 text-ink-muted">Routing</td>
+              <td className="px-4 py-3 text-ink-muted">Intercept commands ("hey talkie"), transform output</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
+            <tr className="bg-canvas-alt">
               <td className="px-4 py-3 font-mono text-violet-600 dark:text-violet-400">onDictationStored</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Storage</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Sync to external service, trigger notifications</td>
+              <td className="px-4 py-3 text-ink-muted">Storage</td>
+              <td className="px-4 py-3 text-ink-muted">Sync to external service, trigger notifications</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
+            <tr className="bg-canvas-alt">
               <td className="px-4 py-3 font-mono text-violet-600 dark:text-violet-400">onMemoCreated</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Memo</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Auto-categorize, trigger custom workflows</td>
+              <td className="px-4 py-3 text-ink-muted">Memo</td>
+              <td className="px-4 py-3 text-ink-muted">Auto-categorize, trigger custom workflows</td>
             </tr>
-            <tr className="bg-white dark:bg-zinc-900">
+            <tr className="bg-canvas-alt">
               <td className="px-4 py-3 font-mono text-violet-600 dark:text-violet-400">beforeWorkflowStep</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Workflow</td>
-              <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">Inject data, modify prompts, skip steps conditionally</td>
+              <td className="px-4 py-3 text-ink-muted">Workflow</td>
+              <td className="px-4 py-3 text-ink-muted">Inject data, modify prompts, skip steps conditionally</td>
             </tr>
           </tbody>
         </table>
@@ -366,12 +366,12 @@ export default function LifecyclePage() {
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/data"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-rose-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-rose-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
               Your Data
             </span>
           </div>
@@ -379,15 +379,15 @@ export default function LifecyclePage() {
 
         <Link
           href="/docs/workflows"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
               Workflows
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-indigo-500 group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>

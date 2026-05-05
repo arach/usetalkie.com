@@ -19,41 +19,41 @@ const sections = [
 ]
 
 const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-zinc-800 overflow-hidden my-4 not-prose">
+  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
     {title && (
-      <div className="px-4 py-2 bg-zinc-800 border-b border-zinc-700">
-        <span className="text-xs font-mono text-zinc-400">{title}</span>
+      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
+        <span className="text-xs font-mono text-ink-muted">{title}</span>
       </div>
     )}
-    <pre className="p-4 bg-zinc-900 overflow-x-auto">
-      <code className="text-sm font-mono text-zinc-300">{children}</code>
+    <pre className="p-4 bg-panel-bg overflow-x-auto">
+      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
     </pre>
   </div>
 )
 
 const CommandCard = ({ id, icon: Icon, name, description, examples, flags }) => (
-  <div id={id} className="scroll-mt-20 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
+  <div id={id} className="scroll-mt-20 p-5 rounded-lg border border-edge bg-canvas-alt not-prose">
     <div className="flex items-center gap-3 mb-3">
-      <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-500/20">
-        <Icon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+      <div className="p-2 rounded-lg bg-emerald-100 dark:bg-amber/20">
+        <Icon className="w-4 h-4 text-amber" />
       </div>
       <div>
-        <h4 className="font-bold font-mono text-zinc-900 dark:text-white">talkie {name}</h4>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">{description}</p>
+        <h4 className="font-bold font-mono text-ink">talkie {name}</h4>
+        <p className="text-xs text-ink-faint">{description}</p>
       </div>
     </div>
     <div className="space-y-2">
       {examples.map((ex, i) => (
         <div key={i} className="flex items-start gap-2 text-xs font-mono">
-          <span className="text-emerald-500 select-none shrink-0">$</span>
-          <span className="text-zinc-300">{ex}</span>
+          <span className="text-amber select-none shrink-0">$</span>
+          <span className="text-screen-ink-dim">{ex}</span>
         </div>
       ))}
     </div>
     {flags && flags.length > 0 && (
-      <div className="mt-3 pt-3 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap gap-2">
+      <div className="mt-3 pt-3 border-t border-edge flex flex-wrap gap-2">
         {flags.map((flag, i) => (
-          <span key={i} className="px-2 py-0.5 text-[10px] font-mono rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+          <span key={i} className="px-2 py-0.5 text-[10px] font-mono rounded bg-surface dark:bg-panel-bg-alt text-ink-muted">
             {flag}
           </span>
         ))}
@@ -91,16 +91,16 @@ curl -fsSL go.usetalkie.com/install | bash`}
         Once installed, the <code>talkie</code> command is available globally. All commands output <strong>JSON by default</strong> when piped, and human-readable tables in the terminal.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
-        <div className="text-xs font-mono text-zinc-500 mb-2">Global flags (all commands)</div>
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
+        <div className="text-xs font-mono text-ink-faint mb-2">Global flags (all commands)</div>
         <div className="flex flex-wrap gap-3 text-xs font-mono">
-          <span className="text-zinc-300"><span className="text-emerald-500">--json</span> Force JSON output</span>
-          <span className="text-zinc-600">|</span>
-          <span className="text-zinc-300"><span className="text-emerald-500">--pretty</span> Force table output</span>
-          <span className="text-zinc-600">|</span>
-          <span className="text-zinc-300"><span className="text-emerald-500">--since</span> Filter by date (7d, 24h, 2025-02-01)</span>
-          <span className="text-zinc-600">|</span>
-          <span className="text-zinc-300"><span className="text-emerald-500">--limit</span> Max results</span>
+          <span className="text-screen-ink-dim"><span className="text-amber">--json</span> Force JSON output</span>
+          <span className="text-ink-faint">|</span>
+          <span className="text-screen-ink-dim"><span className="text-amber">--pretty</span> Force table output</span>
+          <span className="text-ink-faint">|</span>
+          <span className="text-screen-ink-dim"><span className="text-amber">--since</span> Filter by date (7d, 24h, 2025-02-01)</span>
+          <span className="text-ink-faint">|</span>
+          <span className="text-screen-ink-dim"><span className="text-amber">--limit</span> Max results</span>
         </div>
       </div>
 
@@ -233,12 +233,12 @@ talkie engine transcribe recording.m4a | jq '.text'`}
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/workflows"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-indigo-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-indigo-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
               Workflows
             </span>
           </div>
@@ -246,15 +246,15 @@ talkie engine transcribe recording.m4a | jq '.text'`}
 
         <Link
           href="/docs/extensibility"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
               Extensibility
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>

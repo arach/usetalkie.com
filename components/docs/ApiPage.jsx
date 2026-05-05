@@ -17,37 +17,37 @@ const sections = [
 ]
 
 const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-zinc-800 overflow-hidden my-4 not-prose">
+  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
     {title && (
-      <div className="px-4 py-2 bg-zinc-800 border-b border-zinc-700">
-        <span className="text-xs font-mono text-zinc-400">{title}</span>
+      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
+        <span className="text-xs font-mono text-ink-muted">{title}</span>
       </div>
     )}
-    <pre className="p-4 bg-zinc-900 overflow-x-auto">
-      <code className="text-sm font-mono text-zinc-300">{children}</code>
+    <pre className="p-4 bg-panel-bg overflow-x-auto">
+      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
     </pre>
   </div>
 )
 
 const EndpointCard = ({ method, path, description, response }) => {
   const methodColors = {
-    GET: 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400',
+    GET: 'bg-emerald-100 dark:bg-amber/20 text-emerald-700 dark:text-amber',
     POST: 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400',
     PUT: 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400',
     DELETE: 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400',
   }
 
   return (
-    <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 not-prose">
+    <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
       <div className="flex items-center gap-3 mb-2">
         <span className={`px-2 py-0.5 text-xs font-bold rounded ${methodColors[method]}`}>
           {method}
         </span>
-        <code className="text-sm font-mono text-zinc-800 dark:text-zinc-200">{path}</code>
+        <code className="text-sm font-mono text-ink-dim dark:text-screen-ink-dim">{path}</code>
       </div>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">{description}</p>
+      <p className="text-sm text-ink-muted mb-2">{description}</p>
       {response && (
-        <pre className="mt-2 p-2 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-mono text-zinc-600 dark:text-zinc-400 overflow-x-auto">
+        <pre className="mt-2 p-2 bg-surface dark:bg-panel-bg-alt rounded text-xs font-mono text-ink-muted overflow-x-auto">
           {response}
         </pre>
       )}
@@ -153,12 +153,12 @@ open "talkie://memo/abc-123-def"`}
         Talkie is fully scriptable via AppleScript. This enables integration with Alfred, Keyboard Maestro, Raycast, and other automation tools.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-3">
           <Terminal className="w-5 h-5 text-violet-500" />
-          <span className="font-bold text-zinc-900 dark:text-white">Available Commands</span>
+          <span className="font-bold text-ink">Available Commands</span>
         </div>
-        <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
+        <ul className="text-sm text-ink-muted space-y-1">
           <li>• <code>start recording</code> — Begin a new voice recording</li>
           <li>• <code>stop recording</code> — Stop and save current recording</li>
           <li>• <code>get memos</code> — Returns list of recent memos</li>
@@ -189,23 +189,23 @@ end tell`}
         Talkie exposes actions to the Shortcuts app for building voice-driven automations.
       </p>
 
-      <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 my-4 not-prose">
-        <span className="font-bold text-zinc-900 dark:text-white block mb-3">Available Shortcut Actions</span>
-        <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-2">
+      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
+        <span className="font-bold text-ink block mb-3">Available Shortcut Actions</span>
+        <ul className="text-sm text-ink-muted space-y-2">
           <li className="flex items-center gap-2">
-            <span className="w-32 text-zinc-500">Start Recording</span>
+            <span className="w-32 text-ink-faint">Start Recording</span>
             Begin a new voice recording
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-32 text-zinc-500">Stop Recording</span>
+            <span className="w-32 text-ink-faint">Stop Recording</span>
             Stop and process current recording
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-32 text-zinc-500">Get Recent Memos</span>
+            <span className="w-32 text-ink-faint">Get Recent Memos</span>
             Returns list of recent memos
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-32 text-zinc-500">Run Workflow</span>
+            <span className="w-32 text-ink-faint">Run Workflow</span>
             Execute a workflow by name
           </li>
         </ul>
@@ -220,12 +220,12 @@ end tell`}
       <div className="flex flex-col sm:flex-row gap-4 not-prose">
         <Link
           href="/docs/workflows"
-          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center gap-4 p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 text-zinc-400 group-hover:text-indigo-500 group-hover:-translate-x-1 transition-all" />
+          <ArrowLeft className="w-5 h-5 text-ink-muted group-hover:text-indigo-500 group-hover:-translate-x-1 transition-all" />
           <div>
-            <span className="text-xs text-zinc-500">Previous</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <span className="text-xs text-ink-faint">Previous</span>
+            <span className="block font-bold text-ink group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
               Workflows
             </span>
           </div>
@@ -233,15 +233,15 @@ end tell`}
 
         <Link
           href="/docs/extensibility"
-          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+          className="group flex-1 flex items-center justify-between p-4 rounded-lg border border-edge bg-canvas-alt hover:border-amber/40 transition-colors"
         >
           <div>
-            <span className="text-xs text-zinc-500">Next</span>
-            <span className="block font-bold text-zinc-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+            <span className="text-xs text-ink-faint">Next</span>
+            <span className="block font-bold text-ink group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
               Extensibility
             </span>
           </div>
-          <ArrowRight className="w-5 h-5 text-zinc-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-5 h-5 text-ink-muted group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
         </Link>
       </div>
     </DocsLayout>
