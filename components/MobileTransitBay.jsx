@@ -22,13 +22,13 @@ export default function MobileTransitBay() {
         className="pointer-events-none absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,184,77,0.04) 3px, rgba(255,184,77,0.04) 4px)',
+            'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, var(--panel-scanline) 3px, var(--panel-scanline) 4px)',
         }}
       />
       <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
         {/* Eyebrow */}
         <div className="flex items-center gap-3 flex-wrap">
-          <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-amber" style={{ boxShadow: '0 0 6px var(--trace-glow)' }} />
+          <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-screen-trace" style={{ boxShadow: '0 0 6px var(--screen-trace-glow)' }} />
           <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.7)' }} />
           <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-cyan-500" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.7)' }} />
           <span className="text-[10px] uppercase tracking-[0.28em] text-screen-ink-faint ml-2">
@@ -50,33 +50,33 @@ export default function MobileTransitBay() {
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* iPhone — amber */}
           <div
-            className="group/ch relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_-6px_rgba(255,184,77,0.5)]"
+            className="group/ch relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_-6px_var(--screen-trace-glow)]"
             style={{
-              borderColor: 'rgba(255,184,77,0.42)',
-              boxShadow: 'inset 0 0 0 1px rgba(255,184,77,0.06)',
+              borderColor: 'color-mix(in oklab, var(--screen-trace) 42%, transparent)',
+              boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--screen-trace) 8%, transparent)',
             }}
           >
             <div
               aria-hidden
               className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full opacity-40 transition-opacity duration-300 group-hover/ch:opacity-70"
-              style={{ background: 'radial-gradient(circle, rgba(255,184,77,0.4) 0%, transparent 65%)' }}
+              style={{ background: 'radial-gradient(circle, color-mix(in oklab, var(--screen-trace) 40%, transparent) 0%, transparent 65%)' }}
             />
             <div className="relative">
-              <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.28em] text-amber">
-                <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-amber" style={{ boxShadow: '0 0 6px var(--trace-glow)', animation: 'mtb-pulse 1.6s ease-in-out infinite' }} />
+              <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.28em] text-screen-trace">
+                <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-screen-trace" style={{ boxShadow: '0 0 6px var(--screen-trace-glow)', animation: 'mtb-pulse 1.6s ease-in-out infinite' }} />
                 iPHONE · ACTIVE
               </div>
               <div className="mt-4 text-[12px] leading-snug text-screen-ink-dim">
                 <span className="text-screen-ink-faint">&gt; </span>
                 forgot to pick up the dry cleaning, also the airpod case is in the
               </div>
-              {/* Mini waveform */}
-              <svg viewBox="0 0 220 36" className="mt-4 w-full h-10" preserveAspectRatio="none" aria-hidden>
+              {/* Mini waveform — screen-trace cascades via currentColor */}
+              <svg viewBox="0 0 220 36" className="mt-4 w-full h-10" preserveAspectRatio="none" aria-hidden style={{ color: 'var(--screen-trace)' }}>
                 {Array.from({ length: 32 }).map((_, i) => {
                   const x = i * 7
                   const seed = Math.sin(i * 0.9) * 0.5 + Math.sin(i * 2.1) * 0.3
                   const h = Math.abs(seed) * 22 + 3
-                  return <rect key={i} x={x} y={18 - h / 2} width="3" height={h} rx="1" fill="rgba(255,184,77,0.85)" />
+                  return <rect key={i} x={x} y={18 - h / 2} width="3" height={h} rx="1" fill="currentColor" fillOpacity="0.85" />
                 })}
               </svg>
               <div className="mt-3 text-[9px] uppercase tracking-[0.26em] text-screen-ink-faint">
