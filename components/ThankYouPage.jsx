@@ -138,7 +138,7 @@ export default function ThankYouPage() {
         </div>
 
         <Link
-          href="/v2"
+          href="/"
           className="group mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.26em] text-ink-muted transition-colors hover:text-trace"
         >
           BACK TO HOME

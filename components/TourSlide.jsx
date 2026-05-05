@@ -64,7 +64,7 @@ export default function TourSlide({ slug }) {
     function handleKey(e) {
       if (e.key === 'ArrowLeft' && prev) router.push(`/tour/${prev.slug}/`)
       if (e.key === 'ArrowRight' && next) router.push(`/tour/${next.slug}/`)
-      if (e.key === 'Escape') router.push('/v2')
+      if (e.key === 'Escape') router.push('/')
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
@@ -78,7 +78,7 @@ export default function TourSlide({ slug }) {
             TOUR SLIDE NOT FOUND
           </p>
           <Link
-            href="/v2"
+            href="/"
             className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-trace hover:underline"
           >
             <span aria-hidden>←</span> BACK HOME
@@ -102,7 +102,7 @@ export default function TourSlide({ slug }) {
       {/* ========== TOP BAR ========== */}
       <div className="flex items-center justify-between border-b border-edge-faint px-4 py-3 md:px-8">
         <Link
-          href="/v2"
+          href="/"
           className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors duration-200 hover:text-amber"
         >
           <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>

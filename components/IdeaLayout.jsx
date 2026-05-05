@@ -174,6 +174,29 @@ const IDEA_PROSE_CSS = `
   color: var(--ink-subtle);
   font-size: 0.85em;
 }
+
+/* Image pop-out — at md+ images escape the prose column into the page
+ * gutter (max-w-5xl wrapper) so they read as intentional artifacts
+ * rather than column-flush "broken" edges. ~3rem each side; well
+ * inside the gutter so they don't touch the page wrapper edge. */
+@media (min-width: 768px) {
+  /* Generic rule — applies to bare <img> and <figure>. Specificity is
+   * (0,1,1) and (0,1,1). The override below has (0,1,2) and wins for
+   * <img> nested inside <figure>, so we don't double-escape. */
+  .idea-prose img,
+  .idea-prose figure {
+    width: calc(100% + 6rem);
+    max-width: calc(100% + 6rem);
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+  .idea-prose figure img {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
 `
 
 const MONTHS = [
@@ -209,7 +232,7 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
+        <div className="relative mx-auto max-w-3xl px-4 py-10 md:px-6 md:py-14">
           {/* Crumb back to the index */}
           <Link
             href="/ideas"
@@ -287,7 +310,7 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
 
       {/* ========== ARTICLE ========== */}
       <article className="relative bg-canvas-alt">
-        <div className="relative mx-auto max-w-3xl px-4 py-14 md:px-6 md:py-20">
+        <div className="relative mx-auto max-w-3xl px-4 py-10 md:px-6 md:py-14">
           <div
             className="
               idea-prose prose max-w-none

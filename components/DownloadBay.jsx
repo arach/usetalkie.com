@@ -37,10 +37,13 @@ export default function DownloadBay({ caption }) {
 
   return (
     <div className="flex flex-col items-center gap-7">
-      {/* Big primary CTA */}
+      {/* Big primary CTA — icon centered with the headline (row 1), subtext
+          tucked beneath in column 2 only via grid placement so the icon
+          doesn't drift toward the visual center of the stacked block. */}
       <Link
         href="/downloads"
-        className="group/dl inline-flex items-center gap-4 rounded-md px-10 py-5 transition-all duration-200 hover:-translate-y-0.5"
+        aria-label="Download Talkie for Mac"
+        className="group/dl inline-grid grid-cols-[auto_auto] grid-rows-[auto_auto] items-center gap-x-4 gap-y-1 rounded-md px-10 py-5 transition-all duration-200 hover:-translate-y-0.5"
         style={{
           background: 'var(--panel-bg)',
           border: '1px solid var(--panel-edge)',
@@ -48,19 +51,27 @@ export default function DownloadBay({ caption }) {
         }}
       >
         <Download
-          className="h-6 w-6 text-amber transition-transform duration-200 group-hover/dl:scale-110"
+          className="col-start-1 row-start-1 h-7 w-7 shrink-0 text-amber transition-transform duration-200 group-hover/dl:scale-110"
           style={{ filter: 'drop-shadow(0 0 6px var(--panel-trace-glow))' }}
         />
-        <span className="flex flex-col items-start leading-none">
-          <span
-            className="text-[10px] uppercase tracking-[0.26em]"
-            style={{ color: 'var(--panel-ink-faint)' }}
-          >
-            Download · macOS 26+
+        <span className="col-start-2 row-start-1 font-display text-3xl leading-none tracking-tight text-screen-ink md:text-4xl">
+          Talkie for{' '}
+          <span className="italic text-amber" style={{ textShadow: '0 0 12px var(--panel-trace-glow)' }}>
+            Mac
           </span>
-          <span className="mt-1.5 font-display text-3xl tracking-tight text-screen-ink md:text-4xl">
-            Talk to your <span className="italic text-amber" style={{ textShadow: '0 0 12px var(--panel-trace-glow)' }}>Mac.</span>
-          </span>
+        </span>
+        <span
+          className="col-start-2 row-start-2 text-[10px] uppercase tracking-[0.26em] transition-opacity duration-200 group-hover/dl:opacity-0"
+          style={{ color: 'var(--panel-ink-faint)' }}
+        >
+          macOS 26+
+        </span>
+        <span
+          aria-hidden
+          className="pointer-events-none col-start-2 row-start-2 text-[10px] uppercase tracking-[0.26em] opacity-0 transition-opacity duration-200 group-hover/dl:opacity-100"
+          style={{ color: 'var(--panel-trace)' }}
+        >
+          Download
         </span>
       </Link>
 
