@@ -61,14 +61,14 @@ export default function DownloadBay({ caption }) {
           </span>
         </span>
         <span
-          className="col-start-2 row-start-2 text-[10px] uppercase tracking-[0.26em] transition-opacity duration-200 group-hover/dl:opacity-0"
+          className="col-start-2 row-start-2 text-center text-[10px] uppercase tracking-[0.26em] transition-opacity duration-200 group-hover/dl:opacity-0"
           style={{ color: 'var(--panel-ink-faint)' }}
         >
           macOS 26+
         </span>
         <span
           aria-hidden
-          className="pointer-events-none col-start-2 row-start-2 text-[10px] uppercase tracking-[0.26em] opacity-0 transition-opacity duration-200 group-hover/dl:opacity-100"
+          className="pointer-events-none col-start-2 row-start-2 text-center text-[10px] uppercase tracking-[0.26em] opacity-0 transition-opacity duration-200 group-hover/dl:opacity-100"
           style={{ color: 'var(--panel-trace)' }}
         >
           Download
