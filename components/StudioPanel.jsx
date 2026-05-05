@@ -284,7 +284,7 @@ export default function StudioPanel() {
        * inset so the pill sits in horizontal formation with GET APP
        * on standard viewport widths. z-50 keeps the expanded panel
        * above the sticky header (which is z-40). */
-      className="fixed top-[11px] right-4 md:right-6 z-50 rounded-md border font-mono shadow-md backdrop-blur"
+      className="fixed top-[9px] right-4 md:right-6 z-50 rounded-md border font-mono shadow-md backdrop-blur"
       style={{
         background:  'var(--canvas-overlay)',
         borderColor: 'var(--edge)',
@@ -299,9 +299,15 @@ export default function StudioPanel() {
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        /* Header pill — matches GET APP's metrics exactly:
-         * text-[9px] · px-3 py-1.5 · tracking-[0.22em] */
-        className="flex w-full items-center justify-between gap-3 px-3 py-1.5 text-[9px] uppercase tracking-[0.22em] hover:opacity-90"
+        /* Header pill — matches GET APP's metrics:
+         * text-[9px] · px-3 · tracking-[0.22em]
+         * Vertical padding is asymmetric (pt-1.5 / pb-[7px]) — the
+         * extra 1px on bottom matches GET APP's rendered height
+         * exactly so both pills align on top AND bottom edges. The
+         * asymmetry compensates for sub-pixel rendering differences
+         * between the GET APP button (border + bg-tint) and our
+         * floating pill (border + backdrop-blur). */
+        className="flex w-full items-center justify-between gap-3 px-3 pt-1.5 pb-[7px] text-[9px] uppercase tracking-[0.22em] hover:opacity-90"
         style={{ color: 'var(--ink-muted)' }}
       >
         <span className="flex items-center gap-2">
