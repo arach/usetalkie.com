@@ -482,21 +482,49 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== PIPELINE SCHEMATIC ========== */}
+      {/* ========== EXAMPLES — concrete recipes lead the page now (was 05) ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 01 / SIGNAL FLOW</Eyebrow>
+          <Eyebrow>· 01 / SAMPLE PATCHES</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            From capture to sink, on a patch bay.
+            Four workflows to wire on day one.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Capture feeds a bus. Steps tap the bus to shape, transform, or persist. The router holds your
-            variables and branches and writes an audit line for every send. Sinks are the surfaces you
-            already work in.
+            Each one ships as a starting template. Open the editor, swap the model or the path, and it is
+            yours.
           </p>
 
-          <div className="mt-10">
-            <PipelineSchematic />
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+            {EXAMPLES.map((ex) => (
+              <div
+                key={ex.name}
+                className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <Mic
+                      className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover:scale-110"
+                      style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
+                    />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
+                      {ex.name}
+                    </span>
+                  </div>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+                    {ex.flow}
+                  </span>
+                </div>
+                <p className="mt-4 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{ex.body}</p>
+                <div className="mt-5 flex items-center gap-2 border-t border-edge-faint pt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-trace">
+                  <span
+                    aria-hidden
+                    className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
+                    style={{ boxShadow: '0 0 4px var(--trace)' }}
+                  />
+                  PATCH READY
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -779,49 +807,21 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== EXAMPLE WORKFLOWS ========== */}
+      {/* ========== PIPELINE SCHEMATIC — anatomy, demoted from front (was 01) ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 05 / SAMPLE PATCHES</Eyebrow>
+          <Eyebrow>· 05 / SIGNAL FLOW</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            Four workflows to wire on day one.
+            From capture to sink, on a patch bay.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Each one ships as a starting template. Open the editor, swap the model or the path, and it is
-            yours.
+            Capture feeds a bus. Steps tap the bus to shape, transform, or persist. The router holds your
+            variables and branches and writes an audit line for every send. Sinks are the surfaces you
+            already work in.
           </p>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {EXAMPLES.map((ex) => (
-              <div
-                key={ex.name}
-                className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <Mic
-                      className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover:scale-110"
-                      style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
-                    />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
-                      {ex.name}
-                    </span>
-                  </div>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-                    {ex.flow}
-                  </span>
-                </div>
-                <p className="mt-4 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{ex.body}</p>
-                <div className="mt-5 flex items-center gap-2 border-t border-edge-faint pt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-trace">
-                  <span
-                    aria-hidden
-                    className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
-                    style={{ boxShadow: '0 0 4px var(--trace)' }}
-                  />
-                  PATCH READY
-                </div>
-              </div>
-            ))}
+          <div className="mt-10">
+            <PipelineSchematic />
           </div>
         </div>
       </section>
