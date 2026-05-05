@@ -700,11 +700,11 @@ export default function WorkflowsPage() {
                 <h3 className="mt-3 font-display text-lg font-normal tracking-[-0.01em] text-ink">
                   Shortcuts for the directories you actually use.
                 </h3>
-                <ul className="mt-6 space-y-1.5 font-mono text-[11px]">
+                <ul className="mt-6 space-y-1 font-mono text-[11px]">
                   {ALIASES.map((a) => (
                     <li
                       key={a.token}
-                      className="group/row flex items-center gap-3 rounded-sm border border-edge-faint bg-canvas px-3 py-2 transition-all duration-200 hover:border-amber/50 hover:bg-canvas-alt"
+                      className="group/row flex items-center gap-3 rounded-sm border border-transparent px-3 py-2 transition-all duration-200 hover:border-amber/40 hover:bg-canvas/40"
                     >
                       {/* Token chip — amber bg/border syntax highlight, like an inline code chip */}
                       <span
@@ -745,26 +745,33 @@ export default function WorkflowsPage() {
                     </li>
                   ))}
                 </ul>
-                {/* Filename composition example — alias gets the same chip as
-                    in the aliases panel (consistency); template variables
-                    {{DATE}} / {{TITLE}} get a LIGHTER amber treatment to
-                    distinguish "interpolated value" from "fixed token". */}
-                <div className="mt-6 rounded-sm border border-edge-faint bg-canvas px-3 py-2 font-mono text-[11px] text-ink-muted">
+                {/* Filename composition example — borderless inline block
+                    so it integrates with the parent surface; alias chip
+                    is the only visual frame. Template vars get italic +
+                    dotted-underline to read as "interpolated value"
+                    while staying full-amber for legibility on cream. */}
+                <div className="mt-6 font-mono text-[12px] text-ink-dim leading-loose">
                   <span
                     className="inline-flex items-center rounded-sm border border-amber/40 bg-amber/10 px-1.5 py-0.5 text-amber"
                     style={{ textShadow: '0 0 4px var(--trace-glow)' }}
                   >
                     @Notes
                   </span>
-                  /
-                  <span className="italic text-amber" style={{ opacity: 0.6 }}>
+                  <span className="text-ink-faint">/</span>
+                  <span
+                    className="italic text-amber"
+                    style={{ textDecoration: 'underline dotted', textUnderlineOffset: '3px' }}
+                  >
                     {'{{DATE}}'}
                   </span>
-                  -
-                  <span className="italic text-amber" style={{ opacity: 0.6 }}>
+                  <span className="text-ink-faint">-</span>
+                  <span
+                    className="italic text-amber"
+                    style={{ textDecoration: 'underline dotted', textUnderlineOffset: '3px' }}
+                  >
                     {'{{TITLE}}'}
                   </span>
-                  .md
+                  <span className="text-ink-faint">.md</span>
                 </div>
               </div>
             </div>
