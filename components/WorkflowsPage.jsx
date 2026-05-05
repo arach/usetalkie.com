@@ -288,12 +288,15 @@ function PipelineSchematic() {
   const routeOut3 = `M ${ROUTE.x + ROUTE.w} ${routeOutBotY} L 540 ${routeOutBotY} L 540 ${out3InY} L ${OUT3.x} ${out3InY}`
 
   return (
-    <div className="relative w-full overflow-hidden rounded-sm border border-edge bg-surface">
+    <div className="group relative w-full overflow-hidden rounded-sm border border-edge bg-surface transition-all duration-200 hover:border-amber/50 hover:shadow-[0_0_28px_-8px_var(--trace-glow)]">
       <Graticule opacity={0.5} />
 
-      <div className="relative flex items-center justify-between border-b border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+      <div className="relative flex items-center justify-between border-b border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">
         <span>WF-01 / TALKIE.WORKFLOW.PATCHBAY</span>
-        <span>REV A.0</span>
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden className="inline-block h-1 w-1 rounded-full bg-trace" style={{ boxShadow: '0 0 4px var(--trace-glow)' }} />
+          REV A.0
+        </span>
       </div>
 
       <svg
@@ -648,11 +651,11 @@ export default function WorkflowsPage() {
 {`# template: file an issue from a dictated bug report
 `}<span className="text-amber">{`gh`}</span>{` issue create \\
   --repo  `}<span className="text-amber">{`"arach/talkie"`}</span>{` \\
-  --title `}<span className="text-amber">{`"{{TITLE}}"`}</span>{` \\
-  --body  `}<span className="text-amber">{`"{{TRANSCRIPT}}"`}</span>{` \\
+  --title `}<span className="text-amber">{`"`}</span><span className="italic text-amber" style={{ opacity: 0.6 }}>{`{{TITLE}}`}</span><span className="text-amber">{`"`}</span>{` \\
+  --body  `}<span className="text-amber">{`"`}</span><span className="italic text-amber" style={{ opacity: 0.6 }}>{`{{TRANSCRIPT}}`}</span><span className="text-amber">{`"`}</span>{` \\
   --label `}<span className="text-amber">{`"voice-memo"`}</span>{`
 
-`}<span className="text-screen-ink-faint">{`# stdout becomes {{LAST_OUTPUT}} for the next step
+`}<span className="text-screen-ink-faint">{`# stdout becomes `}</span><span className="italic text-amber" style={{ opacity: 0.45 }}>{`{{LAST_OUTPUT}}`}</span><span className="text-screen-ink-faint">{` for the next step
 # https://github.com/arach/talkie/issues/421`}</span>
               </pre>
               <div className="flex items-center gap-2 border-t border-screen-edge-dim px-3 py-2 font-mono text-[9px] uppercase tracking-[0.22em] text-screen-ink-faint">
@@ -684,12 +687,12 @@ export default function WorkflowsPage() {
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Aliases */}
-            <div className="relative overflow-hidden rounded-sm border border-edge bg-surface p-6">
+            {/* Aliases — polished syntax-highlighted token chips */}
+            <div className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:border-amber/50">
               <Graticule opacity={0.4} />
               <div className="relative">
                 <div className="flex items-center gap-2.5">
-                  <FolderTree className="h-3.5 w-3.5 text-trace" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} />
+                  <FolderTree className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover:scale-110" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} />
                   <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
                     · PATH ALIASES
                   </p>
@@ -697,17 +700,21 @@ export default function WorkflowsPage() {
                 <h3 className="mt-3 font-display text-lg font-normal tracking-[-0.01em] text-ink">
                   Shortcuts for the directories you actually use.
                 </h3>
-                <ul className="mt-6 space-y-2 font-mono text-[11px]">
+                <ul className="mt-6 space-y-1.5 font-mono text-[11px]">
                   {ALIASES.map((a) => (
                     <li
                       key={a.token}
-                      className="flex items-center gap-3 rounded-sm border border-edge-faint bg-canvas px-3 py-2"
+                      className="group/row flex items-center gap-3 rounded-sm border border-edge-faint bg-canvas px-3 py-2 transition-all duration-200 hover:border-amber/50 hover:bg-canvas-alt"
                     >
-                      <span className="text-trace" style={{ textShadow: '0 0 4px var(--trace-glow)' }}>
+                      {/* Token chip — amber bg/border syntax highlight, like an inline code chip */}
+                      <span
+                        className="inline-flex items-center rounded-sm border border-amber/40 bg-amber/10 px-2 py-0.5 text-amber transition-all duration-200 group-hover/row:border-amber/70 group-hover/row:bg-amber/20"
+                        style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+                      >
                         {a.token}
                       </span>
-                      <span className="text-ink-faint">→</span>
-                      <span className="text-ink-muted">{a.path}</span>
+                      <span className="text-ink-faint transition-all duration-200 group-hover/row:text-amber group-hover/row:translate-x-0.5">→</span>
+                      <span className="text-ink-muted transition-colors duration-200 group-hover/row:text-ink-dim">{a.path}</span>
                     </li>
                   ))}
                 </ul>
@@ -715,11 +722,11 @@ export default function WorkflowsPage() {
             </div>
 
             {/* Smart output */}
-            <div className="relative overflow-hidden rounded-sm border border-edge bg-surface p-6">
+            <div className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:border-amber/50">
               <Graticule opacity={0.4} />
               <div className="relative">
                 <div className="flex items-center gap-2.5">
-                  <FileOutput className="h-3.5 w-3.5 text-trace" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} />
+                  <FileOutput className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover:scale-110" style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }} />
                   <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
                     · SMART OUTPUT
                   </p>
@@ -738,10 +745,26 @@ export default function WorkflowsPage() {
                     </li>
                   ))}
                 </ul>
-                <div
-                  className="mt-6 rounded-sm border border-edge-faint bg-canvas px-3 py-2 font-mono text-[11px] text-ink-muted"
-                >
-                  @Notes/<span className="text-trace">{'{{DATE}}'}</span>-<span className="text-trace">{'{{TITLE}}'}</span>.md
+                {/* Filename composition example — alias gets the same chip as
+                    in the aliases panel (consistency); template variables
+                    {{DATE}} / {{TITLE}} get a LIGHTER amber treatment to
+                    distinguish "interpolated value" from "fixed token". */}
+                <div className="mt-6 rounded-sm border border-edge-faint bg-canvas px-3 py-2 font-mono text-[11px] text-ink-muted">
+                  <span
+                    className="inline-flex items-center rounded-sm border border-amber/40 bg-amber/10 px-1.5 py-0.5 text-amber"
+                    style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+                  >
+                    @Notes
+                  </span>
+                  /
+                  <span className="italic text-amber" style={{ opacity: 0.6 }}>
+                    {'{{DATE}}'}
+                  </span>
+                  -
+                  <span className="italic text-amber" style={{ opacity: 0.6 }}>
+                    {'{{TITLE}}'}
+                  </span>
+                  .md
                 </div>
               </div>
             </div>
@@ -765,15 +788,15 @@ export default function WorkflowsPage() {
             {EXAMPLES.map((ex) => (
               <div
                 key={ex.name}
-                className="relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-colors hover:border-trace"
+                className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5">
                     <Mic
-                      className="h-3.5 w-3.5 text-trace"
+                      className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover:scale-110"
                       style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
                     />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
                       {ex.name}
                     </span>
                   </div>
@@ -781,11 +804,11 @@ export default function WorkflowsPage() {
                     {ex.flow}
                   </span>
                 </div>
-                <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">{ex.body}</p>
+                <p className="mt-4 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{ex.body}</p>
                 <div className="mt-5 flex items-center gap-2 border-t border-edge-faint pt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-trace">
                   <span
                     aria-hidden
-                    className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
+                    className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
                     style={{ boxShadow: '0 0 4px var(--trace)' }}
                   />
                   PATCH READY
