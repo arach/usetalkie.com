@@ -136,7 +136,7 @@ export default function FeaturesPage() {
               · CAPTURE
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Six behaviors. <span className="italic text-ink-muted">One instrument.</span>
+              Six behaviors. <span className="italic text-ink-muted">One menu-bar app.</span>
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               The dictation surface stays the same in every app — same hold-to-talk, same return-to-origin, same fast search of what you said.

@@ -41,7 +41,7 @@ export default function SurfacesPage() {
             <span className="italic">one trace.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted md:text-base">
-            Mac is where you work. iPhone and Watch are where you catch the thought before it fades. Same signal, different endpoints — every capture lands in the same library on your Mac.
+            Mac is where you work. iPhone and Watch are where you catch the thought before it fades. Wherever you record, every clip lands in the same library — and you can feed it into the tools you already use.
           </p>
         </div>
       </section>

@@ -38,9 +38,9 @@ const TRACE_TINT = { background: 'color-mix(in oklab, var(--trace) 6%, transpare
 const TRACE_TINT_FAINT = { background: 'color-mix(in oklab, var(--trace) 4%, transparent)' }
 
 const STORY_PARAGRAPHS = [
-  'Typing is a bottleneck. The faster you can get ideas out of your head and into your tools, the more you can leverage AI to amplify your work. Voice is the unlock.',
+  'Typing is a bottleneck. The faster you can get ideas out of your head and into your tools, the more you can do with them. Voice is the way out.',
   'I was a power user of early voice tools like SuperWhisper and Wispr Flow — they were great and opened my eyes to what was possible. But none of them treated developers as first-class citizens. So I built Talkie for engineers and tech-forward people who want control: open data, everything is a file, fully pluggable and hookable.',
-  'A native macOS app that lives in your menu bar, transcribes locally with state-of-the-art models, and gets out of your way. No subscriptions, no cloud dependency. Press a key, talk, your words appear wherever you’re typing.',
+  'A native macOS app that lives in your menu bar, transcribes locally on your Mac, and gets out of your way. No subscriptions, no cloud dependency. Press a key, talk, your words appear wherever you’re typing.',
   'Dictation is just the beginning. When you take voice-first workflows seriously, a whole surface opens up: memory, analysis, automation, context. That’s where Talkie is headed.',
 ]
 

@@ -812,12 +812,12 @@ export default function WorkflowsPage() {
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· 05 / SIGNAL FLOW</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            From capture to sink, on a patch bay.
+            From your voice to your tools.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Capture feeds a bus. Steps tap the bus to shape, transform, or persist. The router holds your
-            variables and branches and writes an audit line for every send. Sinks are the surfaces you
-            already work in.
+            Every capture runs through a small pipeline. Steps shape, save, or transform it along
+            the way. Variables and branches are tracked, every send is logged. Outputs land in the
+            apps you already use.
           </p>
 
           <div className="mt-10">
@@ -829,7 +829,7 @@ export default function WorkflowsPage() {
       {/* ========== DOWNLOAD — focused install footer ========== */}
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
-          <DownloadBay caption="One hotkey. One transcript. Routed to the file, the issue, the journal, the agent — anywhere your patch bay sends it." />
+          <DownloadBay caption="One hotkey. One transcript. Routed to the file, the issue, the journal, the agent — anywhere you’ve told it to go." />
         </div>
       </section>
     </>

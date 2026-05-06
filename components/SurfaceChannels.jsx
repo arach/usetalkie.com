@@ -29,7 +29,7 @@ const CHANNELS = [
     freq: '32.1kHz',
     freqKHz: 32.1,
     href: '/mac',
-    tagline: 'Talk to your Mac. Menu-bar instrument, hotkey-driven.',
+    tagline: 'Talk to your Mac. A menu-bar app you trigger with one hotkey.',
   },
   {
     id: 'iphone',
