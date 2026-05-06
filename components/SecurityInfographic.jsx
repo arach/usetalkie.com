@@ -155,9 +155,8 @@ export function SecurityInfographic() {
 
                 {/* iPhone <-> iCloud */}
                 <g style={{ color: iphoneActive ? 'var(--trace)' : 'var(--ink-subtle)' }}>
-                  <path
-                    d="M 23% 62% L 23% 45%"
-                    fill="none"
+                  <line
+                    x1="23%" y1="62%" x2="23%" y2="45%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={iphoneActive ? 1 : 0.35}
@@ -166,9 +165,8 @@ export function SecurityInfographic() {
                     markerEnd="url(#arrowhead-trace)"
                     style={iphoneActive ? { filter: 'drop-shadow(0 0 2px var(--trace-glow))' } : undefined}
                   />
-                  <path
-                    d="M 27% 45% L 27% 62%"
-                    fill="none"
+                  <line
+                    x1="27%" y1="45%" x2="27%" y2="62%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={iphoneActive ? 1 : 0.35}
@@ -181,9 +179,8 @@ export function SecurityInfographic() {
 
                 {/* Mac <-> iCloud */}
                 <g style={{ color: macActive ? 'var(--trace)' : 'var(--ink-subtle)' }}>
-                  <path
-                    d="M 73% 62% L 73% 45%"
-                    fill="none"
+                  <line
+                    x1="73%" y1="62%" x2="73%" y2="45%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={macActive ? 1 : 0.35}
@@ -192,9 +189,8 @@ export function SecurityInfographic() {
                     markerEnd="url(#arrowhead-trace)"
                     style={macActive ? { filter: 'drop-shadow(0 0 2px var(--trace-glow))' } : undefined}
                   />
-                  <path
-                    d="M 77% 45% L 77% 62%"
-                    fill="none"
+                  <line
+                    x1="77%" y1="45%" x2="77%" y2="62%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={macActive ? 1 : 0.35}
@@ -467,7 +463,7 @@ export function SecurityInfographic() {
              {/* Content */}
              <div className="flex flex-1 flex-col items-center justify-center gap-8">
                  <div className="grid w-full max-w-[280px] grid-cols-2 gap-3">
-                    <ServiceBadge label="OpenAI" imgSrc="https://cdn.simpleicons.org/openai/white" />
+                    <ServiceBadge label="OpenAI" imgSrc="/openai-logo.png" />
                     <ServiceBadge label="Anthropic" imgSrc="https://cdn.simpleicons.org/anthropic/white" />
                     <ServiceBadge label="Google" imgSrc="https://cdn.simpleicons.org/google" />
                     <ServiceBadge label="Notion" imgSrc="https://cdn.simpleicons.org/notion/white" />

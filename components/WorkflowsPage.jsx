@@ -314,7 +314,6 @@ function PipelineSchematic() {
         viewBox="0 0 720 320"
         className="relative block w-full"
         preserveAspectRatio="xMidYMid meet"
-        style={{ height: 'auto' }}
       >
         <defs>
           <marker
