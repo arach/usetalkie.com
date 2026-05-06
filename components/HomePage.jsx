@@ -122,13 +122,13 @@ const OWNERSHIP_CARDS = [
     icon: HardDrive,
     pin: 'U1',
     title: 'Local-first library',
-    body: 'Recordings and transcripts live on your devices instead of disappearing into a database we control.',
+    body: 'Your recordings and transcripts stay on your devices. Not on someone else’s server.',
   },
   {
     icon: Cloud,
     pin: 'U2',
     title: 'Sync through your iCloud',
-    body: 'When devices stay in step, the sync path runs through Apple’s infrastructure and your Apple ID.',
+    body: 'Every clip is accessible across all your devices, end-to-end through your iCloud. No third-party servers in between.',
   },
   {
     icon: Cpu,

@@ -291,7 +291,7 @@ export default function HubDiagram({ sectionHovered = false }) {
             {/* Row 1: AI Chat */}
             <div className="flex flex-wrap gap-2 mb-2">
               <AppBadge label="Claude" imgSrc="https://cdn.simpleicons.org/anthropic/white" />
-              <AppBadge label="ChatGPT" imgSrc="https://cdn.simpleicons.org/openai/white" />
+              <AppBadge label="ChatGPT" imgSrc="/openai-logo.png" />
               <AppBadge label="Gemini" imgSrc="https://cdn.simpleicons.org/google" />
             </div>
 

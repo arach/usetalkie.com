@@ -471,11 +471,11 @@ html.dark[data-theme="linen"] {
 }
 
 /* Modern-only structural rules — these handle decoration that has no
- * natural token off-switch (animated SVG wires, the v4-playhead-sweep
+ * natural token off-switch (animated SVG wires, the home-playhead-sweep
  * keyframe, etc.). Token-driven elements (graticule grid, phosphor
  * glow, scanlines, corner brackets) already neutralize via the
  * transparent values above; this block catches the rest. */
-html[data-theme="modern"] .v4-playhead-sweep,
+html[data-theme="modern"] .home-playhead-sweep,
 html[data-theme="modern"] .osc-sweep,
 html[data-theme="modern"] .osc-chase,
 html[data-theme="modern"] .osc-chase-slow,
@@ -743,23 +743,23 @@ html[data-theme="modern"][data-osci-style="slate"]:not(.dark) {
 .osc-chase-slow { animation: osc-chase 5s linear infinite; }   /* dashed trace · opt-in, deliberate */
 .osc-hop        { animation: osc-hop   3s ease-out infinite; }
 
-/* v4-playhead-sweep → ScopeBay's animated playhead. A vertical phosphor
+/* home-playhead-sweep → ScopeBay's animated playhead. A vertical phosphor
  * line that walks left → right across the trace, sells the idea of an
- * actively-running capture even though no audio is wired in on the v4
+ * actively-running capture even though no audio is wired in on the homepage
  * hero composition. */
-@keyframes v4-playhead-sweep {
+@keyframes home-playhead-sweep {
   0%   { transform: translateX(0);      opacity: 0; }
   8%   { opacity: 0.7; }
   92%  { opacity: 0.7; }
   100% { transform: translateX(1200px); opacity: 0; }
 }
-.v4-playhead-sweep { animation: v4-playhead-sweep 4.2s linear infinite; }
+.home-playhead-sweep { animation: home-playhead-sweep 4.2s linear infinite; }
 
-/* v4-wire-chase → tiny bright segment that walks the signal-path wires
+/* home-wire-chase → tiny bright segment that walks the signal-path wires
  * between the panoramic hero's three bays. Picks up at the left
  * junction, walks to the right junction, fades out, repeats. The wire
  * itself is a static thin rule; this is the "voltage" riding it. */
-@keyframes v4-wire-chase {
+@keyframes home-wire-chase {
   0%   { transform: translateX(-14px); opacity: 0; }
   10%  { opacity: 1; }
   85%  { opacity: 1; }
@@ -813,6 +813,19 @@ html[data-theme="modern"][data-osci-style="slate"]:not(.dark) {
 }
 .row-settle {
   animation: row-settle 0.7s ease-out forwards;
+}
+
+@keyframes capture-examples-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+    max-height: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 180px;
+  }
 }
 
 /* tagline-fade-in → soft phosphor settle for rotating tagline variants.
@@ -1013,7 +1026,7 @@ html[data-theme="modern"][data-osci-style="slate"]:not(.dark) {
   .osc-chase,
   .osc-chase-slow,
   .osc-hop,
-  .v4-playhead-sweep,
+  .home-playhead-sweep,
   .narrator-anchor-flash,
   .tagline-fade-in,
   .row-settle,
@@ -1033,7 +1046,7 @@ html[data-theme="modern"][data-osci-style="slate"]:not(.dark) {
   }
 }
 
-/* Top-of-chassis device rotor — hidden by default in v4 composition
+/* Top-of-chassis device rotor — hidden by default in the homepage composition
  * since the vertical DeviceRail in the input bay is the primary
  * picker. Toggle re-enables via data-chassis-rotor="on" on <html>.
  * SSR-safe: the wrapper is always in the DOM, only display flips. */

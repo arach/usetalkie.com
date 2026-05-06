@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 /**
  * Top-of-chassis device-rotor visibility toggle. The vertical DeviceRail
- * in the input bay is the v4 primary device picker; the original top
+ * in the input bay is the primary device picker; the original top
  * rotor is hidden by default but stays in the DOM (display:none via the
  * `.chassis-rotor-host` rule). This toggle flips an html-level attribute
  * that the CSS rule keys off of.

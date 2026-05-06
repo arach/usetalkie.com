@@ -17,14 +17,11 @@ export default function SurfacesSubNav({ active }) {
   return (
     <div className="sticky top-12 z-30 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
       <div className="mx-auto flex max-w-6xl items-stretch gap-1 px-4 md:px-6">
-        {/* Breadcrumb back to /surfaces */}
-        <Link
-          href="/surfaces"
-          className="group flex items-center gap-2 py-3 pr-4 text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors hover:text-ink-muted"
-        >
+        {/* Section label — /surfaces is not a routable page */}
+        <div className="flex items-center gap-2 py-3 pr-4 text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
           <span>SURFACES</span>
           <span className="text-ink-faint">/</span>
-        </Link>
+        </div>
 
         {SURFACES.map((surface) => {
           const isActive = surface.id === active

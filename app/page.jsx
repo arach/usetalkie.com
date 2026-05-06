@@ -1,22 +1,21 @@
-import HomePage from '../components/v4/HomePage'
+import HomePage from '../components/home/HomePage'
 import MainShell from '../components/MainShell'
 
 /**
- * Root homepage `/` — renders the v4 panoramic-instrument hero with the
+ * Root homepage `/` — renders the panoramic-instrument hero with the
  * shared site chrome via MainShell. The donor `LandingPage.jsx` is
  * preserved in components/ for reference but no longer mounted at any
- * route. The previous `/v4/` route has been retired in favor of this
- * canonical path.
+ * route.
  */
 export const metadata = {
-  title: 'Talkie - A selfie. For your thoughts.',
+  title: 'Talkie - A selfie. For your brain.',
   description:
-    'A selfie. For your thoughts. Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
+    'A selfie. For your brain. Talk, and the work starts moving.',
   applicationName: 'Talkie',
   openGraph: {
-    title: 'Talkie - A selfie. For your thoughts.',
+    title: 'Talkie - A selfie. For your brain.',
     description:
-      'A selfie. For your thoughts. Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
+      'A selfie. For your brain. Talk, and the work starts moving.',
     url: 'https://usetalkie.com',
     siteName: 'Talkie',
     locale: 'en_US',
@@ -26,15 +25,15 @@ export const metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Talkie - A selfie. For your thoughts.',
+        alt: 'Talkie - A selfie. For your brain.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie - A selfie. For your thoughts.',
+    title: 'Talkie - A selfie. For your brain.',
     description:
-      'A selfie. For your thoughts. Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
+      'A selfie. For your brain. Talk, and the work starts moving.',
     images: ['/og-image.png'],
   },
 }

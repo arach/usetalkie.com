@@ -21,6 +21,7 @@ export default function SignalTableRow({
   active = false,
   playing = false,
   missing = false,
+  showOutput = true,
   activationKey,
   transcribeKey,
   onActivate,
@@ -168,10 +169,12 @@ export default function SignalTableRow({
           )}
         </p>
 
-        <p className="mt-1.5 flex items-center gap-2 text-[12px] text-ink-dim">
-          <span className="text-trace" style={TRACE_GLOW_SOFT}>→</span>
-          <span>{capture.output}</span>
-        </p>
+        {showOutput && (
+          <p className="mt-1.5 flex items-center gap-2 text-[12px] text-ink-dim">
+            <span className="text-trace" style={TRACE_GLOW_SOFT}>→</span>
+            <span>{capture.output}</span>
+          </p>
+        )}
       </div>
     </div>
   )

@@ -16,6 +16,8 @@
     "start": "next start",
     "postbuild": "echo 'Build complete'",
     "og:generate": "node scripts/generate-og.js",
+    "image:signal-weave": "node scripts/process-voice-illustration.js",
+    "illustration:process": "node scripts/process-voice-illustration.js",
     "mockup": "node scripts/create-iphone-mockup.js"
   },
   "dependencies": {

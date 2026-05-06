@@ -150,8 +150,9 @@ function useClock() {
 /* ──────────────────────────────────────────────────────────────────
  * Main export.
  * ──────────────────────────────────────────────────────────────── */
-export default function PasteMock({ capture, phase, keypressCue }) {
-  const visible = phase === 'review' && capture != null
+export default function PasteMock({ capture, phase, keypressCue, revealProgress = 0 }) {
+  const reveal = Math.max(0, Math.min(1, revealProgress))
+  const visible = (phase === 'review' || reveal > 0) && capture != null
   const recording = phase === 'recording'
   const kind = capture ? deriveKind(capture.eyebrow) : 'note'
   const activeApp = APPS.find((a) => a.kind === kind) ?? APPS[0]
@@ -224,17 +225,17 @@ export default function PasteMock({ capture, phase, keypressCue }) {
 
         {/* ────── Desktop body — mock window opens here on review ────── */}
         <div
-          className="relative flex items-start justify-center px-4 pt-7 pb-12 sm:px-8"
-          style={{ minHeight: 180 }}
+          className="relative flex items-start justify-center px-4 pt-8 pb-16 sm:px-8"
+          style={{ minHeight: 220 }}
         >
           <div
             className="w-full max-w-md"
             style={{
-              opacity: visible ? 1 : 0,
+              opacity: visible ? Math.max(0.15, reveal || 1) : 0,
               transform: visible
-                ? 'translateY(0) scale(1)'
+                ? `translateY(${Math.round((1 - (reveal || 1)) * -6)}px) scale(${0.96 + (reveal || 1) * 0.04})`
                 : 'translateY(-10px) scale(0.96)',
-              transition: 'opacity 0.4s, transform 0.5s',
+              transition: 'opacity 0.55s, transform 0.65s',
               transitionTimingFunction: visible
                 ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 : 'cubic-bezier(0.4, 0, 1, 1)',
@@ -258,7 +259,7 @@ export default function PasteMock({ capture, phase, keypressCue }) {
                 <span className="h-3 w-3 rounded-full" style={{ background: '#62c554' }} />
                 <span className="ml-3 text-[11px] font-medium text-black/70">{activeApp.label}</span>
               </div>
-              <div className="p-4">
+              <div className="p-5">
                 {capture && kind === 'sms'      && <SmsMock     capture={capture} />}
                 {capture && kind === 'email'    && <EmailMock   capture={capture} />}
                 {capture && kind === 'claude'   && <ClaudeMock  capture={capture} />}
@@ -271,7 +272,7 @@ export default function PasteMock({ capture, phase, keypressCue }) {
         </div>
 
         {/* ────── Dock — small, theme-aware glass via surface tint ────── */}
-        <div className="absolute inset-x-0 bottom-2 flex justify-center px-3">
+        <div className="absolute inset-x-0 bottom-3 flex justify-center px-3">
           <div
             className="flex items-end gap-1 rounded-2xl border border-edge-dim px-1.5 py-1"
             style={{

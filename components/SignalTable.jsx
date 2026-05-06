@@ -1,8 +1,8 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { playPressTick, playPasteTick } from '../lib/sfx'
-import { Play, Pause } from 'lucide-react'
+import { Bot, Bug, Mail, MessageCircle, NotebookPen, Play, Pause, Terminal, Users } from 'lucide-react'
 import LiveTrace from './LiveTrace'
 import SignalTableRow from './SignalTableRow'
 import CinematicCaption from './CinematicCaption'
@@ -36,8 +36,41 @@ import PasteMock from './PasteMock'
  *
  * AUTO_ADVANCE: switch to false to make the player stop after each clip.
  */
-const AUTO_ADVANCE = true
-const WINDOW_SIZE = 3
+const AUTO_ADVANCE = false
+const SHOW_TRANSITION_TIMELINE = process.env.NODE_ENV !== 'production'
+const TRANSITION_STEPS = [
+  { id: 'minimized', label: 'Minimized', start: 0, end: 10 },
+  { id: 'voice', label: 'Voice playback', start: 10, end: 42 },
+  { id: 'desktop', label: 'Desktop preview', start: 42, end: 70 },
+  { id: 'table', label: 'Signal table', start: 70, end: 100 },
+]
+
+const CAPTURE_EXAMPLE_ICONS = {
+  SMS: MessageCircle,
+  EMAIL: Mail,
+  PROMPT: Bot,
+  CLI: Terminal,
+  NOTE: NotebookPen,
+  ISSUE: Bug,
+  MEETING: Users,
+  JOURNAL: NotebookPen,
+}
+
+function getTransitionStep(progress) {
+  return (
+    TRANSITION_STEPS.find((step) => progress >= step.start && progress <= step.end) ??
+    TRANSITION_STEPS[TRANSITION_STEPS.length - 1]
+  )
+}
+
+function getStepProgress(progress, step) {
+  const span = Math.max(1, step.end - step.start)
+  return Math.max(0, Math.min(1, (progress - step.start) / span))
+}
+
+function progressFromStep(step, stepProgress) {
+  return step.start + (step.end - step.start) * Math.max(0, Math.min(1, stepProgress))
+}
 
 // Choreography timings — each beat of the capture flow gets enough
 // breathing room to register as its own event AND to invite the user
@@ -96,7 +129,6 @@ export default function SignalTable({ catalog }) {
   // -------------------------------------------------------------------
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [windowStart, setWindowStart] = useState(0)
   const [missingSet, setMissingSet] = useState(() => new Set())
   const [captionText, setCaptionText] = useState('')
   const [captionsOn, setCaptionsOn] = useState(true)
@@ -117,6 +149,20 @@ export default function SignalTable({ catalog }) {
   // Doesn't reset across pause/resume — once engaged, you're past the
   // "what is this?" moment for the rest of the session.
   const [hasEngaged, setHasEngaged] = useState(false)
+  // Rollout sequence:
+  // 0 compact rail, 1 voice-only rail, 2 waveform, 3 app preview, 4 signal table.
+  // Once a stage is reached, it stays out for the rest of the session.
+  const [rolloutStage, setRolloutStage] = useState(0)
+  const [timelineProgress, setTimelineProgress] = useState(0)
+  const [transitionStepId, setTransitionStepId] = useState('minimized')
+  const [transitionTimers, setTransitionTimers] = useState({
+    minimized: 0,
+    voice: 0,
+    desktop: 0,
+    table: 0,
+  })
+  const [examplesRevealed, setExamplesRevealed] = useState(false)
+  const [seenCaptureSlugs, setSeenCaptureSlugs] = useState(() => new Set())
   // captionPhase: the central state machine for the capture lifecycle.
   // Drives CinematicCaption visibility, LiveTrace freeze, the
   // CaptureIsland morph, the hover affordance gate, AND the
@@ -164,6 +210,124 @@ export default function SignalTable({ catalog }) {
   const analyserRef = useRef(null)
   const sourceMapRef = useRef(new Map()) // slug → MediaElementAudioSourceNode
   const tableRef = useRef(null)
+  const rolloutTimeoutsRef = useRef([])
+  const timelineAnimationRef = useRef(null)
+  const timerAnimationRefs = useRef({})
+  const rolloutCompleteRef = useRef(false)
+  const stopTimelineAnimation = useCallback(() => {
+    if (timelineAnimationRef.current) {
+      cancelAnimationFrame(timelineAnimationRef.current)
+      timelineAnimationRef.current = null
+    }
+  }, [])
+  const stopTransitionTimerAnimation = useCallback((id) => {
+    if (id) {
+      if (timerAnimationRefs.current[id]) {
+        cancelAnimationFrame(timerAnimationRefs.current[id])
+        delete timerAnimationRefs.current[id]
+      }
+      return
+    }
+
+    Object.values(timerAnimationRefs.current).forEach(cancelAnimationFrame)
+    timerAnimationRefs.current = {}
+  }, [])
+  const setTransitionTimer = useCallback((id, value) => {
+    setTransitionTimers((prev) => ({
+      ...prev,
+      [id]: Math.max(0, Math.min(1, Number(value) || 0)),
+    }))
+  }, [])
+  const setTransitionStepTimer = useCallback((id, value) => {
+    const clamped = Math.max(0, Math.min(1, Number(value) || 0))
+    const step = TRANSITION_STEPS.find((item) => item.id === id)
+    setTransitionTimer(id, clamped)
+    if (step) {
+      setTimelineProgress(progressFromStep(step, clamped))
+    }
+  }, [setTransitionTimer])
+  const animateTransitionTimer = useCallback(
+    (id, target, duration = 900) => {
+      stopTransitionTimerAnimation(id)
+      const startedAt = performance.now()
+      const from = transitionTimers[id] ?? 0
+      const to = Math.max(0, Math.min(1, target))
+      const tick = (now) => {
+        const t = Math.min(1, (now - startedAt) / duration)
+        const eased = 1 - Math.pow(1 - t, 3)
+        setTransitionStepTimer(id, from + (to - from) * eased)
+        if (t < 1) {
+          timerAnimationRefs.current[id] = requestAnimationFrame(tick)
+        } else {
+          delete timerAnimationRefs.current[id]
+        }
+      }
+      timerAnimationRefs.current[id] = requestAnimationFrame(tick)
+    },
+    [setTransitionStepTimer, stopTransitionTimerAnimation, transitionTimers]
+  )
+  const applyTimelineProgress = useCallback((value) => {
+    const clamped = Math.max(0, Math.min(100, Number(value) || 0))
+    const step = getTransitionStep(clamped)
+    const local = getStepProgress(clamped, step)
+    setTimelineProgress(clamped)
+    setTransitionStepId(step.id)
+    setTransitionTimers((prev) => ({ ...prev, [step.id]: local }))
+  }, [])
+  const setTimelineProgressClamped = useCallback((value) => {
+    applyTimelineProgress(value)
+  }, [applyTimelineProgress])
+  const animateTimelineTo = useCallback(
+    (target) => {
+      stopTimelineAnimation()
+      const from = timelineProgress
+      const to = Math.max(0, Math.min(100, target))
+      const startedAt = performance.now()
+      const duration = Math.max(420, Math.min(1100, Math.abs(to - from) * 14))
+      const tick = (now) => {
+        const t = Math.min(1, (now - startedAt) / duration)
+        const eased = 1 - Math.pow(1 - t, 3)
+        applyTimelineProgress(from + (to - from) * eased)
+        if (t < 1) {
+          timelineAnimationRef.current = requestAnimationFrame(tick)
+        } else {
+          timelineAnimationRef.current = null
+        }
+      }
+      timelineAnimationRef.current = requestAnimationFrame(tick)
+    },
+    [applyTimelineProgress, stopTimelineAnimation, timelineProgress]
+  )
+  const startRollout = useCallback(() => {
+    if (rolloutCompleteRef.current) {
+      stopTransitionTimerAnimation()
+      setRolloutStage(4)
+      setTransitionStepId('table')
+      setTransitionTimers({
+        minimized: 1,
+        voice: 1,
+        desktop: 1,
+        table: 1,
+      })
+      setTimelineProgress(100)
+      return
+    }
+
+    rolloutTimeoutsRef.current.forEach(clearTimeout)
+    rolloutTimeoutsRef.current = []
+    stopTransitionTimerAnimation('voice')
+    setRolloutStage((current) => Math.max(current, 1))
+    setTransitionStepId('voice')
+    setTransitionStepTimer('voice', 0.08)
+    animateTransitionTimer('voice', 1, 1100)
+    const tScreen = setTimeout(
+      () => {
+        setRolloutStage((current) => Math.max(current, 2))
+      },
+      620
+    )
+    rolloutTimeoutsRef.current = [tScreen]
+  }, [animateTransitionTimer, setTransitionStepTimer, stopTransitionTimerAnimation])
   // Pending choreography timeouts — cleared on user interruption (manual
   // play/pause, row click) and on unmount, so we never fire a paste-tick
   // for a clip the user has already moved past.
@@ -178,6 +342,15 @@ export default function SignalTable({ catalog }) {
   }, [])
 
   const activeCapture = catalog[activeIndex]
+  const markCaptureSeen = useCallback((slug) => {
+    if (!slug) return
+    setSeenCaptureSlugs((prev) => {
+      if (prev.has(slug)) return prev
+      const next = new Set(prev)
+      next.add(slug)
+      return next
+    })
+  }, [])
 
   // -------------------------------------------------------------------
   // Lazy AudioContext setup. Called on first user-initiated play.
@@ -231,22 +404,6 @@ export default function SignalTable({ catalog }) {
   }, [activeIndex, catalog])
 
   // -------------------------------------------------------------------
-  // Window pinning: while playing, keep the active row at the top.
-  // While idle, only adjust the window if the active row scrolls out.
-  // -------------------------------------------------------------------
-  useEffect(() => {
-    if (isPlaying) {
-      setWindowStart(Math.min(activeIndex, Math.max(0, catalog.length - WINDOW_SIZE)))
-      return
-    }
-    setWindowStart((prev) => {
-      if (activeIndex < prev) return activeIndex
-      if (activeIndex >= prev + WINDOW_SIZE) return Math.min(activeIndex - WINDOW_SIZE + 1, catalog.length - WINDOW_SIZE)
-      return prev
-    })
-  }, [activeIndex, isPlaying, catalog.length])
-
-  // -------------------------------------------------------------------
   // Play a specific row — with capture-flow choreography:
   //   1. PRESS keypress cue + tick (key-down feel)
   //   2. ~240ms breath
@@ -275,6 +432,7 @@ export default function SignalTable({ catalog }) {
       // Past the "before you've engaged" moment — START affordance
       // hides for the rest of the session, the lifecycle takes over.
       setHasEngaged(true)
+      startRollout()
 
       ensureAudioGraph()
 
@@ -315,7 +473,7 @@ export default function SignalTable({ catalog }) {
         console.warn(`[SignalTable] play failed for "${next.slug}":`, err)
       }
     },
-    [catalog, missingSet, ensureAudioGraph, clearChoreography]
+    [catalog, missingSet, ensureAudioGraph, clearChoreography, startRollout]
   )
 
   // -------------------------------------------------------------------
@@ -413,11 +571,58 @@ export default function SignalTable({ catalog }) {
       // can read what landed and (optionally) take over pacing.
       const tReview = setTimeout(() => {
         setCaptionPhase('review')
-        if (currentSlug) {
-          setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
-          setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
+
+        if (rolloutCompleteRef.current) {
+          setRolloutStage(4)
+          setTransitionStepId('table')
+          setTransitionTimers((prev) => ({
+            ...prev,
+            voice: 1,
+            desktop: 1,
+            table: 1,
+          }))
+          setTimelineProgress(100)
+          if (currentSlug) {
+            setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
+            setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
+            markCaptureSeen(currentSlug)
+          }
+          playPasteTick(ctxRef.current)
+          return
         }
-        playPasteTick(ctxRef.current)
+
+        setRolloutStage((current) => Math.max(current, 3))
+        setTransitionStepId('desktop')
+        setTransitionStepTimer('desktop', 0.08)
+        animateTransitionTimer('desktop', 1, 1450)
+
+        const tDesktopDone = setTimeout(() => {
+          setTransitionStepTimer('desktop', 1)
+        }, 1250)
+        choreographyTimeoutsRef.current.push(tDesktopDone)
+
+        const tTable = setTimeout(() => {
+          setRolloutStage((current) => Math.max(current, 4))
+          setTransitionStepId('table')
+          setTransitionStepTimer('table', 0.03)
+          animateTransitionTimer('table', 1, 2400)
+          const tDeposit = setTimeout(() => {
+            if (currentSlug) {
+              setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
+              setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
+              markCaptureSeen(currentSlug)
+            }
+            playPasteTick(ctxRef.current)
+          }, 1350)
+          choreographyTimeoutsRef.current.push(tDeposit)
+
+          const tStable = setTimeout(() => {
+            rolloutCompleteRef.current = true
+            setExamplesRevealed(true)
+          }, 2400)
+          choreographyTimeoutsRef.current.push(tStable)
+        }, 2100)
+        choreographyTimeoutsRef.current.push(tTable)
       }, BREATH_RELEASE_TO_TRANSCRIBING_MS + dynamicMs)
       choreographyTimeoutsRef.current.push(tReview)
 
@@ -472,7 +677,7 @@ export default function SignalTable({ catalog }) {
       audio.removeEventListener('ended', onEnded)
       audio.removeEventListener('error', onError)
     }
-  }, [activeIndex, catalog, missingSet, playIndex, clearChoreography])
+  }, [activeIndex, catalog, missingSet, playIndex, clearChoreography, animateTransitionTimer, setTransitionStepTimer, markCaptureSeen])
 
   // -------------------------------------------------------------------
   // Captions via TextTrack `cuechange`. Re-bind when the track set
@@ -503,71 +708,15 @@ export default function SignalTable({ catalog }) {
   }, [activeIndex, captionsOn])
 
   // -------------------------------------------------------------------
-  // Keyboard: ↑/↓ navigate, space/enter toggle, only when table focused.
-  // -------------------------------------------------------------------
-  useEffect(() => {
-    const el = tableRef.current
-    if (!el) return
-
-    const onKeyDown = (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        const next = Math.min(activeIndex + 1, catalog.length - 1)
-        if (next !== activeIndex) activate(next)
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault()
-        const next = Math.max(activeIndex - 1, 0)
-        if (next !== activeIndex) activate(next)
-      } else if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault()
-        togglePlay(activeIndex)
-      }
-    }
-
-    el.addEventListener('keydown', onKeyDown)
-    return () => el.removeEventListener('keydown', onKeyDown)
-  }, [activeIndex, catalog.length, activate, togglePlay])
-
-  // -------------------------------------------------------------------
-  // Scroll-wheel inside the table walks the buffer (debounced via RAF).
-  // -------------------------------------------------------------------
-  useEffect(() => {
-    const el = tableRef.current
-    if (!el) return
-
-    let ticking = false
-    let accum = 0
-
-    const onWheel = (e) => {
-      // Only intercept vertical scrolls; let trackpad horizontal pass.
-      if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return
-      e.preventDefault()
-      accum += e.deltaY
-      if (ticking) return
-      ticking = true
-      requestAnimationFrame(() => {
-        ticking = false
-        const threshold = 40
-        if (accum > threshold) {
-          accum = 0
-          setWindowStart((s) => Math.min(s + 1, Math.max(0, catalog.length - WINDOW_SIZE)))
-        } else if (accum < -threshold) {
-          accum = 0
-          setWindowStart((s) => Math.max(s - 1, 0))
-        }
-      })
-    }
-
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
-  }, [catalog.length])
-
-  // -------------------------------------------------------------------
   // Cleanup on unmount.
   // -------------------------------------------------------------------
   useEffect(() => {
     return () => {
       clearChoreography()
+      rolloutTimeoutsRef.current.forEach(clearTimeout)
+      rolloutTimeoutsRef.current = []
+      stopTimelineAnimation()
+      stopTransitionTimerAnimation()
       if (ctxRef.current) {
         ctxRef.current.close().catch(() => {})
         ctxRef.current = null
@@ -575,30 +724,97 @@ export default function SignalTable({ catalog }) {
       analyserRef.current = null
       sourceMapRef.current.clear()
     }
-  }, [clearChoreography])
-
-  // -------------------------------------------------------------------
-  // Derived: visible window.
-  // -------------------------------------------------------------------
-  const visible = useMemo(() => {
-    const start = Math.max(0, Math.min(windowStart, catalog.length - WINDOW_SIZE))
-    return catalog.slice(start, start + WINDOW_SIZE).map((c, offset) => ({
-      capture: c,
-      index: start + offset,
-    }))
-  }, [catalog, windowStart])
+  }, [clearChoreography, stopTimelineAnimation, stopTransitionTimerAnimation])
 
   const totalRows = catalog.length
-  const visibleStart = Math.max(0, Math.min(windowStart, catalog.length - WINDOW_SIZE))
 
   // True only during the recording → transcribing arc. Review and
   // idle both read as neutral pre-interaction state — the row halo
   // carries the trailing confirmation visually instead of the header.
   const inActiveCapture =
     captionPhase === 'recording' || captionPhase === 'transcribing'
+  const currentTimelineStep =
+    TRANSITION_STEPS.find((step) => step.id === transitionStepId) ?? TRANSITION_STEPS[0]
+  const currentStepIndex = TRANSITION_STEPS.findIndex((step) => step.id === currentTimelineStep.id)
+  const timerFor = (id) => transitionTimers[id] ?? 0
+  const stepHasPassed = (id) => currentStepIndex > TRANSITION_STEPS.findIndex((step) => step.id === id)
+  const voiceProgress = stepHasPassed('voice')
+    ? 1
+    : currentTimelineStep.id === 'voice'
+    ? timerFor('voice')
+    : 0
+  const desktopProgress = stepHasPassed('desktop')
+    ? 1
+    : currentTimelineStep.id === 'desktop'
+    ? timerFor('desktop')
+    : 0
+  const tableProgress = stepHasPassed('table')
+    ? 1
+    : currentTimelineStep.id === 'table'
+    ? timerFor('table')
+    : 0
+  const screenVisible = voiceProgress > 0.02
+  const previewVisible = desktopProgress > 0.02
+  const tableVisible = tableProgress > 0.02
+  const currentStepProgress = timerFor(currentTimelineStep.id)
+  const railPrompt =
+    currentTimelineStep.id === 'minimized'
+      ? 'Click to hear Max text Sarah'
+      : currentTimelineStep.id === 'voice' && voiceProgress < 0.18
+      ? 'Max is texting Sarah'
+      : inActiveCapture
+      ? `${isPlaying ? 'PLAYING' : 'STANDBY'} · ${activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}`
+      : 'STANDBY · CH-01 / VOICE.IN'
+  const screenMaxHeight = Math.round(voiceProgress * 420)
+  const screenPadding = screenVisible ? '1rem' : 0
+  const previewMaxHeight = Math.round(desktopProgress * 420)
+  const tableShellProgress = Math.min(1, tableProgress / 0.24)
+  const tableSlotProgress = Math.max(0, Math.min(1, (tableProgress - 0.24) / 0.76))
+  const tableRowsMaxHeight = Math.round(tableSlotProgress * 72)
+  const tableMaxHeight = Math.round(tableShellProgress * 72 + tableRowsMaxHeight)
+  const examplesVisible = examplesRevealed && tableProgress >= 1
 
   return (
     <div className="space-y-10">
+      {SHOW_TRANSITION_TIMELINE && (
+        <TransitionTimeline
+          progress={timelineProgress}
+          steps={TRANSITION_STEPS}
+          currentStep={currentTimelineStep}
+          stepProgress={currentStepProgress}
+          timers={transitionTimers}
+          onScrub={(value) => {
+            stopTimelineAnimation()
+            stopTransitionTimerAnimation()
+            setTimelineProgressClamped(value)
+          }}
+          onStepScrub={(value) => {
+            stopTimelineAnimation()
+            stopTransitionTimerAnimation(currentTimelineStep.id)
+            setTransitionTimer(currentTimelineStep.id, value)
+            setTimelineProgress(progressFromStep(currentTimelineStep, value))
+          }}
+          onTimerChange={(id, value) => {
+            stopTimelineAnimation()
+            stopTransitionTimerAnimation(id)
+            setTransitionTimer(id, value)
+            const step = TRANSITION_STEPS.find((item) => item.id === id)
+            if (step && step.id === currentTimelineStep.id) {
+              setTimelineProgress(progressFromStep(step, value))
+            }
+          }}
+          onSelectStep={(step) => {
+            stopTimelineAnimation()
+            stopTransitionTimerAnimation()
+            setTransitionStepId(step.id)
+            setTimelineProgress(progressFromStep(step, transitionTimers[step.id] ?? 0))
+          }}
+          onAnimateTo={(target) => {
+            stopTransitionTimerAnimation()
+            animateTimelineTo(target)
+          }}
+        />
+      )}
       {/* Trace + caption rail — chassis renders with the always-dark
           panel identity in both themes (instruments-as-objects). The
           inner audio logic / LiveTrace already strokes in --trace, but
@@ -641,8 +857,8 @@ export default function SignalTable({ catalog }) {
         <span aria-hidden className="pointer-events-none absolute left-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
         <span aria-hidden className="pointer-events-none absolute right-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
 
-        <div className="flex items-center justify-between border-b border-edge-dim px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-faint">
-          <div className="flex items-center gap-2">
+        <div className="flex min-h-9 items-center justify-between border-b border-edge-dim px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-faint">
+          <div className="flex min-w-0 items-center gap-2">
             <span
               aria-hidden
               className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
@@ -653,9 +869,20 @@ export default function SignalTable({ catalog }) {
                 neutral pre-interaction label so the calm end state
                 doesn't keep shouting the row that just landed —
                 that's the table's job (the row halo). */}
-            {inActiveCapture
-              ? `${isPlaying ? 'PLAYING' : 'STANDBY'} · ${activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}`
-              : 'STANDBY · CH-01 / VOICE.IN'}
+            {!screenVisible ? (
+              <button
+                type="button"
+                onClick={() => playIndex(0)}
+                disabled={rolloutStage === 1}
+                className="inline-flex items-center gap-2 truncate text-left transition-colors hover:text-ink-muted disabled:cursor-default disabled:hover:text-ink-faint"
+                aria-label="Click to hear Max text Sarah"
+              >
+                <Play className="h-3 w-3" />
+                <span className="truncate">{railPrompt}</span>
+              </button>
+            ) : (
+              railPrompt
+            )}
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -666,7 +893,7 @@ export default function SignalTable({ catalog }) {
             >
               CC · {captionsOn ? 'ON' : 'OFF'}
             </button>
-            <span>32.1kHz · 24-BIT · MONO</span>
+            <span className="hidden sm:inline">32.1kHz · 24-BIT · MONO</span>
           </div>
         </div>
 
@@ -684,11 +911,18 @@ export default function SignalTable({ catalog }) {
             }
           }}
           aria-label={isPlaying ? `Pause ${activeCapture?.eyebrow ?? ''}` : `Play ${activeCapture?.eyebrow ?? ''}`}
-          className="group relative cursor-pointer bg-canvas-alt p-2 transition-shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-trace sm:p-4"
+          className={`group relative cursor-pointer overflow-hidden bg-canvas-alt transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-1 focus-visible:ring-trace ${
+            screenVisible
+              ? 'opacity-100'
+              : 'opacity-0 pointer-events-none'
+          }`}
           style={{
+            maxHeight: `${screenMaxHeight}px`,
+            padding: screenPadding,
             // Inset phosphor border on hover — appears like the screen
             // is "warming up" when you approach it.
-            transition: 'box-shadow 0.32s ease-out',
+            transition:
+              'max-height 700ms cubic-bezier(0.22,1,0.36,1), padding 700ms cubic-bezier(0.22,1,0.36,1), opacity 500ms ease-out, box-shadow 320ms ease-out',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.boxShadow = isPlaying
@@ -779,7 +1013,9 @@ export default function SignalTable({ catalog }) {
             after first engagement) · channel/eyebrow label (right).
             Only the phosphor dot + the play/pause icon signal state;
             the rest stays calm so consecutive captures don't strobe. */}
-        <div className="grid grid-cols-3 items-center gap-3 border-t border-edge-faint px-4 py-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+        <div className={`grid grid-cols-3 items-center gap-3 overflow-hidden border-t border-edge-faint px-4 text-[9px] uppercase tracking-[0.24em] text-ink-subtle transition-all duration-500 ${
+          screenVisible ? 'max-h-10 py-2 opacity-100' : 'max-h-0 py-0 opacity-0'
+        }`}>
           <span className="flex items-center gap-2 justify-self-start">
             <span
               aria-hidden
@@ -821,97 +1057,135 @@ export default function SignalTable({ catalog }) {
           and the dictation buffer below. The sequence reads:
           live capture (play bar) → simulated paste (here) → historical
           record of past captures (table chassis). */}
-      <PasteMock capture={activeCapture} phase={captionPhase} keypressCue={keypressCue} />
+      <div
+        className={`overflow-hidden transition-all delay-150 duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          previewVisible
+            ? 'translate-y-0 opacity-100'
+            : 'max-h-0 -translate-y-2 opacity-0'
+        }`}
+        style={{ maxHeight: previewVisible ? `${previewMaxHeight}px` : 0 }}
+      >
+        <PasteMock
+          capture={activeCapture}
+          phase={captionPhase}
+          keypressCue={keypressCue}
+          revealProgress={desktopProgress}
+        />
+      </div>
 
       {/* Table — second instrument; same chassis treatment as the
           trace card so they read as a matched pair sitting on the
           workbench. Token re-scoping mirrors the trace card. */}
       <div
-        ref={tableRef}
-        tabIndex={0}
-        role="listbox"
-        aria-label="Talkie capture catalog"
-        aria-activedescendant={`signal-row-${activeIndex}`}
-        className="relative overflow-hidden rounded-md focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
-        style={{
-          background: 'var(--panel-bg)',
-          color: 'var(--panel-ink)',
-          border: '1px solid var(--panel-edge)',
-          boxShadow: 'var(--panel-chassis-shadow)',
-          '--trace': 'var(--panel-trace)',
-          '--trace-glow': 'var(--panel-trace-glow)',
-          '--trace-dim': 'var(--panel-trace-dim)',
-          '--ink': 'var(--panel-ink)',
-          '--ink-dim': 'var(--panel-ink-dim)',
-          '--ink-muted': 'var(--panel-ink-muted)',
-          '--ink-faint': 'var(--panel-ink-faint)',
-          '--ink-subtle': 'var(--panel-ink-subtle)',
-          '--edge': 'var(--panel-edge)',
-          '--edge-dim': 'var(--panel-edge-dim)',
-          '--edge-faint': 'var(--panel-edge-faint)',
-          '--edge-subtle': 'rgba(77, 255, 158, 0.06)',
-          '--canvas-alt': 'var(--panel-bg-alt)',
-          '--canvas': 'var(--panel-bg)',
-          '--surface': 'var(--panel-bg)',
-        }}
+        className={`overflow-hidden transition-all delay-300 duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          tableVisible
+            ? 'translate-y-0 opacity-100'
+            : 'max-h-0 -translate-y-3 opacity-0'
+        }`}
+        style={{ maxHeight: tableVisible ? `${tableMaxHeight}px` : 0 }}
       >
-        {/* Corner fasteners */}
-        <span aria-hidden className="pointer-events-none absolute left-1.5 top-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
-        <span aria-hidden className="pointer-events-none absolute right-1.5 top-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
-        <span aria-hidden className="pointer-events-none absolute left-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
-        <span aria-hidden className="pointer-events-none absolute right-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+        <div
+          ref={tableRef}
+          tabIndex={0}
+          role="listbox"
+          aria-label="Talkie capture catalog"
+          aria-activedescendant={`signal-row-${activeIndex}`}
+          className="relative overflow-hidden rounded-md focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+          style={{
+            background: 'var(--panel-bg)',
+            color: 'var(--panel-ink)',
+            border: '1px solid var(--panel-edge)',
+            boxShadow: 'var(--panel-chassis-shadow)',
+            '--trace': 'var(--panel-trace)',
+            '--trace-glow': 'var(--panel-trace-glow)',
+            '--trace-dim': 'var(--panel-trace-dim)',
+            '--ink': 'var(--panel-ink)',
+            '--ink-dim': 'var(--panel-ink-dim)',
+            '--ink-muted': 'var(--panel-ink-muted)',
+            '--ink-faint': 'var(--panel-ink-faint)',
+            '--ink-subtle': 'var(--panel-ink-subtle)',
+            '--edge': 'var(--panel-edge)',
+            '--edge-dim': 'var(--panel-edge-dim)',
+            '--edge-faint': 'var(--panel-edge-faint)',
+            '--edge-subtle': 'rgba(77, 255, 158, 0.06)',
+            '--canvas-alt': 'var(--panel-bg-alt)',
+            '--canvas': 'var(--panel-bg)',
+            '--surface': 'var(--panel-bg)',
+          }}
+        >
+          {/* Corner fasteners */}
+          <span aria-hidden className="pointer-events-none absolute left-1.5 top-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+          <span aria-hidden className="pointer-events-none absolute right-1.5 top-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+          <span aria-hidden className="pointer-events-none absolute left-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
+          <span aria-hidden className="pointer-events-none absolute right-1.5 bottom-1.5 font-mono text-[8px] leading-none select-none z-10" style={{ color: 'var(--panel-ink-muted)', opacity: 0.5 }}>·</span>
 
-        <div className="flex items-center justify-between border-b border-edge-faint bg-canvas-alt px-4 py-2 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-          <span>SIGNAL TABLE · DICTATION BUFFER</span>
-          <span>
-            {String(visibleStart + 1).padStart(2, '0')}–{String(Math.min(visibleStart + WINDOW_SIZE, totalRows)).padStart(2, '0')} / {String(totalRows).padStart(2, '0')}
-          </span>
-        </div>
+          <div className="flex items-center justify-between border-b border-edge-faint bg-canvas px-4 py-2 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+            <span>SIGNAL TABLE · DICTATION BUFFER</span>
+            <span>
+              {String(activeIndex + 1).padStart(2, '0')} / {String(totalRows).padStart(2, '0')}
+            </span>
+          </div>
 
-        <div>
-          {visible.map(({ capture, index }) => (
-            <div key={capture.slug} id={`signal-row-${index}`} role="option" aria-selected={index === activeIndex}>
-              <SignalTableRow
-                capture={capture}
-                index={index}
-                active={index === activeIndex}
-                playing={index === activeIndex && isPlaying}
-                missing={missingSet.has(capture.slug)}
-                activationKey={activationKey[capture.slug]}
-                transcribeKey={transcribeKey[capture.slug]}
-                onActivate={activate}
-                onTogglePlay={togglePlay}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Scrubber: dot per row, click to jump. */}
-        <div className="flex items-center justify-between gap-3 border-t border-edge-faint bg-canvas-alt px-4 py-2.5">
-          <div className="flex items-center gap-1.5">
-            {catalog.map((c, i) => {
-              const inWindow = i >= visibleStart && i < visibleStart + WINDOW_SIZE
-              const isActive = i === activeIndex
+          <div
+            className="overflow-hidden"
+            style={{
+              maxHeight: `${tableRowsMaxHeight}px`,
+              transition: 'max-height 760ms cubic-bezier(0.16,1.22,0.32,1)',
+            }}
+          >
+            {[{ capture: activeCapture, index: activeIndex }].map(({ capture, index }) => {
+              const rowReveal = Math.max(0, Math.min(1, tableSlotProgress / 0.54))
               return (
-                <button
-                  key={c.slug}
-                  type="button"
-                  onClick={() => activate(i)}
-                  aria-label={`Jump to ${c.eyebrow}`}
-                  className={`h-1.5 rounded-full transition-all ${
-                    isActive ? 'w-5 bg-trace' : inWindow ? 'w-2 bg-ink-faint' : 'w-1.5 bg-edge'
-                  }`}
-                  style={isActive ? { boxShadow: '0 0 6px var(--trace)' } : undefined}
-                />
+                <div
+                  key={capture.slug}
+                  id={`signal-row-${index}`}
+                  role="option"
+                  aria-selected={index === activeIndex}
+                  className="overflow-hidden"
+                  style={{
+                    maxHeight: `${Math.round(rowReveal * 72)}px`,
+                    opacity: rowReveal,
+                    transform: `translateY(${Math.round((1 - rowReveal) * -6)}px) scale(${0.98 + rowReveal * 0.02})`,
+                    transformOrigin: 'top center',
+                    transition:
+                      'max-height 680ms cubic-bezier(0.16,1.22,0.32,1), opacity 260ms ease-out, transform 640ms cubic-bezier(0.16,1.22,0.32,1)',
+                  }}
+                >
+                  <SignalTableRow
+                    capture={capture}
+                    index={index}
+                    active={index === activeIndex}
+                    playing={index === activeIndex && isPlaying}
+                    missing={missingSet.has(capture.slug)}
+                    activationKey={activationKey[capture.slug]}
+                    transcribeKey={transcribeKey[capture.slug]}
+                    onActivate={activate}
+                    onTogglePlay={togglePlay}
+                    showOutput={false}
+                  />
+                </div>
               )
             })}
           </div>
-          <div className="text-[9px] uppercase tracking-[0.22em] text-ink-faint hidden sm:flex items-center gap-3">
-            <span>↑ ↓ NAV</span>
-            <span>SPACE PLAY</span>
+
+          <div className="flex items-center justify-between gap-3 border-t border-edge-faint bg-canvas px-4 py-2.5 text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+            <span className="shrink-0">LANDED · BUFFER PREVIEW</span>
+            <span className="min-w-0 truncate">{activeCapture?.output ?? 'READY'}</span>
           </div>
         </div>
       </div>
+
+      {examplesVisible && (
+        <div className="animate-[capture-examples-reveal_900ms_cubic-bezier(0.22,1,0.36,1)_both]">
+          <CaptureExamplesRail
+            catalog={catalog}
+            activeIndex={activeIndex}
+            isPlaying={isPlaying}
+            seenCaptureSlugs={seenCaptureSlugs}
+            onSelect={activate}
+          />
+        </div>
+      )}
 
       {/* Single shared <audio>. Rendered without `controls` — the row
           buttons are the transport. preload=none so we don't fetch
@@ -927,6 +1201,209 @@ export default function SignalTable({ catalog }) {
           />
         )}
       </audio>
+    </div>
+  )
+}
+
+function CaptureExamplesRail({ catalog, activeIndex, isPlaying, seenCaptureSlugs, onSelect }) {
+  const nextIndex = (activeIndex + 1) % catalog.length
+  const seenCount = seenCaptureSlugs.size
+
+  return (
+    <div className="overflow-hidden rounded-md border border-edge-dim bg-surface px-3 py-3 shadow-[0_10px_28px_-24px_rgba(0,0,0,0.45)]">
+      <div className="mb-2 flex items-center justify-between gap-3 px-1 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+        <span>Simulated paths · {String(seenCount).padStart(2, '0')} seen</span>
+        <button
+          type="button"
+          onClick={() => onSelect(nextIndex)}
+          className="text-ink-subtle transition-colors hover:text-ink-muted"
+        >
+          Next · {catalog[nextIndex]?.eyebrow ?? 'Capture'}
+        </button>
+      </div>
+
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {catalog.map((capture, index) => {
+          const kind = capture.eyebrow.split('·')[0].trim().toUpperCase()
+          const Icon = CAPTURE_EXAMPLE_ICONS[kind] ?? NotebookPen
+          const active = index === activeIndex
+          const seen = seenCaptureSlugs.has(capture.slug)
+          return (
+            <button
+              key={capture.slug}
+              type="button"
+              onClick={() => onSelect(index)}
+              className={`group flex min-w-[11rem] items-center gap-2 rounded-sm border px-2.5 py-2 text-left transition-all ${
+                seen
+                  ? 'border-edge bg-canvas text-ink shadow-[0_8px_24px_-24px_rgba(0,0,0,0.35)]'
+                  : 'border-edge-dim bg-canvas-alt text-ink-muted opacity-70 hover:border-edge hover:bg-canvas hover:opacity-100'
+              }`}
+              aria-pressed={active}
+            >
+              <span
+                className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border transition-transform ${
+                  seen ? 'border-trace text-trace' : 'border-edge-dim text-ink-subtle group-hover:text-ink-muted'
+                } ${active && isPlaying ? 'scale-105' : ''}`}
+                style={
+                  seen
+                    ? {
+                        background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
+                        boxShadow: active
+                          ? '0 0 10px color-mix(in oklab, var(--trace-glow) 36%, transparent)'
+                          : 'none',
+                      }
+                    : undefined
+                }
+              >
+                <Icon className="h-3.5 w-3.5" />
+              </span>
+              <span className="min-w-0">
+                <span className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em]">
+                  <span className="truncate">{capture.eyebrow}</span>
+                  <span className={seen ? 'text-trace' : 'text-ink-faint'}>
+                    {seen ? 'seen' : 'unseen'}
+                  </span>
+                </span>
+                <span className="mt-1 block truncate text-[11px] text-ink-subtle">
+                  {capture.output}
+                </span>
+              </span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function TransitionTimeline({
+  progress,
+  steps,
+  currentStep,
+  stepProgress,
+  timers,
+  onScrub,
+  onStepScrub,
+  onTimerChange,
+  onSelectStep,
+  onAnimateTo,
+}) {
+  const pct = Math.round(progress)
+  const stepPct = Math.round(stepProgress * 100)
+
+  return (
+    <div className="rounded-md border border-edge-dim bg-surface px-4 py-3 font-mono shadow-[0_10px_28px_-24px_rgba(0,0,0,0.45)]">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="text-[9px] uppercase tracking-[0.24em] text-ink-faint">
+          Rollout timeline · {currentStep.label} · {String(stepPct).padStart(3, '0')}%
+        </div>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {steps.map((step) => (
+            <button
+              key={step.id}
+              type="button"
+              onClick={() => onSelectStep(step)}
+              className={`rounded-sm border px-2 py-1 text-[8px] uppercase tracking-[0.2em] transition-colors hover:border-edge hover:text-ink-muted ${
+                step.id === currentStep.id
+                  ? 'border-edge text-ink-muted'
+                  : 'border-edge-dim text-ink-faint'
+              }`}
+            >
+              {step.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative mt-3">
+        <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-edge-dim" />
+        <div
+          className="absolute left-0 top-1/2 h-px -translate-y-1/2"
+          style={{
+            width: `${pct}%`,
+            background: 'var(--amber)',
+            boxShadow: '0 0 8px color-mix(in oklab, var(--amber) 40%, transparent)',
+          }}
+        />
+        <input
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          value={pct}
+          onChange={(event) => onScrub(Number(event.target.value))}
+          className="relative z-10 block h-7 w-full cursor-ew-resize appearance-none bg-transparent accent-[var(--amber)]"
+          aria-label="Rollout progress"
+        />
+      </div>
+
+      <div className="mt-1 grid grid-cols-4 text-[8px] uppercase tracking-[0.18em] text-ink-subtle">
+        {steps.map((step) => (
+          <button
+            key={step.id}
+            type="button"
+            onClick={() => onAnimateTo(step.end)}
+            className="text-left transition-colors hover:text-ink-muted last:text-right"
+          >
+            {step.end}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-3 grid gap-1.5 text-[8px] uppercase tracking-[0.2em] text-ink-subtle sm:grid-cols-[7.5rem_1fr_3.5rem] sm:items-center">
+        <span>Step timer</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={stepProgress}
+          onChange={(event) => onStepScrub(Number(event.target.value))}
+          className="h-5 w-full cursor-ew-resize accent-[var(--amber)]"
+          aria-label="Step-local progress"
+        />
+        <span className="text-right">{String(stepPct).padStart(3, '0')}%</span>
+      </div>
+
+      <div className="mt-3 grid gap-2 text-[8px] uppercase tracking-[0.2em] text-ink-subtle sm:grid-cols-3">
+        {['voice', 'desktop', 'table'].map((id) => {
+          const value = Math.round((timers[id] ?? 0) * 100)
+          const label =
+            id === 'voice'
+              ? 'Voice/screen'
+              : id === 'desktop'
+              ? 'Desktop'
+              : 'Table'
+          const step = steps.find((item) => item.id === id)
+          return (
+            <div
+              key={id}
+              className={`rounded-sm border px-2 py-1.5 ${
+                currentStep.id === id ? 'border-edge text-ink-muted' : 'border-edge-dim'
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => step && onSelectStep(step)}
+                className="flex w-full items-center justify-between text-left transition-colors hover:text-ink-muted"
+              >
+                <span>{label}</span>
+                <span>{String(value).padStart(3, '0')}%</span>
+              </button>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={timers[id] ?? 0}
+                onChange={(event) => onTimerChange(id, Number(event.target.value))}
+                className="mt-1 h-4 w-full cursor-ew-resize accent-[var(--amber)]"
+                aria-label={`${label} local timer`}
+              />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

@@ -16,9 +16,10 @@ import {
 import SignalTable from '../SignalTable'
 import capturesCatalog from '../../content/captures.json'
 import PanoramicHero from './PanoramicHero'
+import { getTourItems } from '../../lib/tour'
 
 /**
- * v4 HomePage — synthesis composition.
+ * HomePage — synthesis composition.
  *
  * Hero is a single panoramic instrument (PanoramicHero) that integrates
  * keyboard-key + use-case examples + install affordance + animated
@@ -40,50 +41,50 @@ import PanoramicHero from './PanoramicHero'
  */
 
 // -----------------------------------------------------------------------------
-// Content data (forks v2 — donor URLs go to /v4 to keep nav scope tight)
+// Content data
 // -----------------------------------------------------------------------------
 
 const CAPTURE_MODES = [
   {
     icon: Mic,
     eyebrow: 'CAPTURE',
-    title: 'Catch the thought before it mutates.',
-    body: 'Record on iPhone, Apple Watch, or Mac and keep the full transcript in the same system.',
+    title: 'Catch it before it changes.',
+    body: 'Record on iPhone, Watch, or Mac. Transcript stays in one place.',
     href: '/mobile',
   },
   {
     icon: Laptop,
     eyebrow: 'DICTATION',
     title: 'Speak straight into the work.',
-    body: 'Global shortcuts on Mac dictate into the app you are already using — no switching tools.',
+    body: "Hotkey on Mac. Dictate into whatever app you're already in.",
     href: '/mac',
   },
   {
     icon: Wand2,
     eyebrow: 'COMPOSE',
-    title: 'Structure it after the moment.',
-    body: 'Rewrite, expand, summarize, and compare edits once the raw idea is safely recorded.',
+    title: 'Clean it up later.',
+    body: "Rewrite, trim, expand — once the raw take is saved. It's not going anywhere.",
     href: '/mac',
   },
   {
     icon: Search,
     eyebrow: 'RECOVERY',
-    title: 'Recover the full thread later.',
-    body: 'Search across memos and dictations, with app context attached when capture starts on desktop.',
+    title: 'Find it three weeks from now.',
+    body: 'Search across everything you’ve said. Talkie remembers the app, the time, and the context.',
     href: '/docs/cli',
   },
   {
     icon: Layers,
     eyebrow: 'WORKFLOWS',
     title: 'Turn raw speech into useful output.',
-    body: 'Route captures into summaries, task lists, files, and follow-up actions without copy-paste.',
+    body: 'Voice goes in. Summaries, tasks, and files come out.',
     href: '/docs/workflows',
   },
   {
     icon: Terminal,
     eyebrow: 'CLI',
-    title: 'Keep the advanced layer open.',
-    body: 'Query your voice data from scripts and tools instead of trapping it inside a single interface.',
+    title: 'Script against it.',
+    body: 'Your voice data has a CLI. Pipe it, query it, build on it.',
     href: '/docs/cli',
   },
 ]
@@ -111,19 +112,19 @@ const OWNERSHIP_CARDS = [
     icon: HardDrive,
     pin: 'U1',
     title: 'Local-first library',
-    body: 'Recordings and transcripts live on your devices instead of disappearing into a database we control.',
+    body: 'Your recordings and transcripts stay on your devices. Not on someone else’s server.',
   },
   {
     icon: Cloud,
     pin: 'U2',
     title: 'Sync through your iCloud',
-    body: 'When devices stay in step, the sync path runs through Apple’s infrastructure and your Apple ID.',
+    body: 'Sync runs through your iCloud account. No third-party servers involved.',
   },
   {
     icon: Cpu,
     pin: 'U3',
     title: 'Models on your terms',
-    body: 'On-device models, bring your own provider, or fully offline workflows — privacy or convenience, your call.',
+    body: 'On-device, bring-your-own-key, or fully offline. All three work.',
   },
 ]
 
@@ -166,6 +167,46 @@ const AMBER_TINT_SUBTLE = { background: 'color-mix(in oklab, var(--amber) 5%, tr
 // -----------------------------------------------------------------------------
 
 export default function HomePage() {
+  /* HScroll order is editorial, not lib/tour's authoring order:
+   * Recording first (live waveform = terminal-shaped active state),
+   * Library second (the memo list), Ready third (the capture-idle
+   * state), then the rest in original order. */
+  const IPHONE_HSCROLL_ORDER = [
+    'iphone-recording',
+    'iphone-library',
+    'iphone-ready',
+    'iphone-welcome',
+    'iphone-memo-detail',
+    'iphone-sync',
+    'iphone-settings',
+  ]
+  const orderIndex = (slug) => {
+    const i = IPHONE_HSCROLL_ORDER.indexOf(slug)
+    return i === -1 ? Infinity : i
+  }
+  const iphoneItems = getTourItems()
+    .filter((i) => i.platform === 'iphone')
+    .sort((a, b) => orderIndex(a.slug) - orderIndex(b.slug))
+
+  /* Mac HScroll — landscape aspect, smaller subset. Home / Recording /
+   * Compose / Diff lead because they're the most narratively legible
+   * screens (dashboard, the live HUD, compose, diff). */
+  const MAC_HSCROLL_ORDER = [
+    'mac-home',
+    'mac-recording',
+    'mac-compose',
+    'mac-compose-diff',
+    'mac-actions',
+    'mac-models',
+  ]
+  const macOrder = (slug) => {
+    const i = MAC_HSCROLL_ORDER.indexOf(slug)
+    return i === -1 ? Infinity : i
+  }
+  const macItems = getTourItems()
+    .filter((i) => i.platform === 'mac' && MAC_HSCROLL_ORDER.includes(i.slug))
+    .sort((a, b) => macOrder(a.slug) - macOrder(b.slug))
+
   return (
     <>
       {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
@@ -180,19 +221,125 @@ export default function HomePage() {
               headline. */}
           <PanoramicHero />
 
-          {/* Brand callback — the original "selfie / thoughts" line
+          {/* Brand callback — the "selfie / brain" line
               moves here as a small italic signoff, so it lands as a
               memorable closer instead of competing with "Talk to your
               {device}" for the lead. */}
-          <p className="mt-10 text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14">
+          {/* Brand callback — desktop only here. On mobile, the same
+              line is hoisted to a mid-page divider section between
+              Recovery Flow and Ownership for thematic punctuation. */}
+          <p className="mt-10 hidden text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14 md:block">
             <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
-            It's like a selfie. For your thoughts.
+            A selfie. For your brain.
             <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
           </p>
         </div>
       </section>
 
-      {/* ========== DATA BUFFER · SIGNAL TABLE ========== */}
+      {/* ========== AGENT HANDOFF · SCREENSHOT PROOF ========== */}
+      <section
+        id="agent-handoff"
+        className="relative overflow-hidden border-b border-edge-faint bg-canvas-alt font-mono"
+      >
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
+
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-14 md:px-6 md:py-20 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
+          <div className="max-w-xl">
+            <p
+              className="text-[10px] uppercase tracking-[0.26em]"
+              style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
+            >
+              · AGENT HANDOFF
+            </p>
+            <h2 className="mt-3 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
+              Say it once. The spec lands where work happens.
+            </h2>
+            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink-muted">
+              A morning voice memo can become a reviewed brief, a queued coding task, or a reply-ready handoff to your agent inbox.
+            </p>
+            <div className="mt-7">
+              <Link
+                href="/workflows"
+                className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                style={{
+                  color: 'var(--amber)',
+                  ...AMBER_TINT,
+                  ...AMBER_GLOW_SOFT,
+                }}
+              >
+                SEE WORKFLOWS <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+
+          <AgentHandoffFrame />
+        </div>
+      </section>
+
+      {/* ========== MOBILE-ONLY HSCROLL · IPHONE SCREENS + MAC ROW ==========
+          Phone-only visual proof between the textual hero and the
+          richer Data Buffer below. Tablet+desktop already get the
+          panoramic chassis as their visual anchor, so this section
+          is `md:hidden` to keep the rich layout untouched. */}
+      <section className="border-b border-edge-faint bg-canvas-alt py-7 md:hidden">
+        <p className="px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
+          · ON YOUR iPHONE
+        </p>
+
+        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {iphoneItems.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/tour/${item.slug}/`}
+              className="group flex-shrink-0 snap-start"
+            >
+              <div className="w-[170px] overflow-hidden rounded-[1.5rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="aspect-[9/19] w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+                {item.title}
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        {/* Mac strip — landscape cards, fewer items, sits right under
+            the iPhone HScroll so the user sees both surfaces without
+            scrolling far. Same snap behavior, wider cards (16/10
+            aspect ratio mirrors mac screens). */}
+        <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
+          · ON YOUR MAC
+        </p>
+
+        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {macItems.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/tour/${item.slug}/`}
+              className="group flex-shrink-0 snap-start"
+            >
+              <div className="w-[280px] overflow-hidden rounded-[1.25rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="aspect-[16/10] w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+                {item.title}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ========== CAPTURES · SIGNAL TABLE ========== */}
       <section
         id="capture"
         className="relative border-t border-edge-faint bg-canvas-alt font-mono"
@@ -205,13 +352,13 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · DATA BUFFER
+              · CAPTURES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              What the instrument actually captures.
+              What it might sound like.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Every clip is a real capture. Press play to hear the voice, watch the engine transcribe, and see where it lands.
+              AI-simulated recordings — Max and Sarah are fictional to protect privacy.
             </p>
           </div>
 
@@ -240,7 +387,7 @@ export default function HomePage() {
               One voice path. <span className="italic text-ink-muted">More than one use.</span>
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Talkie can start as a quick note, a dictated paragraph, a search query, or the start of a workflow. Voice for its own sake is not the point — moving work forward is.
+              A capture can become a note, a draft, a search, or the start of a workflow. Say it once, then use it where it belongs.
             </p>
           </div>
 
@@ -302,6 +449,20 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ========== BRAND CALLBACK · MOBILE DIVIDER ==========
+          Mid-page poetic break on phone only. Desktop keeps the
+          callback inline at the end of the hero section per the
+          original composition; on mobile we hoist it down here so
+          it works as a chapter divider between operational
+          (Recovery Flow) and trust (Ownership) themes. */}
+      <section className="border-y border-edge-faint bg-canvas py-14 md:hidden">
+        <p className="mx-auto max-w-md px-4 text-center font-display text-2xl italic leading-snug text-ink-dim">
+          <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
+          A selfie. For your brain.
+          <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
+        </p>
+      </section>
+
       {/* ========== OWNERSHIP / ARCHITECTURE ========== */}
       <section
         id="ownership"
@@ -318,10 +479,10 @@ export default function HomePage() {
               · OWNERSHIP
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Your voice stays on your side.
+              Your voice stays yours.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Library lives on your devices. Sync runs through your iCloud. On-device transcription is available. External providers are opt-in and use your keys.
+              Everything lives on your devices, syncs through your iCloud, transcribes on your silicon. External models are opt-in — your keys, not ours.
             </p>
           </div>
 
@@ -381,7 +542,7 @@ export default function HomePage() {
               Free while we build.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Talkie is free. No plans to change that for the basic utilities — and the local-first promise stays non-negotiable either way.
+              Free. If that ever changes, it&rsquo;ll be for power-user features — never the core tool. The local-first part stays.
             </p>
           </div>
 
@@ -420,7 +581,7 @@ export default function HomePage() {
                     $0
                   </span>
                   <span className="text-[12px] uppercase tracking-[0.22em] text-ink-faint">
-                    / per month · indefinitely while in beta
+                    / month · beta
                   </span>
                 </div>
 
@@ -482,12 +643,12 @@ export default function HomePage() {
                 Honest pricing, when the time comes.
               </h3>
               <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
-                No plans to charge today. If that changes, it&rsquo;ll be for advanced and power-user features — never the basic utilities. Local-first stays non-negotiable, regardless.
+                No plans to charge today. If that changes, it&rsquo;ll cover advanced features — never what you see on this page.
               </p>
 
               <ul className="mt-6 space-y-3 text-[12px] text-ink-muted">
                 {[
-                  ['ALWAYS', 'Basic utilities · free, no exceptions'],
+                  ['ALWAYS', 'Core tool · free, no exceptions'],
                   ['MAYBE', 'Pro tier · advanced + power-user features'],
                   ['NEVER', 'Selling your voice or transcripts'],
                 ].map(([tag, desc]) => (
@@ -579,8 +740,46 @@ export default function HomePage() {
 }
 
 // -----------------------------------------------------------------------------
-// Sub-components — capture mode card, flow step (amber-on-cream), ownership card
+// Sub-components — agent handoff frame, capture mode card, flow step, ownership card
 // -----------------------------------------------------------------------------
+
+function AgentHandoffFrame() {
+  return (
+    <figure className="relative">
+      <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-[0_18px_60px_-30px_rgba(0,0,0,0.55)]">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-55" style={GRATICULE_FINE} />
+
+        <div className="relative flex min-h-8 items-center justify-between gap-3 border-b border-edge-dim px-3 text-[8px] uppercase tracking-[0.26em] text-ink-faint sm:px-4">
+          <span className="flex min-w-0 items-center gap-2">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
+            />
+            <span className="truncate">RUNNING · AG-01 / VOICE.IN</span>
+          </span>
+          <span className="hidden text-ink-subtle sm:inline">SPEC · ON&nbsp;&nbsp;10.23AM · MONO</span>
+        </div>
+
+        <div className="relative p-2 sm:p-3">
+          <div className="overflow-hidden rounded-[0.45rem] border border-edge-dim bg-surface shadow-[0_10px_28px_-22px_rgba(0,0,0,0.55)]">
+            <img
+              src="/screenshots/talkie-agent-handoff-console.png"
+              alt="A Talkie Console session showing a spoken product feedback memo sent to a coding agent"
+              className="block aspect-[1234/988] w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div className="relative flex min-h-8 items-center justify-between gap-3 border-t border-edge-dim px-3 text-[8px] uppercase tracking-[0.26em] text-ink-faint sm:px-4">
+          <span>· TRIG · LIVE · SIGNAL PATH · LOCAL ONLY</span>
+          <span className="hidden text-ink-subtle sm:inline">SCOUT · CODEX · HANDOFF ·</span>
+        </div>
+      </div>
+    </figure>
+  )
+}
 
 function CaptureModeCard({ mode, index }) {
   const Icon = mode.icon
