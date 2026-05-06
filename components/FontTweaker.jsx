@@ -103,7 +103,7 @@ function ensureStyleHook() {
        (a) inline italic word inside a .font-display headline (DownloadBay
            "Mac", MacPage "A mic is all you need"), and
        (b) explicitly-marked [data-hero-accent] elements — the rolodex
-           flip-card text on the homepage and v4 panoramic hero. The
+           flip-card text on the homepage and panoramic hero. The
            rolodex isn't an italic span (it's a styled card with its own
            color treatment), so it has to opt in via attribute.
        !important is necessary because both Tailwind color utilities

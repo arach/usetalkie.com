@@ -13,6 +13,7 @@ export default function FeedbackWidget() {
   const [feedback, setFeedback] = useState('')
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [errorMessage, setErrorMessage] = useState('')
   const [feedbackHistory, setFeedbackHistory] = useState([])
 
   // Load feedback history from localStorage
@@ -80,9 +81,13 @@ export default function FeedbackWidget() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!feedback.trim()) return
+    const cleanFeedback = feedback.trim()
+    const cleanEmail = email.trim()
+
+    if (!cleanFeedback || !cleanEmail) return
 
     setStatus('sending')
+    setErrorMessage('')
 
     // Use environment variable or fallback to production
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://app.usetalkie.com/api'
@@ -93,8 +98,8 @@ export default function FeedbackWidget() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          feedback: feedback.trim(),
-          email: email.trim() || 'anonymous',
+          feedback: cleanFeedback,
+          email: cleanEmail,
           url: window.location.href,
           userAgent: navigator.userAgent,
         }),
@@ -102,7 +107,7 @@ export default function FeedbackWidget() {
 
       if (res.ok) {
         setStatus('success')
-        saveFeedbackToHistory(feedback.trim())
+        saveFeedbackToHistory(cleanFeedback)
         setFeedback('')
         setEmail('')
         setTimeout(() => {
@@ -110,10 +115,13 @@ export default function FeedbackWidget() {
           setStatus('idle')
         }, 2000)
       } else {
+        const data = await res.json().catch(() => null)
+        setErrorMessage(data?.error || 'Failed to send. Please try again or email arach@usetalkie.com')
         setStatus('error')
       }
     } catch (err) {
       console.error('Feedback error:', err)
+      setErrorMessage('Failed to send. Please try again or email arach@usetalkie.com')
       setStatus('error')
     }
   }
@@ -206,7 +214,7 @@ export default function FeedbackWidget() {
 
               <div>
                 <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
-                  Email (optional)
+                  Email
                 </label>
                 <input
                   type="email"
@@ -214,15 +222,16 @@ export default function FeedbackWidget() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded px-3 py-2 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  required
                 />
                 <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
-                  Include your email if you'd like a response
+                  Required so I can follow up on your feedback.
                 </p>
               </div>
 
               {status === 'error' && (
                 <p className="text-xs text-red-600 dark:text-red-400">
-                  Failed to send. Please try again or email arach@usetalkie.com
+                  {errorMessage || 'Failed to send. Please try again or email arach@usetalkie.com'}
                 </p>
               )}
 

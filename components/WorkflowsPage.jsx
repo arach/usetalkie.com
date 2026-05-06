@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import DownloadBay from './DownloadBay'
+import ExpandableCaptureTile from './ExpandableCaptureTile'
 import {
   Mic,
   Cpu,
@@ -47,28 +48,40 @@ const OUTPUT_RULES = [
 
 const EXAMPLES = [
   {
-    name: 'Voice → Obsidian',
-    flow: 'Capture · LLM · Save',
+    name: 'Dictate → Claude',
+    flow: 'Dictate · LLM · Clipboard',
     body:
-      'Extract the headline and bullet points from a thought, then drop a Markdown file straight into your vault.',
+      'Say the prompt out loud. Talkie cleans it up and leaves it ready to send.',
   },
   {
-    name: 'Meeting → Tasks',
-    flow: 'Capture · LLM · Webhook',
+    name: 'Dictate → Email',
+    flow: 'Dictate · LLM · Mail',
     body:
-      'Pull todos out of a recap, structure them as JSON, and POST to Todoist or Linear.',
+      'Talk through the reply in your own words. Open a polished draft in Mail.',
   },
   {
-    name: 'Daily Journal',
-    flow: 'Capture · LLM · Append',
+    name: 'Voice memo → Obsidian',
+    flow: 'Memo · LLM · Save',
     body:
-      'Summarize what you said and append a timestamped section to today’s journal file.',
+      'Record the messy thought. Save the useful version as Markdown in your vault.',
   },
   {
-    name: 'GitHub Issue',
-    flow: 'Capture · Shell · gh',
+    name: 'Iterate on a memo → Talkie Compose',
+    flow: 'Memo · Compose · Diff',
     body:
-      'Dictate a bug report, reshape it into title and body, then run gh issue create — no browser.',
+      'Keep the raw take. Make a tighter version next to it, without losing the first one.',
+  },
+  {
+    name: 'Quick idea → Claude + @talkie/cli',
+    flow: 'Capture · CLI · Claude',
+    body:
+      'Capture the spark, pull it from the CLI, and hand it to Claude when it needs a second pass.',
+  },
+  {
+    name: 'Bug note → GitHub issue',
+    flow: 'Dictate · Shell · GitHub',
+    body:
+      'Describe the bug while it is fresh. Turn it into a title, body, and issue command.',
   },
 ]
 
@@ -76,8 +89,68 @@ const VARIABLES = ['{{TRANSCRIPT}}', '{{TITLE}}', '{{DATE}}', '{{TIME}}', '{{SUM
 
 const MODELS = ['Claude', 'OpenAI', 'Gemini', 'Groq', 'Local MLX']
 
+const CAPTURE_INPUTS = [
+  {
+    label: 'Mac hotkey',
+    detail: 'hold, speak, release',
+    src: '/screenshots/mac-recording.png',
+    alt: 'Talkie recording HUD on Mac',
+    frame: 'laptop',
+  },
+  {
+    label: 'iPhone capture',
+    detail: 'one tap away',
+    src: '/screenshots/iphone-16-pro-max-5.png',
+    alt: 'Talkie recording on iPhone',
+    frame: 'phone',
+  },
+  {
+    label: 'Apple Watch',
+    detail: 'tap, record, stop',
+    src: '/screenshots/apple-watch-recording.png',
+    alt: 'Talkie recording on Apple Watch',
+    frame: 'watch',
+  },
+  {
+    label: 'Saved memo',
+    detail: 'the whole thought',
+    src: '/screenshots/mac-memo-saved.png',
+    alt: 'Saved Talkie memo on Mac',
+    frame: 'memo',
+  },
+]
+
+const LOCAL_TOOL_GROUPS = [
+  {
+    icon: Mail,
+    title: 'Apps you already use',
+    items: ['Mail', 'Calendar', 'Notes', 'Obsidian'],
+  },
+  {
+    icon: Terminal,
+    title: 'Your local shell',
+    items: ['@talkie/cli', 'gh', 'jq', 'bun'],
+  },
+  {
+    icon: FileOutput,
+    title: 'Files you own',
+    items: ['Markdown', 'JSON', 'Journal', 'Inbox'],
+  },
+]
+
+const OUTSIDE_TOOLS = [
+  { label: 'Claude', src: 'https://cdn.simpleicons.org/anthropic/000000' },
+  { label: 'OpenAI', src: '/icons/openai.svg' },
+  { label: 'Linear', src: 'https://cdn.simpleicons.org/linear/5E6AD2' },
+  { label: 'Make', src: 'https://cdn.simpleicons.org/make/000000' },
+  { label: 'GitHub', src: 'https://cdn.simpleicons.org/github/000000' },
+  { label: 'Zapier', src: 'https://cdn.simpleicons.org/zapier/FF4F00' },
+  { label: 'Notion', src: 'https://cdn.simpleicons.org/notion/000000' },
+  { label: 'Google', src: 'https://cdn.simpleicons.org/google' },
+]
+
 // ---------------------------------------------------------------------------
-// Reusable atoms (server-only — match SecurityPage.jsx idiom)
+// Reusable atoms
 // ---------------------------------------------------------------------------
 
 function Graticule({ opacity = 0.3 }) {
@@ -106,330 +179,131 @@ function Eyebrow({ children }) {
   )
 }
 
-// ---------------------------------------------------------------------------
-// PipelineSchematic — pure SVG patch-bay diagram for /workflows.
-// viewBox 0 0 720 320:
-//   CAP   x=20  y=130  w=120 h=70   — capture source
-//   S1    x=200 y=50   w=130 h=60   — LLM
-//   S2    x=200 y=130  w=130 h=60   — Shell
-//   S3    x=200 y=210  w=130 h=60   — Save
-//   ROUTE x=388 y=120  w=132 h=80   — router / variables
-//   OUT1  x=560 y=50   w=140 h=60   — file sink
-//   OUT2  x=560 y=130  w=140 h=60   — webhook sink
-//   OUT3  x=560 y=210  w=140 h=60   — notification sink
-// ---------------------------------------------------------------------------
-
-function PipelineBlock({
-  x,
-  y,
-  w,
-  h,
-  label,
-  subLabel,
-  pinsLeft = [],
-  pinsRight = [],
-  highlighted = false,
-  amber = false,
-}) {
-  const stroke = highlighted
-    ? 'var(--trace)'
-    : amber
-    ? 'var(--amber)'
-    : 'var(--ink-muted)'
-  // Thinner strokes for a cleaner schematic look
-  const strokeWidth = highlighted ? 0.85 : 0.55
-  const fill = highlighted
-    ? 'var(--trace-faint)'
-    : amber
-    ? 'color-mix(in oklab, var(--amber) 6%, transparent)'
-    : 'transparent'
-  const labelFill = highlighted
-    ? 'var(--trace)'
-    : amber
-    ? 'var(--amber)'
-    : 'var(--ink)'
-
+function ChoiceKicker({ children }) {
   return (
-    <g className="wf-block">
-      <rect
-        x={x}
-        y={y}
-        width={w}
-        height={h}
-        fill={fill}
-        stroke={stroke}
-        strokeWidth={strokeWidth}
-        rx="2"
-        ry="2"
-        style={highlighted ? { filter: 'drop-shadow(0 0 4px var(--trace-glow))' } : undefined}
+    <p
+      className="font-mono text-[9px] uppercase tracking-[0.24em]"
+      style={{ color: 'color-mix(in oklab, var(--choice-accent) 72%, var(--ink-muted) 28%)' }}
+    >
+      <span
+        aria-hidden
+        className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+        style={{ background: 'var(--choice-accent)', boxShadow: '0 0 8px var(--choice-accent-glow)' }}
       />
-      <text
-        x={x + w / 2}
-        y={y + h / 2 - (subLabel ? 5 : 0)}
-        fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-        fontSize="10"
-        fontWeight="600"
-        fill={labelFill}
-        textAnchor="middle"
-        letterSpacing="1"
-        style={highlighted ? { filter: 'drop-shadow(0 0 3px var(--trace-glow))' } : undefined}
-      >
-        {label}
-      </text>
-      {subLabel && (
-        <text
-          x={x + w / 2}
-          y={y + h / 2 + 10}
-          fontFamily="ui-monospace, monospace"
-          fontSize="6.5"
-          fill="var(--ink-faint)"
-          textAnchor="middle"
-          letterSpacing="1"
-        >
-          {subLabel}
-        </text>
-      )}
-      {pinsLeft.map((pin, i) => {
-        const py = y + ((i + 1) * h) / (pinsLeft.length + 1)
-        return (
-          <g key={`l-${pin}-${i}`}>
-            <line x1={x} y1={py} x2={x - 6} y2={py} stroke={stroke} strokeWidth="0.5" strokeLinecap="round" />
-            <circle cx={x - 6} cy={py} r="1.1" fill={stroke} />
-          </g>
-        )
-      })}
-      {pinsRight.map((pin, i) => {
-        const py = y + ((i + 1) * h) / (pinsRight.length + 1)
-        return (
-          <g key={`r-${pin}-${i}`}>
-            <line x1={x + w} y1={py} x2={x + w + 6} y2={py} stroke={stroke} strokeWidth="0.5" strokeLinecap="round" />
-            <circle cx={x + w + 6} cy={py} r="1.1" fill={stroke} />
-          </g>
-        )
-      })}
-    </g>
+      {children}
+    </p>
   )
 }
 
-// NetTag — small inline label that sits ON a wire with a fill-matched
-// background rect so it visually breaks the line. Like real schematic
-// wire tags. Resolves the "text overlapping lines" feedback.
-function NetTag({ x, y, label, color = 'var(--ink-faint)', fill = 'var(--surface)' }) {
-  // Approximate width based on character count; SVG measure-text is tricky
-  const w = Math.max(label.length * 5 + 8, 18)
+function ChoiceTitle({ children }) {
   return (
-    <g>
-      <rect
-        x={x - w / 2}
-        y={y - 5}
-        width={w}
-        height={10}
-        fill={fill}
-        rx="1.5"
-        ry="1.5"
-      />
-      <text
-        x={x}
-        y={y + 3}
-        fontFamily="ui-monospace, monospace"
-        fontSize="7"
-        fill={color}
-        textAnchor="middle"
-        letterSpacing="1"
-      >
-        {label}
-      </text>
-    </g>
+    <h3
+      className="mt-3 font-display text-2xl font-normal tracking-[-0.01em]"
+      style={{
+        color: 'color-mix(in oklab, var(--choice-accent) 44%, var(--ink) 56%)',
+        textShadow: '0 0 18px var(--choice-accent-glow)',
+      }}
+    >
+      {children}
+    </h3>
   )
 }
 
-function PipelineSchematic() {
-  const CAP   = { x: 20,  y: 130, w: 120, h: 70 }
-  const S1    = { x: 200, y: 50,  w: 130, h: 60 }
-  const S2    = { x: 200, y: 130, w: 130, h: 60 }
-  const S3    = { x: 200, y: 210, w: 130, h: 60 }
-  const ROUTE = { x: 388, y: 120, w: 132, h: 80 }
-  const OUT1  = { x: 560, y: 50,  w: 140, h: 60 }
-  const OUT2  = { x: 560, y: 130, w: 140, h: 60 }
-  const OUT3  = { x: 560, y: 210, w: 140, h: 60 }
+// ---------------------------------------------------------------------------
+// ToolChoiceDiagram — a calmer replacement for the old patchbay schematic.
+// The message is control: most workflows stay on your Mac and use your tools.
+// Outside services only appear when you connect them.
+// ---------------------------------------------------------------------------
 
-  // Trunk leaving CAP
-  const capOutY = CAP.y + CAP.h / 2
-  const trunkX = 170
-  // S1/S2/S3 inputs
-  const s1InY = S1.y + S1.h / 2
-  const s2InY = S2.y + S2.h / 2
-  const s3InY = S3.y + S3.h / 2
-  // Router
-  const routeInTopY = ROUTE.y + ROUTE.h * 0.25
-  const routeInMidY = ROUTE.y + ROUTE.h * 0.5
-  const routeInBotY = ROUTE.y + ROUTE.h * 0.75
-  const routeOutTopY = ROUTE.y + ROUTE.h * 0.25
-  const routeOutMidY = ROUTE.y + ROUTE.h * 0.5
-  const routeOutBotY = ROUTE.y + ROUTE.h * 0.75
-  // Sinks
-  const out1InY = OUT1.y + OUT1.h / 2
-  const out2InY = OUT2.y + OUT2.h / 2
-  const out3InY = OUT3.y + OUT3.h / 2
-
-  // Bus from CAP to vertical trunk, then to each step
-  const capTrunk = `M ${CAP.x + CAP.w} ${capOutY} L ${trunkX} ${capOutY}`
-  const trunkUp = `M ${trunkX} ${capOutY} L ${trunkX} ${s1InY} L ${S1.x} ${s1InY}`
-  const trunkMid = `M ${trunkX} ${capOutY} L ${S2.x} ${s2InY}`
-  const trunkDown = `M ${trunkX} ${capOutY} L ${trunkX} ${s3InY} L ${S3.x} ${s3InY}`
-
-  // Step → router (each step joins the router on a different pin)
-  const s1Route = `M ${S1.x + S1.w} ${s1InY} L 360 ${s1InY} L 360 ${routeInTopY} L ${ROUTE.x} ${routeInTopY}`
-  const s2Route = `M ${S2.x + S2.w} ${s2InY} L ${ROUTE.x} ${routeInMidY}`
-  const s3Route = `M ${S3.x + S3.w} ${s3InY} L 360 ${s3InY} L 360 ${routeInBotY} L ${ROUTE.x} ${routeInBotY}`
-
-  // Router → sinks
-  const routeOut1 = `M ${ROUTE.x + ROUTE.w} ${routeOutTopY} L 540 ${routeOutTopY} L 540 ${out1InY} L ${OUT1.x} ${out1InY}`
-  const routeOut2 = `M ${ROUTE.x + ROUTE.w} ${routeOutMidY} L ${OUT2.x} ${out2InY}`
-  const routeOut3 = `M ${ROUTE.x + ROUTE.w} ${routeOutBotY} L 540 ${routeOutBotY} L 540 ${out3InY} L ${OUT3.x} ${out3InY}`
-
+function ToolChoiceDiagram() {
   return (
-    <div className="group relative w-full overflow-hidden rounded-sm border border-edge bg-surface transition-all duration-200 hover:border-amber/50 hover:shadow-[0_0_28px_-8px_var(--trace-glow)]">
-      <Graticule opacity={0.5} />
+    <div
+      className="relative overflow-hidden rounded-sm border border-edge p-5 md:p-7"
+      style={{
+        '--choice-accent': '#2f8f72',
+        '--choice-accent-soft': 'rgba(47, 143, 114, 0.10)',
+        '--choice-accent-glow': 'rgba(47, 143, 114, 0.22)',
+        background:
+          'linear-gradient(135deg, color-mix(in oklab, var(--choice-accent) 3%, var(--surface)) 0%, var(--surface) 62%)',
+      }}
+    >
+      <Graticule opacity={0.35} />
 
-      <div className="relative flex items-center justify-between border-b border-edge-dim px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint transition-colors duration-200 group-hover:text-ink-muted">
-        <span>WF-01 / TALKIE.WORKFLOW.PATCHBAY</span>
-        <span className="flex items-center gap-1.5">
-          <span
-            aria-hidden
-            className="inline-block h-1 w-1 rounded-full bg-trace"
-            style={{ boxShadow: '0 0 4px var(--trace-glow)', animation: 'wf-rev-pulse 2.4s ease-in-out infinite' }}
-          />
-          REV A.0
-        </span>
+      <div className="relative grid gap-5 lg:grid-cols-3 lg:items-stretch">
+        <div className="group/panel flex min-h-[430px] flex-col rounded-sm border border-edge-dim bg-surface/75 p-5 transition-colors duration-200 hover:border-[color:var(--choice-accent)] hover:bg-canvas/70 hover:shadow-[0_0_28px_-10px_var(--choice-accent-glow)]">
+          <div className="min-h-[132px]">
+            <ChoiceKicker>Start</ChoiceKicker>
+            <ChoiceTitle>Say the thing.</ChoiceTitle>
+            <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+              Dictation, quick capture, or a longer memo. Same transcript, same library.
+            </p>
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-2">
+            {CAPTURE_INPUTS.map((input) => (
+              <ExpandableCaptureTile key={input.label} input={input} />
+            ))}
+          </div>
+        </div>
+
+        <div className="group/panel flex min-h-[430px] flex-col rounded-sm border border-edge-dim bg-surface/75 p-5 transition-colors duration-200 hover:border-[color:var(--choice-accent)] hover:bg-canvas/70 hover:shadow-[0_0_28px_-10px_var(--choice-accent-glow)]">
+          <div className="min-h-[132px]">
+            <ChoiceKicker>Default</ChoiceKicker>
+            <ChoiceTitle>Your Mac. Your tools.</ChoiceTitle>
+            <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+              Local apps, local files, local commands. This is where most workflows stay.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-3">
+            {LOCAL_TOOL_GROUPS.map((group) => {
+              const Icon = group.icon
+              return (
+                <div key={group.title} className="rounded-sm border border-edge-dim bg-canvas/35 p-3 transition-all duration-200 group-hover/panel:border-edge group-hover/panel:bg-surface">
+                  <div className="flex items-center gap-2">
+                    <Icon className="h-3.5 w-3.5 text-ink-subtle transition-colors duration-200 group-hover/panel:text-[color:var(--choice-accent)]" />
+                    <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-ink-dim transition-colors duration-200 group-hover/panel:text-ink">{group.title}</p>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <span key={item} className="rounded-sm border border-edge-dim px-2 py-1 font-mono text-[9px] text-ink-muted transition-colors duration-200 group-hover/panel:text-ink-dim">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        <div className="group/panel flex min-h-[430px] flex-col rounded-sm border border-edge-dim bg-surface/75 p-5 transition-colors duration-200 hover:border-[color:var(--choice-accent)] hover:bg-canvas/70 hover:shadow-[0_0_28px_-10px_var(--choice-accent-glow)]">
+          <div className="min-h-[132px]">
+            <ChoiceKicker>Optional</ChoiceKicker>
+            <ChoiceTitle>Outside calls are your call.</ChoiceTitle>
+            <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+              Connect a provider or webhook when you want one. Use your account, your keys.
+            </p>
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-2">
+            {OUTSIDE_TOOLS.map((tool) => (
+              <div
+                key={tool.label}
+                className="flex min-h-[62px] items-center gap-3 rounded-sm border border-edge-dim bg-canvas/35 px-3 transition-colors duration-200 group-hover/panel:border-[color:var(--choice-accent)] group-hover/panel:bg-surface"
+              >
+                <img
+                  src={tool.src}
+                  alt={`${tool.label} logo`}
+                  className="h-5 w-5 opacity-55 grayscale transition-all duration-300 group-hover/panel:opacity-100 group-hover/panel:grayscale-0"
+                  loading="lazy"
+                />
+                <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-ink-muted transition-colors duration-200 group-hover/panel:text-ink">
+                  {tool.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      <style>{`
-        @keyframes wf-rev-pulse {
-          0%, 100% { opacity: 0.55; box-shadow: 0 0 3px var(--trace-glow); }
-          50%      { opacity: 1;    box-shadow: 0 0 7px var(--trace-glow); }
-        }
-      `}</style>
-
-      <svg
-        viewBox="0 0 720 320"
-        className="relative block w-full"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <defs>
-          <marker
-            id="wf-arrow"
-            viewBox="0 0 10 10"
-            refX="9"
-            refY="5"
-            markerUnits="strokeWidth"
-            markerWidth="6"
-            markerHeight="6"
-            orient="auto"
-          >
-            <path d="M0,0 L10,5 L0,10 z" fill="var(--trace)" />
-          </marker>
-        </defs>
-
-        {/* Blocks */}
-        <PipelineBlock
-          x={CAP.x} y={CAP.y} w={CAP.w} h={CAP.h}
-          label="CAP · VOICE"
-          subLabel="hotkey or widget"
-          pinsRight={['SIG']}
-          highlighted
-        />
-        <PipelineBlock
-          x={S1.x} y={S1.y} w={S1.w} h={S1.h}
-          label="S1 · LLM"
-          subLabel="shape · extract · summarize"
-          pinsLeft={['IN']}
-          pinsRight={['OUT']}
-        />
-        <PipelineBlock
-          x={S2.x} y={S2.y} w={S2.w} h={S2.h}
-          label="S2 · SHELL"
-          subLabel="claude · gh · jq · curl"
-          pinsLeft={['IN']}
-          pinsRight={['OUT']}
-          highlighted
-        />
-        <PipelineBlock
-          x={S3.x} y={S3.y} w={S3.w} h={S3.h}
-          label="S3 · SAVE"
-          subLabel="aliased paths · append"
-          pinsLeft={['IN']}
-          pinsRight={['OUT']}
-        />
-        <PipelineBlock
-          x={ROUTE.x} y={ROUTE.y} w={ROUTE.w} h={ROUTE.h}
-          label="ROUTER"
-          subLabel="vars · branches · audit"
-          pinsLeft={['A', 'B', 'C']}
-          pinsRight={['1', '2', '3']}
-          highlighted
-        />
-        <PipelineBlock
-          x={OUT1.x} y={OUT1.y} w={OUT1.w} h={OUT1.h}
-          label="OUT · FILE"
-          subLabel="vault · journal · inbox"
-          pinsLeft={['IN']}
-        />
-        <PipelineBlock
-          x={OUT2.x} y={OUT2.y} w={OUT2.w} h={OUT2.h}
-          label="OUT · WEBHOOK"
-          subLabel="todoist · linear · slack"
-          pinsLeft={['IN']}
-        />
-        <PipelineBlock
-          x={OUT3.x} y={OUT3.y} w={OUT3.w} h={OUT3.h}
-          label="OUT · NOTIFY"
-          subLabel="mail · calendar · alert"
-          pinsLeft={['IN']}
-        />
-
-        {/* Wire group — thin strokes, rounded joins, single accent.
-            Active path (capOutY → S2 → middle of router → OUT2) at full
-            opacity; secondary paths at 0.5 opacity. */}
-        <g fill="none" stroke="var(--trace)" strokeLinecap="round" strokeLinejoin="round">
-          {/* CAP trunk */}
-          <path d={capTrunk}  strokeWidth="0.9" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
-          <path d={trunkUp}   strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
-          <path d={trunkMid}  strokeWidth="0.9" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
-          <path d={trunkDown} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
-
-          {/* Step → Router */}
-          <path d={s1Route} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
-          <path d={s2Route} strokeWidth="0.9" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
-          <path d={s3Route} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
-
-          {/* Router → Sinks */}
-          <path d={routeOut1} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
-          <path d={routeOut2} strokeWidth="0.9" markerEnd="url(#wf-arrow)" style={{ filter: 'drop-shadow(0 0 1.5px var(--trace-glow))' }} />
-          <path d={routeOut3} strokeWidth="0.65" strokeOpacity="0.5" markerEnd="url(#wf-arrow)" />
-        </g>
-
-        {/* Net tags — boxed labels that sit ON the wire (fill matches
-            surface bg so the wire visually breaks around the label).
-            Resolves text-overlapping-wires issue. */}
-        <NetTag x={155} y={capOutY} label="BUS.IN" />
-        <NetTag x={365} y={routeInMidY} label="MIX" color="var(--trace)" />
-        <NetTag x={545} y={routeOutMidY} label="SEND" />
-
-        {/* Legend */}
-        <g transform="translate(20, 290)">
-          <line x1="0" y1="4" x2="20" y2="4" stroke="var(--trace)" strokeWidth="0.9" strokeLinecap="round" />
-          <text x="26" y="7" fontFamily="ui-monospace, monospace" fontSize="7.5" fill="var(--ink-faint)" letterSpacing="1">
-            solid = active patch
-          </text>
-          <line x1="160" y1="4" x2="180" y2="4" stroke="var(--trace)" strokeWidth="0.65" strokeOpacity="0.5" strokeLinecap="round" />
-          <text x="186" y="7" fontFamily="ui-monospace, monospace" fontSize="7.5" fill="var(--ink-faint)" letterSpacing="1">
-            faded = available
-          </text>
-          <text x="290" y="7" fontFamily="ui-monospace, monospace" fontSize="7.5" fill="var(--ink-faint)" letterSpacing="1">
-            · audit-logged · local by default
-          </text>
-        </g>
-      </svg>
     </div>
   )
 }
@@ -444,6 +318,20 @@ export default function WorkflowsPage() {
       {/* ========== HERO ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
         <Graticule opacity={0.3} />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] lg:block"
+          style={{
+            maskImage: 'linear-gradient(90deg, transparent 0%, black 34%, black 100%)',
+            WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 34%, black 100%)',
+          }}
+        >
+          <img
+            src="/images/workflows/voice-in-drafts-tasks-files-processed.png"
+            alt=""
+            className="h-full w-full object-cover object-center opacity-80 mix-blend-multiply"
+          />
+        </div>
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· CH-D / WORKFLOWS · 0.12s LATENCY</Eyebrow>
           <h1 className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
@@ -452,9 +340,8 @@ export default function WorkflowsPage() {
             <span className="italic">Drafts, tasks, files out.</span>
           </h1>
           <p className="mt-6 max-w-2xl border-l-2 border-trace pl-5 text-[15px] leading-relaxed text-ink-muted">
-            A workflow is a patch cable. One end is the thought you just spoke. The other end is wherever it
-            needs to land — a Markdown note, a GitHub issue, a Linear ticket, a calendar event. Everything
-            in between is yours to wire.
+            Start with something you said. Send it to the app, file, command, or model that should handle it.
+            Most of the time that means your Mac and your tools. When it does not, you choose the outside service.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-3 font-mono">
@@ -481,19 +368,18 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== EXAMPLES — concrete recipes lead the page now (was 05) ========== */}
+      {/* ========== EXAMPLES ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 01 / SAMPLE PATCHES</Eyebrow>
+          <Eyebrow>· 01 / STARTING POINTS</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            Four workflows to wire on day one.
+            Start with simple workflows.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Each one ships as a starting template. Open the editor, swap the model or the path, and it is
-            yours.
+            These are intentionally small. Pick one, swap the app or path, and make it yours.
           </p>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {EXAMPLES.map((ex) => (
               <div
                 key={ex.name}
@@ -520,7 +406,7 @@ export default function WorkflowsPage() {
                     className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
                     style={{ boxShadow: '0 0 4px var(--trace)' }}
                   />
-                  PATCH READY
+                  STARTER
                 </div>
               </div>
             ))}
@@ -807,21 +693,20 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
-      {/* ========== PIPELINE SCHEMATIC — anatomy, demoted from front (was 01) ========== */}
+      {/* ========== TOOL CHOICE ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 05 / SIGNAL FLOW</Eyebrow>
+          <Eyebrow>· 05 / TOOL CHOICE</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            From your voice to your tools.
+            Your tools first. Outside tools when you ask.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Every capture runs through a small pipeline. Steps shape, save, or transform it along
-            the way. Variables and branches are tracked, every send is logged. Outputs land in the
-            apps you already use.
+            Talkie does not need to turn every workflow into a cloud diagram. Keep it local when that is enough.
+            Bring in Claude, OpenAI, Linear, Slack, or a webhook only when the workflow actually needs it.
           </p>
 
           <div className="mt-10">
-            <PipelineSchematic />
+            <ToolChoiceDiagram />
           </div>
         </div>
       </section>

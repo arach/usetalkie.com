@@ -1,0 +1,127 @@
+{
+  "program": {
+    "name": "talkie-signal-weave",
+    "version": "1.1.0",
+    "description": "Preserves the source illustration, then adds deterministic signal lanes, packet marks, and edge-derived trace fields so the final asset reads as programmatically processed."
+  },
+  "storage": {
+    "source": "public/images/workflows/voice-in-drafts-tasks-files-source.png",
+    "output": "public/images/workflows/voice-in-drafts-tasks-files-processed.png",
+    "manifest": "public/images/workflows/voice-in-drafts-tasks-files-processed.manifest.json"
+  },
+  "input": {
+    "path": "public/images/workflows/voice-in-drafts-tasks-files-source.png",
+    "sha256": "b785c7e000b9bf8366b8afd5e51e8e35e9fccf9ff7f0a72a242cca723226c5ac"
+  },
+  "output": {
+    "path": "public/images/workflows/voice-in-drafts-tasks-files-processed.png",
+    "sha256": "adb016488f398329a8c5e0b0ba6743f80a78dd3e38d3b89d02780092423c5cef",
+    "width": 1440
+  },
+  "parameters": {
+    "workWidth": 1440,
+    "outputWidth": 1440,
+    "orderedMatrixStrength": 22,
+    "paletteMix": 0.58,
+    "traceBoost": 1.65,
+    "traceColor": [
+      18,
+      157,
+      119
+    ],
+    "traceHaloColor": [
+      130,
+      195,
+      166
+    ],
+    "traceDarkColor": [
+      34,
+      91,
+      76
+    ],
+    "edgeSampleStep": 2,
+    "edgeThreshold": 16,
+    "traceCurves": [
+      [
+        [
+          158,
+          420
+        ],
+        [
+          330,
+          406
+        ],
+        [
+          488,
+          386
+        ],
+        [
+          684,
+          415
+        ]
+      ],
+      [
+        [
+          684,
+          415
+        ],
+        [
+          820,
+          326
+        ],
+        [
+          944,
+          198
+        ],
+        [
+          1086,
+          162
+        ]
+      ],
+      [
+        [
+          694,
+          423
+        ],
+        [
+          846,
+          384
+        ],
+        [
+          982,
+          386
+        ],
+        [
+          1128,
+          391
+        ]
+      ],
+      [
+        [
+          700,
+          435
+        ],
+        [
+          858,
+          508
+        ],
+        [
+          998,
+          586
+        ],
+        [
+          1138,
+          604
+        ]
+      ]
+    ]
+  },
+  "stages": [
+    "Normalize: resize the source to a stable working width, remove alpha, and apply light saturation/contrast normalization.",
+    "Palette anchor: use an 8x8 ordered matrix to mix each pixel partway toward a constrained Talkie palette while preserving the original image.",
+    "Edge sampling: derive sparse emerald dashes from local luminance differences so details look touched by a program, not globally filtered.",
+    "Packet field: place deterministic short marks across the transformation zone, as if signal fragments are crossing the image.",
+    "Signal routing: draw deterministic dashed Bezier lanes from the voice capsule toward the draft, task, and file artifacts.",
+    "Store: write the processed PNG and this manifest next to the source artifact."
+  ]
+}

@@ -11,7 +11,7 @@ const PACKAGE_MANAGERS = [
 ]
 
 /**
- * PanoramicHero — v4's synthesis composition.
+ * PanoramicHero — homepage synthesis composition.
  *
  * One chassis, three inset bays:
  *   LEFT   · INPUT  — keyboard-key transducer + device-aware install affordance
@@ -61,7 +61,7 @@ const DEVICES = [
       },
       {
         action: 'Record the meeting',
-        outcome: 'Summary, every time',
+        outcome: 'Meeting notes ready',
         transcription:
           'alex pushed back on the migration window, we settled on staging-first friday, jamie owns the rollback',
         artifact: 'Meeting notes · 6 items · 4 owners',
@@ -105,13 +105,13 @@ const DEVICES = [
     label: 'Phone',
     Icon: Smartphone,
     taglines: [
-      'Ramble for five minutes. Get a research brief.',
+      'Ramble for five minutes. Queue a research brief.',
       'Snap and speak. Spec on your desk.',
     ],
     useCases: [
       {
         action: 'Ramble five minutes',
-        outcome: 'Researches, pings back',
+        outcome: 'Brief queued',
         transcription:
           'why are we seeing churn spike in week three of trial, dig the cohort, check the onboarding redesign',
         artifact: 'Brief queued · ETA ~12 min',
@@ -125,7 +125,7 @@ const DEVICES = [
       },
       {
         action: 'Describe the problem',
-        outcome: 'Mac investigates',
+        outcome: 'Picked up on Mac',
         transcription:
           'build keeps failing on the dependabot lockfile, pull the last 5 runs, see if it is a single transitive',
         artifact: 'Mac picked it up · running',
@@ -152,7 +152,7 @@ const DEVICES = [
       status:   'ARMED',
     },
     features: [
-      'Always-on capture',
+      'Quick capture',
       'Snap + describe',
       'Background research',
     ],
@@ -221,13 +221,13 @@ const DEVICES = [
     label: 'Agents',
     Icon: Bot,
     taglines: [
-      'Voice the trigger. The agent picks it up.',
-      'Wire a daily. Brief lands at 7am.',
+      'Voice the trigger. Queue the workflow.',
+      'Wire a daily brief.',
     ],
     useCases: [
       {
         action: 'Voice the trigger',
-        outcome: 'Workflow runs while you sleep',
+        outcome: 'Workflow scheduled',
         transcription:
           'every weekday 6am, pull the top 3 github issues by reactions, draft a triage, drop in my morning inbox',
         artifact: 'Workflow scheduled · daily 06:00',
@@ -241,7 +241,7 @@ const DEVICES = [
       },
       {
         action: 'Sketch a recipe',
-        outcome: 'Agent runs it for you',
+        outcome: 'Recipe armed',
         transcription:
           'anytime someone tags me on a github issue, draft a 1-para reply with a clarifying question, hold for review',
         artifact: 'Recipe armed · awaiting trigger',
@@ -256,9 +256,9 @@ const DEVICES = [
       Icon: Bot,
     },
     screenshot: {
-      src: '/screenshots/mac-home.png',
-      alt: 'Workflow output landing in Talkie inbox',
-      caption: 'Workflows in motion',
+      src: '/screenshots/talkie-agent-handoff-console.png',
+      alt: 'Talkie voice memo sent to a coding agent from the Console',
+      caption: 'Voice to agent handoff',
     },
     waveformBias: 3,
     inputSpec: {
@@ -375,7 +375,11 @@ export default function PanoramicHero() {
       />
 
     <div
-      className="relative overflow-hidden rounded-md font-mono"
+      /* Chassis (ossi bay) — instrument metaphor for tablet+desktop.
+       * Hidden on phone (`hidden md:block`): mobile leads with positioning
+       * via <CinematicHero /> above, and the chassis density doesn't
+       * earn its scroll cost at iPhone widths. */
+      className="relative hidden overflow-hidden rounded-md font-mono md:block"
       style={panelStyle}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -416,14 +420,14 @@ export default function PanoramicHero() {
 
 function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle, onPause }) {
   return (
-    <section className="relative pb-6 pt-10 text-center md:pb-8 md:pt-14">
+    <section className="relative pb-3 pt-1 text-center md:pb-8 md:pt-14">
       {/* Donor-shape headline: "Talk to your" inline with the Rolodex
           flip card, sized 1em relative to the H1 and baseline-nudged
           so the card sits visually grounded under the typography.
           Sizing matches donor v1 verbatim (clamp 2.8rem → 5.6rem,
           tracking -0.025em, leading 0.92). */}
       <h1
-        className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-2 font-display text-[clamp(2.8rem,9vw,5.6rem)] font-normal leading-[0.92] tracking-[-0.025em] text-ink"
+        className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-1 font-display text-[clamp(1.6rem,7vw,2rem)] font-normal leading-[1.05] tracking-[-0.02em] text-ink md:gap-y-2 md:text-[clamp(2.8rem,9vw,5.6rem)] md:leading-[0.92] md:tracking-[-0.025em]"
         aria-label={`Talk to your ${device.label}`}
       >
         <span className="shrink-0">Talk to your</span>
@@ -470,7 +474,7 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
             type="button"
             onClick={() => !isActive && onSelect(i)}
             aria-current={isActive ? 'true' : undefined}
-            className="grid grid-cols-[1fr_2.5rem_1fr] items-baseline rounded-sm px-2 py-1 text-[15px] leading-relaxed transition-opacity hover:opacity-90"
+            className="grid grid-cols-[1fr_1rem_1fr] items-baseline rounded-sm px-2 py-0.5 text-[12px] leading-snug transition-opacity hover:opacity-90 md:grid-cols-[1fr_2.5rem_1fr] md:py-1 md:text-[15px] md:leading-relaxed"
             style={{
               opacity: isActive ? 1 : 0.32,
               cursor: isActive ? 'default' : 'pointer',
@@ -1210,7 +1214,7 @@ function ScopeWaveform({ bias, flipPhase }) {
 
         {/* Playhead — animated x position via class-keyed keyframe */}
         <line
-          className="v4-playhead-sweep"
+          className="home-playhead-sweep"
           x1={0}
           x2={0}
           y1={20}
@@ -1549,7 +1553,7 @@ function SignalWire({ side, delayMs }) {
         }}
       />
       {/* Chase pulse — a small bright segment that walks left → right.
-          Uses the v4-wire-chase keyframe defined in the v4 stylesheet. */}
+          Uses the home-wire-chase keyframe defined in the global stylesheet. */}
       <span
         aria-hidden
         style={{
@@ -1563,7 +1567,7 @@ function SignalWire({ side, delayMs }) {
           background:
             'linear-gradient(90deg, transparent 0%, var(--panel-trace) 50%, transparent 100%)',
           filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))',
-          animation: `v4-wire-chase 2.4s linear infinite ${delayMs}ms`,
+          animation: `home-wire-chase 2.4s linear infinite ${delayMs}ms`,
         }}
       />
     </div>
