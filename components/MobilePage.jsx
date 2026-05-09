@@ -42,10 +42,8 @@ export default function MobilePage() {
             <span className="italic">it is live.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            iPhone and Apple Watch are the fast path back into Talkie. Grab the
-            thought now, then pick it back up on your Mac when it is time to do
-            something with it. Phone and Watch are for capture; Mac is where
-            you search it, shape it, and turn it into useful output.
+            iPhone and Apple Watch are the fast path back into Talkie. Phone and
+            Watch catch the thought. Mac is where you actually do something with it.
           </p>
         </div>
       </section>

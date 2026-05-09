@@ -184,18 +184,8 @@ export default function SiteShell({ children }) {
           </div>
 
           {/* Bottom metadata row */}
-          <div className="mt-12 flex flex-col items-start gap-3 border-t border-edge-subtle pt-6 text-[9px] uppercase tracking-[0.22em] text-ink-subtle md:flex-row md:items-center md:justify-between">
+          <div className="mt-12 border-t border-edge-subtle pt-6 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
             <span>(C) {new Date().getFullYear()} TALKIE SYSTEMS</span>
-            <div className="flex items-center gap-2">
-              <span
-                aria-hidden
-                className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
-                style={{ boxShadow: '0 0 6px var(--trace)' }}
-              />
-              <span>SIGNAL · LIVE</span>
-              <span className="opacity-50">·</span>
-              <span>ALL TRACES LOCAL</span>
-            </div>
           </div>
         </div>
       </footer>

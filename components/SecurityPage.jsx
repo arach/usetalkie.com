@@ -543,9 +543,15 @@ export default function SecurityPage() {
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· TALKIE / SECURITY</Eyebrow>
           <h1 className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-5xl">
-            Privacy is not a setting.
-            <br />
-            <span className="italic">It&apos;s the architecture.</span>
+            Security{' '}
+            <span
+              aria-hidden
+              className="relative inline-block text-amber/70"
+            >
+              Posture
+              <span className="pointer-events-none absolute inset-x-0 top-[60%] h-[0.06em] -translate-y-1/2 bg-amber" />
+            </span>{' '}
+            <span className="italic">Approach.</span>
           </h1>
           <p
             className="mt-6 max-w-2xl border-l-2 border-trace pl-5 text-[15px] leading-relaxed text-ink-muted"
@@ -705,9 +711,9 @@ export default function SecurityPage() {
             The wall of separation.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Understanding who holds the keys to your data is critical. We utilize Apple&apos;s
-            &ldquo;Private CloudKit Container&rdquo; architecture, which structurally segregates your
-            data from us.
+            Understanding who holds the keys to your data is critical. We use Apple&apos;s
+            Private CloudKit container, which keeps your data on a different shelf
+            from ours.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -843,7 +849,7 @@ export default function SecurityPage() {
               </div>
 
               <h3 className="mt-4 font-display text-lg font-normal tracking-[-0.01em] text-ink-dim">
-                Total Decryption Immunity. Even from Apple.
+                Nobody can decrypt it. Not even Apple.
               </h3>
 
               <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">

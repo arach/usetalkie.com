@@ -100,7 +100,7 @@ export default function AgentsPage() {
             </p>
           </div>
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
-            Voice-initiated <span className="italic">agents.</span>
+            Voice-fired <span className="italic">agents.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
             Talkie hands the transcript to an agent and stays on the line. Speak the intent, the agent runs the steps, the result lands back in your editor. The whole loop is auditable and runs from your Mac.
@@ -180,7 +180,7 @@ export default function AgentsPage() {
             </div>
 
             <p className="relative mt-8 text-center text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
-              · auto-paced loop · accelerates collaboration with the agent ·
+              · auto-paced loop · faster back-and-forth with the agent ·
             </p>
           </div>
         </div>

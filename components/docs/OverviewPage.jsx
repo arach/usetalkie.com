@@ -38,7 +38,7 @@ export default function OverviewPage() {
       <h2 id="philosophy">Philosophy</h2>
       <p>
         Talkie is designed around three core principles that guide every architectural decision.
-        These aren't just marketing—they fundamentally shape how the app works.
+        These aren't marketing words. They actually shape how the app works.
       </p>
 
       <div className="grid md:grid-cols-3 gap-4 my-6 not-prose">
@@ -65,7 +65,7 @@ export default function OverviewPage() {
       {/* Design Principles */}
       <h2 id="design-principles">Design Principles</h2>
       <p>
-        We treat every user as a potential developer. These principles guide how we build Talkie,
+        We figure anyone using this might want to poke at it. These principles guide how we build Talkie,
         giving you visibility and control over everything—with smart defaults so you don't have to think about it.
       </p>
 

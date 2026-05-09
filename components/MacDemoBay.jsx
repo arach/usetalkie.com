@@ -115,7 +115,7 @@ export default function MacDemoBay() {
               </span>
               <span className="text-cyan-400">
                 <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-cyan-500 align-middle" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.7)' }} />
-                32.1 kHz · MONO
+                16 kHz · MONO
               </span>
               <span className="text-screen-trace">
                 <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-screen-trace align-middle" style={{ boxShadow: '0 0 6px var(--screen-trace-glow)' }} />
@@ -173,7 +173,7 @@ export default function MacDemoBay() {
             </div>
           </div>
           {/* Multiplier — cyan readout (matches the bay's existing cyan anchor
-              on the 32.1 kHz · MONO chip; keeps the bay a 3-tone scope: red REC,
+              on the 16 kHz · MONO chip; keeps the bay a 3-tone scope: red REC,
               green/amber TRACE, cyan READOUT — theme-robust on Warm + Modern). */}
           <div
             className="group/stat relative overflow-hidden rounded-md border bg-screen-bg p-6 transition-all duration-200 hover:-translate-y-0.5"

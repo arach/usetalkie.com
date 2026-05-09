@@ -42,7 +42,7 @@ export default function MacPage() {
             className="text-[10px] uppercase tracking-[0.26em] text-trace"
             style={{ textShadow: '0 0 4px var(--trace-glow)' }}
           >
-            · CH-A / MAC · 32.1kHz
+            · CH-A / MAC · 16kHz
           </p>
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
             Talk to your Mac.<br />

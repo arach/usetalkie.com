@@ -135,7 +135,7 @@ const DEVICES = [
       kind: 'qr',
       eyebrow: 'INSTALL · iPHONE',
       title: 'Get on App Store',
-      meta: 'ios 17+',
+      meta: 'iOS 26+',
       href: 'https://apps.apple.com/us/app/talkie-mobile/id6755734109',
       Icon: QrCode,
     },
@@ -146,7 +146,7 @@ const DEVICES = [
     },
     waveformBias: 1,
     inputSpec: {
-      platform: 'iOS 17+',
+      platform: 'iOS 26+',
       release:  'v0.4.2 (142)',
       channel:  'MIC.IN',
       status:   'ARMED',
@@ -374,12 +374,20 @@ export default function PanoramicHero() {
         onPause={setPaused}
       />
 
+      <CompactChassis
+        device={device}
+        deviceIdx={deviceIdx}
+        useCase={useCase}
+        onJump={jumpTo}
+        panelStyle={panelStyle}
+        onPause={setPaused}
+      />
+
     <div
       /* Chassis (ossi bay) — instrument metaphor for tablet+desktop.
-       * Hidden on phone (`hidden md:block`): mobile leads with positioning
-       * via <CinematicHero /> above, and the chassis density doesn't
-       * earn its scroll cost at iPhone widths. */
-      className="relative hidden overflow-hidden rounded-md font-mono md:block"
+       * Below xl, CompactChassis carries the story without the full
+       * three-bay spec/scope/output machine. */
+      className="relative hidden overflow-hidden rounded-md font-mono xl:block"
       style={panelStyle}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -451,6 +459,239 @@ function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle
         onSelect={onSelectUseCase}
       />
     </section>
+  )
+}
+
+function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPause }) {
+  const Install = device.install
+  const InstallIcon = Install.Icon
+  const DeviceIcon = device.Icon
+
+  return (
+    <section
+      className="relative mt-8 hidden overflow-hidden rounded-md font-mono sm:block xl:hidden"
+      style={panelStyle}
+      onMouseEnter={() => onPause(true)}
+      onMouseLeave={() => onPause(false)}
+      onFocus={() => onPause(true)}
+      onBlur={() => onPause(false)}
+    >
+      <CornerFasteners />
+
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-[var(--panel-edge-dim)] px-3 py-2.5 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)] sm:px-4 sm:py-3 sm:text-[9px] sm:tracking-[0.24em]">
+        <span className="flex min-w-0 items-center gap-2 whitespace-nowrap">
+          <span
+            aria-hidden
+            className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--panel-trace)]"
+            style={{ boxShadow: '0 0 6px var(--panel-trace)' }}
+          />
+          <span
+            className="truncate"
+            style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}
+          >
+            TALKIE <span className="hidden md:inline">· {device.inputSpec.channel}</span>
+          </span>
+        </span>
+
+        <CompactDeviceSelector deviceIdx={deviceIdx} onJump={onJump} />
+
+        <span className="justify-self-end whitespace-nowrap opacity-80">
+          16KHZ <span className="hidden md:inline">· MONO</span>
+        </span>
+      </div>
+
+      <div className="grid gap-px bg-[var(--panel-edge-dim)] sm:grid-cols-2">
+        <div className="bg-[var(--panel-bg)] p-4 md:p-5">
+          <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
+            <span>· WAVE</span>
+            <span>{device.label}</span>
+          </div>
+          <div
+            className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-md border md:mt-4 md:h-32"
+            style={{
+              borderColor: 'var(--screen-edge-dim)',
+              background: 'var(--screen-bg)',
+              boxShadow: 'var(--screen-recess-shadow)',
+            }}
+          >
+            <div
+              className="relative flex h-full w-full items-center overflow-hidden"
+              style={{
+                background:
+                  'linear-gradient(180deg, color-mix(in oklab, var(--screen-trace) 12%, var(--screen-bg)), var(--screen-bg-deep))',
+                boxShadow: 'inset 0 0 22px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.035)',
+              }}
+            >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-45"
+                style={{
+                  background:
+                    'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.05) 48%, transparent 50%), repeating-linear-gradient(0deg, transparent 0 7px, color-mix(in oklab, var(--screen-trace) 12%, transparent) 8px)',
+                }}
+              />
+              <MiniWaveform bias={device.waveformBias} />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[var(--panel-bg-alt)] p-4 md:p-5">
+          <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
+            <span>· SCREEN</span>
+            <span>{device.inputSpec.status}</span>
+          </div>
+
+          <div
+            className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-md border p-2.5 md:mt-4 md:h-32 md:p-3"
+            style={{
+              borderColor: 'var(--panel-edge-dim)',
+              background:
+                'linear-gradient(180deg, color-mix(in oklab, var(--panel-trace) 7%, var(--panel-bg)), color-mix(in oklab, var(--panel-trace) 3%, var(--panel-bg)))',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.18)',
+            }}
+          >
+            <img
+              src={device.screenshot.src}
+              alt={device.screenshot.alt}
+              className="max-h-full max-w-[72%] rounded-sm object-contain opacity-88 shadow-[0_8px_18px_-16px_rgba(0,0,0,0.75)] md:max-w-[78%] md:shadow-[0_10px_24px_-20px_rgba(0,0,0,0.75)]"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div className="bg-[var(--panel-bg)] p-4 md:p-5">
+          <div className="text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
+            · CAPTION
+          </div>
+          <h2 className="mt-2 font-display text-xl font-normal leading-tight tracking-[-0.01em] text-[var(--panel-ink)] md:mt-3 md:text-2xl">
+            {useCase.action}
+          </h2>
+          <p className="mt-2 text-[12px] leading-relaxed text-[var(--panel-ink-muted)] md:text-[13px]">
+            {useCase.transcription}
+          </p>
+        </div>
+
+        <div className="bg-[var(--panel-bg-alt)] p-4 md:p-5">
+          <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
+            <span>· RESULT</span>
+            <span>{device.screenshot.caption}</span>
+          </div>
+          <div className="mt-3 flex items-start gap-3">
+            <DeviceIcon
+              className="mt-0.5 h-4 w-4 shrink-0"
+              style={{ color: 'var(--screen-trace)', filter: 'drop-shadow(0 0 4px var(--screen-trace-glow))' }}
+            />
+            <div className="min-w-0">
+              <p className="text-[12px] leading-relaxed text-[var(--screen-ink)] md:text-[13px]">
+                {useCase.outcome}
+              </p>
+              <p className="mt-1 truncate text-[11px] text-[var(--screen-ink-muted)]">
+                {useCase.artifact}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-3 md:p-4">
+        <Link
+          href={Install.href}
+          className="flex w-full items-center justify-between gap-3 rounded-sm border px-3 py-2.5 text-[9px] uppercase tracking-[0.22em] transition-colors hover:text-[var(--panel-ink)]"
+          style={{
+            borderColor: 'var(--panel-edge-dim)',
+            color: 'var(--panel-trace)',
+            background: 'color-mix(in oklab, var(--panel-trace) 7%, transparent)',
+            textShadow: '0 0 4px var(--panel-trace-glow)',
+          }}
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            <InstallIcon className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">{Install.title}</span>
+          </span>
+          <span className="flex shrink-0 items-center gap-2 text-[8px] text-[var(--panel-ink-faint)]">
+            {Install.meta}
+            <ArrowRight className="h-3 w-3" />
+          </span>
+        </Link>
+      </div>
+    </section>
+  )
+}
+
+function CompactDeviceSelector({ deviceIdx, onJump }) {
+  return (
+    <div
+      role="tablist"
+      aria-label="Surface"
+      className="inline-flex items-center justify-center gap-1 justify-self-center rounded-sm border border-[var(--panel-edge-dim)] px-1.5 py-1"
+      style={{ background: 'rgba(255,255,255,0.02)' }}
+    >
+      {DEVICES.map((device, index) => {
+        const active = index === deviceIdx
+        const Icon = device.Icon
+        return (
+          <button
+            key={device.key}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            onClick={() => onJump(index)}
+            className="flex min-w-0 items-center justify-center gap-1.5 rounded-sm px-1.5 py-1 text-[8px] uppercase tracking-[0.18em] transition-colors md:px-2 md:text-[9px] md:tracking-[0.22em]"
+            style={{
+              background: active
+                ? 'color-mix(in oklab, var(--panel-trace) 12%, transparent)'
+                : 'transparent',
+              color: active ? 'var(--panel-trace)' : 'var(--panel-ink-faint)',
+              textShadow: active ? '0 0 4px var(--panel-trace-glow)' : 'none',
+            }}
+          >
+            <Icon className="h-3 w-3 shrink-0" />
+            <span className="hidden min-w-0 truncate md:inline">{device.label}</span>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function MiniWaveform({ bias }) {
+  const points = useMemo(() => {
+    return Array.from({ length: 28 }, (_, i) => {
+      const x = (i / 27) * 100
+      const amp =
+        Math.sin(i * 0.72 + bias) * 9 +
+        Math.sin(i * 1.58 + bias * 0.8) * 5 +
+        (i > 8 && i < 21 ? Math.sin(i * 2.1) * 7 : 0)
+      return `${x.toFixed(2)},${(50 - amp).toFixed(2)}`
+    }).join(' ')
+  }, [bias])
+
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      className="h-16 w-full overflow-visible md:h-20"
+      aria-hidden
+    >
+      <line
+        x1="0"
+        y1="50"
+        x2="100"
+        y2="50"
+        stroke="var(--screen-trace-faint)"
+        strokeWidth="1"
+      />
+      <polyline
+        points={points}
+        fill="none"
+        stroke="var(--screen-trace)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+        style={{ filter: 'drop-shadow(0 0 6px var(--screen-trace-glow))' }}
+      />
+    </svg>
   )
 }
 
@@ -579,32 +820,41 @@ function CornerFasteners() {
 function ChassisHeader({ device, deviceIdx, onJump }) {
   return (
     <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-[var(--panel-edge-dim)] px-4 py-2.5 text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
-      <div className="flex items-center gap-2.5 justify-self-start">
+      <div className="flex min-w-0 items-center gap-2.5 justify-self-start whitespace-nowrap">
         <span
           aria-hidden
           className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--panel-trace)] animate-pulse"
           style={{ boxShadow: '0 0 6px var(--panel-trace)' }}
         />
-        <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
+        <span
+          className="hidden lg:inline"
+          style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}
+        >
           TALKIE / SIGNAL
         </span>
-        <span aria-hidden className="opacity-50">·</span>
-        <span>CH-01 / VOICE.IN</span>
+        <span aria-hidden className="hidden opacity-50 lg:inline">·</span>
+        <span className="hidden lg:inline">CH-01 / VOICE.IN</span>
+        <span
+          className="lg:hidden"
+          style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}
+        >
+          TALKIE · VOICE.IN
+        </span>
       </div>
 
       {/* Device LED rotor — center column of a 3-col grid so it sits
           dead-center regardless of left/right column widths. With the
           previous justify-between flex, asymmetric side widths
-          (TALKIE/SIGNAL/CH-01 wider than REV A.4/32.1KHZ) pushed the
+          (TALKIE/SIGNAL/CH-01 wider than REV A.4/16KHZ) pushed the
           rotor slightly off-axis. The grid pins it. */}
       <div className="justify-self-center">
         <DeviceRotor deviceIdx={deviceIdx} onJump={onJump} />
       </div>
 
-      <div className="flex items-center gap-2 opacity-80 justify-self-end">
-        <span>REV A.4</span>
-        <span aria-hidden className="opacity-50">·</span>
-        <span>32.1KHZ · MONO</span>
+      <div className="flex items-center gap-2 opacity-80 justify-self-end whitespace-nowrap">
+        <span className="hidden lg:inline">REV A.4</span>
+        <span aria-hidden className="hidden opacity-50 lg:inline">·</span>
+        <span>16KHZ · MONO</span>
       </div>
     </div>
   )
@@ -1010,7 +1260,7 @@ function CliFallbackLink() {
       <Terminal
         className="h-3 w-3 shrink-0 text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]"
       />
-      <span>Or install via CLI</span>
+      <span>Or, if you live in a terminal</span>
       <span aria-hidden className="ml-auto shrink-0">↗</span>
     </Link>
   )

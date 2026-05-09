@@ -23,7 +23,7 @@ const PRINCIPLES = [
     eyebrow: 'MINIMALISM',
     icon: Layers,
     headline: 'Tools should stay out of the way.',
-    body: 'Talkie is intentionally minimal. No inboxes. No dashboards. No proprietary workflow. Just a clear, quiet path from what you say to what you build.',
+    body: 'Small on purpose. No inboxes, no dashboards, no proprietary workflow. Just a quiet path from what you say to what you build.',
     tag: 'SIGNAL · CLEAR',
   },
   {
@@ -31,15 +31,15 @@ const PRINCIPLES = [
     eyebrow: 'OWNERSHIP',
     icon: Lock,
     headline: 'Own your voice, own your workflow.',
-    body: 'Own your thoughts. Own your tools. Privacy is the architecture of sovereignty. Your intellectual property belongs to you, not a training set.',
+    body: 'Own your thoughts. Own your tools. Your stuff is yours, not a training set.',
     tag: 'LOCAL · PRIVATE',
   },
   {
     n: '03',
     eyebrow: 'AGENCY',
     icon: Mic,
-    headline: 'Orchestrate your own tools.',
-    body: 'We provide powerful building blocks so you can shape your own workflow. Your data. Your tools. Your rules.',
+    headline: 'Wire up your own tools.',
+    body: 'Lego, basically. Snap together what you need. Your data. Your tools. Your rules.',
     tag: 'YOUR TERMS',
   },
 ]
@@ -73,7 +73,15 @@ export default function PhilosophyPage() {
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-28">
           <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            · PHILOSOPHY · SIGNAL DOC
+            ·{' '}
+            <span
+              aria-hidden
+              className="relative inline-block text-amber/70"
+            >
+              PHILOSOPHY
+              <span className="pointer-events-none absolute inset-x-0 top-1/2 h-[0.06em] -translate-y-1/2 bg-amber" />
+            </span>
+            {' '}THINKING
           </p>
 
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
@@ -110,7 +118,7 @@ export default function PhilosophyPage() {
             </p>
           </div>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-            The pattern we saw.
+            Three things we noticed.
           </h2>
 
           <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -149,10 +157,10 @@ export default function PhilosophyPage() {
             </p>
           </div>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-            What we stand for.
+            Three things we care about.
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Three design decisions that shape everything Talkie does.
+            Pick any one to read first; the others follow.
           </p>
 
           <div className="mt-14 space-y-0">

@@ -158,7 +158,7 @@ export default function NarratorDock() {
               />
               TRIG · LIVE
             </span>
-            <span>32.1kHz · MONO</span>
+            <span>16kHz · MONO</span>
           </>
         )}
       </div>

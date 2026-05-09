@@ -9,7 +9,6 @@ import {
   HardDrive,
   Cloud,
   Cpu,
-  ShieldCheck,
   Lock,
   ArrowRight,
 } from 'lucide-react'
@@ -76,7 +75,7 @@ const CAPTURE_MODES = [
   {
     icon: Layers,
     eyebrow: 'WORKFLOWS',
-    title: 'Turn raw speech into useful output.',
+    title: 'Turn raw speech into stuff you can use.',
     body: 'Voice goes in. Summaries, tasks, and files come out.',
     href: '/docs/workflows',
   },
@@ -126,13 +125,6 @@ const OWNERSHIP_CARDS = [
     title: 'Models on your terms',
     body: 'On-device, bring-your-own-key, or fully offline. All three work.',
   },
-]
-
-const OWNERSHIP_PILLS = [
-  'On-device transcription',
-  'Encrypted iCloud sync',
-  'Searchable memos + dictations',
-  'No vendor lock-in',
 ]
 
 // -----------------------------------------------------------------------------
@@ -384,7 +376,15 @@ export default function HomePage() {
               · CAPTURE MODES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              One voice path. <span className="italic text-ink-muted">More than one use.</span>
+              One voice{' '}
+              <span
+                aria-hidden
+                className="relative inline-block text-amber/70"
+              >
+                substrate
+                <span className="pointer-events-none absolute inset-x-0 top-[60%] h-[0.06em] -translate-y-1/2 bg-amber" />
+              </span>{' '}
+              thingie. <span className="italic text-ink-muted">More than one use.</span>
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A capture can become a note, a draft, a search, or the start of a workflow. Say it once, then use it where it belongs.
@@ -482,7 +482,7 @@ export default function HomePage() {
               Your voice stays yours.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Everything lives on your devices, syncs through your iCloud, transcribes on your silicon. External models are opt-in — your keys, not ours.
+              Everything lives on your devices, syncs through your iCloud, transcribes on the chip you already paid for. External models are opt-in — your keys, not ours.
             </p>
           </div>
 
@@ -492,22 +492,32 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-2">
-            {OWNERSHIP_PILLS.map((label) => (
+          <Link
+            href="/security"
+            className="group mt-10 block overflow-hidden rounded-md border border-edge-dim bg-surface transition-all hover:-translate-y-0.5 hover:border-edge"
+          >
+            <div className="flex items-center justify-between border-b border-edge-faint px-4 py-3 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-faint">
+              <span>· Security architecture</span>
               <span
-                key={label}
-                className="inline-flex items-center gap-2 rounded-sm border border-edge-dim bg-surface px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-ink-muted"
+                className="transition-colors group-hover:text-ink"
+                style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
               >
-                <ShieldCheck
-                  className="h-3 w-3"
-                  style={{ color: 'var(--amber)', filter: 'drop-shadow(0 0 3px color-mix(in oklab, var(--amber) 32%, transparent))' }}
-                />
-                {label}
+                Security →
               </span>
-            ))}
-          </div>
+            </div>
+            <div className="relative overflow-hidden p-5 md:p-6">
+              <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE_FINE} />
+              <div className="relative grid grid-cols-1 gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
+                <SecurityNode label="Your devices" detail="local library" />
+                <SecurityArrow />
+                <SecurityNode label="Your iCloud" detail="private sync" />
+                <SecurityArrow />
+                <SecurityNode label="External models" detail="opt-in · your keys" muted />
+              </div>
+            </div>
+          </Link>
 
-          <div className="mt-8">
+          <div className="mt-10">
             <Link
               href="/security"
               className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
@@ -517,7 +527,7 @@ export default function HomePage() {
                 ...AMBER_GLOW_SOFT,
               }}
             >
-              READ THE ARCHITECTURE <span aria-hidden>→</span>
+              READ HOW IT&apos;S WIRED <span aria-hidden>→</span>
             </Link>
           </div>
         </div>
@@ -541,8 +551,8 @@ export default function HomePage() {
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Free while we build.
             </h2>
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Free. If that ever changes, it&rsquo;ll be for power-user features — never the core tool. The local-first part stays.
+            <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-ink-muted">
+              Free. If that ever changes, it&rsquo;ll be for power-user features — never the core local utility.
             </p>
           </div>
 
@@ -561,15 +571,9 @@ export default function HomePage() {
                     />
                     PLAN · FREE / OPEN BUILD
                   </div>
-                  <span
-                    className="rounded-sm border border-edge px-2 py-0.5 text-[9px] uppercase tracking-[0.22em]"
-                    style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
-                  >
-                    AVAILABLE NOW
-                  </span>
                 </div>
 
-                <div className="mt-6 flex items-baseline gap-3">
+                <div className="mt-6">
                   <span
                     className="font-display text-6xl font-normal tracking-[-0.02em]"
                     style={{
@@ -579,9 +583,6 @@ export default function HomePage() {
                     }}
                   >
                     $0
-                  </span>
-                  <span className="text-[12px] uppercase tracking-[0.22em] text-ink-faint">
-                    / month · beta
                   </span>
                 </div>
 
@@ -643,7 +644,7 @@ export default function HomePage() {
                 Honest pricing, when the time comes.
               </h3>
               <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
-                No plans to charge today. If that changes, it&rsquo;ll cover advanced features — never what you see on this page.
+                No plans to charge today. If that changes, it&rsquo;ll cover advanced features — never the core local utility.
               </p>
 
               <ul className="mt-6 space-y-3 text-[12px] text-ink-muted">
@@ -729,7 +730,7 @@ export default function HomePage() {
                 Why local-first matters.
               </h3>
               <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
-                The philosophy behind a tool that stays out of your way and keeps your voice on your side. Keep reading <span aria-hidden>→</span>
+                The philosophy behind a little app that stays out of your way and keeps your voice on your side. Keep reading <span aria-hidden>→</span>
               </p>
             </Link>
           </div>
@@ -846,17 +847,6 @@ function FlowStep({ step }) {
         >
           {step.id}
         </div>
-        <div
-          className="mt-3 inline-flex items-center gap-2 text-[9px] uppercase tracking-[0.24em]"
-          style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
-        >
-          <span
-            aria-hidden
-            className="inline-block h-px w-6"
-            style={{ background: 'color-mix(in oklab, var(--amber) 40%, transparent)' }}
-          />
-          STAGE · {step.id}
-        </div>
       </div>
       <div>
         <h3 className="font-display text-2xl font-normal leading-snug tracking-[-0.01em] text-ink md:text-3xl">
@@ -901,5 +891,37 @@ function OwnershipCard({ card }) {
         <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{card.body}</p>
       </div>
     </div>
+  )
+}
+
+function SecurityNode({ label, detail, muted = false }) {
+  return (
+    <div
+      className="rounded-sm border border-edge-dim bg-canvas px-4 py-3"
+      style={
+        muted
+          ? undefined
+          : {
+              boxShadow: 'inset 2px 0 0 0 var(--amber)',
+            }
+      }
+    >
+      <p className={muted ? 'text-ink-faint' : 'text-ink'}>{label}</p>
+      <p className="mt-1 text-[8px] tracking-[0.18em] text-ink-faint">{detail}</p>
+    </div>
+  )
+}
+
+function SecurityArrow() {
+  return (
+    <div
+      aria-hidden
+      className="hidden h-px w-10 md:block"
+      style={{
+        background:
+          'linear-gradient(90deg, color-mix(in oklab, var(--amber) 10%, transparent), var(--amber), color-mix(in oklab, var(--amber) 10%, transparent))',
+        boxShadow: '0 0 6px color-mix(in oklab, var(--amber) 35%, transparent)',
+      }}
+    />
   )
 }

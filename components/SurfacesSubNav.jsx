@@ -9,7 +9,7 @@ import Link from 'next/link'
  * Sticks just below the SiteShell header (h-12 = top-12).
  */
 const SURFACES = [
-  { id: 'mac',    label: 'MAC',    channel: 'CH-A', freq: '32.1kHz', href: '/mac' },
+  { id: 'mac',    label: 'MAC',    channel: 'CH-A', freq: '16kHz', href: '/mac' },
   { id: 'mobile', label: 'MOBILE', channel: 'CH-B', freq: '48.0kHz', href: '/mobile' },
 ]
 

@@ -39,7 +39,7 @@ const TRACE_TINT_FAINT = { background: 'color-mix(in oklab, var(--trace) 4%, tra
 
 const STORY_PARAGRAPHS = [
   'Typing is a bottleneck. The faster you can get ideas out of your head and into your tools, the more you can do with them. Voice is the way out.',
-  'I was a power user of early voice tools like SuperWhisper and Wispr Flow — they were great and opened my eyes to what was possible. But none of them treated developers as first-class citizens. So I built Talkie for engineers and tech-forward people who want control: open data, everything is a file, fully pluggable and hookable.',
+  'I was a power user of early voice tools like SuperWhisper and Wispr Flow — they were great and opened my eyes to what was possible. But none of them treated developers as first-class citizens. So I built Talkie for engineers and tinkerers who want control: open data, everything\'s a file, you can poke at any of it.',
   'A native macOS app that lives in your menu bar, transcribes locally on your Mac, and gets out of your way. No subscriptions, no cloud dependency. Press a key, talk, your words appear wherever you’re typing.',
   'Dictation is just the beginning. When you take voice-first workflows seriously, a whole surface opens up: memory, analysis, automation, context. That’s where Talkie is headed.',
 ]
@@ -70,9 +70,9 @@ export default function AboutPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Talkie is a native macOS app for engineers and tech-forward operators who want
-            control over their tools. Local-first, open data, fully hookable. One person
-            building it, in the open, for people who think the same way.
+            Talkie is a native macOS app for engineers and tinkerers who like to open
+            the hood. Local-first, open data, fully hookable. One person building it,
+            in the open, for people who think the same way.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
