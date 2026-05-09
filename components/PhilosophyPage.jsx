@@ -92,12 +92,7 @@ export default function PhilosophyPage() {
           </h1>
 
           <p className="philo-lede mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            <span
-              className="philo-dropcap float-left mr-2 -ml-1 font-display text-[64px] font-normal italic leading-[0.85] text-amber md:-ml-3 md:text-[76px]"
-            >
-              Y
-            </span>
-            our ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
+            Our ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
             unrelated. Builders know this rhythm well. Sparks arrive fast, unpolished, and usually at inconvenient
             times. And without a way to catch them in the moment, they slip away just as quickly.
           </p>
