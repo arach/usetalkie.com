@@ -893,7 +893,7 @@ export default function SignalTable({ catalog }) {
             >
               CC · {captionsOn ? 'ON' : 'OFF'}
             </button>
-            <span className="hidden sm:inline">32.1kHz · 24-BIT · MONO</span>
+            <span className="hidden sm:inline">16kHz · 24-BIT · MONO</span>
           </div>
         </div>
 
@@ -938,7 +938,7 @@ export default function SignalTable({ catalog }) {
             playing={isPlaying}
             freeze={captionPhase === 'transcribing'}
             channelLabel="CH-01"
-            scaleLabel="32.1kHz · MAC · iPHONE · WATCH"
+            scaleLabel="16kHz · MAC · iPHONE · WATCH"
             hideLabels
           />
 

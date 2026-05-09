@@ -73,8 +73,7 @@ export default function MobileCaptureModes() {
             <span className="italic text-ink-muted">not become another inbox.</span>
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            The mobile app is there for the moment you do not have your desk,
-            not to replace it.
+            It&apos;s for when you don&apos;t have your desk. Not a replacement for it.
           </p>
         </div>
 

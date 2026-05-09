@@ -376,7 +376,7 @@ export default function WorkflowsPage() {
             Start with simple workflows.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            These are intentionally small. Pick one, swap the app or path, and make it yours.
+            Small on purpose. Pick one, swap a path, make it yours.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">

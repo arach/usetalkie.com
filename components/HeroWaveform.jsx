@@ -13,7 +13,7 @@ export default function HeroWaveform({
   width = 1200,
   height = 220,
   channelLabel = 'CH-01',
-  scaleLabel = '32.1kHz · MAC · iPHONE · WATCH',
+  scaleLabel = '16kHz · MAC · iPHONE · WATCH',
 }) {
   const n = 360
   const points = []
