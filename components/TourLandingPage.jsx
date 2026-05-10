@@ -83,7 +83,7 @@ export default function TourLandingPage() {
           <h1 className="mt-4 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
             See Talkie in action.
             <br />
-            <span className="italic text-amber">Frame by frame.</span>
+            <span className="italic text-amber">On Mac and iPhone.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
             Watch the demos at the top, then step through every screen
@@ -99,8 +99,8 @@ export default function TourLandingPage() {
           <SectionHeader
             eyebrow="· 02 / DEMOS"
             icon={Film}
-            title="The bespoke reel."
-            blurb="Full-screen player, custom controls, and a hover playlist of every clip. Switch sections to jump between Mac, Mobile, and the long-form reels."
+            title="Press play."
+            blurb="Full-screen player, custom controls, and a hover playlist of every clip. Switch sections to jump between Mac, Mobile, and the longer pieces."
           />
           <DemoViewer sections={DEMO_SECTIONS} />
         </div>
@@ -115,7 +115,7 @@ export default function TourLandingPage() {
           <SectionHeader
             eyebrow="· 03 / GALLERY"
             icon={Images}
-            title="Every screen, framed."
+            title="Look around."
             blurb="Click any card for the focused view with audio narration. Press Esc to land back at this gallery."
           />
 

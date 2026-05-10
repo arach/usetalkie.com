@@ -15,6 +15,9 @@ import {
   Workflow,
   Zap,
   Bot,
+  PencilLine,
+  GitCompare,
+  Github,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -50,38 +53,50 @@ const EXAMPLES = [
   {
     name: 'Dictate → Claude',
     flow: 'Dictate · LLM · Clipboard',
+    icons: [Mic, Cpu, Copy],
     body:
       'Say the prompt out loud. Talkie cleans it up and leaves it ready to send.',
+    outcome: 'PASTE-READY',
   },
   {
     name: 'Dictate → Email',
     flow: 'Dictate · LLM · Mail',
+    icons: [Mic, Cpu, Mail],
     body:
       'Talk through the reply in your own words. Open a polished draft in Mail.',
+    outcome: 'DRAFT IN MAIL',
   },
   {
     name: 'Voice memo → Obsidian',
     flow: 'Memo · LLM · Save',
+    icons: [Mic, Cpu, FileOutput],
     body:
       'Record the messy thought. Save the useful version as Markdown in your vault.',
+    outcome: 'NOTE FILED',
   },
   {
     name: 'Iterate on a memo → Talkie Compose',
     flow: 'Memo · Compose · Diff',
+    icons: [Mic, PencilLine, GitCompare],
     body:
       'Keep the raw take. Make a tighter version next to it, without losing the first one.',
+    outcome: 'BOTH DRAFTS KEPT',
   },
   {
     name: 'Quick idea → Claude + @talkie/cli',
     flow: 'Capture · CLI · Claude',
+    icons: [Mic, Terminal, Bot],
     body:
       'Capture the spark, pull it from the CLI, and hand it to Claude when it needs a second pass.',
+    outcome: 'READY FOR CLAUDE',
   },
   {
     name: 'Bug note → GitHub issue',
     flow: 'Dictate · Shell · GitHub',
+    icons: [Mic, Terminal, Github],
     body:
       'Describe the bug while it is fresh. Turn it into a title, body, and issue command.',
+    outcome: 'ISSUE OPENED',
   },
 ]
 
@@ -386,18 +401,26 @@ export default function WorkflowsPage() {
                 className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <Mic
-                      className="h-3.5 w-3.5 text-trace transition-transform duration-200 group-hover:scale-110"
-                      style={{ filter: 'drop-shadow(0 0 3px var(--trace-glow))' }}
-                    />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
-                      {ex.name}
-                    </span>
-                  </div>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-                    {ex.flow}
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
+                    {ex.name}
                   </span>
+                  <div
+                    className="flex items-center gap-1 text-trace"
+                    aria-label={ex.flow}
+                  >
+                    {ex.icons.map((Icon, i) => (
+                      <span key={i} className="flex items-center gap-1">
+                        <Icon
+                          aria-hidden
+                          className="h-3 w-3 transition-transform duration-200 group-hover:scale-110"
+                          style={{ filter: 'drop-shadow(0 0 2px var(--trace-glow))' }}
+                        />
+                        {i < ex.icons.length - 1 && (
+                          <span aria-hidden className="text-[10px] text-ink-faint">→</span>
+                        )}
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <p className="mt-4 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{ex.body}</p>
                 <div className="mt-5 flex items-center gap-2 border-t border-edge-faint pt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-trace">
@@ -406,7 +429,7 @@ export default function WorkflowsPage() {
                     className="inline-block h-1.5 w-1.5 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
                     style={{ boxShadow: '0 0 4px var(--trace)' }}
                   />
-                  STARTER
+                  {ex.outcome}
                 </div>
               </div>
             ))}
