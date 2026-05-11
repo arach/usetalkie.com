@@ -1,63 +1,46 @@
 ---
 title: "Voice-First Computing"
-description: "Why the next era of personal computing starts with your voice, not your keyboard."
+description: "On where my best ideas actually happen, and why my phone keeps missing them."
 date: "2025-01-15"
 tags: ["voice", "computing", "philosophy"]
 ---
 
-## The keyboard is a bottleneck
+## Where my ideas actually happen
 
-We've spent fifty years optimizing for fingers on keys. Every productivity tool, every shortcut assumes you're at a desk, hands on keyboard, eyes on screen.
+I keep a running list of where I've had ideas I cared about in the last year. Almost none of them happened at my desk.
 
-But your best thinking doesn't happen at your desk.
+Walking the dog. Three minutes into a shower. Driving back from dropping my kid off. Standing in the kitchen waiting for water to boil. One especially good one came to me on a treadmill, which I resent.
 
-It happens on walks. In the shower. While cooking dinner. Your mind does its best work when it's free to wander, and in those moments you have no keyboard.
+The pattern is obvious once you write it down. My desk is where I execute. Somewhere else is where I think.
 
-## Speech is the original interface
+## What I tried
 
-We could speak long before we could type. About 150 words per minute, three times faster than most people type. Speaking doesn't require a special posture or a dedicated device.
+For a while I tried to be disciplined about it. Pull out the phone, unlock it, find Notes, tap into a new note, type with my thumbs while walking. By the third sentence I'd lost the back half of the idea — the part that made it interesting, the connective tissue between the thing I started saying and the thing I was reaching toward.
 
-We've built an entire computing paradigm that ignores this.
+Voice memos were better. But then I had eighty-seven of them named "New Recording 23" and I never went back.
 
-## The gap between thought and capture
+I tried Siri. I tried Otter. I tried dictating into Notes. Every one of them had at least one of these problems: it sent my voice somewhere, it was slow, it stopped listening after a sentence, it didn't work offline, or it produced a transcript I had to clean up by hand before it was useful to anyone, including me.
 
-Every uncaptured idea is a lost idea. Not entirely (you might remember the shape of it later) but the nuance is gone. The specific phrasing. The connections your mind was making right then.
+## The numbers I keep coming back to
 
-Pull out your phone. Open an app. Find the right note. Start typing with your thumbs. By the time you've done all that, the thought has started to fade. The rich, branching idea gets compressed into a few hurried words.
+People speak around 150 words per minute. Most people type closer to 40 or 50. That's a 3x throughput gap on the input side, and it widens further if you account for the fact that you can speak while walking and you cannot, in any meaningful sense, type while walking.
 
-## Voice closes the gap
+The interesting thing isn't the speed. It's that the slower interface has eaten the entire computing stack. Every productivity tool I use assumes I am sitting in a chair with my hands on a keyboard. The moments I'm most likely to have a thought worth keeping are the moments I am specifically not doing that.
 
-You speak at the speed of thought. No app to find, no keyboard to fumble with. You just talk.
+## Why now
 
-When transcription happens on your device, in real time, there's no latency and no privacy trade-off. Your words, captured instantly, exactly as you said them.
+Two things changed recently that didn't used to be true.
 
-Voice-first doesn't mean voice-only. Voice is the entry point, the fastest path from thought to text. You edit and organize with whatever interface you want afterward. But capture should be instant.
+Transcription got good enough to run on the device in your pocket. Not "good enough for a demo" — good enough that I trust it with my actual thinking. No upload, no latency, no API key, no monthly bill, no surprise outage.
 
-## From capture to action
+And small language models got good enough to take a messy transcript — the "uhh" and the false starts and the "wait, scratch that" — and pull out the actual structure. A 1.5B model running locally can turn a rambling four-minute voice memo into a clean note with the action items pulled out. I wrote about [the bash dictation version of this](/ideas/teaching-a-tiny-model-to-hear-bash) — the same shape works for prose.
 
-Raw transcription is messy. Filler words, false starts, tangents. But it contains the real substance of your thinking. The hard part is pulling signal from noise without losing the original intent.
+Neither of those was true five years ago. Both are true now, on hardware most people already own.
 
-Local AI makes this possible. Models that run on your device, that understand context, that can turn a rambling voice memo into a structured note or a task list. Nothing gets uploaded anywhere.
+## What this actually buys you
 
-The pipeline:
+A capture loop where the latency between thought and saved-thought is roughly zero. You speak. It transcribes. Local model cleans it up and routes it. Nothing leaves the device unless you ask it to.
 
-1. Capture — speak freely, anywhere
-2. Transcribe — on-device, in real time
-3. Transform — local AI pulls out structure and meaning
-4. Route — results land where they belong (notes, tasks, calendar, code)
+That's it. That's the whole pitch. Voice isn't replacing the keyboard for editing a spreadsheet or writing code. Voice is for the part of the day when there isn't a keyboard, which, if I'm honest, is most of the day where the good stuff happens.
 
-Everything runs on your hardware.
-
-## How we think about it
-
-**Local by default.** Your voice shouldn't leave your device unless you choose. On-device transcription and AI aren't optional. They're the whole point.
-
-**Speed over perfection.** A 95% accurate transcript captured in the moment beats a perfect one you never made.
-
-**Capture now, organize later.** Don't force people to categorize at the moment of inspiration. Let them dump thoughts and sort them out at their desk.
-
-**Your tools, your data.** Voice is the on-ramp. The off-ramp is whatever you already use: text editor, task manager, email.
-
-## What we're building
-
-Talkie is our shot at this. We're building for people who think faster than they type and whose best ideas come at bad times.
+The thing I didn't expect going in: once capture stops being friction, I started having more ideas, not just catching more of them. Apparently some of those ideas weren't showing up before because some part of me knew I wouldn't be able to hold onto them.
