@@ -7,6 +7,36 @@ html, body { height: 100%; }
 html { scroll-behavior: smooth; }
 
 /* ─────────────────────────────────────────────────────────────────────────
+ * Talkie brand tokens — canonical palette, theme-agnostic.
+ * These are the "instruments-as-objects" colors shared across both
+ * Warm/Linen and Modern themes. Treat as locked. Source of truth:
+ * narrative-studio/src/app/deck/talkie/_brand/tokens.ts.
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  --brand-studio-cream:    #F4EFE6;  /* primary ink on dark */
+  --brand-canvas:          #0E0D0A;  /* dark background ("Ribbon Black") */
+  --brand-hot-mic:         #FF5346;  /* listening state — the only red */
+  --brand-cassette-orange: #E68A3C;  /* processing, warm accent */
+  --brand-tape-tan:        #7A6E5C;  /* idle, secondary, dividers */
+  --brand-caution-yellow:  #E5C547;  /* error — used sparingly */
+  --brand-graphite:        #B8B2A4;  /* secondary text on dark */
+  --brand-signal-green:    #5FD088;  /* sync-ok indicator only */
+  --brand-hairline-dark:   #16140e;  /* borders on dark canvas */
+
+  /* Theme-aware wordmark ink — default (light mode) uses dark ink on the
+   * cream canvas; dark mode flips to studio cream on the ribbon-black
+   * canvas. Other brand tokens stay constant; only the wordmark inks
+   * needs to react to the theme. */
+  --brand-wordmark-ink: var(--brand-canvas);
+  --brand-wordmark-idle: var(--brand-tape-tan);
+}
+
+html.dark {
+  --brand-wordmark-ink: var(--brand-studio-cream);
+  --brand-wordmark-idle: var(--brand-tape-tan);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
  * Oscilloscope theme tokens.
  * Light  = cream-paper scanner printout (charcoal trace).
  * Dark   = dark chassis with P31 phosphor (green trace).
