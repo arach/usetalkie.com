@@ -107,15 +107,8 @@ export default function SiteShell({ children }) {
           {/* Wordmark + tagline + primary CTA */}
           <div className="flex flex-col gap-8 border-b border-edge-subtle pb-10 md:flex-row md:items-end md:justify-between md:gap-12">
             <div className="max-w-sm">
-              <div className="flex items-center gap-3">
-                <span
-                  aria-hidden
-                  className="inline-block h-2 w-2 rounded-full bg-trace"
-                  style={{ boxShadow: '0 0 8px var(--trace)' }}
-                />
-                <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim">TALKIE</span>
-              </div>
-              <p className="mt-4 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
+              <Wordmark size={48} state="listening" pulse />
+              <p className="mt-5 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
                 It's like a selfie. For your thoughts.
                 <br />
                 <span className="text-base italic text-ink-muted">{supportingLine(ANCHOR_VARIANT)}</span>
