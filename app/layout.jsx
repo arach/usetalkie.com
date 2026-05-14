@@ -1,6 +1,7 @@
 import './globals.css'
 import Script from 'next/script'
 import { Space_Grotesk, JetBrains_Mono, Fraunces, Inter, Cormorant_Garamond } from 'next/font/google'
+import localFont from 'next/font/local'
 import DevConsole from '../components/DevConsole'
 import FeedbackWidget from '../shared/components/FeedbackWidget'
 import StudioPanel from '../components/StudioPanel'
@@ -24,6 +25,19 @@ const cormorant = Cormorant_Garamond({
 // --font-sans-classic; theme-scoped CSS rules in globals.css remap
 // --font-sans to point at it when html[data-theme="modern"] is active.
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans-classic', display: 'swap' })
+
+// Talkie Medium — the custom wordmark face (JBM-derived, dotless `i`,
+// forward-leaning `t` crossbar). Use ONLY for rendering the "talkie"
+// wordmark itself; body/headlines stay in Cormorant/Inter/Grotesk.
+// File is CFF-flavored OpenType despite the .ttf extension — load via
+// next/font/local rather than @font-face in globals.css (Tailwind would
+// strip a raw @font-face block).
+const talkie = localFont({
+  src: '../public/fonts/Talkie-Medium.ttf',
+  variable: '--font-talkie',
+  weight: '500',
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'Talkie - Talk to your Mac',
@@ -76,7 +90,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="modern" data-osci-style="slate" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="modern" data-osci-style="slate" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable}`} suppressHydrationWarning>
       <head>
         {/*
          * Theme resolver — must run synchronously in <head> before first paint
