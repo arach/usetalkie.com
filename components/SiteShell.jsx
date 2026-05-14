@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
 import { supportingLine, ANCHOR_VARIANT } from '../content/tagline'
+import { Wordmark } from './brand/Wordmark'
 
 const PRIMARY_NAV = [
   { label: 'Tour',       href: '/tour' },
@@ -57,15 +58,8 @@ export default function SiteShell({ children }) {
     <>
       <header className="sticky top-0 z-40 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
         <div className="mx-auto flex h-12 max-w-6xl items-center justify-between px-4 md:px-6">
-          <Link href="/" className="flex items-center gap-3 group">
-            <span
-              aria-hidden
-              className="inline-block h-2 w-2 rounded-full bg-trace animate-pulse"
-              style={{ boxShadow: '0 0 8px var(--trace)' }}
-            />
-            <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim transition-colors group-hover:text-trace">
-              TALKIE
-            </span>
+          <Link href="/" className="flex items-center group" aria-label="Talkie home">
+            <Wordmark size={22} state="listening" pulse />
           </Link>
 
           <nav className="hidden items-center gap-5 text-[9px] uppercase tracking-[0.24em] text-ink-faint lg:flex">
