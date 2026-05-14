@@ -41,15 +41,22 @@ export function Wordmark({
   pulse = false,
   ink = 'var(--brand-wordmark-ink)',
   showDot = true,
+  squeeze = 0.92,
 }) {
   // Hot Mic dot stays red regardless of theme (it's a state semantic, not a
   // theme token). Idle dot is Tape Tan which works on both canvases.
   const dotColor = state === 'listening' ? COLORS.hotMic : COLORS.tapeTan
   const u = size / FONT_UPM
-  const totalW = TOTAL_ADVANCE_UPM * u
+  // Horizontal squeeze via SVG textLength + lengthAdjust="spacingAndGlyphs".
+  // Compresses glyph widths *and* spacing uniformly, so the i-stem center
+  // stays proportionally aligned — multiply both the viewBox width and the
+  // dot's cx by the same factor.
+  const squeezedAdvanceUPM = TOTAL_ADVANCE_UPM * squeeze
+  const squeezedStemUPM = I_STEM_CENTER_UPM * squeeze
+  const totalW = squeezedAdvanceUPM * u
   const totalH = size * 1.05
   const baseline = size * 0.82
-  const dotCx = I_STEM_CENTER_UPM * u
+  const dotCx = squeezedStemUPM * u
   // Compact sizes render the indicator as a ring rather than a filled
   // circle. At nav-scale (≤ ~28px) a filled red dot subpixels into a
   // blurry blob; a 1.5px-stroke ring with slightly larger radius reads
@@ -89,6 +96,8 @@ export function Wordmark({
           fontWeight={500}
           fontSize={size}
           fill={ink}
+          textLength={totalW}
+          lengthAdjust="spacingAndGlyphs"
         >
           talkie
         </text>
