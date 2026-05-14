@@ -25,6 +25,7 @@ const FOOTER_SECTIONS = [
     label: 'Substance',
     links: [
       { label: 'Philosophy', href: '/philosophy' },
+      { label: 'Brand',      href: '/brand' },
       { label: 'Security',   href: '/security' },
       { label: 'About',      href: '/about' },
     ],
