@@ -1,58 +1,58 @@
 ---
 title: "From Voice Memos to Structured Knowledge"
-description: "Your voice memos contain a goldmine of ideas, plans, and decisions. Here's how to turn stream-of-consciousness recordings into an organized knowledge base — entirely through prompting."
+description: "Turning two weeks of voice memos into an Obsidian vault with four LLM prompts. Ten minutes, end to end."
 date: "2026-03-15"
 tags: ["voice", "knowledge", "obsidian", "workflow", "agents"]
 ---
 
-## The problem with voice memos
+## The problem
 
-You record a five-minute memo on your morning walk. It's brilliant. You talk about three different projects, a marketing idea, and a business decision you've been mulling over.
+I record voice memos on walks. Five minutes, sometimes ten. Inside any one of them I'll touch three projects, a marketing idea, and a decision I've been chewing on for a week.
 
-Then it sits there. One long transcript, filed by date, buried under the next memo and the one after that.
+Then the file sits there. Titled by date. Buried under the next memo, and the one after that.
 
-A week later you remember you said something important about a project direction, but you can't remember which recording it was in. You scrub through four memos before giving up.
+A week later I remember I said something useful about a project direction. I can't remember which recording. I scrub through four of them and give up.
 
-**Your voice memos are a goldmine with no map.**
+The memos aren't the problem. The lack of any index across them is.
 
 ## What's actually in there
 
-Here's what we found when we took ten consecutive voice memos and actually looked at what was inside:
+I took ten consecutive memos from two weeks of recordings and read them as one document instead of ten.
 
-Seven distinct topics emerged from two weeks of recordings. Not seven memos — seven *themes* that wove through multiple memos across multiple days:
+Seven distinct threads showed up. Not seven memos — seven topics that wove through multiple recordings across multiple days:
 
-- A project idea mentioned on Monday, refined on Wednesday, given a deadline on Friday
-- A business strategy that started as a throwaway thought and evolved into a clear direction
+- A project idea mentioned Monday, refined Wednesday, given a deadline Friday
+- A pricing thought that started as a throwaway line and turned into a decision by the second week
 - A health goal that kept surfacing as a footnote to work planning
 
-None of these lived in a single memo. They were scattered across recordings, across devices, across weeks.
+None of those lived in a single memo. They were spread across recordings, devices, and weeks. Each memo on its own looked like rambling. All ten read together had a clear shape.
 
-## The structure hiding in your stream of consciousness
+## The shape hiding in stream of consciousness
 
-Voice memos feel chaotic, but they're not. When you talk through your day, you're actually doing something very structured:
+Voice memos feel chaotic but they aren't. When I talk through my day I'm doing four things in roughly the same order:
 
-1. **You set context** — "Okay, so today is Tuesday and I want to talk about..."
-2. **You explore ideas** — branching, comparing, weighing options
-3. **You make decisions** — "I think the move is to..."
-4. **You assign next steps** — "So the game plan is..."
+1. Set context — "Okay, today is Tuesday and I want to talk about..."
+2. Explore — branching, comparing, weighing
+3. Decide — "I think the move is to..."
+4. Assign next steps — "So the game plan is..."
 
-That's an outline. It's just wearing a disguise.
+That's an outline in a hoodie.
 
-## Turning memos into a knowledge graph
+## The workflow
 
-Here's the process. It takes about ten minutes for a week's worth of memos, and the result is something you can actually navigate.
+The whole thing takes about ten minutes for a week of memos. Four prompts, one LLM, one folder of markdown files at the end.
 
 ### Step 1: Pull your recent memos
 
 <CopyableCode code="talkie memos" />
 
-You'll see them listed with titles, durations, and word counts. Pick the ones from the past week or two.
+You get a list with titles, durations, word counts. Grab the past week or two.
 
-### Step 2: Read them as a batch
+### Step 2: Read them as a batch, not one by one
 
-Don't read each memo in isolation. Read them all together, as one stream. You're looking for **threads** — ideas that appear more than once, or that connect to each other.
+This is the part most people skip. Don't read each memo in isolation. Read all of them together and look for **threads** — ideas that appear more than once or that connect to each other.
 
-In our ten memos, we found:
+In my ten memos:
 
 | Thread | Appeared in |
 |--------|------------|
@@ -62,81 +62,73 @@ In our ten memos, we found:
 | Product launch prep | 5 memos |
 | Pricing model | 2 memos |
 | Onboarding flow | 3 memos |
-| Health and sustainability | 1 memo (but important) |
+| Health and sustainability | 1 memo (but kept coming up afterwards) |
 
-### Step 3: Create topic files
+### Step 3: Generate topic files
 
-Each thread becomes its own file. Not a summary — a **living document** that captures the core idea, how it evolved, open questions, and connections to other topics.
+Each thread becomes its own file. Not a summary — a working document with the core idea, how it evolved, open questions, and links to the other topics it touches.
 
-Here's what a generated topic file looks like:
+Here's what one looks like:
 
 <VKNote id="mobile-app" />
 
-### Step 4: Create daily notes as anchors
+### Step 4: Generate daily notes as anchors
 
-Each day's memos become a daily note that links into the topic files. This preserves the timeline — you can trace how an idea evolved from a throwaway thought to a concrete plan.
+Each day's memos become a daily note that links into the topic files. This preserves the timeline so I can trace how an idea went from a throwaway line to a concrete plan.
 
 ### Step 5: Open it in Obsidian
 
-The `[[wikilinks]]` light up. The graph view shows you which ideas cluster together, which ones are orphans, and which day triggered the most connections.
+The `[[wikilinks]]` light up. Graph view shows which ideas cluster, which ones are orphans, and which days produced the most connections.
 
-Suddenly your two weeks of voice memos look like this:
+Two weeks of memos end up looking like this:
 
 <MindMap />
 
-Not seven recordings. Seven **ideas**, tracked across time, connected to each other.
+Not seven recordings. Seven ideas, tracked across time, linked to each other.
 
 <VKCode id="file-structure" />
 
-## The prompts: steal these
+## The prompts
 
-Here are the exact prompts we used to go from raw transcripts to structured vault. You can use these with Claude, ChatGPT, or any LLM. Paste your transcripts alongside the prompt and let it do the work.
+These are the four I use. Paste your transcripts alongside each prompt. Works in Claude, ChatGPT, whatever you have.
 
 ### Prompt 1: Extract topics
 
-This is the big one. Feed it all your transcripts at once.
+The big one. Feed it all your transcripts at once.
 
 <VKPrompt id="extract-topics" />
 
 ### Prompt 2: Generate topic files
 
-Once you have your topic list, use this to generate Obsidian-ready files for each one.
+Once you have a topic list, this writes the Obsidian-ready file for each one.
 
 <VKPrompt id="generate-topic-files" />
 
 ### Prompt 3: Generate daily notes
 
-These anchor the topics to specific days, preserving the timeline.
+Anchors the topics to specific days.
 
 <VKPrompt id="generate-daily-notes" />
 
 ### Prompt 4: Generate the index
 
-Tie it all together with a master file.
+A master file that ties the topics together.
 
 <VKPrompt id="generate-index" />
 
-### Tips for better results
+### Tips
 
-- **Batch, don't trickle.** Feed 5-10 memos at once. Single-memo summaries miss the cross-cutting threads.
-- **Include the messy parts.** Don't clean up "um" and "uh" before feeding — the LLM handles it, and the filler words often signal where you were thinking hardest.
-- **Run it weekly.** This works best as a ritual. Sunday evening: pull the week's memos, run the prompts, update your vault.
-- **Let topics merge.** After a few weeks, you'll notice topics that should be combined. That's a signal — your thinking is converging.
+- **Batch.** Five to ten memos at once. Single-memo summaries miss the threads that cross recordings, which is the whole point.
+- **Don't clean the transcripts.** Leave the "um"s and "uh"s. The LLM handles them, and they tend to cluster around the parts where I'm actually thinking.
+- **Run it weekly.** Sunday evening, pull the week, run the prompts, update the vault. It works as a ritual better than as a one-off.
+- **Let topics merge.** After a few weeks you'll spot topics that should fold into each other. That's a signal — the thinking is converging.
 
-## Why this matters
+## Why this works
 
-Most knowledge management fails because it requires you to be organized at the moment of capture. You have to pick a folder, write a title, tag it properly. That's friction, and friction kills capture.
+Most knowledge systems fail because they ask you to be organized at the moment of capture. Pick a folder, write a title, add tags. That's friction, and friction kills capture.
 
-Voice memos flip this. You capture freely — messy, branching, stream-of-consciousness — and organize later. The structure emerges from the content, not the other way around.
-
-**Capture fast. Organize slow. Never lose an idea.**
+Voice memos invert it. Capture is messy and fast. Organization happens later, in batch, by a model that's good at exactly that.
 
 ## What's next
 
-We're working on making this a one-command operation — pull transcripts, run the prompts, write the vault. Until then, the manual flow takes ten minutes and the prompts above get you 90% of the way.
-
-Your voice becomes your second brain's input device. Not just a recorder — a *thinker*.
-
----
-
-*Talkie is a voice-first productivity suite for macOS and iOS. Your voice memos, transcribed locally, organized intelligently. [Learn more →](/)*
+I want this to be one command — pull transcripts, run prompts, write the vault. Until then, the manual flow above takes ten minutes and gets you most of the way.
