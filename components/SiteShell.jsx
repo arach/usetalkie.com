@@ -59,7 +59,7 @@ export default function SiteShell({ children }) {
       <header className="sticky top-0 z-40 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
         <div className="mx-auto flex h-12 max-w-6xl items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center group" aria-label="Talkie home">
-            <Wordmark size={22} state="listening" pulse />
+            <Wordmark size={28} state="listening" pulse />
           </Link>
 
           <nav className="hidden items-center gap-5 text-[9px] uppercase tracking-[0.24em] text-ink-faint lg:flex">
