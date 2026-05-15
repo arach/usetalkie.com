@@ -38,10 +38,9 @@ const TRACE_TINT = { background: 'color-mix(in oklab, var(--trace) 6%, transpare
 const TRACE_TINT_FAINT = { background: 'color-mix(in oklab, var(--trace) 4%, transparent)' }
 
 const STORY_PARAGRAPHS = [
-  'Typing is a bottleneck. The faster you can get ideas out of your head and into your tools, the more you can do with them. Voice is the way out.',
-  'I was a power user of early voice tools like SuperWhisper and Wispr Flow — they were great and opened my eyes to what was possible. But none of them treated developers as first-class citizens. So I built Talkie for engineers and tinkerers who want control: open data, everything\'s a file, you can poke at any of it.',
-  'A native macOS app that lives in your menu bar, transcribes locally on your Mac, and gets out of your way. No subscriptions, no cloud dependency. Press a key, talk, your words appear wherever you’re typing.',
-  'Dictation is just the beginning. When you take voice-first workflows seriously, a whole surface opens up: memory, analysis, automation, context. That’s where Talkie is headed.',
+  'The way work happens now demands a different velocity. Parallel thoughts, parallel surfaces, parallel models all running at once. I lived in SuperWhisper, Wispr Flow, and dozens more. None did more than dictation. Their business models made it hard to be open. So I started building little things to keep up. They found their way back into Talkie.',
+  'A native macOS app that lives in your menu bar, transcribes locally on your Mac, and gets out of your way. No subscriptions, no cloud dependency. Press a key, speak, your words land wherever you’re already working: Cursor, Slack, the terminal, the model you’re talking to.',
+  'Dictation was the start. Talkie is becoming a place to think, work, reflect, push things forward. Not a second brain. Not a race to zero-latency anything. Not full duplex. Just your thoughts, your workflows, your tools.',
 ]
 
 const FOUNDER_STATS = [
@@ -63,26 +62,15 @@ export default function AboutPage() {
           </p>
 
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
-            Voice is the unlock.<br />
+            Your thoughts set the pace.<br />
             <span className="italic text-trace" style={HEADLINE_PHOSPHOR}>
-              Typing is the bottleneck.
+              AI makes it work.
             </span>
           </h1>
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Talkie is a native macOS app for engineers and tinkerers who like to open
-            the hood. Local-first, open data, fully hookable. One person building it,
-            in the open, for people who think the same way.
+            Talkie is a collection of apps for builders who like to own their tools.
           </p>
-
-          <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
-            <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-trace" style={TRACE_GLOW_DOT} />
-            <span>SOLO BUILT</span>
-            <span aria-hidden className="text-edge-dim">/</span>
-            <span>LOCAL FIRST</span>
-            <span aria-hidden className="text-edge-dim">/</span>
-            <span>OPEN DATA</span>
-          </div>
         </div>
       </section>
 
@@ -95,7 +83,13 @@ export default function AboutPage() {
             · THE STORY
           </p>
           <h2 className="mt-3 max-w-3xl font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
-            You don&apos;t get the full value of AI unless you can communicate at high velocity.
+            The point isn&apos;t to talk faster, type faster, move faster.
+            <span className="mt-2 block text-base italic text-ink-muted md:text-lg">
+              Sure, that helps, and of course we do that.
+            </span>
+            <span className="mt-3 block italic text-trace" style={HEADLINE_PHOSPHOR}>
+              It&apos;s to own the way you think and the way you work.
+            </span>
           </h2>
 
           <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-[160px_1fr] md:gap-16">
@@ -139,7 +133,7 @@ export default function AboutPage() {
                 style={TRACE_GLOW_SOFT}
               >
                 <span aria-hidden className="inline-block h-px w-8" style={{ background: 'var(--trace-dim)' }} />
-                <span>BUILT FOR TINKERERS</span>
+                <span>BUILT FOR BUILDERS</span>
               </div>
             </div>
           </div>
@@ -252,7 +246,7 @@ export default function AboutPage() {
                 Don&apos;t be a stranger.
               </h2>
               <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-muted">
-                Feedback, ideas, questions, or just a quick hello — they all land in the
+                Feedback, ideas, questions, or just a quick hello. They all land in the
                 same inbox and they all get read. The fastest channels are below.
               </p>
             </div>
@@ -269,7 +263,7 @@ export default function AboutPage() {
               code="CH-01"
               label="EMAIL"
               heading="hey@usetalkie.com"
-              body="Direct line. Bug reports, feature ideas, partnership stuff — all of it."
+              body="Direct line. Bug reports, feature ideas, partnership stuff. All of it."
               href="mailto:hey@usetalkie.com"
               icon={<Mail className="h-3.5 w-3.5" aria-hidden />}
               cta="OPEN MAIL"
@@ -288,7 +282,7 @@ export default function AboutPage() {
               code="CH-03"
               label="PHILOSOPHY"
               heading="Why Talkie exists."
-              body="The principles behind the tool — local-first, sovereign, low-friction."
+              body="The principles behind the tool: local-first, sovereign, low-friction."
               href="/philosophy"
               cta="READ"
               highlight
