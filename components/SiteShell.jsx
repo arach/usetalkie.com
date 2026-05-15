@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
 import { supportingLine, ANCHOR_VARIANT } from '../content/tagline'
+import { Wordmark } from './brand/Wordmark'
 
 const PRIMARY_NAV = [
   { label: 'Tour',       href: '/tour' },
@@ -24,6 +25,7 @@ const FOOTER_SECTIONS = [
     label: 'Substance',
     links: [
       { label: 'Philosophy', href: '/philosophy' },
+      { label: 'Brand',      href: '/brand' },
       { label: 'Security',   href: '/security' },
       { label: 'About',      href: '/about' },
     ],
@@ -57,15 +59,8 @@ export default function SiteShell({ children }) {
     <>
       <header className="sticky top-0 z-40 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
         <div className="mx-auto flex h-12 max-w-6xl items-center justify-between px-4 md:px-6">
-          <Link href="/" className="flex items-center gap-3 group">
-            <span
-              aria-hidden
-              className="inline-block h-2 w-2 rounded-full bg-trace animate-pulse"
-              style={{ boxShadow: '0 0 8px var(--trace)' }}
-            />
-            <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim transition-colors group-hover:text-trace">
-              TALKIE
-            </span>
+          <Link href="/" className="flex items-center group" aria-label="Talkie home">
+            <Wordmark size={28} state="listening" pulse />
           </Link>
 
           <nav className="hidden items-center gap-5 text-[9px] uppercase tracking-[0.24em] text-ink-faint lg:flex">
@@ -113,15 +108,8 @@ export default function SiteShell({ children }) {
           {/* Wordmark + tagline + primary CTA */}
           <div className="flex flex-col gap-8 border-b border-edge-subtle pb-10 md:flex-row md:items-end md:justify-between md:gap-12">
             <div className="max-w-sm">
-              <div className="flex items-center gap-3">
-                <span
-                  aria-hidden
-                  className="inline-block h-2 w-2 rounded-full bg-trace"
-                  style={{ boxShadow: '0 0 8px var(--trace)' }}
-                />
-                <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim">TALKIE</span>
-              </div>
-              <p className="mt-4 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
+              <Wordmark size={48} state="listening" pulse />
+              <p className="mt-5 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
                 It's like a selfie. For your thoughts.
                 <br />
                 <span className="text-base italic text-ink-muted">{supportingLine(ANCHOR_VARIANT)}</span>

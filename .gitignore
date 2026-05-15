@@ -6,6 +6,10 @@ out
 *.log
 logs/
 
+# Local specs (brand docs, review scaffolding, scratch briefs)
+# Kept on disk for working reference but never tracked.
+*/specs/
+
 # === Dotfile allowlist policy ===
 # Ignore all dotfiles by default. New dotfiles (.env*, .tmp-*, .next,
 # .DS_Store, AI tooling state like .claude/ and .openscout/, editor
