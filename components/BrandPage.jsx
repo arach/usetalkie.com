@@ -360,38 +360,61 @@ export default function BrandPage() {
       <Section
         eyebrow="Assets"
         title="Receipts you can ship."
-        kicker="The wordmark and font, packaged. If you need a variant that isn't here, ping @talkie-brand on Scout or open an issue against this page."
+        kicker="The wordmark, the font, the icons. Download what you need. If a variant isn't here, ping @talkie-brand on Scout or open an issue against this page."
       >
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           <div className="rounded-sm border border-edge-subtle p-6">
             <p className="text-[10px] uppercase tracking-[0.24em] text-ink-subtle">· Font</p>
             <p className="mt-3 font-display text-xl text-ink">Talkie Medium v6</p>
             <p className="mt-1.5 text-[11px] leading-relaxed text-ink-faint">
-              Embedded version: <code className="text-trace">Talkie Medium v6 · 2026-05-14</code>. Loaded via next/font/local; available as <code className="text-trace">--font-talkie</code>.
+              Custom derivative of JetBrains Mono. Dotless i with parametric foot. Loaded via next/font/local; available in CSS as <code className="text-trace">--font-talkie</code>.
             </p>
-            <p className="mt-4 text-[10px] uppercase tracking-[0.2em] text-ink-subtle">
-              Source: <span className="text-trace">/public/fonts/Talkie-Medium.ttf</span>
-            </p>
+            <a
+              href="/fonts/Talkie-Medium.ttf"
+              download
+              className="mt-5 inline-flex items-center gap-2 rounded-sm border border-edge-subtle px-3 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-ink transition-colors hover:bg-canvas-alt"
+            >
+              <span>Download .TTF</span>
+              <span className="text-ink-subtle">· 193 KB ↓</span>
+            </a>
           </div>
           <div className="rounded-sm border border-edge-subtle p-6">
             <p className="text-[10px] uppercase tracking-[0.24em] text-ink-subtle">· Wordmark · SVG</p>
             <p className="mt-3 font-display text-xl text-ink">Inline component</p>
             <p className="mt-1.5 text-[11px] leading-relaxed text-ink-faint">
-              Use <code className="text-trace">&lt;Wordmark /&gt;</code> from <code className="text-trace">components/brand/Wordmark.jsx</code>. Renders inline SVG at any size; theme-aware ink; parametric squeeze, thinness, dot.
+              Use <code className="text-trace">&lt;Wordmark /&gt;</code> from <code className="text-trace">components/brand/Wordmark.jsx</code>. Renders inline SVG at any size, theme-aware ink, parametric squeeze, thinness, dot.
             </p>
             <p className="mt-4 text-[10px] uppercase tracking-[0.2em] text-ink-subtle">
-              Status: <span className="text-trace">stable</span>
+              Status: <span className="text-trace">stable</span>. Static SVG export coming.
             </p>
           </div>
           <div className="rounded-sm border border-edge-subtle p-6">
             <p className="text-[10px] uppercase tracking-[0.24em] text-ink-subtle">· Static exports</p>
-            <p className="mt-3 font-display text-xl text-ink">Coming</p>
+            <p className="mt-3 font-display text-xl text-ink">Icons & marks</p>
             <p className="mt-1.5 text-[11px] leading-relaxed text-ink-faint">
-              Pre-rendered SVG / PNG / favicon / OG image for the wordmark are next on @talkie-brand's queue. File a request via Scout if you need a specific variant.
+              Pre-rendered files for app icons, favicons, and social cards.
             </p>
-            <p className="mt-4 text-[10px] uppercase tracking-[0.2em] text-ink-subtle">
-              Status: <span className="text-trace">in progress</span>
-            </p>
+            <ul className="mt-4 space-y-1.5">
+              {[
+                { href: '/icon-1024.png', label: 'App icon · 1024 PNG' },
+                { href: '/icon-512.png', label: 'App icon · 512 PNG' },
+                { href: '/favicon.svg', label: 'Favicon · SVG' },
+                { href: '/favicon.ico', label: 'Favicon · ICO' },
+                { href: '/og.svg', label: 'OG card · SVG' },
+                { href: '/og-image.png', label: 'OG card · PNG' },
+              ].map((asset) => (
+                <li key={asset.href}>
+                  <a
+                    href={asset.href}
+                    download
+                    className="inline-flex items-center gap-2 text-[11px] font-mono text-ink-muted transition-colors hover:text-ink"
+                  >
+                    <span className="text-trace">↓</span>
+                    <span>{asset.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </Section>
