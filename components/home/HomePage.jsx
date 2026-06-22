@@ -198,6 +198,7 @@ export default function HomePage() {
   const macItems = getTourItems()
     .filter((i) => i.platform === 'mac' && MAC_HSCROLL_ORDER.includes(i.slug))
     .sort((a, b) => macOrder(a.slug) - macOrder(b.slug))
+  const watchItems = getTourItems().filter((i) => i.platform === 'watch')
 
   return (
     <>
@@ -268,7 +269,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== MOBILE-ONLY HSCROLL · IPHONE SCREENS + MAC ROW ==========
+      {/* ========== MOBILE-ONLY HSCROLL · IPHONE / WATCH / MAC SCREENS ==========
           Phone-only visual proof between the textual hero and the
           richer Data Buffer below. Tablet+desktop already get the
           panoramic chassis as their visual anchor, so this section
@@ -300,8 +301,34 @@ export default function HomePage() {
           ))}
         </div>
 
+        <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
+          · ON YOUR WATCH
+        </p>
+
+        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {watchItems.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/tour/${item.slug}/`}
+              className="group flex-shrink-0 snap-start"
+            >
+              <div className="w-[142px] overflow-hidden rounded-[1.25rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="aspect-[5/6] w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+                {item.title}
+              </p>
+            </Link>
+          ))}
+        </div>
+
         {/* Mac strip — landscape cards, fewer items, sits right under
-            the iPhone HScroll so the user sees both surfaces without
+            the mobile HScrolls so the user sees every surface without
             scrolling far. Same snap behavior, wider cards (16/10
             aspect ratio mirrors mac screens). */}
         <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>

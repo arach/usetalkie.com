@@ -122,8 +122,8 @@ const CAPTURE_INPUTS = [
   {
     label: 'Apple Watch',
     detail: 'tap, record, stop',
-    src: '/screenshots/apple-watch-recording.png',
-    alt: 'Talkie recording on Apple Watch',
+    src: '/screenshots/apple-watch-link.png',
+    alt: 'Talkie ready to record on Apple Watch',
     frame: 'watch',
   },
   {

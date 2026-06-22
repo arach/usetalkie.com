@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Volume2, Laptop, Smartphone, Link2, Quote } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Volume2, Laptop, Smartphone, Watch, Link2, Quote } from 'lucide-react'
 import { getTourBySlug, getAdjacentTour } from '../lib/tour'
 
 /**
@@ -88,11 +88,16 @@ export default function TourSlide({ slug }) {
     )
   }
 
-  const isPortrait = item.platform === 'iphone'
-  const PlatformIcon = isPortrait ? Smartphone : Laptop
-  const imageMaxWidth = isPortrait
+  const isPhone = item.platform === 'iphone'
+  const isWatch = item.platform === 'watch'
+  const isPortrait = isPhone || isWatch
+  const PlatformIcon = isPhone ? Smartphone : isWatch ? Watch : Laptop
+  const platformLabel = isPhone ? 'IPHONE' : isWatch ? 'WATCH' : 'MAC'
+  const imageMaxWidth = isPhone
     ? 'min(40vw, calc(55vh * 0.46))'
-    : 'min(90vw, calc(60vh * 1.15))'
+    : isWatch
+      ? 'min(46vw, calc(55vh * 0.84))'
+      : 'min(90vw, calc(60vh * 1.15))'
 
   return (
     <section className="relative flex min-h-[80vh] flex-col bg-canvas">
@@ -112,7 +117,7 @@ export default function TourSlide({ slug }) {
         <div className="flex items-center gap-3">
           <div className="hidden items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle sm:inline-flex">
             <PlatformIcon className="h-3.5 w-3.5" aria-hidden />
-            <span>TALKIE FOR {isPortrait ? 'IPHONE' : 'MAC'}</span>
+            <span>TALKIE FOR {platformLabel}</span>
           </div>
 
           <button

@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { Film, Images, Laptop, Smartphone } from 'lucide-react'
+import { Film, Images, Laptop, Smartphone, Watch } from 'lucide-react'
 import { getTourItems } from '../lib/tour'
 import DownloadBay from './DownloadBay'
 import DemoViewer from './DemoViewer'
 
 /**
- * TourLandingPage — single page, two surfaces.
+ * TourLandingPage — single page, three surfaces.
  *
  *   1. Hero
  *   2. Demos    — bespoke video player (DemoViewer) with sectioned playlists
@@ -55,6 +55,7 @@ export default function TourLandingPage() {
   const items = getTourItems()
   const macItems = items.filter((it) => it.platform === 'mac')
   const iphoneItems = items.filter((it) => it.platform === 'iphone')
+  const watchItems = items.filter((it) => it.platform === 'watch')
 
   return (
     <>
@@ -83,7 +84,7 @@ export default function TourLandingPage() {
           <h1 className="mt-4 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
             See Talkie in action.
             <br />
-            <span className="italic text-amber">On Mac and iPhone.</span>
+            <span className="italic text-amber">On Mac, iPhone, and Watch.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
             Watch the demos at the top, then step through every screen
@@ -132,6 +133,12 @@ export default function TourLandingPage() {
               items={iphoneItems}
               platform="iphone"
             />
+            <SubGallery
+              icon={Watch}
+              eyebrow="WATCH · 3 SCREENS"
+              items={watchItems}
+              platform="watch"
+            />
           </div>
         </div>
       </section>
@@ -169,7 +176,17 @@ function SubGallery({ icon: Icon, eyebrow, items, platform }) {
   const gridCols =
     platform === 'iphone'
       ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
+      : platform === 'watch'
+        ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
       : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
+  const aspectClass =
+    platform === 'mac'
+      ? 'aspect-[16/10]'
+      : platform === 'watch'
+        ? 'aspect-[5/6]'
+        : 'aspect-[9/19]'
+  const platformLabel =
+    platform === 'iphone' ? 'iPhone' : platform === 'watch' ? 'Apple Watch' : 'Mac'
   return (
     <div>
       <div className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-ink-faint">
@@ -184,13 +201,11 @@ function SubGallery({ icon: Icon, eyebrow, items, platform }) {
             className="group block overflow-hidden rounded-md border border-edge-dim bg-surface transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
           >
             <div
-              className={`relative overflow-hidden bg-canvas-alt ${
-                platform === 'iphone' ? 'aspect-[9/19]' : 'aspect-[16/10]'
-              }`}
+              className={`relative overflow-hidden bg-canvas-alt ${aspectClass}`}
             >
               <img
                 src={item.src}
-                alt={`${item.title} — Talkie for ${platform === 'iphone' ? 'iPhone' : 'Mac'}`}
+                alt={`${item.title} — Talkie for ${platformLabel}`}
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
               />

@@ -197,11 +197,9 @@ const DEVICES = [
       Icon: Watch,
     },
     screenshot: {
-      // Reuse the iphone-light-1 portrait as a stand-in for watch glance until
-      // a watch render lands; cropped square in the inset well.
-      src: '/screenshots/iphone-light-1.png',
-      alt: 'Talkie glance view (Watch surrogate)',
-      caption: 'Glance on the wrist',
+      src: '/screenshots/apple-watch-link.png',
+      alt: 'Talkie ready to record on Apple Watch',
+      caption: 'Tap-to-capture on wrist',
     },
     waveformBias: 2,
     inputSpec: {
