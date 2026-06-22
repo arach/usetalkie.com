@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
   const item = getTourBySlug(slug)
   if (!item) return { title: 'Tour — Talkie' }
 
-  const platformLabel = item.platform === 'iphone' ? 'iPhone' : 'Mac'
+  const platformLabel = item.platform === 'iphone' ? 'iPhone' : item.platform === 'watch' ? 'Apple Watch' : 'Mac'
   const title = `${item.title} — Talkie Tour`
   const description = item.caption
 
