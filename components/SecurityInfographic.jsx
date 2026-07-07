@@ -7,6 +7,7 @@ import {
   Cloud,
   Monitor,
   ArrowRight,
+  ArrowLeftRight,
   Globe,
   Database,
   FileKey,
@@ -34,6 +35,7 @@ export function SecurityInfographic() {
   const isUserZone = activeZone === 'user-zone'    // General Zone focus
   const isBarrier = activeZone === 'barrier'       // Lock/Gate focus
   const isExternal = activeZone === 'external'     // Services focus
+  const isDirect = activeZone === 'local-sync'     // Direct peer-pairing focus
 
   // Derived Color States
   // Single-accent rule: any "user-owned" activity lights with the trace
@@ -41,6 +43,10 @@ export function SecurityInfographic() {
   const iphoneActive = isUserZone || isInput
   const macActive = isUserZone || isProcessing
   const icloudActive = isUserZone || isInput || isProcessing // iCloud lights up for any internal activity
+  // Direct peer link (Local Sync) — lit when hovering the link itself, either
+  // device, or the whole zone. Left out of icloudActive on purpose: peer sync
+  // never touches iCloud, so hovering it doesn't light the iCloud subsystem.
+  const directActive = isDirect || iphoneActive || macActive
 
   // Outbound Path Highlight: Active if Processing (Mac) OR Barrier OR External is hovered
   const isOutboundActive = isProcessing || isBarrier || isExternal
@@ -153,54 +159,98 @@ export function SecurityInfographic() {
                   </marker>
                 </defs>
 
-                {/* iPhone <-> iCloud */}
+                {/* iPhone <-> iCloud — paired sync channel, sits in the gap
+                    between iCloud (bottom ~35.5%) and the card (top ~46.3%). */}
                 <g style={{ color: iphoneActive ? 'var(--trace)' : 'var(--ink-subtle)' }}>
                   <line
-                    x1="23%" y1="62%" x2="23%" y2="45%"
+                    x1="24.4%" y1="45.5%" x2="24.4%" y2="36.5%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={iphoneActive ? 1 : 0.35}
                     strokeDasharray={iphoneActive ? '0' : '4 4'}
-                    className="transition-all duration-500"
+                    className="transition-[stroke-opacity,filter] duration-200 ease-out"
                     markerEnd="url(#arrowhead-trace)"
                     style={iphoneActive ? { filter: 'drop-shadow(0 0 2px var(--trace-glow))' } : undefined}
                   />
                   <line
-                    x1="27%" y1="45%" x2="27%" y2="62%"
+                    x1="26.8%" y1="36.5%" x2="26.8%" y2="45.5%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={iphoneActive ? 1 : 0.35}
                     strokeDasharray={iphoneActive ? '0' : '4 4'}
-                    className="transition-all duration-500"
+                    className="transition-[stroke-opacity,filter] duration-200 ease-out"
                     markerEnd="url(#arrowhead-trace)"
                     style={iphoneActive ? { filter: 'drop-shadow(0 0 2px var(--trace-glow))' } : undefined}
                   />
                 </g>
 
-                {/* Mac <-> iCloud */}
+                {/* Mac <-> iCloud — mirror of the iPhone channel, aligned to
+                    the Mac card center (~74.4%). */}
                 <g style={{ color: macActive ? 'var(--trace)' : 'var(--ink-subtle)' }}>
                   <line
-                    x1="73%" y1="62%" x2="73%" y2="45%"
+                    x1="73.2%" y1="45.5%" x2="73.2%" y2="36.5%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={macActive ? 1 : 0.35}
                     strokeDasharray={macActive ? '0' : '4 4'}
-                    className="transition-all duration-500"
+                    className="transition-[stroke-opacity,filter] duration-200 ease-out"
                     markerEnd="url(#arrowhead-trace)"
                     style={macActive ? { filter: 'drop-shadow(0 0 2px var(--trace-glow))' } : undefined}
                   />
                   <line
-                    x1="77%" y1="45%" x2="77%" y2="62%"
+                    x1="75.6%" y1="36.5%" x2="75.6%" y2="45.5%"
                     stroke="currentColor"
                     strokeWidth="1.5"
                     strokeOpacity={macActive ? 1 : 0.35}
                     strokeDasharray={macActive ? '0' : '4 4'}
-                    className="transition-all duration-500"
+                    className="transition-[stroke-opacity,filter] duration-200 ease-out"
                     markerEnd="url(#arrowhead-trace)"
                     style={macActive ? { filter: 'drop-shadow(0 0 2px var(--trace-glow))' } : undefined}
                   />
                 </g>
              </svg>
+
+             {/* DIRECT PAIRING (Local Sync) — peer link that sits in the gap
+                 between the two device cards. Bidirectional, bypasses iCloud.
+                 Hidden on stacked (mobile) layouts where the cards aren't
+                 side-by-side. Vertically centered on the card bodies (~69.5%). */}
+             <div
+                onMouseOver={(e) => {
+                    e.stopPropagation()
+                    setActiveZone('local-sync')
+                }}
+                className="pointer-events-auto absolute left-1/2 top-[69.5%] z-30 hidden w-12 -translate-x-1/2 -translate-y-1/2 cursor-crosshair flex-col items-center md:flex"
+             >
+                {/* Connector row: stub — node — stub */}
+                <div className="flex w-full items-center">
+                   <div
+                     className={`flex-1 border-t transition-[border-color,opacity] duration-200 ease-out ${directActive ? 'border-solid' : 'border-dashed'}`}
+                     style={{ borderColor: directActive ? 'var(--trace)' : 'var(--ink-subtle)', opacity: directActive ? 1 : 0.4 }}
+                   />
+                   <div
+                     className="rounded-full border bg-canvas p-1 transition-all duration-200 ease-out"
+                     style={{
+                       borderColor: directActive ? 'var(--trace)' : 'var(--edge)',
+                       color: directActive ? 'var(--trace)' : 'var(--ink-subtle)',
+                       boxShadow: directActive ? '0 0 12px -4px var(--trace-glow)' : 'none',
+                     }}
+                   >
+                      <ArrowLeftRight className="h-3 w-3" />
+                   </div>
+                   <div
+                     className={`flex-1 border-t transition-[border-color,opacity] duration-200 ease-out ${directActive ? 'border-solid' : 'border-dashed'}`}
+                     style={{ borderColor: directActive ? 'var(--trace)' : 'var(--ink-subtle)', opacity: directActive ? 1 : 0.4 }}
+                   />
+                </div>
+                {/* Label — stacked so it stays inside the narrow card gap */}
+                <div
+                  className="mt-1.5 flex flex-col items-center font-mono text-[8px] font-bold uppercase leading-tight tracking-wider transition-colors duration-200"
+                  style={{ color: directActive ? 'var(--trace)' : 'var(--ink-subtle)' }}
+                >
+                   <span>Local</span>
+                   <span>Sync</span>
+                </div>
+             </div>
 
              {/* Content Grid */}
              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 relative z-10">
