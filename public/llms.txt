@@ -1,0 +1,50 @@
+# Talkie
+
+Canonical site: https://usetalkie.com/
+Last updated: 2026-07-08
+
+Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It turns speech into dictation, searchable memos, files, drafts, workflow runs, and agent-readable context. Capture, local storage, files, clipboard, and shell workflows start on the user's devices. Outside model providers and webhooks are optional and run only when configured by the user.
+
+## Primary pages
+
+- Product homepage: https://usetalkie.com/
+- Download for Mac: https://usetalkie.com/downloads/
+- Mac app: https://usetalkie.com/mac/
+- Mobile and Watch app: https://usetalkie.com/mobile/
+- Security and privacy: https://usetalkie.com/security/
+- Agent workflows: https://usetalkie.com/agents/
+
+## Workflows
+
+- Workflow overview: https://usetalkie.com/workflows/
+- Downloadable workflow templates: https://usetalkie.com/workflows/templates/
+- Dictate to Claude: https://usetalkie.com/workflows/dictate-to-claude/
+- Dictate to Email: https://usetalkie.com/workflows/dictate-to-email/
+- Voice Memo to Obsidian: https://usetalkie.com/workflows/voice-memo-to-obsidian/
+- Iterate in Compose: https://usetalkie.com/workflows/iterate-in-compose/
+- Quick Idea to CLI: https://usetalkie.com/workflows/quick-idea-to-cli/
+- Bug Note to GitHub Issue: https://usetalkie.com/workflows/bug-note-to-github/
+
+## Template JSON files
+
+- https://usetalkie.com/workflows/templates/dictate-to-claude.json
+- https://usetalkie.com/workflows/templates/dictate-to-email.json
+- https://usetalkie.com/workflows/templates/voice-memo-to-obsidian.json
+- https://usetalkie.com/workflows/templates/iterate-in-compose.json
+- https://usetalkie.com/workflows/templates/quick-idea-to-cli.json
+- https://usetalkie.com/workflows/templates/bug-note-to-github.json
+
+## Documentation
+
+- Docs index: https://usetalkie.com/docs/
+- Overview: https://usetalkie.com/docs/overview/
+- Architecture: https://usetalkie.com/docs/architecture/
+- Lifecycle: https://usetalkie.com/docs/lifecycle/
+- CLI reference: https://usetalkie.com/docs/cli/
+- Workflow reference: https://usetalkie.com/docs/workflows/
+- Extensibility: https://usetalkie.com/docs/extensibility/
+- Data and local storage: https://usetalkie.com/docs/data/
+
+## Suggested short description
+
+Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It captures speech, stores searchable transcripts, and can route voice into drafts, files, shell commands, workflows, and agent-readable CLI output. Cloud models and webhooks are optional; local capture and local files are the default path.

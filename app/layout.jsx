@@ -5,6 +5,7 @@ import localFont from 'next/font/local'
 import DevConsole from '../components/DevConsole'
 import FeedbackWidget from '../shared/components/FeedbackWidget'
 import StudioPanel from '../components/StudioPanel'
+import JsonLd from '../components/JsonLd'
 
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
 const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' })
@@ -36,6 +37,27 @@ const talkie = localFont({
   src: '../public/fonts/Talkie-Medium.ttf',
   variable: '--font-talkie',
   weight: '500',
+  display: 'swap',
+})
+
+// Talkie type system — three-face owned stack (Display / Sans / Mono),
+// forked from OFL donors (Newsreader / Inter / JetBrains Mono) via Hero.
+// Under data-theme="modern" (default), globals.css resolves the public
+// --font-display / --font-sans / --font-mono tokens to these. Warm and
+// Linen themes keep their existing Fraunces / Grotesk / JBM stack.
+const talkieDisplay = localFont({
+  src: '../public/fonts/Talkie-Display.ttf',
+  variable: '--font-talkie-display',
+  display: 'swap',
+})
+const talkieSans = localFont({
+  src: '../public/fonts/Talkie-Sans.ttf',
+  variable: '--font-talkie-sans',
+  display: 'swap',
+})
+const talkieMono = localFont({
+  src: '../public/fonts/Talkie-Mono.ttf',
+  variable: '--font-talkie-mono',
   display: 'swap',
 })
 
@@ -88,10 +110,59 @@ export const viewport = {
   ],
 }
 
+const SITE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://usetalkie.com/#organization',
+      name: 'Talkie',
+      url: 'https://usetalkie.com/',
+      logo: 'https://usetalkie.com/icon-512.png',
+      sameAs: [
+        'https://github.com/arach/usetalkie.com',
+        'https://x.com/usetalkieapp',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://usetalkie.com/#website',
+      name: 'Talkie',
+      url: 'https://usetalkie.com/',
+      description:
+        'Talkie turns voice capture on Mac, iPhone, and Apple Watch into dictation, memos, search, files, workflows, and agent-readable local context.',
+      publisher: { '@id': 'https://usetalkie.com/#organization' },
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://usetalkie.com/#app',
+      name: 'Talkie',
+      applicationCategory: 'ProductivityApplication',
+      operatingSystem: 'macOS, iOS, watchOS',
+      url: 'https://usetalkie.com/',
+      downloadUrl: 'https://usetalkie.com/downloads/',
+      description:
+        'Voice capture for Mac, iPhone, and Apple Watch with local-first storage, dictation, searchable memos, workflow automation, and CLI access for agents.',
+      featureList: [
+        'Mac hotkey dictation',
+        'Voice memos with transcripts and summaries',
+        'Local workflow automation',
+        'Save-to-file and shell steps',
+        'Structured CLI output for agents',
+        'Optional external LLM and webhook integrations',
+      ],
+      publisher: { '@id': 'https://usetalkie.com/#organization' },
+      inLanguage: 'en-US',
+    },
+  ],
+}
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="modern" data-osci-style="slate" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="modern" data-osci-style="slate" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable} ${talkieDisplay.variable} ${talkieSans.variable} ${talkieMono.variable}`} suppressHydrationWarning>
       <head>
+        <JsonLd data={SITE_SCHEMA} />
         {/*
          * Theme resolver — must run synchronously in <head> before first paint
          * to avoid the Warm-then-Modern flash on initial load. We use a raw

@@ -1,0 +1,38 @@
+{
+  "schema": "https://usetalkie.com/workflows/templates/schema/v1",
+  "id": "quick-idea-to-cli",
+  "name": "Quick Idea to CLI",
+  "description": "Capture a thought by voice, pull it later from the terminal, and hand it to an agent.",
+  "trigger": {
+    "type": "manual",
+    "input": "quick-capture"
+  },
+  "privacy": {
+    "default": "local-inbox",
+    "externalCalls": ["agent-or-cli-you-run-later"],
+    "externalCallsRequired": false
+  },
+  "variables": ["TRANSCRIPT", "SUMMARY", "TITLE", "DATE"],
+  "steps": [
+    {
+      "type": "capture",
+      "output": "TRANSCRIPT"
+    },
+    {
+      "type": "saveToFile",
+      "path": "@Inbox/{{DATE}}-{{TITLE}}.md",
+      "content": "{{TRANSCRIPT}}",
+      "createDirectories": true
+    },
+    {
+      "type": "cliHandoff",
+      "command": "talkie memos --since 24h --json",
+      "handoff": "Pipe the captured memo into claude, codex, jq, or another local tool when ready."
+    }
+  ],
+  "setup": [
+    "Install @talkie/cli with Bun.",
+    "Map @Inbox to a local folder.",
+    "Run the agent handoff explicitly from the terminal."
+  ]
+}

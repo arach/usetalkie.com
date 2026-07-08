@@ -1,13 +1,15 @@
 import Link from 'next/link'
-import { ArrowLeft, Terminal } from 'lucide-react'
+import { ArrowLeft, Download, FileJson, Terminal } from 'lucide-react'
 import DownloadBay from './DownloadBay'
 import { Graticule, Eyebrow } from './workflows/atoms'
+import { getWorkflowTemplate } from './workflows/templatesData'
 
 // Full page for a single workflow. Driven entirely by one entry from
 // components/workflows/workflowsData.jsx — see that file's note on interim copy.
 
 export default function WorkflowDetailPage({ workflow }) {
   const { name, flow, icons, headline, subhead, when, steps, setup, variations, outcome, prereq } = workflow
+  const template = getWorkflowTemplate(workflow.slug)
 
   return (
     <>
@@ -120,6 +122,46 @@ export default function WorkflowDetailPage({ workflow }) {
           </ol>
         </div>
       </section>
+
+      {template && (
+        <section className="relative border-t border-edge-faint bg-canvas">
+          <div className="mx-auto max-w-4xl px-4 py-14 md:px-6 md:py-16">
+            <div className="rounded-sm border border-edge bg-surface p-5 md:p-6">
+              <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-2">
+                    <FileJson className="h-4 w-4 text-trace" />
+                    <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+                      Template JSON
+                    </p>
+                  </div>
+                  <h2 className="mt-3 font-display text-2xl font-normal tracking-[-0.02em] text-ink">
+                    Download the {template.name} recipe.
+                  </h2>
+                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
+                    The JSON template names the trigger, variables, steps, setup notes, and privacy boundary for this workflow.
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-2">
+                  <a
+                    href={template.jsonHref}
+                    download
+                    className="inline-flex items-center gap-2 rounded-sm border border-edge px-3 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-trace transition-colors hover:border-trace"
+                  >
+                    JSON <Download className="h-3.5 w-3.5" />
+                  </a>
+                  <Link
+                    href="/workflows/templates"
+                    className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted transition-colors hover:border-amber/60 hover:text-amber"
+                  >
+                    All templates
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ========== SET IT UP ONCE + VARIATIONS ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">

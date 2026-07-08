@@ -82,6 +82,9 @@ export default function WorkflowsPage() {
       <p>
         Each step produces an output that subsequent steps can reference via template variables. This means you can chain an LLM summary into a shell command, then save the result to a file — all triggered by a single voice memo.
       </p>
+      <p>
+        For concrete starting points, see the <Link href="/workflows/templates">workflow template library</Link>. It includes JSON recipes for voice-to-file, voice-to-email, voice-to-agent, and GitHub issue workflows.
+      </p>
 
       {/* Anatomy */}
       <h2 id="anatomy">Anatomy of a Workflow</h2>

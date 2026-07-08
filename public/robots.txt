@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://talkie.arach.dev/sitemap.xml
-
+Sitemap: https://usetalkie.com/sitemap.xml

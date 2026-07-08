@@ -245,10 +245,10 @@ export default function HomePage() {
               · AGENT HANDOFF
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
-              Say it once. The spec lands where work happens.
+              Talk to Talkie. Your agents take it from there.
             </h2>
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink-muted">
-              A morning voice memo can become a reviewed brief, a queued coding task, or a reply-ready handoff to your agent inbox.
+              Speak a task in the app and Talkie hands it to your coding agent, ready to run.
             </p>
             <div className="mt-7">
               <Link
@@ -377,7 +377,8 @@ export default function HomePage() {
               What it might sound like.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              AI-simulated recordings — Max and Sarah are fictional to protect privacy.
+              AI-simulated recordings. Max and Sarah are fictional to protect{' '}
+              <span className="italic">Claude&rsquo;s</span> privacy.
             </p>
           </div>
 
@@ -411,7 +412,7 @@ export default function HomePage() {
                 substrate
                 <span className="pointer-events-none absolute inset-x-0 top-[60%] h-[0.06em] -translate-y-1/2 bg-amber" />
               </span>{' '}
-              thingie. <span className="italic text-ink-muted">More than one use.</span>
+              thingie. <span className="italic text-ink-muted">Works everywhere.</span>
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A capture can become a note, a draft, a search, or the start of a workflow. Say it once, then use it where it belongs.
@@ -456,7 +457,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · RECOVERY FLOW
+              · PRIVATE SYNC
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Voice notes are easy to save.

@@ -1,0 +1,38 @@
+{
+  "schema": "https://usetalkie.com/workflows/templates/schema/v1",
+  "id": "iterate-in-compose",
+  "name": "Iterate in Compose",
+  "description": "Keep the raw memo and create a tighter second pass beside it for comparison.",
+  "trigger": {
+    "type": "memo-saved",
+    "input": "voice-memo"
+  },
+  "privacy": {
+    "default": "local-draft",
+    "externalCalls": ["configured-llm"],
+    "externalCallsRequired": false
+  },
+  "variables": ["TRANSCRIPT", "TITLE", "DATE", "LAST_OUTPUT"],
+  "steps": [
+    {
+      "type": "memo",
+      "output": "TRANSCRIPT"
+    },
+    {
+      "type": "compose",
+      "mode": "second-pass",
+      "instruction": "Tighten {{TRANSCRIPT}} without changing meaning. Preserve the original beside the revision."
+    },
+    {
+      "type": "saveToFile",
+      "path": "@Drafts/{{DATE}}-{{TITLE}}.md",
+      "content": "# Original\n\n{{TRANSCRIPT}}\n\n# Revision\n\n{{LAST_OUTPUT}}",
+      "createDirectories": true
+    }
+  ],
+  "setup": [
+    "Map @Drafts to the folder where paired drafts should land.",
+    "Keep original preservation enabled.",
+    "Use the diff view before replacing the raw take."
+  ]
+}

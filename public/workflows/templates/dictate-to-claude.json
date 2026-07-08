@@ -1,0 +1,36 @@
+{
+  "schema": "https://usetalkie.com/workflows/templates/schema/v1",
+  "id": "dictate-to-claude",
+  "name": "Dictate to Claude",
+  "description": "Speak a rough prompt, tighten it, and copy the result for Claude or another coding agent.",
+  "trigger": {
+    "type": "manual",
+    "input": "dictation"
+  },
+  "privacy": {
+    "default": "local-capture-and-clipboard",
+    "externalCalls": ["anthropic-or-configured-llm"],
+    "externalCallsRequired": false
+  },
+  "variables": ["TRANSCRIPT", "SUMMARY", "LAST_OUTPUT"],
+  "steps": [
+    {
+      "type": "dictate",
+      "output": "TRANSCRIPT"
+    },
+    {
+      "type": "llm",
+      "provider": "claude-or-local-mlx",
+      "prompt": "Rewrite {{TRANSCRIPT}} as a clear prompt. Keep intent, remove filler, and return only the prompt."
+    },
+    {
+      "type": "clipboard",
+      "value": "{{LAST_OUTPUT}}"
+    }
+  ],
+  "setup": [
+    "Choose Claude or Local MLX for the LLM step.",
+    "Keep the clipboard step as the final output.",
+    "Paste the result into Claude, Codex, or another agent."
+  ]
+}

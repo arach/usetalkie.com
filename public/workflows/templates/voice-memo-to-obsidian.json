@@ -1,0 +1,38 @@
+{
+  "schema": "https://usetalkie.com/workflows/templates/schema/v1",
+  "id": "voice-memo-to-obsidian",
+  "name": "Voice Memo to Obsidian",
+  "description": "Record a messy thought, distill it, and save Markdown into an Obsidian vault alias.",
+  "trigger": {
+    "type": "memo-saved",
+    "input": "voice-memo"
+  },
+  "privacy": {
+    "default": "local-file",
+    "externalCalls": ["configured-llm"],
+    "externalCallsRequired": false
+  },
+  "variables": ["TRANSCRIPT", "SUMMARY", "TITLE", "DATE", "LAST_OUTPUT"],
+  "steps": [
+    {
+      "type": "memo",
+      "output": "TRANSCRIPT"
+    },
+    {
+      "type": "llm",
+      "provider": "configured-llm-or-local-mlx",
+      "prompt": "Distill {{TRANSCRIPT}} into a titled Markdown note with summary, key points, and follow-up tasks."
+    },
+    {
+      "type": "saveToFile",
+      "path": "@Notes/{{DATE}}-{{TITLE}}.md",
+      "content": "{{LAST_OUTPUT}}",
+      "createDirectories": true
+    }
+  ],
+  "setup": [
+    "Map @Notes to your Obsidian vault directory.",
+    "Choose Local MLX if the note should never leave the machine.",
+    "Keep the date-title filename template for stable backlinks."
+  ]
+}

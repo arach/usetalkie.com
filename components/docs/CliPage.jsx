@@ -6,6 +6,7 @@ import DocsLayout from './DocsLayout'
 
 const sections = [
   { id: 'install', title: 'Installation', level: 2 },
+  { id: 'agent-access', title: 'Agent Access Answers', level: 2 },
   { id: 'commands', title: 'Commands', level: 2 },
   { id: 'memos', title: 'memos', level: 3 },
   { id: 'dictations', title: 'dictations', level: 3 },
@@ -90,6 +91,23 @@ curl -fsSL go.usetalkie.com/install | bash`}
       <p>
         Once installed, the <code>talkie</code> command is available globally. All commands output <strong>JSON by default</strong> when piped, and human-readable tables in the terminal.
       </p>
+
+      <h2 id="agent-access">Agent Access Answers</h2>
+      <div className="grid md:grid-cols-3 gap-3 my-6 not-prose">
+        {[
+          [Terminal, 'Can agents read Talkie data?', 'Yes. Agents can call the Talkie CLI to read memos, dictations, searches, workflow runs, transcription results, and local inference output as JSON.'],
+          [HardDrive, 'Does the CLI need a server?', 'No. The CLI reads from the local Talkie library and works without a hosted API for normal memo, dictation, search, and workflow history access.'],
+          [Bot, 'What tools compose with it?', 'The output is designed for jq, shell scripts, Claude Code, Codex, MCP-compatible agents, and local model CLIs.'],
+        ].map(([Icon, title, body]) => (
+          <div key={title} className="p-4 rounded-lg border border-edge bg-canvas-alt">
+            <div className="flex items-center gap-2 mb-3">
+              <Icon className="w-4 h-4 text-amber" />
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink">{title}</h3>
+            </div>
+            <p className="text-sm leading-relaxed text-ink-muted">{body}</p>
+          </div>
+        ))}
+      </div>
 
       <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="text-xs font-mono text-ink-faint mb-2">Global flags (all commands)</div>

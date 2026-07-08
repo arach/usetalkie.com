@@ -242,11 +242,11 @@ html.dark {
  * paint without removing components from the tree.
  * ───────────────────────────────────────────────────────────────────── */
 html[data-theme="modern"]:not(.dark) {
-  /* Modern flips the display face to Instrument Serif — single-weight
-   * editorial serif with a refined italic. Replaces Fraunces (whose
-   * chunkier italic suits the Warm instrument paper but reads textbook-y
-   * against the donor white canvas). */
-  --font-display: var(--font-display-modern), Georgia, serif;
+  /* Modern uses the Talkie owned type system: Display (Newsreader fork)
+   * for hero / editorial, Sans (Inter fork) for body, Mono (JBM fork)
+   * for labels and code. Cormorant / Inter / JBM remain available as
+   * fallbacks in the font stacks below if Talkie fails to load. */
+  --font-display: var(--font-talkie-display), var(--font-display-modern), Georgia, serif;
 
   --canvas:         #ffffff;
   --canvas-alt:     #fafafa;
@@ -324,17 +324,23 @@ html[data-theme="modern"]:not(.dark) {
     0 1px 0 rgba(255, 255, 255, 0.6),
     0 12px 28px -14px rgba(0, 0, 0, 0.18);
 
-  /* Body sans swaps to Inter under Modern for the softer feel. Display
-   * stays Fraunces (italic accent in donor headlines is load-bearing).
-   * Mono stays JetBrains Mono — eyebrows look right in either theme. */
-  --font-sans: var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
+  /* Body sans → Talkie Sans (Inter fork), inheriting Inter's neutral
+   * workhorse character with light house-edit tracking adjustments.
+   * Mono → Talkie Mono (JBM fork), full coverage workhorse — sibling
+   * of Talkie Medium but without the wordmark quirks (no dotless i,
+   * no leaning t). Both fall back to their donors if Talkie fails. */
+  --font-sans: var(--font-talkie-sans), var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
                'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-talkie-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* Dark mode under Modern — keep the cool studio palette but flip the
  * accent to emerald to match Modern-light's donor accent. */
 html.dark[data-theme="modern"] {
-  --font-display: var(--font-display-modern), Georgia, serif;
+  --font-display: var(--font-talkie-display), var(--font-display-modern), Georgia, serif;
+  --font-sans: var(--font-talkie-sans), var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
+               'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-talkie-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --canvas:         #0a0a0a;
   --canvas-alt:     #050505;

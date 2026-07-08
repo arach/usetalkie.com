@@ -1,0 +1,39 @@
+{
+  "schema": "https://usetalkie.com/workflows/templates/schema/v1",
+  "id": "bug-note-to-github",
+  "name": "Bug Note to GitHub Issue",
+  "description": "Describe a bug while details are fresh, structure it, and open a GitHub issue with gh.",
+  "trigger": {
+    "type": "manual",
+    "input": "dictation"
+  },
+  "privacy": {
+    "default": "local-draft-and-shell",
+    "externalCalls": ["github-cli"],
+    "externalCallsRequired": true
+  },
+  "variables": ["TRANSCRIPT", "TITLE", "LAST_OUTPUT"],
+  "steps": [
+    {
+      "type": "dictate",
+      "output": "TRANSCRIPT"
+    },
+    {
+      "type": "llm",
+      "provider": "configured-llm-or-local-mlx",
+      "prompt": "Convert {{TRANSCRIPT}} into a GitHub issue body with summary, repro steps, expected result, and actual result. Create {{TITLE}}."
+    },
+    {
+      "type": "shell",
+      "executable": "gh",
+      "arguments": ["issue", "create", "--title", "{{TITLE}}", "--body", "{{LAST_OUTPUT}}"],
+      "allowlistRequired": true,
+      "dryRunAvailable": true
+    }
+  ],
+  "setup": [
+    "Allowlist the gh executable.",
+    "Set the default repository or run from a checked-out repo.",
+    "Use dry-run before enabling automatic issue creation."
+  ]
+}

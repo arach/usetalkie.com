@@ -34,9 +34,14 @@ import PasteMock from './PasteMock'
  *   - One AnalyserNode shared by all sources.
  *   - Disposed on unmount via context.close().
  *
- * AUTO_ADVANCE: switch to false to make the player stop after each clip.
+ * AUTO_ADVANCE: when true, the next clip auto-PLAYS once the current one
+ *   finishes its choreography.
+ * AUTO_SELECT_NEXT: when true, the next clip is only SELECTED (its row is
+ *   highlighted + cued) and playback stays paused — the user presses play
+ *   to hear it. AUTO_ADVANCE takes precedence if both are true.
  */
 const AUTO_ADVANCE = false
+const AUTO_SELECT_NEXT = true
 const SHOW_TRANSITION_TIMELINE = process.env.NODE_ENV !== 'production'
 const TRANSITION_STEPS = [
   { id: 'minimized', label: 'Minimized', start: 0, end: 10 },
@@ -632,15 +637,21 @@ export default function SignalTable({ catalog }) {
       const tIdle = setTimeout(() => {
         setCaptionPhase('idle')
 
-        // Beat D — short breath, then auto-advance to the next clip.
-        // (Any user click during the review beat cancels this via
-        // clearChoreography(), so manual triggering wins.)
-        if (AUTO_ADVANCE) {
+        // Beat D — short breath, then advance to the next available clip.
+        // AUTO_ADVANCE plays it; AUTO_SELECT_NEXT only selects it (row
+        // highlighted + cued, playback stays paused — the user presses
+        // play to hear it). Any user click during the review beat cancels
+        // this via clearChoreography(), so manual control always wins.
+        if (AUTO_ADVANCE || AUTO_SELECT_NEXT) {
           const tNext = setTimeout(() => {
             for (let step = 1; step <= catalog.length; step++) {
               const nextIdx = (activeIndex + step) % catalog.length
               if (!missingSet.has(catalog[nextIdx].slug)) {
-                playIndex(nextIdx)
+                if (AUTO_ADVANCE) {
+                  playIndex(nextIdx)
+                } else {
+                  setActiveIndex(nextIdx)
+                }
                 return
               }
             }

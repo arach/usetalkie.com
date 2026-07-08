@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import JsonLd from './JsonLd'
 import DownloadBay from './DownloadBay'
 import ExpandableCaptureTile from './ExpandableCaptureTile'
 import { WORKFLOWS } from './workflows/workflowsData'
@@ -16,6 +17,8 @@ import {
   Workflow,
   Zap,
   Bot,
+  FileJson,
+  ShieldCheck,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -50,6 +53,24 @@ const OUTPUT_RULES = [
 const VARIABLES = ['{{TRANSCRIPT}}', '{{TITLE}}', '{{DATE}}', '{{TIME}}', '{{SUMMARY}}']
 
 const MODELS = ['Claude', 'OpenAI', 'Gemini', 'Groq', 'Local MLX']
+
+const WORKFLOW_ANSWERS = [
+  {
+    question: 'What are Talkie workflows?',
+    answer:
+      'Talkie workflows turn a spoken transcript into ordered steps: LLM cleanup, shell commands, file saves, email drafts, notifications, calendar events, clipboard actions, or webhooks.',
+  },
+  {
+    question: 'Do Talkie workflows have to use cloud AI?',
+    answer:
+      'No. Capture, files, clipboard, local shell, and Local MLX flows can stay on your Mac. Outside providers such as Claude, OpenAI, Linear, Slack, or webhooks run only when you configure them.',
+  },
+  {
+    question: 'Can agents use Talkie workflows?',
+    answer:
+      'Yes. The Talkie CLI exposes memos, dictations, searches, workflow runs, transcription, and local inference as structured output that agents can read from the terminal.',
+  },
+]
 
 const CAPTURE_INPUTS = [
   {
@@ -260,6 +281,7 @@ function ToolChoiceDiagram() {
 export default function WorkflowsPage() {
   return (
     <>
+      <JsonLd data={workflowAnswersSchema()} />
       {/* ========== HERO ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
         <Graticule opacity={0.3} />
@@ -307,6 +329,13 @@ export default function WorkflowsPage() {
                 <Bot className="h-3.5 w-3.5" />
                 DOWNLOAD FOR MAC <span>→</span>
               </Link>
+              <Link
+                href="/workflows/templates"
+                className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all hover:-translate-y-0.5 hover:border-trace hover:text-trace"
+              >
+                <FileJson className="h-3.5 w-3.5" />
+                Browse templates <span>→</span>
+              </Link>
               <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
                 <Workflow className="h-3.5 w-3.5 text-trace" />
                 macOS 26+ · Workflow Editor
@@ -320,10 +349,44 @@ export default function WorkflowsPage() {
         </div>
       </section>
 
+      {/* ========== QUICK ANSWERS ========== */}
+      <section className="relative border-t border-edge-faint bg-canvas-alt">
+        <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <Eyebrow>· 01 / DIRECT ANSWERS</Eyebrow>
+              <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
+                The short version.
+              </h2>
+            </div>
+            <Link
+              href="/workflows/templates"
+              className="inline-flex items-center gap-2 self-start rounded-sm border border-edge px-3 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-colors hover:border-trace hover:text-trace md:self-auto"
+            >
+              Template library <FileJson className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {WORKFLOW_ANSWERS.map((item) => (
+              <div key={item.question} className="rounded-sm border border-edge bg-surface p-5">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-3.5 w-3.5 text-trace" />
+                  <h3 className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink">
+                    {item.question}
+                  </h3>
+                </div>
+                <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ========== EXAMPLES ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 01 / STARTING POINTS</Eyebrow>
+          <Eyebrow>· 02 / STARTING POINTS</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
             Start with simple workflows.
           </h2>
@@ -384,7 +447,7 @@ export default function WorkflowsPage() {
       {/* ========== STEP TYPES ========== */}
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 02 / STEP LIBRARY</Eyebrow>
+          <Eyebrow>· 03 / STEP LIBRARY</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
             Eight step types. Stack them in any order.
           </h2>
@@ -489,7 +552,7 @@ export default function WorkflowsPage() {
         />
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-amber" style={{ textShadow: '0 0 4px var(--trace-glow)' }}>
-            · 03 / SHELL STEP
+            · 04 / SHELL STEP
           </p>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-screen-ink">
             Your terminal, <span className="italic text-amber">on the end of a sentence.</span>
@@ -577,7 +640,7 @@ export default function WorkflowsPage() {
       {/* ========== ALIASES + OUTPUT ========== */}
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 04 / FILE SINKS</Eyebrow>
+          <Eyebrow>· 05 / FILE SINKS</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
             Land it exactly where you want it.
           </h2>
@@ -665,7 +728,7 @@ export default function WorkflowsPage() {
       {/* ========== TOOL CHOICE ========== */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· 05 / TOOL CHOICE</Eyebrow>
+          <Eyebrow>· 06 / TOOL CHOICE</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
             Your tools first. Outside tools when you ask.
           </h2>
@@ -688,4 +751,20 @@ export default function WorkflowsPage() {
       </section>
     </>
   )
+}
+
+function workflowAnswersSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': 'https://usetalkie.com/workflows/#workflow-answers',
+    mainEntity: WORKFLOW_ANSWERS.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }
 }
