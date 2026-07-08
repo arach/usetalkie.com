@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import DownloadBay from './DownloadBay'
 import ExpandableCaptureTile from './ExpandableCaptureTile'
+import { WORKFLOWS } from './workflows/workflowsData'
+import { Graticule, Eyebrow } from './workflows/atoms'
 import {
-  Mic,
   Cpu,
   Terminal,
   FileOutput,
@@ -15,9 +16,6 @@ import {
   Workflow,
   Zap,
   Bot,
-  PencilLine,
-  GitCompare,
-  Github,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -47,57 +45,6 @@ const OUTPUT_RULES = [
   'Auto-create missing directories',
   'Append-mode for logs and rolling journals',
   'Per-workflow custom output paths',
-]
-
-const EXAMPLES = [
-  {
-    name: 'Dictate → Claude',
-    flow: 'Dictate · LLM · Clipboard',
-    icons: [Mic, Cpu, Copy],
-    body:
-      'Say the prompt out loud. Talkie cleans it up and leaves it ready to send.',
-    outcome: 'PASTE-READY',
-  },
-  {
-    name: 'Dictate → Email',
-    flow: 'Dictate · LLM · Mail',
-    icons: [Mic, Cpu, Mail],
-    body:
-      'Talk through the reply in your own words. Open a polished draft in Mail.',
-    outcome: 'DRAFT IN MAIL',
-  },
-  {
-    name: 'Voice memo → Obsidian',
-    flow: 'Memo · LLM · Save',
-    icons: [Mic, Cpu, FileOutput],
-    body:
-      'Record the messy thought. Save the useful version as Markdown in your vault.',
-    outcome: 'NOTE FILED',
-  },
-  {
-    name: 'Iterate on a memo → Talkie Compose',
-    flow: 'Memo · Compose · Diff',
-    icons: [Mic, PencilLine, GitCompare],
-    body:
-      'Keep the raw take. Make a tighter version next to it, without losing the first one.',
-    outcome: 'BOTH DRAFTS KEPT',
-  },
-  {
-    name: 'Quick idea → Claude + @talkie/cli',
-    flow: 'Capture · CLI · Claude',
-    icons: [Mic, Terminal, Bot],
-    body:
-      'Capture the spark, pull it from the CLI, and hand it to Claude when it needs a second pass.',
-    outcome: 'READY FOR CLAUDE',
-  },
-  {
-    name: 'Bug note → GitHub issue',
-    flow: 'Dictate · Shell · GitHub',
-    icons: [Mic, Terminal, Github],
-    body:
-      'Describe the bug while it is fresh. Turn it into a title, body, and issue command.',
-    outcome: 'ISSUE OPENED',
-  },
 ]
 
 const VARIABLES = ['{{TRANSCRIPT}}', '{{TITLE}}', '{{DATE}}', '{{TIME}}', '{{SUMMARY}}']
@@ -164,35 +111,18 @@ const OUTSIDE_TOOLS = [
   { label: 'Google', src: 'https://cdn.simpleicons.org/google' },
 ]
 
+const HERO_READABILITY_SCRIM = {
+  background:
+    'linear-gradient(90deg, color-mix(in oklab, var(--canvas) 10%, transparent) 0%, color-mix(in oklab, var(--canvas) 6%, transparent) 58%, transparent 100%)',
+  backdropFilter: 'blur(22px) saturate(1.04)',
+  WebkitBackdropFilter: 'blur(22px) saturate(1.04)',
+  maskImage: 'linear-gradient(90deg, black 0%, black 58%, rgba(0,0,0,0.55) 76%, transparent 100%)',
+  WebkitMaskImage: 'linear-gradient(90deg, black 0%, black 58%, rgba(0,0,0,0.55) 76%, transparent 100%)',
+}
+
 // ---------------------------------------------------------------------------
 // Reusable atoms
 // ---------------------------------------------------------------------------
-
-function Graticule({ opacity = 0.3 }) {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0"
-      style={{
-        opacity,
-        backgroundImage:
-          'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
-        backgroundSize: '48px 48px',
-      }}
-    />
-  )
-}
-
-function Eyebrow({ children }) {
-  return (
-    <p
-      className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
-      style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-    >
-      {children}
-    </p>
-  )
-}
 
 function ChoiceKicker({ children }) {
   return (
@@ -335,10 +265,10 @@ export default function WorkflowsPage() {
         <Graticule opacity={0.3} />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] lg:block"
+          className="pointer-events-none absolute inset-y-0 right-[-4vw] hidden w-[58%] lg:block"
           style={{
-            maskImage: 'linear-gradient(90deg, transparent 0%, black 34%, black 100%)',
-            WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 34%, black 100%)',
+            maskImage: 'linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.08) 32%, black 54%, black 100%)',
+            WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.08) 32%, black 54%, black 100%)',
           }}
         >
           <img
@@ -347,38 +277,45 @@ export default function WorkflowsPage() {
             className="h-full w-full object-cover object-center opacity-80 mix-blend-multiply"
           />
         </div>
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <Eyebrow>· CH-D / WORKFLOWS · 0.12s LATENCY</Eyebrow>
-          <h1 className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
-            Voice in.
-            <br />
-            <span className="italic">Drafts, tasks, files out.</span>
-          </h1>
-          <p className="mt-6 max-w-2xl border-l-2 border-trace pl-5 text-[15px] leading-relaxed text-ink-muted">
-            Start with something you said. Send it to the app, file, command, or model that should handle it.
-            Most of the time that means your Mac and your tools. When it does not, you choose the outside service.
-          </p>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 hidden w-[76%] lg:block"
+          style={HERO_READABILITY_SCRIM}
+        />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="max-w-[44rem]">
+            <Eyebrow>· CH-D / WORKFLOWS · 0.12s LATENCY</Eyebrow>
+            <h1 className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
+              Voice in.
+              <br />
+              <span className="italic">Drafts, tasks, files out.</span>
+            </h1>
+            <p className="mt-6 max-w-2xl border-l-2 border-trace pl-5 text-[15px] leading-relaxed text-ink-muted">
+              Start with something you said. Send it to the app, file, command, or model that should handle it.
+              Most of the time that means your Mac and your tools. When it does not, you choose the outside service.
+            </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3 font-mono">
-            <Link
-              href="/downloads"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
-              style={{
-                background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
-                textShadow: '0 0 6px var(--trace-glow)',
-              }}
-            >
-              <Bot className="h-3.5 w-3.5" />
-              DOWNLOAD FOR MAC <span>→</span>
-            </Link>
-            <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
-              <Workflow className="h-3.5 w-3.5 text-trace" />
-              macOS 26+ · Workflow Editor
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
-              <Terminal className="h-3.5 w-3.5 text-amber" />
-              Claude CLI · Shell Steps
-            </span>
+            <div className="mt-10 flex flex-wrap items-center gap-3 font-mono">
+              <Link
+                href="/downloads"
+                className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-0.5"
+                style={{
+                  background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
+                  textShadow: '0 0 6px var(--trace-glow)',
+                }}
+              >
+                <Bot className="h-3.5 w-3.5" />
+                DOWNLOAD FOR MAC <span>→</span>
+              </Link>
+              <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
+                <Workflow className="h-3.5 w-3.5 text-trace" />
+                macOS 26+ · Workflow Editor
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
+                <Terminal className="h-3.5 w-3.5 text-amber" />
+                Claude CLI · Shell Steps
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -391,14 +328,15 @@ export default function WorkflowsPage() {
             Start with simple workflows.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Small on purpose. Pick one, swap a path, make it yours.
+            Small on purpose. Open one for the full recipe, then swap a path and make it yours.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {EXAMPLES.map((ex) => (
-              <div
-                key={ex.name}
-                className="group relative overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
+            {WORKFLOWS.map((ex) => (
+              <Link
+                key={ex.slug}
+                href={`/workflows/${ex.slug}`}
+                className="group relative block overflow-hidden rounded-sm border border-edge bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 group-hover:text-amber">
@@ -430,8 +368,14 @@ export default function WorkflowsPage() {
                     style={{ boxShadow: '0 0 4px var(--trace)' }}
                   />
                   {ex.outcome}
+                  <span
+                    aria-hidden
+                    className="ml-auto text-ink-faint transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-amber"
+                  >
+                    →
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -551,8 +495,10 @@ export default function WorkflowsPage() {
             Your terminal, <span className="italic text-amber">on the end of a sentence.</span>
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-screen-ink-muted">
-            Shell steps run real binaries on your machine. There is an executable allowlist and a respectful
-            PATH merge — brew, node, bun, Claude CLI all resolve the way they do in your terminal.
+            We put a Ghostty terminal next to the workflow editor, with Talkie prompts, skills, and PATH
+            already set up. Ask your memos questions, tune workflows with Claude or Codex, or hand a
+            capture to a favorite open-weights model without jumping to another terminal and cd-ing into
+            your library directory.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.2fr]">
@@ -564,9 +510,9 @@ export default function WorkflowsPage() {
               <ul className="mt-5 space-y-3 text-[13px] leading-relaxed text-screen-ink-dim">
                 {[
                   'Executable allowlist for predictable, reviewable runs',
-                  'Native Claude CLI integration via MCP',
+                  'Ghostty shell with Talkie prompts and skills preloaded',
                   'Multi-line script templates with variable substitution',
-                  'Respectful PATH merge — brew, node, bun, claude',
+                  'Claude, Codex, and local model CLIs resolve from the same PATH',
                   'Stdout captured back into the workflow as the next variable',
                 ].map((label) => (
                   <li key={label} className="flex gap-3">
