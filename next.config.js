@@ -6,7 +6,7 @@ const config = {
   trailingSlash: true,
   images: { unoptimized: true },
   // For GitHub Pages with a project path, set BASE_PATH env to "/<repo>"
-  // For custom domain (e.g., talkie.arach.dev), leave BASE_PATH empty
+  // For custom domain (e.g., usetalkie.com), leave BASE_PATH empty
 }
 
 if (basePath) {

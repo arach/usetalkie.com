@@ -11,25 +11,24 @@ Static marketing site for Talkie built with Next.js and Tailwind CSS. Configured
 ## Local Development
 
 ```bash
-cd Landing
-npm install
-npm run dev
-# open http://localhost:5173
+bun install
+bun dev
+# portless prints the local preview URL
 ```
 
 ## Build & Preview
 
 ```bash
-npm run build
-npm run export
-# static site in Landing/out
+bunx next build
+bun run seo:audit
+# static site in out/
 ```
 
 ## Deploy to GitHub Pages
 
 This repo includes a workflow at `.github/workflows/deploy-landing.yml` that:
-- builds from `Landing/`
-- exports static files to `Landing/out`
+- builds the Next.js site
+- exports static files to `out/`
 - publishes to GitHub Pages using the Pages deployment action
 
 ### One-time setup
@@ -43,11 +42,11 @@ By default, the site assumes a custom domain and builds at the root path. To dep
 
 ## Customize
 
-- Edit content in `Landing/app/page.jsx`
-- Global styles in `Landing/app/globals.css`
-- Tailwind theme in `Landing/tailwind.config.js`
-- Next.js export options in `Landing/next.config.js`
-- Google Analytics is configured in `Landing/app/layout.jsx` using GA4 Measurement ID `G-EP7F8TC801`.
+- Edit content in `app/page.jsx`
+- Global styles in `app/globals.css`
+- Tailwind theme in `tailwind.config.js`
+- Next.js export options in `next.config.js`
+- Google Analytics is configured in `app/layout.jsx` using GA4 Measurement ID `G-EP7F8TC801`.
 
 ## Introductory Offer Form (Formspree)
 
@@ -64,7 +63,7 @@ Local dev:
 
 ```bash
 export NEXT_PUBLIC_FORMSPREE_ID=abcdxyz1
-npm run dev
+bun dev
 ```
 
 If no ID is set, the site uses the default `mkgaanoo`. If you remove both, it will gracefully fall back to `mailto:`.
@@ -88,7 +87,7 @@ CI (GitHub Actions): add repository variables (or secrets) with those names to c
 
 ## Custom Domain (Configured)
 
-- Domain: `talkie.arach.dev`
-- File `Landing/public/CNAME` is included so Pages serves the custom domain.
-- DNS: add a CNAME record for `talkie.arach.dev` → `<your-github-username>.github.io`.
-- In GitHub → Settings → Pages, set Custom domain to `talkie.arach.dev` and enforce HTTPS.
+- Domain: `usetalkie.com`
+- File `public/CNAME` is included so Pages serves the custom domain.
+- DNS: point `usetalkie.com` at the deployed host.
+- In GitHub → Settings → Pages, set Custom domain to `usetalkie.com` and enforce HTTPS.
