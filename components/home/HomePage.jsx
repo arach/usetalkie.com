@@ -214,18 +214,6 @@ export default function HomePage() {
               headline. */}
           <PanoramicHero />
 
-          {/* Brand callback — the "selfie / brain" line
-              moves here as a small italic signoff, so it lands as a
-              memorable closer instead of competing with "Talk to your
-              {device}" for the lead. */}
-          {/* Brand callback — desktop only here. On mobile, the same
-              line is hoisted to a mid-page divider section between
-              Recovery Flow and Ownership for thematic punctuation. */}
-          <p className="mt-10 hidden text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14 md:block">
-            <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
-            A selfie. For your brain.
-            <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
-          </p>
         </div>
       </section>
 
@@ -475,20 +463,6 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ========== BRAND CALLBACK · MOBILE DIVIDER ==========
-          Mid-page poetic break on phone only. Desktop keeps the
-          callback inline at the end of the hero section per the
-          original composition; on mobile we hoist it down here so
-          it works as a chapter divider between operational
-          (Recovery Flow) and trust (Ownership) themes. */}
-      <section className="border-y border-edge-faint bg-canvas py-14 md:hidden">
-        <p className="mx-auto max-w-md px-4 text-center font-display text-2xl italic leading-snug text-ink-dim">
-          <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
-          A selfie. For your brain.
-          <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
-        </p>
       </section>
 
       {/* ========== OWNERSHIP / ARCHITECTURE ========== */}

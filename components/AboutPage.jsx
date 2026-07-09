@@ -305,7 +305,7 @@ export default function AboutPage() {
                   · THIS IS TALKIE
                 </p>
                 <h3 className="mt-3 font-display text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  A selfie. For your thoughts.<br />
+                  Talk to your Mac.<br />
                   <span className="text-base italic text-ink-muted md:text-lg">{supportingLine(TAGLINE_ABOUT)}</span>
                 </h3>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">

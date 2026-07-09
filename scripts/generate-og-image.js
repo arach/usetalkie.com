@@ -5,6 +5,19 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function resolveBrowserLaunchOptions() {
+  const candidates = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+    '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+    '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
+  ].filter(Boolean);
+
+  const executablePath = candidates.find((candidate) => fs.existsSync(candidate));
+  return executablePath ? { executablePath } : {};
+}
+
 const html = `
 <!DOCTYPE html>
 <html>
@@ -78,17 +91,17 @@ const html = `
       text-transform: uppercase;
     }
     h1 {
-      font-size: 100px;
+      font-size: 88px;
       font-weight: 900;
       color: #fafafa;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
       text-transform: uppercase;
-      line-height: 0.9;
+      line-height: 0.92;
     }
-    h1 .plus {
-      color: #52525b;
+    h1 .muted {
+      color: #a1a1aa;
     }
-    h1 .ai {
+    h1 .accent {
       color: #22c55e;
     }
     .tagline {
@@ -97,8 +110,8 @@ const html = `
       margin-top: 36px;
       font-family: 'JetBrains Mono', monospace;
       font-weight: 500;
-      max-width: 900px;
-      line-height: 1.8;
+      max-width: 960px;
+      line-height: 1.7;
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
@@ -172,14 +185,14 @@ const html = `
     <div class="content">
       <div class="hero-badge">
         <div class="hero-badge-dot"></div>
-        <span class="hero-badge-text">Native on iOS & macOS</span>
+        <span class="hero-badge-text">Voice capture for Mac, iPhone & Watch</span>
       </div>
-      <h1>VOICE <span class="plus">+</span> <span class="ai">AI.</span></h1>
-      <p class="tagline">Dictate anywhere <span class="sep">|</span> Transcribe locally <span class="sep">|</span> Act with AI</p>
-      <p class="tagline-sub">Local-first dictation and voice workflows for Mac</p>
+      <h1><span class="muted">Talk to</span><br><span class="accent">your Mac.</span></h1>
+      <p class="tagline">Capture thoughts <span class="sep">|</span> Shape drafts <span class="sep">|</span> Search what you said <span class="sep">|</span> Run workflows</p>
+      <p class="tagline-sub">Local-first voice capture for the apps you already use</p>
     </div>
     <div class="bottom">
-      <span style="letter-spacing: 0.1em;">iOS + macOS</span>
+      <span style="letter-spacing: 0.1em;">macOS + iOS + watchOS</span>
       <span class="sep">•</span>
       <span>usetalkie.com</span>
     </div>
@@ -189,7 +202,7 @@ const html = `
 `;
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch(resolveBrowserLaunchOptions());
   const page = await browser.newPage();
   await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 2 });
   await page.setContent(html, { waitUntil: 'networkidle0' });

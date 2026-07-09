@@ -65,7 +65,7 @@ const TOKENS = [
 ]
 
 const VOICE_LINES = [
-  { kind: 'anchor', text: "It's like a selfie. For your thoughts." },
+  { kind: 'anchor', text: 'Talk to your Mac.' },
   { kind: 'supporting', text: 'A mic is all you need.' },
   { kind: 'supporting', text: 'Voice-first AI. Yours.' },
   { kind: 'supporting', text: 'Local-first. Auditable signal path.' },

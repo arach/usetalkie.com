@@ -110,7 +110,7 @@ export default function SiteShell({ children }) {
             <div className="max-w-sm">
               <Wordmark size={48} state="listening" pulse />
               <p className="mt-5 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
-                It's like a selfie. For your thoughts.
+                Talk to your Mac.
                 <br />
                 <span className="text-base italic text-ink-muted">{supportingLine(ANCHOR_VARIANT)}</span>
               </p>
