@@ -75,9 +75,9 @@ const WORKFLOW_ANSWERS = [
 const CAPTURE_INPUTS = [
   {
     label: 'Mac hotkey',
-    detail: 'hold, speak, release',
+    detail: 'set, speak, release',
     src: '/screenshots/mac-recording.png',
-    alt: 'Talkie recording HUD on Mac',
+    alt: 'Talkie dictation recording settings on Mac',
     frame: 'laptop',
   },
   {

@@ -254,9 +254,9 @@ const DEVICES = [
       Icon: Bot,
     },
     screenshot: {
-      src: '/screenshots/mac-island.png',
-      alt: 'Talkie capture island floating above the Mac home view',
-      caption: 'Capture island handoff',
+      src: '/screenshots/mac-transcription-settings.png',
+      alt: 'Talkie transcription model settings on Mac',
+      caption: 'Local model settings',
     },
     waveformBias: 3,
     inputSpec: {

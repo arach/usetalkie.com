@@ -180,12 +180,10 @@ export default function HomePage() {
     .filter((i) => i.platform === 'iphone')
     .sort((a, b) => orderIndex(a.slug) - orderIndex(b.slug))
 
-  /* Mac HScroll — dictation-first sequence. Keep this tight so the
-   * mobile homepage shows the core voice path before broader app surfaces. */
+  /* Mac HScroll — verified app-rendered surfaces for the core voice path. */
   const MAC_HSCROLL_ORDER = [
     'mac-home',
     'mac-recording',
-    'mac-island',
     'mac-transcription-settings',
     'mac-dictionary',
   ]
@@ -231,10 +229,10 @@ export default function HomePage() {
               · DICTATION CAPTURE
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
-              Hold the hotkey. Say the thing.
+              Set the hotkey. Dictate anywhere.
             </h2>
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink-muted">
-              Talkie captures the messy version first, then turns it into text you can search, clean up, or route.
+              Talkie makes the capture path explicit: hotkey, push-to-talk, microphone, and the local sounds around each recording.
             </p>
             <div className="mt-7">
               <Link
@@ -757,25 +755,25 @@ function DictationCaptureFrame() {
               className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
               style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
             />
-            <span className="truncate">RECORDING · VOICE.IN</span>
+            <span className="truncate">DICTATION · RECORDING</span>
           </span>
-          <span className="hidden text-ink-subtle sm:inline">LOCAL · HOTKEY · MONO</span>
+          <span className="hidden text-ink-subtle sm:inline">HOTKEY · MIC · LOCAL</span>
         </div>
 
         <div className="relative p-2 sm:p-3">
           <div className="overflow-hidden rounded-[0.45rem] border border-edge-dim bg-surface shadow-[0_10px_28px_-22px_rgba(0,0,0,0.55)]">
             <img
               src="/screenshots/mac-recording.png"
-              alt="Talkie for Mac recording HUD while dictating"
-              className="block aspect-[16/10] w-full object-cover"
+              alt="Talkie dictation recording settings on Mac"
+              className="block aspect-[16/10] w-full bg-canvas object-contain"
               loading="lazy"
             />
           </div>
         </div>
 
         <div className="relative flex min-h-8 items-center justify-between gap-3 border-t border-edge-dim px-3 text-[8px] uppercase tracking-[0.26em] text-ink-faint sm:px-4">
-          <span>· HOTKEY · LIVE · TRANSCRIPT · LOCAL ONLY</span>
-          <span className="hidden text-ink-subtle sm:inline">DICTATION · SEARCH · ROUTE ·</span>
+          <span>· HOTKEY · PUSH-TO-TALK · MICROPHONE · LOCAL</span>
+          <span className="hidden text-ink-subtle sm:inline">SETTINGS · RECORDING ·</span>
         </div>
       </div>
     </figure>
