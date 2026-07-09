@@ -254,9 +254,9 @@ const DEVICES = [
       Icon: Bot,
     },
     screenshot: {
-      src: '/screenshots/talkie-agent-handoff-console.png',
-      alt: 'Talkie voice memo sent to a coding agent from the Console',
-      caption: 'Voice to agent handoff',
+      src: '/screenshots/mac-island.png',
+      alt: 'Talkie capture island floating above the Mac home view',
+      caption: 'Capture island handoff',
     },
     waveformBias: 3,
     inputSpec: {

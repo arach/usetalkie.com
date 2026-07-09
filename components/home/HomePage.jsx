@@ -180,16 +180,14 @@ export default function HomePage() {
     .filter((i) => i.platform === 'iphone')
     .sort((a, b) => orderIndex(a.slug) - orderIndex(b.slug))
 
-  /* Mac HScroll — landscape aspect, smaller subset. Home / Recording /
-   * Compose / Diff lead because they're the most narratively legible
-   * screens (dashboard, the live HUD, compose, diff). */
+  /* Mac HScroll — dictation-first sequence. Keep this tight so the
+   * mobile homepage shows the core voice path before broader app surfaces. */
   const MAC_HSCROLL_ORDER = [
     'mac-home',
     'mac-recording',
-    'mac-compose',
-    'mac-compose-diff',
-    'mac-actions',
-    'mac-models',
+    'mac-island',
+    'mac-transcription-settings',
+    'mac-dictionary',
   ]
   const macOrder = (slug) => {
     const i = MAC_HSCROLL_ORDER.indexOf(slug)
@@ -217,9 +215,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== AGENT HANDOFF · SCREENSHOT PROOF ========== */}
+      {/* ========== DICTATION CAPTURE · SCREENSHOT PROOF ========== */}
       <section
-        id="agent-handoff"
+        id="dictation-capture"
         className="relative overflow-hidden border-b border-edge-faint bg-canvas-alt font-mono"
       >
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
@@ -230,13 +228,13 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · AGENT HANDOFF
+              · DICTATION CAPTURE
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
-              Talk to Talkie. Your agents take it from there.
+              Hold the hotkey. Say the thing.
             </h2>
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink-muted">
-              Speak a task in the app and Talkie hands it to your coding agent, ready to run.
+              Talkie captures the messy version first, then turns it into text you can search, clean up, or route.
             </p>
             <div className="mt-7">
               <Link
@@ -253,7 +251,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <AgentHandoffFrame />
+          <DictationCaptureFrame />
         </div>
       </section>
 
@@ -743,10 +741,10 @@ export default function HomePage() {
 }
 
 // -----------------------------------------------------------------------------
-// Sub-components — agent handoff frame, capture mode card, flow step, ownership card
+// Sub-components — dictation capture frame, capture mode card, flow step, ownership card
 // -----------------------------------------------------------------------------
 
-function AgentHandoffFrame() {
+function DictationCaptureFrame() {
   return (
     <figure className="relative">
       <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-[0_18px_60px_-30px_rgba(0,0,0,0.55)]">
@@ -759,25 +757,25 @@ function AgentHandoffFrame() {
               className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
               style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
             />
-            <span className="truncate">RUNNING · AG-01 / VOICE.IN</span>
+            <span className="truncate">RECORDING · VOICE.IN</span>
           </span>
-          <span className="hidden text-ink-subtle sm:inline">SPEC · ON&nbsp;&nbsp;10.23AM · MONO</span>
+          <span className="hidden text-ink-subtle sm:inline">LOCAL · HOTKEY · MONO</span>
         </div>
 
         <div className="relative p-2 sm:p-3">
           <div className="overflow-hidden rounded-[0.45rem] border border-edge-dim bg-surface shadow-[0_10px_28px_-22px_rgba(0,0,0,0.55)]">
             <img
-              src="/screenshots/talkie-agent-handoff-console.png"
-              alt="A Talkie Console session showing a spoken product feedback memo sent to a coding agent"
-              className="block aspect-[1234/988] w-full object-cover"
+              src="/screenshots/mac-recording.png"
+              alt="Talkie for Mac recording HUD while dictating"
+              className="block aspect-[16/10] w-full object-cover"
               loading="lazy"
             />
           </div>
         </div>
 
         <div className="relative flex min-h-8 items-center justify-between gap-3 border-t border-edge-dim px-3 text-[8px] uppercase tracking-[0.26em] text-ink-faint sm:px-4">
-          <span>· TRIG · LIVE · SIGNAL PATH · LOCAL ONLY</span>
-          <span className="hidden text-ink-subtle sm:inline">SCOUT · CODEX · HANDOFF ·</span>
+          <span>· HOTKEY · LIVE · TRANSCRIPT · LOCAL ONLY</span>
+          <span className="hidden text-ink-subtle sm:inline">DICTATION · SEARCH · ROUTE ·</span>
         </div>
       </div>
     </figure>
