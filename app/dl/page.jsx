@@ -6,7 +6,7 @@ export const metadata = {
   description: 'Download Talkie for Mac, the action surface for a private voice capture system that starts on iPhone, Watch, or Mac.',
   robots: {
     index: false,
-    follow: false,
+    follow: true,
   },
 }
 

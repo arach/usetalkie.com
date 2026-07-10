@@ -5,10 +5,11 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Ideas - Talkie',
   description: 'Concepts and thinking on voice, computing, and the tools we build.',
+  alternates: { canonical: 'https://usetalkie.com/ideas/' },
   openGraph: {
     title: 'Ideas - Talkie',
     description: 'Concepts and thinking on voice, computing, and the tools we build.',
-    url: 'https://usetalkie.com/ideas',
+    url: 'https://usetalkie.com/ideas/',
     siteName: 'Talkie',
     locale: 'en_US',
     type: 'website',

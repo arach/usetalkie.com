@@ -3,6 +3,10 @@ import TailscalePage from '../../../components/docs/TailscalePage'
 export const metadata = {
   title: 'Tailscale Setup — Talkie Docs',
   description: 'Configure Tailscale for secure, peer-to-peer networking between your Mac and iPhone. No port forwarding required.',
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: 'Tailscale Setup — Talkie Docs',
     description: 'Secure peer-to-peer networking between Mac and iPhone.',

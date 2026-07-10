@@ -15,13 +15,17 @@ export async function generateMetadata({ params }) {
   const platformLabel = item.platform === 'iphone' ? 'iPhone' : item.platform === 'watch' ? 'Apple Watch' : 'Mac'
   const title = `${item.title} — Talkie Tour`
   const description = item.caption
+  const url = `https://usetalkie.com/tour/${slug}/`
 
   return {
     title,
     description,
+    alternates: { canonical: url },
     openGraph: {
       title,
       description,
+      url,
+      siteName: 'Talkie',
       images: [{ url: item.src, alt: `${item.title} — Talkie for ${platformLabel}` }],
       type: 'article',
     },

@@ -5,10 +5,11 @@ export const metadata = {
   title: 'Talkie for Mac - Talk to your Mac',
   description: 'Capture a thought, shape a draft, search what you said, or kick off a workflow from your Mac. A mic is all you need.',
   keywords: ['dictation', 'voice to text', 'macos', 'workflow', 'local', 'privacy', 'productivity'],
+  alternates: { canonical: 'https://usetalkie.com/mac/' },
   openGraph: {
     title: 'Talkie for Mac - Talk to your Mac',
     description: 'Capture a thought, shape a draft, search what you said, or kick off a workflow from your Mac. A mic is all you need.',
-    url: 'https://usetalkie.com/live',
+    url: 'https://usetalkie.com/mac/',
     siteName: 'Talkie',
     images: [
       {

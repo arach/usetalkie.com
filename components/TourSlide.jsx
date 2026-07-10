@@ -158,12 +158,12 @@ export default function TourSlide({ slug }) {
               draggable={false}
             />
             <div className="border-t border-edge-faint bg-canvas-alt px-6 py-3">
-              <span
+              <h1
                 className="font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
                 style={TRACE_GLOW_SOFT}
               >
                 · {item.title}
-              </span>
+              </h1>
               <p className="mt-1 text-[13px] leading-relaxed text-ink-dim">{item.caption}</p>
             </div>
           </div>

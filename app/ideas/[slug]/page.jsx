@@ -60,14 +60,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const idea = getIdeaBySlug(slug)
+  const url = `https://usetalkie.com/ideas/${slug}/`
 
   return {
     title: `${idea.title} - Talkie Ideas`,
     description: idea.description,
+    alternates: { canonical: url },
     openGraph: {
       title: `${idea.title} - Talkie Ideas`,
       description: idea.description,
-      url: `https://usetalkie.com/ideas/${slug}`,
+      url,
       siteName: 'Talkie',
       locale: 'en_US',
       type: 'article',

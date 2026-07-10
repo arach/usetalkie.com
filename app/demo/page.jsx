@@ -4,6 +4,10 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Demo - Talkie',
   description: 'See Talkie in action. Watch how voice-to-action works on your Mac with iPhone and Watch capture.',
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: 'Demo - Talkie',
     description: 'See Talkie in action. Watch how voice-to-action works on your Mac.',

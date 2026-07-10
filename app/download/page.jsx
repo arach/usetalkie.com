@@ -4,6 +4,7 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Download Talkie',
   description: 'Get Talkie for Mac and iPhone. Download the app, install via CLI, or scan the QR code for iOS.',
+  alternates: { canonical: 'https://usetalkie.com/downloads/' },
 }
 
 export default function Page() {

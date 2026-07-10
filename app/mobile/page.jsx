@@ -4,10 +4,11 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Talkie for Mobile - Catch it while it is still live',
   description: 'Capture on iPhone and Apple Watch when you are away from your desk, then pick the thread back up on your Mac.',
+  alternates: { canonical: 'https://usetalkie.com/mobile/' },
   openGraph: {
     title: 'Talkie for Mobile - Catch it while it is still live',
     description: 'Capture on iPhone and Apple Watch when you are away from your desk, then pick the thread back up on your Mac.',
-    url: 'https://usetalkie.com/mobile',
+    url: 'https://usetalkie.com/mobile/',
     siteName: 'Talkie',
     images: [
       {

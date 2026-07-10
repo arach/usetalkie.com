@@ -1,7 +1,7 @@
 # Talkie
 
 Canonical site: https://usetalkie.com/
-Last updated: 2026-07-08
+Last updated: 2026-07-10
 
 Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It turns speech into dictation, searchable memos, files, drafts, workflow runs, and agent-readable context. Capture, local storage, files, clipboard, and shell workflows start on the user's devices. Outside model providers and webhooks are optional and run only when configured by the user.
 
@@ -12,7 +12,6 @@ Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It t
 - Mac app: https://usetalkie.com/mac/
 - Mobile and Watch app: https://usetalkie.com/mobile/
 - Security and privacy: https://usetalkie.com/security/
-- Agent workflows: https://usetalkie.com/agents/
 
 ## Workflows
 
@@ -42,6 +41,7 @@ Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It t
 - Lifecycle: https://usetalkie.com/docs/lifecycle/
 - CLI reference: https://usetalkie.com/docs/cli/
 - Workflow reference: https://usetalkie.com/docs/workflows/
+- API reference: https://usetalkie.com/docs/api/
 - Extensibility: https://usetalkie.com/docs/extensibility/
 - Data and local storage: https://usetalkie.com/docs/data/
 

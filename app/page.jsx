@@ -15,10 +15,11 @@ export const metadata = {
   title: HOME_TITLE,
   description: HOME_DESCRIPTION,
   applicationName: 'Talkie',
+  alternates: { canonical: 'https://usetalkie.com/' },
   openGraph: {
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,
-    url: 'https://usetalkie.com',
+    url: 'https://usetalkie.com/',
     siteName: 'Talkie',
     locale: 'en_US',
     type: 'website',

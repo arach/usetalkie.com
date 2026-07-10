@@ -109,6 +109,12 @@
     <priority>0.82</priority>
   </url>
   <url>
+    <loc>https://usetalkie.com/docs/api/</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  <url>
     <loc>https://usetalkie.com/docs/extensibility/</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -125,18 +131,6 @@
     <lastmod>2026-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.72</priority>
-  </url>
-  <url>
-    <loc>https://usetalkie.com/docs/tailscale/</loc>
-    <lastmod>2026-07-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.66</priority>
-  </url>
-  <url>
-    <loc>https://usetalkie.com/agents/</loc>
-    <lastmod>2026-07-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.82</priority>
   </url>
   <url>
     <loc>https://usetalkie.com/security/</loc>
