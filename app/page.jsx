@@ -1,9 +1,9 @@
 import HomePage from '../components/home/HomePage'
 import MainShell from '../components/MainShell'
 
-const HOME_TITLE = 'Talkie - Talk to your Mac'
+const HOME_TITLE = 'Talkie - A remote control for your agents'
 const HOME_DESCRIPTION =
-  'Capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.'
+  'A remote control for your agents. Talk, and the work starts moving.'
 
 /**
  * Root homepage `/` — renders the panoramic-instrument hero with the

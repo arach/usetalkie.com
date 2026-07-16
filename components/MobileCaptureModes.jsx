@@ -35,7 +35,7 @@ const MODES = [
   {
     key: 'widgets',
     Icon: Command,
-    title: 'Ambient Entry',
+    title: 'Widgets & Siri',
     tag: 'MODE · WIDGETS',
     body:
       'Add a capture widget to your lock screen. Or trigger from Siri, Shortcuts, or Control Center.',

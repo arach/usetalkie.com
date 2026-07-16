@@ -38,10 +38,10 @@ export default function SurfacesPage() {
           </p>
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-7xl">
             Many surfaces,<br />
-            <span className="italic">one trace.</span>
+            <span className="italic">one library.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted md:text-base">
-            Mac is where you work. iPhone and Watch are where you catch the thought before it fades. Wherever you record, every clip lands in the same library — and you can feed it into the tools you already use.
+            Mac is where you work. iPhone and Watch are where you catch the thought before it fades. Every clip lands in the same library, and you can feed it into the tools you already use.
           </p>
         </div>
       </section>

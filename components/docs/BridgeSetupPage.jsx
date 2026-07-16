@@ -59,7 +59,7 @@ export default function BridgeSetupPage() {
   return (
     <DocsLayout
       title="TalkieServer Setup"
-      description="TalkieServer is a lightweight local service that enables communication between your Mac and iPhone. It runs on your Mac and handles secure pairing and data sync."
+      description="TalkieServer is a small local service that lets your Mac and iPhone talk to each other. It runs on your Mac and handles secure pairing and data sync."
       badge="Setup Guide"
       badgeColor="emerald"
       sections={sections}

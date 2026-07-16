@@ -48,7 +48,7 @@ export default function DemoPage() {
             See Talkie <span className="italic">in action.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            A short reel: hold the hotkey, speak, watch the cursor land back where you started. The clips below are placeholders while the proper demo cuts come together — the signal flow is real.
+            A short reel: hold the hotkey, speak, watch the cursor land back where you started. The clips below are placeholders while the proper demo cuts come together, but the flow they show is real.
           </p>
         </div>
       </section>

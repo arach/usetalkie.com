@@ -31,7 +31,7 @@ const PRINCIPLES = [
     eyebrow: 'OWNERSHIP',
     icon: Lock,
     headline: 'Own your voice, own your workflow.',
-    body: 'Own your thoughts. Own your tools. Your stuff is yours, not a training set.',
+    body: 'Your recordings and transcripts are yours. Not a training set, not a product. They live on your devices and leave only when you send them somewhere.',
     tag: 'LOCAL · PRIVATE',
   },
   {
@@ -73,15 +73,7 @@ export default function PhilosophyPage() {
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-28">
           <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            ·{' '}
-            <span
-              aria-hidden
-              className="relative inline-block text-amber/70"
-            >
-              PHILOSOPHY
-              <span className="pointer-events-none absolute inset-x-0 top-1/2 h-[0.06em] -translate-y-1/2 bg-amber" />
-            </span>
-            {' '}THINKING
+            · WHY TALKIE EXISTS
           </p>
 
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
@@ -92,9 +84,9 @@ export default function PhilosophyPage() {
           </h1>
 
           <p className="philo-lede mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Our ideas show up anywhere, at any time. On a walk, between meetings, in the middle of something
-            unrelated. Builders know this rhythm well. Sparks arrive fast, unpolished, and usually at inconvenient
-            times. And without a way to catch them in the moment, they slip away just as quickly.
+            Ideas show up on a walk, between meetings, in the middle of something unrelated.
+            They arrive fast and unpolished, and if you can&apos;t catch one right then, it&apos;s
+            usually gone by the time you sit down.
           </p>
 
           <HeroWaveform />
@@ -127,13 +119,13 @@ export default function PhilosophyPage() {
               code="002"
               label="SILOS"
               heading="Apps, clouds & AI disconnect."
-              body="Voice Memos trap ideas. AI clouds absorb them. Your thoughts get scattered, siloed, and locked in someone else's system."
+              body="Voice Memos trap ideas. AI clouds absorb them. Your thoughts end up scattered across systems you don't control."
             />
             <ObservationCard
               code="003"
               label="MISSING LINK"
-              heading="Something essential is missing."
-              body="A private, continuous flow between your voice and your tools."
+              heading="Nothing connects the two."
+              body="What's missing is a private, direct path from your voice to your tools."
               highlight
             />
           </div>
@@ -179,7 +171,7 @@ export default function PhilosophyPage() {
                 className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
                 style={TRACE_GLOW_SOFT}
               >
-                · VELOCITY · SOVEREIGNTY · FLOW ·
+                · SPEED · OWNERSHIP · FLOW ·
               </span>
               <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--trace-dim)' }} />
             </div>
@@ -218,11 +210,11 @@ export default function PhilosophyPage() {
                   slug: 'philosophy-manifesto',
                   audio: '/captures/philosophy-manifesto.mp3',
                   vtt: '/captures/philosophy-manifesto.vtt',
-                  caption: 'VELOCITY · SOVEREIGNTY · FLOW',
+                  caption: 'SPEED · OWNERSHIP · FLOW',
                   anchor: '#philosophy-pull-quote',
                 }}
               >
-                Hear the manifesto
+                Hear it out loud
               </NarrateTrigger>
             </div>
           </div>
@@ -254,7 +246,7 @@ export default function PhilosophyPage() {
               </span>
             </Link>
 
-            <DownloadBay caption="Voice capture, local-first, auditable signal path." />
+            <DownloadBay caption="Local-first voice capture. Your words stay on your devices." />
           </div>
         </div>
       </section>

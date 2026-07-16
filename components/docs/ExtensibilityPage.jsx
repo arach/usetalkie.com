@@ -54,7 +54,7 @@ export default function ExtensibilityPage() {
       {/* Integration Points */}
       <h2 id="integration-points">Integration Points</h2>
       <p>
-        Talkie is designed to be extended. Whether you want to send transcripts to another app, trigger external services, or build your own automation—there's a way to do it.
+        Talkie is built to be extended. Send transcripts to another app, trigger external services, build your own automation: there's a way in for each.
       </p>
 
       <div className="space-y-3 my-6 not-prose">

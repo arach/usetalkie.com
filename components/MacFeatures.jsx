@@ -10,8 +10,8 @@ import { Hand, CornerDownLeft, Clock, Eye, Send, Signal } from 'lucide-react'
  */
 const FEATURES = [
   { icon: Hand,           title: 'Hold-to-Talk',     body: 'Press and hold. Talk. Release. No modes, no recording state to forget.',                shape: 0 },
-  { icon: CornerDownLeft, title: 'Return to Origin', body: 'Cursor lands back where you left it. The typing flow resumes.',                          shape: 1 },
-  { icon: Clock,          title: '48-Hour Echoes',   body: 'Every capture stays searchable for 48 hours by default. Never lose a fast thought.',     shape: 2 },
+  { icon: CornerDownLeft, title: 'Cursor Comes Back', body: 'Cursor lands back where you left it. The typing flow resumes.',                         shape: 1 },
+  { icon: Clock,          title: '48-Hour Recall',    body: 'Every capture stays searchable for 48 hours by default. Fast thoughts don\'t get lost.', shape: 2 },
   { icon: Eye,            title: 'Minimal HUD',      body: 'A tiny waveform appears when you speak. No modal dialog, no interruption.',              shape: 3 },
   { icon: Send,           title: 'Smart Routing',    body: 'Talkie pastes into the app in front of you. No copy-and-paste step.',                    shape: 4 },
   { icon: Signal,         title: 'Always Ready',     body: 'Lives in the menu bar. One hotkey away from any app, any time.',                         shape: 5 },
@@ -45,7 +45,7 @@ export default function MacFeatures() {
             Six behaviors. <span className="italic text-ink-muted">One menu-bar app.</span>
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Talkie behaves the same way everywhere — the same hold-to-talk, the same cursor return, the same fast search of what you said.
+            Talkie behaves the same way everywhere: the same hold-to-talk, the same cursor return, the same fast search of what you said.
           </p>
         </div>
 

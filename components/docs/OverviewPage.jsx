@@ -29,7 +29,7 @@ export default function OverviewPage() {
   return (
     <DocsLayout
       title="Overview"
-      description="Talkie is a voice-first productivity suite for macOS. Built with privacy at its core, it processes everything locally while maintaining a seamless experience across devices."
+      description="Talkie lets you talk to your Mac instead of typing. It runs locally and syncs across your devices without a Talkie cloud."
       badge="Introduction"
       badgeColor="purple"
       sections={sections}
@@ -37,8 +37,8 @@ export default function OverviewPage() {
       {/* Philosophy */}
       <h2 id="philosophy">Philosophy</h2>
       <p>
-        Talkie is designed around three core principles that guide every architectural decision.
-        These aren't marketing words. They actually shape how the app works.
+        Three principles shape how Talkie is built. These aren't marketing words. They
+        show up in how the app actually works.
       </p>
 
       <div className="grid md:grid-cols-3 gap-4 my-6 not-prose">
@@ -65,8 +65,8 @@ export default function OverviewPage() {
       {/* Design Principles */}
       <h2 id="design-principles">Design Principles</h2>
       <p>
-        We figure anyone using this might want to poke at it. These principles guide how we build Talkie,
-        giving you visibility and control over everything—with smart defaults so you don't have to think about it.
+        We figure anyone using this might want to poke at it. So you can see and change
+        everything, with defaults good enough that you rarely have to.
       </p>
 
       <div className="my-6 space-y-4 not-prose">
@@ -115,7 +115,7 @@ export default function OverviewPage() {
           <div>
             <h4 className="font-bold text-ink">Protect the critical path</h4>
             <p className="text-sm text-ink-muted mt-1">
-              Recording and transcription are sacred. Nothing should block them—not sync, not workflows, not UI rendering. The happy path is always fast.
+              Recording and transcription are sacred. Nothing gets to block them: not sync, not workflows, not UI rendering. The happy path stays fast.
             </p>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function OverviewPage() {
           <div>
             <h4 className="font-bold text-ink">Smart defaults, full control</h4>
             <p className="text-sm text-ink-muted mt-1">
-              Talkie works great out of the box. But when you want to customize—workflows, shortcuts, data locations, export formats—everything is configurable.
+              Talkie works out of the box. But when you want to change something (workflows, shortcuts, data locations, export formats), it's all configurable.
             </p>
           </div>
         </div>
@@ -144,16 +144,15 @@ export default function OverviewPage() {
         <li><strong>No accounts required</strong> — Start using Talkie immediately</li>
       </ul>
       <p>
-        When you do enable sync (like iCloud), it's additive. The app works perfectly without it,
-        and sync just keeps your devices in harmony.
+        When you do enable sync (like iCloud), it's additive. The app works fine without it;
+        sync just keeps your devices matched up.
       </p>
 
       {/* Multi-Process Architecture */}
       <h2 id="multi-process">Multi-Process Architecture</h2>
       <p>
         Unlike most apps that run as a single process, Talkie splits responsibilities across
-        multiple specialized processes. This design provides reliability, security, and performance
-        benefits.
+        several smaller ones.
       </p>
 
       <SimpleArchitectureDiagram />
@@ -196,7 +195,7 @@ export default function OverviewPage() {
         <p className="text-sm text-ink-muted">
           TalkieServer exposes HTTP endpoints that the iPhone app connects to.
           All traffic flows over Tailscale's encrypted WireGuard tunnel.
-          This enables cross-device sync without any cloud intermediary.
+          Your devices sync directly, with no cloud in the middle.
         </p>
       </div>
 
@@ -212,7 +211,7 @@ export default function OverviewPage() {
       >
         <div>
           <span className="font-bold text-ink group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-            Architecture Deep Dive
+            Architecture
           </span>
           <p className="text-sm text-ink-muted mt-1">
             Detailed look at each component and how they work together

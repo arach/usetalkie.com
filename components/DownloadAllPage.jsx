@@ -121,13 +121,12 @@ export default function DownloadAllPage() {
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
           <ChannelEyebrow>· INSTALL / ALL CHANNELS</ChannelEyebrow>
           <h1 className="mt-4 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
-            Pick a surface.<br />
-            <span className="italic text-ink-muted">Same signal.</span>
+            Pick a device.<br />
+            <span className="italic text-ink-muted">Same library.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
-            Talkie ships on Mac and iPhone. Both surfaces speak to the same
-            local-first store. Install one, or both — they sync through your
-            own iCloud, never ours.
+            Talkie ships on Mac and iPhone. Both use the same local library.
+            Install one or both; they sync through your own iCloud, never ours.
           </p>
         </div>
       </section>

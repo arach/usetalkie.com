@@ -88,7 +88,7 @@ export default function LifecyclePage() {
   return (
     <DocsLayout
       title="Lifecycle"
-      description="Understanding the journey from voice to action. Every recording flows through distinct phases, each with natural extension points where you can plug in custom logic."
+      description="What happens between speaking and the result. Every recording moves through distinct phases, each with extension points where you can plug in custom logic."
       badge="Deep Dive"
       badgeColor="purple"
       sections={sections}
@@ -310,7 +310,7 @@ export default function LifecyclePage() {
       {/* Extension Points Summary */}
       <h2 id="extension-points">Extension Points</h2>
       <p>
-        These are the natural seams in the lifecycle where custom logic could be injected. They represent moments where the flow pauses, a decision is made, or data transforms.
+        These are the natural seams in the lifecycle where custom logic can be injected: the moments where the flow pauses, a decision is made, or data changes shape.
       </p>
 
       <div className="my-6 overflow-x-auto not-prose">

@@ -543,15 +543,7 @@ export default function SecurityPage() {
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· TALKIE / SECURITY</Eyebrow>
           <h1 className="mt-4 font-display text-4xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-5xl">
-            Security{' '}
-            <span
-              aria-hidden
-              className="relative inline-block text-amber/70"
-            >
-              Posture
-              <span className="pointer-events-none absolute inset-x-0 top-[60%] h-[0.06em] -translate-y-1/2 bg-amber" />
-            </span>{' '}
-            <span className="italic">Approach.</span>
+            How we handle <span className="italic">your data.</span>
           </h1>
           <p
             className="mt-6 max-w-2xl border-l-2 border-trace pl-5 text-[15px] leading-relaxed text-ink-muted"
@@ -568,11 +560,11 @@ export default function SecurityPage() {
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· 01 / DATA FLOW</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            Where your data goes &mdash; and where it doesn&apos;t.
+            Where your data goes, and where it doesn&apos;t.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Solid traces are your data path. Dashed amber traces are opt-in only &mdash; text leaves the
-            device solely when you explicitly route a workflow to an external provider.
+            Solid traces are your data path. Dashed amber traces are opt-in: text leaves the
+            device only when you route a workflow to an external provider.
           </p>
 
           <div className="mt-10 theme-warm-only">
@@ -708,10 +700,10 @@ export default function SecurityPage() {
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <Eyebrow>· 04 / VENDOR ISOLATION</Eyebrow>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink">
-            The wall of separation.
+            Who holds the keys.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Understanding who holds the keys to your data is critical. We use Apple&apos;s
+            It matters who holds the keys to your data. We use Apple&apos;s
             Private CloudKit container, which keeps your data on a different shelf
             from ours.
           </p>
@@ -810,7 +802,7 @@ export default function SecurityPage() {
                   className="mt-8 w-full border-t border-edge-subtle pt-4 text-center font-mono text-[9px] uppercase tracking-[0.22em] text-trace"
                   style={{ textShadow: '0 0 4px var(--trace-glow)' }}
                 >
-                  · Sole Proprietor
+                  · Only You
                 </div>
               </div>
             </div>
@@ -855,8 +847,8 @@ export default function SecurityPage() {
               <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">
                 Talkie fully supports Apple&apos;s optional{' '}
                 <strong className="text-ink-dim">Advanced Data Protection</strong> for iCloud.
-                Because we utilize standard CloudKit Private Databases, enabling ADP in your Apple ID
-                settings automatically extends strict end-to-end encryption to your Talkie data.
+                Because we use standard CloudKit Private Databases, turning on ADP in your Apple ID
+                settings extends end-to-end encryption to your Talkie data too.
               </p>
 
               <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">

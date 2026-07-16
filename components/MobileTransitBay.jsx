@@ -164,9 +164,9 @@ export default function MobileTransitBay() {
 
         {/* Foot caption */}
         <p className="mt-8 max-w-2xl text-[12px] leading-relaxed text-screen-ink-muted">
-          Whatever you say, wherever you are — iPhone, Watch, or Ambient — lands in the
-          same library. By the time you sit down at your Mac, the captures are already
-          transcribed and stitched together for you.
+          Say it from iPhone, Watch, or a widget. It all lands in the same library,
+          and by the time you sit down at your Mac the captures are already
+          transcribed and stitched together.
         </p>
       </div>
 

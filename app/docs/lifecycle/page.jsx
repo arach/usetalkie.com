@@ -2,11 +2,11 @@ import LifecyclePage from '../../../components/docs/LifecyclePage'
 
 export const metadata = {
   title: 'Lifecycle - Talkie Docs',
-  description: 'Understanding the journey from voice to action. Every recording flows through distinct phases, each with natural extension points.',
+  description: 'What happens between speaking and the result. Every recording moves through distinct phases, each with extension points.',
   alternates: { canonical: 'https://usetalkie.com/docs/lifecycle/' },
   openGraph: {
     title: 'Lifecycle — Talkie Docs',
-    description: 'The journey from voice to action with extension points.',
+    description: 'Recording phases and their extension points.',
     url: 'https://usetalkie.com/docs/lifecycle/',
     siteName: 'Talkie',
     images: [{ url: '/og/docs-lifecycle.png', width: 1200, height: 630 }],

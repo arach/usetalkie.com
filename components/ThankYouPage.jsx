@@ -80,7 +80,7 @@ export default function ThankYouPage() {
         </h1>
         <p className="mt-5 max-w-xl text-center text-[15px] leading-relaxed text-ink-muted">
           Thanks for your interest in Talkie. We&apos;re building something local-first and
-          carefully tuned — you&apos;ll be among the first to hear it.
+          carefully tuned. You&apos;ll be among the first to hear about it.
         </p>
 
         {/* What happens next */}

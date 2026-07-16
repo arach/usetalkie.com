@@ -34,7 +34,7 @@ const DEMO_SECTIONS = [
   {
     id: 'mobile',
     title: 'Mobile',
-    description: 'Capture on the go. Sync via iCloud. Let your Mac do the heavy lifting later.',
+    description: 'Capture on the go. Sync via iCloud. Your Mac picks it up from there.',
     videos: [
       { id: 'mob-recording', src: '/videos/MobileRecording.mp4', title: 'Recording' },
       { id: 'mob-capture', src: '/videos/CaptureOverview.mp4', title: 'Capture' },

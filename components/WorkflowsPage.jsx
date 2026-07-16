@@ -555,7 +555,7 @@ export default function WorkflowsPage() {
             · 04 / SHELL STEP
           </p>
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-screen-ink">
-            Your terminal, <span className="italic text-amber">on the end of a sentence.</span>
+            Your terminal, <span className="italic text-amber">hooked up to your voice.</span>
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-screen-ink-muted">
             We put a Ghostty terminal next to the workflow editor, with Talkie prompts, skills, and PATH
@@ -691,7 +691,7 @@ export default function WorkflowsPage() {
                   </p>
                 </div>
                 <h3 className="mt-3 font-display text-lg font-normal tracking-[-0.01em] text-ink">
-                  Filenames that compose themselves.
+                  Filenames that fill themselves in.
                 </h3>
                 <ul className="mt-6 space-y-3">
                   {OUTPUT_RULES.map((rule) => (
@@ -746,7 +746,7 @@ export default function WorkflowsPage() {
       {/* ========== DOWNLOAD — focused install footer ========== */}
       <section className="relative border-t border-edge-faint bg-canvas">
         <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
-          <DownloadBay caption="One hotkey. One transcript. Routed to the file, the issue, the journal, the agent — anywhere you’ve told it to go." />
+          <DownloadBay caption="One hotkey. One transcript. Routed to the file, the issue, the journal, or the agent you pointed it at." />
         </div>
       </section>
     </>

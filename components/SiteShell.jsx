@@ -115,7 +115,7 @@ export default function SiteShell({ children }) {
                 <span className="text-base italic text-ink-muted">{supportingLine(ANCHOR_VARIANT)}</span>
               </p>
               <p className="mt-3 text-[11px] leading-relaxed text-ink-faint">
-                Voice capture, local-first, auditable signal path. Your words stay on your devices.
+                Local-first voice capture. Your words stay on your devices.
               </p>
             </div>
 

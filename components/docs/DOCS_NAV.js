@@ -33,7 +33,7 @@ export const DOCS_NAV = [
       {
         slug: 'lifecycle',
         title: 'Lifecycle',
-        description: 'The voice-to-action signal path, phase by phase.',
+        description: 'What happens to a recording, phase by phase.',
         href: '/docs/lifecycle',
       },
     ],

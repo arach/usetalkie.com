@@ -45,7 +45,7 @@ export default function MacHowItWorks() {
             The four-step path.
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Four stages, one loop — hotkey, voice, transcribe, paste. The whole chain takes about a second, and the cursor lands right back where it started.
+            Four stages, one loop: hotkey, voice, transcribe, paste. The whole chain takes about a second, and the cursor lands right back where it started.
           </p>
         </div>
 

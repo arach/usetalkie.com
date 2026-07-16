@@ -92,7 +92,7 @@ export function SecurityInfographic() {
             />
             <div className="flex flex-col">
                 <h2 className="text-xl font-bold uppercase leading-none tracking-wide text-ink">Security Architecture</h2>
-                <span className="mt-1 font-mono text-[10px] uppercase text-ink-subtle">Data Sovereignty Model v1.2</span>
+                <span className="mt-1 font-mono text-[10px] uppercase text-ink-subtle">Where your data lives</span>
             </div>
             </div>
              <div className="flex items-center gap-4 font-mono text-[10px] uppercase text-ink-subtle">

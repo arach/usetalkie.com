@@ -232,7 +232,7 @@ export default function AgentsPage() {
         </div>
       </section>
 
-      {/* TERMINAL EXEMPLAR */}
+      {/* TERMINAL EXAMPLE */}
       <section className="relative border-t border-edge-faint bg-canvas-alt font-mono">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr,1.2fr] md:items-center md:gap-12">
@@ -241,7 +241,7 @@ export default function AgentsPage() {
                 className="text-[10px] uppercase tracking-[0.26em] text-trace"
                 style={{ textShadow: '0 0 4px var(--trace-glow)' }}
               >
-                · EXEMPLAR
+                · EXAMPLE
               </p>
               <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
                 One line of voice. <span className="italic text-ink-muted">One CLI call.</span>

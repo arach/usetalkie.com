@@ -44,7 +44,7 @@ export default function ArchitecturePage() {
   return (
     <DocsLayout
       title="Architecture"
-      description="A deep dive into Talkie's multi-process architecture. Each component has a single responsibility, making the system reliable and maintainable."
+      description="How Talkie's multi-process architecture fits together. Each component does one job, which keeps the system easy to reason about."
       badge="Technical"
       badgeColor="amber"
       sections={sections}
@@ -52,13 +52,13 @@ export default function ArchitecturePage() {
       {/* System Overview */}
       <h2 id="system-overview">System Overview</h2>
       <p>
-        Talkie's architecture separates concerns across multiple processes. This isn't complexity for complexity's sake—it provides real benefits: fault isolation, security boundaries, and the ability to evolve components independently.
+        Talkie splits its work across multiple processes. This isn't complexity for complexity's sake. It means a crash in one component doesn't take down the rest, each process gets only the permissions it needs, and pieces can ship independently.
       </p>
 
       <ArcDiagram data={architectureDiagram} className="my-8" />
 
       <p>
-        The main Talkie app is the orchestrator—it manages the UI, workflows, and data. The helper processes (TalkieAgent, TalkieEngine, TalkieServer) handle specific tasks that benefit from isolation.
+        The main Talkie app is the orchestrator: it manages the UI, workflows, and data. The helper processes (TalkieAgent, TalkieEngine, TalkieServer) handle specific tasks that benefit from isolation.
       </p>
 
       {/* Components */}

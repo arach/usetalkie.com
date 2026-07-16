@@ -282,7 +282,7 @@ export default function AboutPage() {
               code="CH-03"
               label="PHILOSOPHY"
               heading="Why Talkie exists."
-              body="The principles behind the tool: local-first, sovereign, low-friction."
+              body="The principles behind the tool: local-first, private, out of your way."
               href="/philosophy"
               cta="READ"
               highlight

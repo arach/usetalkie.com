@@ -49,7 +49,7 @@ export default function MacPage() {
             <span className="italic">A mic is all you need.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Your Mac already runs your day. Talkie fits alongside — a menu-bar app you trigger with one hotkey. It speaks straight into whatever you’re working in, and hands the cursor back when it’s done. Capture a thought, shape a draft, search what you said, or kick off a workflow without ever leaving the page.
+            Your Mac already runs your day. Talkie fits alongside: a menu-bar app you trigger with one hotkey. Your words land in whatever you’re working in, and the cursor comes back when it’s done. Capture a thought, shape a draft, search what you said, or kick off a workflow without leaving the page.
           </p>
         </div>
       </section>

@@ -69,7 +69,7 @@ export default function WorkflowsPage() {
   return (
     <DocsLayout
       title="Workflows"
-      description="21 step types, 6 LLM providers, and a template system that turns voice into structured actions — all running locally on your Mac."
+      description="21 step types, 6 LLM providers, and a template system that turns a recording into drafts, tasks, and files. All of it runs locally on your Mac."
       badge="Automation"
       badgeColor="orange"
       sections={sections}
@@ -80,7 +80,7 @@ export default function WorkflowsPage() {
         Workflows are automation pipelines that process your voice memos. When you finish a recording, workflows can automatically transcribe, extract information, send notifications, create reminders, run shell commands, or trigger external actions.
       </p>
       <p>
-        Each step produces an output that subsequent steps can reference via template variables. This means you can chain an LLM summary into a shell command, then save the result to a file — all triggered by a single voice memo.
+        Each step produces an output that later steps can reference via template variables. So you can chain an LLM summary into a shell command, then save the result to a file, all from a single voice memo.
       </p>
       <p>
         For concrete starting points, see the <Link href="/workflows/templates">workflow template library</Link>. It includes JSON recipes for voice-to-file, voice-to-email, voice-to-agent, and GitHub issue workflows.

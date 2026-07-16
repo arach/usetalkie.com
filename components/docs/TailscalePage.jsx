@@ -60,7 +60,7 @@ export default function TailscalePage() {
       {/* Why Tailscale */}
       <h2 id="why-tailscale">Why Tailscale?</h2>
       <p>
-        Your Mac and iPhone need a way to talk to each other securely, even when they're on different networks. Tailscale solves this elegantly.
+        Your Mac and iPhone need a way to talk to each other securely, even when they're on different networks. Tailscale handles that part.
       </p>
 
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">

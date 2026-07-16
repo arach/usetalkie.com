@@ -41,8 +41,8 @@ import {
  */
 const CAPTURE_FEATURES = [
   { icon: Mic,            title: 'Hold-to-Talk',     body: 'Press and hold the hotkey, speak, release. No recording state to babysit.' },
-  { icon: CornerDownLeft, title: 'Return to Origin', body: 'Cursor lands back where you left it. Typing flow resumes without a stutter.' },
-  { icon: Clock,          title: '48-Hour Echoes',   body: 'Every capture stays searchable for 48 hours. Past words come back fast.' },
+  { icon: CornerDownLeft, title: 'Cursor Comes Back', body: 'Cursor lands back where you left it. Typing flow resumes without a stutter.' },
+  { icon: Clock,          title: '48-Hour Recall',    body: 'Every capture stays searchable for 48 hours. Past words come back fast.' },
   { icon: Eye,            title: 'Minimal HUD',      body: 'A tiny waveform appears when you speak. No modal dialog, no interruption.' },
   { icon: Send,           title: 'Smart Routing',    body: 'Talkie pastes into the focused app. No copy-and-paste step at the end.' },
   { icon: Signal,         title: 'Always Ready',     body: 'Lives in the menu bar. One hotkey away from any app at any time.' },
@@ -75,7 +75,7 @@ const ALIASES = [
 
 const PRIVACY = [
   { icon: Cpu,    title: 'On-device transcription', body: 'Whisper runs locally. Your speech never leaves the Mac unless you route it that way.' },
-  { icon: Lock,   title: 'Auditable signal path',   body: 'Every workflow step is visible. You see exactly where a transcript goes.' },
+  { icon: Lock,   title: 'Every step visible',      body: 'Every workflow step is logged. You see exactly where a transcript goes.' },
   { icon: Signal, title: 'No telemetry on speech',  body: 'No analytics on transcripts, no account required to use the app.' },
 ]
 
@@ -111,7 +111,7 @@ export default function FeaturesPage() {
             Voice in. <span className="italic">Anything out.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Talkie is two products in one signal path: a fast dictation surface and a workflow runner that turns speech into drafts, tasks, files, and CLI calls. The chain is local, auditable, and yours.
+            Talkie is two tools in one: fast dictation, and a workflow runner that turns speech into drafts, tasks, files, and CLI calls. Everything runs on your Mac, and you can see every step.
           </p>
         </div>
       </section>
@@ -355,7 +355,7 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* PRIVACY POSTURE */}
+      {/* PRIVACY */}
       <section className="relative border-t border-edge-faint bg-canvas font-mono">
         <div className="mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
           <div className="max-w-3xl">
@@ -363,13 +363,13 @@ export default function FeaturesPage() {
               className="text-[10px] uppercase tracking-[0.26em] text-trace"
               style={{ textShadow: '0 0 4px var(--trace-glow)' }}
             >
-              · POSTURE
+              · PRIVACY
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Local-first, by default.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Privacy is the architecture, not a setting. The signal path is on your Mac unless you route a stage outward.
+              Nothing leaves your Mac unless you route a step somewhere else. That&apos;s how it&apos;s built, not a setting you have to trust.
             </p>
           </div>
 
@@ -418,7 +418,7 @@ export default function FeaturesPage() {
       {/* DOWNLOAD — focused install footer */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
-          <DownloadBay caption="Speak the trigger. The chain runs locally on your Mac — your CLI, your shell, your Claude, your keys." />
+          <DownloadBay caption="Speak the trigger. The whole thing runs on your Mac: your CLI, your shell, your Claude, your keys." />
         </div>
       </section>
     </>

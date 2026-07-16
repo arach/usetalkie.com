@@ -44,7 +44,7 @@ const KB_SECTIONS = [
         icon: Mic,
         title: 'Your first dictation',
         body:
-          'Press the global hotkey (default: Option+D) from anywhere on your Mac to start dictating. Speak naturally — Talkie transcribes locally on your device using the Neural Engine. Press the hotkey again or click the menu bar icon to stop. Your text is copied to the clipboard automatically.',
+          'Press the global hotkey (default: Option+D) from anywhere on your Mac to start dictating. Speak naturally. Talkie transcribes locally on your device using the Neural Engine. Press the hotkey again or click the menu bar icon to stop. Your text is copied to the clipboard automatically.',
       },
       {
         icon: Keyboard,
@@ -168,8 +168,8 @@ export default function SupportPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Browse the knowledge base below. If you cannot find what you need, send us a signal —
-            most messages get a response within 24 hours.
+            Browse the knowledge base below. If you can&apos;t find what you need, write us.
+            Most messages get a response within 24 hours.
           </p>
 
           {/* Telemetry strip */}
@@ -209,7 +209,7 @@ export default function SupportPage() {
             Common topics.
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Twelve articles across four channels. Each entry is a self-contained signal — read top to bottom.
+            Twelve articles across four channels. Each entry stands on its own.
           </p>
 
           <div className="mt-14 space-y-12">

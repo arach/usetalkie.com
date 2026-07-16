@@ -62,7 +62,7 @@ const CAPTURE_MODES = [
     icon: Wand2,
     eyebrow: 'COMPOSE',
     title: 'Clean it up later.',
-    body: "Rewrite, trim, expand — once the raw take is saved. It's not going anywhere.",
+    body: "Rewrite, trim, or expand once the raw take is saved. It's not going anywhere.",
     href: '/mac',
   },
   {
@@ -92,7 +92,7 @@ const FLOW_STEPS = [
   {
     id: '01',
     title: 'Capture in the cheapest mode.',
-    body: 'Use the lowest-friction input available: iPhone, Watch, Mac memo, or keyboard dictation.',
+    body: "Use whatever's closest: iPhone, Watch, a Mac memo, or dictation right at the keyboard.",
   },
   {
     id: '02',
@@ -210,6 +210,18 @@ export default function HomePage() {
               headline. */}
           <PanoramicHero />
 
+          {/* Brand callback — the positioning line
+              lands here as a small italic signoff, so it reads as a
+              memorable closer instead of competing with "Talk to your
+              {device}" for the lead. */}
+          {/* Brand callback — desktop only here. On mobile, the same
+              line is hoisted to a mid-page divider section between
+              Recovery Flow and Ownership for thematic punctuation. */}
+          <p className="mt-10 hidden text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14 md:block">
+            <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
+            A remote control for your agents.
+            <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
+          </p>
         </div>
       </section>
 
@@ -388,15 +400,7 @@ export default function HomePage() {
               · CAPTURE MODES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              One voice{' '}
-              <span
-                aria-hidden
-                className="relative inline-block text-amber/70"
-              >
-                substrate
-                <span className="pointer-events-none absolute inset-x-0 top-[60%] h-[0.06em] -translate-y-1/2 bg-amber" />
-              </span>{' '}
-              thingie. <span className="italic text-ink-muted">Works everywhere.</span>
+              One capture. <span className="italic text-ink-muted">Works everywhere.</span>
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A capture can become a note, a draft, a search, or the start of a workflow. Say it once, then use it where it belongs.
@@ -441,7 +445,7 @@ export default function HomePage() {
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · PRIVATE SYNC
+              · COMING BACK LATER
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Voice notes are easy to save.
@@ -459,6 +463,20 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ========== BRAND CALLBACK · MOBILE DIVIDER ==========
+          Mid-page poetic break on phone only. Desktop keeps the
+          callback inline at the end of the hero section per the
+          original composition; on mobile we hoist it down here so
+          it works as a chapter divider between operational
+          (Recovery Flow) and trust (Ownership) themes. */}
+      <section className="border-y border-edge-faint bg-canvas py-14 md:hidden">
+        <p className="mx-auto max-w-md px-4 text-center font-display text-2xl italic leading-snug text-ink-dim">
+          <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
+          A remote control for your agents.
+          <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
+        </p>
       </section>
 
       {/* ========== OWNERSHIP / ARCHITECTURE ========== */}
@@ -480,7 +498,7 @@ export default function HomePage() {
               Your voice stays yours.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Everything lives on your devices, syncs through your iCloud, transcribes on the chip you already paid for. External models are opt-in — your keys, not ours.
+              Everything lives on your devices, syncs through your iCloud, transcribes on the chip you already paid for. External models are opt-in, with your keys, not ours.
             </p>
           </div>
 
@@ -547,11 +565,8 @@ export default function HomePage() {
               · PRICING
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Free while we build.
+              Free.
             </h2>
-            <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-ink-muted">
-              Free. If that ever changes, it&rsquo;ll be for power-user features — never the core local utility.
-            </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">
@@ -567,7 +582,7 @@ export default function HomePage() {
                       className="inline-block h-1.5 w-1.5 rounded-full"
                       style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
                     />
-                    PLAN · FREE / OPEN BUILD
+                    PLAN · FREE
                   </div>
                 </div>
 
@@ -638,14 +653,7 @@ export default function HomePage() {
               >
                 · ROADMAP
               </p>
-              <h3 className="mt-3 font-display text-2xl font-normal leading-[1.15] tracking-[-0.01em] text-ink">
-                Honest pricing, when the time comes.
-              </h3>
-              <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">
-                No plans to charge today. If that changes, it&rsquo;ll cover advanced features — never the core local utility.
-              </p>
-
-              <ul className="mt-6 space-y-3 text-[12px] text-ink-muted">
+              <ul className="mt-4 space-y-3 text-[12px] text-ink-muted">
                 {[
                   ['ALWAYS', 'Core tool · free, no exceptions'],
                   ['MAYBE', 'Pro tier · advanced + power-user features'],

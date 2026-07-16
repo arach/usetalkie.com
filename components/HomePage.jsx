@@ -352,11 +352,8 @@ export default function HomePage() {
               · 04 / PRICING
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Free while we build.
+              Free.
             </h2>
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Talkie is free. No plans to change that for the basic utilities &mdash; and the local-first promise stays non-negotiable either way.
-            </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">

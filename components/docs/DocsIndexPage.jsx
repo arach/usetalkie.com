@@ -135,8 +135,8 @@ export default function DocsIndexPage() {
                   Ready to plug in the mic?
                 </h2>
                 <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
-                  Download Talkie for Mac and turn voice into action — local-first,
-                  auditable, yours.
+                  Download Talkie for Mac and start talking to your tools.
+                  Local-first, auditable, yours.
                 </p>
               </div>
 

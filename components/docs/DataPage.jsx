@@ -49,7 +49,7 @@ export default function DataPage() {
   return (
     <DocsLayout
       title="Your Data"
-      description="Understanding how Talkie stores and manages your data locally. You own your data—it's in readable formats on your disk, and you can export it anytime."
+      description="How Talkie stores your data locally. It sits in readable formats on your disk, and you can export it anytime."
       badge="Data Layer"
       badgeColor="rose"
       sections={sections}

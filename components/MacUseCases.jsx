@@ -42,10 +42,10 @@ export default function MacUseCases() {
             · USE CASES
           </p>
           <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-            Work is already <span className="italic text-ink-muted">happening.</span>
+            In the apps <span className="italic text-ink-muted">you already use.</span>
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Talkie sits alongside — captures attach to the app you were already in, the work stays in your flow.
+            Talkie sits alongside. Captures attach to the app you were already in, and the work keeps moving.
           </p>
         </div>
 
