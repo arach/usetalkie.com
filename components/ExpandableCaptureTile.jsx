@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { Maximize2, X } from 'lucide-react'
 
 const FRAME_CLASSES = {
-  laptop: 'mx-auto aspect-[16/10] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
-  phone: 'mx-auto aspect-[9/16] h-16 overflow-hidden rounded-[0.85rem] border border-edge-dim bg-black/5',
-  watch: 'mx-auto aspect-[416/496] h-14 overflow-hidden rounded-[1rem] border border-edge-dim bg-black/5',
-  memo: 'mx-auto aspect-[4/3] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  laptop: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  phone: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  watch: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  memo: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
 }
 
 const IMAGE_CLASSES = {
@@ -19,9 +19,9 @@ const IMAGE_CLASSES = {
 
 const EXPANDED_FRAME_CLASSES = {
   laptop: 'aspect-[16/10] w-[min(88vw,980px)]',
-  phone: 'aspect-[9/16] h-[min(78vh,720px)]',
-  watch: 'aspect-[416/496] h-[min(76vh,620px)] rounded-[2rem]',
-  memo: 'aspect-[4/3] w-[min(88vw,860px)]',
+  phone: 'aspect-[16/10] w-[min(88vw,980px)]',
+  watch: 'aspect-[16/10] w-[min(88vw,980px)]',
+  memo: 'aspect-[16/10] w-[min(88vw,980px)]',
 }
 
 const EXPANDED_IMAGE_CLASSES = {
@@ -61,7 +61,7 @@ export default function ExpandableCaptureTile({ input }) {
             <img
               src={input.src}
               alt={input.alt}
-              className={`${IMAGE_CLASSES[input.frame]} opacity-65 grayscale sepia-[0.18] transition-[filter,opacity] duration-300 group-hover/tile:opacity-100 group-hover/tile:grayscale-0 group-hover/tile:sepia-0 group-hover/panel:opacity-100 group-hover/panel:grayscale-0 group-hover/panel:sepia-0`}
+              className={`${IMAGE_CLASSES[input.frame]} opacity-100 transition-[filter,opacity] duration-300 group-hover/tile:brightness-110 group-hover/panel:brightness-110`}
               loading="lazy"
             />
           </div>
