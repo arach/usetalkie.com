@@ -7,6 +7,8 @@ const SITE_ORIGIN = 'https://usetalkie.com'
 const FORBIDDEN_STRINGS = [['talkie', 'arach.dev'].join('.')]
 const LIVE_TIMEOUT_MS = Number(process.env.SEO_AUDIT_TIMEOUT_MS || 8000)
 const LIVE_CONCURRENCY = Number(process.env.SEO_AUDIT_CONCURRENCY || 8)
+const INDEXNOW_KEY_PATTERN = /^[A-Za-z0-9-]{8,128}$/
+const INDEXNOW_IGNORED_TEXT_FILES = new Set(['llms.txt', 'robots.txt'])
 const IMPORTANT_JSONLD_PATHS = [
   '/',
   '/workflows/',
@@ -224,6 +226,30 @@ async function auditStaticFiles() {
     if (parsed.pathname.startsWith('/workflows/templates/') && parsed.pathname.endsWith('.json')) continue
 
     assertCheck(sitemapUrls.has(url), `llms.txt page URL is in sitemap: ${url}`)
+  }
+
+  const publicDir = path.join(ROOT, 'public')
+  const indexNowKeyFiles = []
+
+  for (const file of await readdir(publicDir)) {
+    if (!file.endsWith('.txt') || INDEXNOW_IGNORED_TEXT_FILES.has(file)) continue
+
+    const key = file.slice(0, -'.txt'.length)
+    if (!INDEXNOW_KEY_PATTERN.test(key)) continue
+
+    const filePath = path.join(publicDir, file)
+    const content = (await readText(filePath)).trim()
+    if (content === key) indexNowKeyFiles.push(filePath)
+  }
+
+  assertCheck(indexNowKeyFiles.length === 1, `public has exactly one IndexNow key file (${indexNowKeyFiles.length})`)
+  for (const filePath of indexNowKeyFiles) {
+    const fileName = path.basename(filePath)
+    const outPath = path.join(ROOT, 'out', fileName)
+    assertCheck(await fileExists(outPath), `IndexNow key file exists in out/: ${fileName}`)
+    if (await fileExists(outPath)) {
+      assertCheck((await readText(outPath)).trim() === fileName.slice(0, -'.txt'.length), `IndexNow key file content matches in out/: ${fileName}`)
+    }
   }
 }
 
