@@ -9,3 +9,10 @@ export const TALKIE_PHONE_APP = Object.freeze({
   appStoreId: '6772218709',
   appStoreUrl: 'https://apps.apple.com/us/app/talkie-phone/id6772218709',
 })
+
+export const TALKIE_LICENSE = Object.freeze({
+  price: 39,
+  currency: 'USD',
+  displayPrice: '$39',
+  billingLabel: 'one-time',
+})

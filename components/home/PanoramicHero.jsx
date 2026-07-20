@@ -1,8 +1,9 @@
 "use client"
 
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot } from 'lucide-react'
+import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot, Maximize2, X } from 'lucide-react'
 import { TALKIE_PHONE_APP } from '../../shared/config/product-links'
 
 const PACKAGE_MANAGERS = [
@@ -141,9 +142,9 @@ const DEVICES = [
       Icon: QrCode,
     },
     screenshot: {
-      src: '/screenshots/iphone-16-pro-max-3.png',
-      alt: 'Talkie for iPhone capture view',
-      caption: 'Capture on the go',
+      src: '/screenshots/iphone-16-pro-max-2.png',
+      alt: 'Talkie Phone memo detail with waveform, transcript, attachments, and quick actions',
+      caption: 'Memo detail and actions',
     },
     waveformBias: 1,
     inputSpec: {
@@ -255,9 +256,9 @@ const DEVICES = [
       Icon: Bot,
     },
     screenshot: {
-      src: '/screenshots/mac-transcription-settings.png',
-      alt: 'Talkie transcription model settings on Mac',
-      caption: 'Local model settings',
+      src: '/screenshots/talkie-agent-dashboard.png',
+      alt: 'Talkie Agent dashboard showing voice activity, captures, workflows, and connected consoles',
+      caption: 'Local agent dashboard',
     },
     waveformBias: 3,
     inputSpec: {
@@ -290,6 +291,7 @@ export default function PanoramicHero() {
   const [useCaseIdx, setUseCaseIdx] = useState(0)
   const [flipPhase, setFlipPhase] = useState('idle') // 'idle' | 'out' | 'in'
   const [paused, setPaused] = useState(false)
+  const [spotlightOpen, setSpotlightOpen] = useState(false)
   const flipTimers = useRef([])
 
   const device = DEVICES[deviceIdx]
@@ -302,13 +304,13 @@ export default function PanoramicHero() {
   // Auto-rotate. Pause on hover anywhere over the chassis so a viewer
   // can take in a single device without the rotation kicking off.
   useEffect(() => {
-    if (paused) return
+    if (paused || spotlightOpen) return
     const id = window.setInterval(() => {
       jumpTo((prev) => (prev + 1) % DEVICES.length)
     }, ROTATION_MS)
     return () => window.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paused])
+  }, [paused, spotlightOpen])
 
   useEffect(() => () => flipTimers.current.forEach(clearTimeout), [])
 
@@ -400,7 +402,7 @@ export default function PanoramicHero() {
       {/* Three inset bays. Grid is fluid: collapses to single column on
           narrow viewports, but the panoramic reading is the design
           target — it's how the instrument tells its story. */}
-      <div className="relative grid grid-cols-1 gap-px bg-[var(--panel-edge-dim)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.4fr)_minmax(0,1fr)]">
+      <div className="relative grid grid-cols-1 gap-px bg-[var(--panel-edge-dim)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.32fr)_minmax(0,1.1fr)]">
         {/* SIGNAL PATH WIRES — rendered inside ScopeBay flanking the
             screen well so they self-align with ScopePort jacks
             regardless of bay height. See SignalWire below. */}
@@ -412,7 +414,12 @@ export default function PanoramicHero() {
         <ScopeBay device={device} useCase={useCase} flipPhase={flipPhase} />
 
         {/* RIGHT BAY · OUTPUT — device screenshot + per-case artifact */}
-        <OutputBay device={device} useCase={useCase} />
+        <OutputBay
+          device={device}
+          useCase={useCase}
+          expanded={spotlightOpen}
+          onExpandedChange={setSpotlightOpen}
+        />
       </div>
 
       {/* Chassis status footer — channel meter, signal-path label */}
@@ -552,7 +559,7 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
             <img
               src={device.screenshot.src}
               alt={device.screenshot.alt}
-              className="max-h-full max-w-[72%] rounded-sm object-contain opacity-88 shadow-[0_8px_18px_-16px_rgba(0,0,0,0.75)] md:max-w-[78%] md:shadow-[0_10px_24px_-20px_rgba(0,0,0,0.75)]"
+              className="h-full w-full max-w-[15rem] rounded-sm object-contain opacity-88 shadow-[0_8px_18px_-16px_rgba(0,0,0,0.75)] md:shadow-[0_10px_24px_-20px_rgba(0,0,0,0.75)]"
               loading="lazy"
             />
           </div>
@@ -1634,14 +1641,30 @@ function TranscriptionView({ text }) {
 // RIGHT BAY · device screenshot in inset display well
 // -----------------------------------------------------------------------------
 
-function OutputBay({ device, useCase }) {
+function OutputBay({ device, useCase, expanded, onExpandedChange }) {
+  useEffect(() => {
+    if (!expanded) return
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onExpandedChange(false)
+    }
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [expanded, onExpandedChange])
+
   // Four-deck structure mirroring InputBay and ScopeBay:
   //   1. Header (· OUTPUT · device | JACK 02)
   //   2. Secondary line (RUNNING ON · device with live LED)
   //   3. Artifact — screenshot well (flex-1, fills remaining)
   //   4. Detail divider (· SURFACE ·) + caption
   return (
-    <div className="relative flex flex-col gap-4 bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+    <div className="relative flex flex-col gap-4 bg-[var(--panel-bg)] p-5 sm:p-6">
       {/* DECK 1: Header — eyebrow + device label (light) + jack info */}
       <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
         <span>
@@ -1686,11 +1709,20 @@ function OutputBay({ device, useCase }) {
           }}
         >
           <ScreenCornerBrackets />
+          <button
+            type="button"
+            onClick={() => onExpandedChange(true)}
+            className="absolute right-2 top-2 z-20 inline-flex items-center gap-1.5 rounded-sm border border-[var(--panel-edge)] bg-[var(--panel-bg)]/90 px-2 py-1.5 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-trace)] shadow-sm backdrop-blur transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-ink)]"
+            aria-label={`Expand ${device.label} output screenshot`}
+          >
+            <Maximize2 className="h-3 w-3" />
+            <span>Expand</span>
+          </button>
           <img
             src={device.screenshot.src}
             alt={device.screenshot.alt}
             loading="lazy"
-            className="relative z-10 max-h-[200px] w-auto max-w-full rounded-[2px] object-contain"
+            className="relative z-10 h-[196px] w-[272px] max-w-[calc(100%_-_1.5rem)] rounded-[2px] object-contain"
             style={{
               filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.18))',
             }}
@@ -1718,6 +1750,55 @@ function OutputBay({ device, useCase }) {
         />
         <span>{useCase.artifact}</span>
       </div>
+
+      {expanded && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${device.label} output spotlight`}
+          onClick={() => onExpandedChange(false)}
+        >
+          <div className="absolute inset-0 bg-black/[0.88] backdrop-blur-md" />
+
+          <div
+            className="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-md border border-white/15 bg-[#0b0c0b]/95 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3 font-mono md:px-5">
+              <div className="min-w-0">
+                <p className="text-[9px] uppercase tracking-[0.26em] text-[var(--trace)]">
+                  · Output spotlight · {device.label}
+                </p>
+                <p className="mt-1 truncate text-[11px] text-white/55">
+                  {device.screenshot.caption} · {useCase.artifact}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => onExpandedChange(false)}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-white/15 bg-white/5 text-white/65 transition-colors hover:border-[var(--trace)] hover:text-[var(--trace)]"
+                aria-label="Close output spotlight"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden bg-black/45 p-4 md:p-6">
+              <img
+                src={device.screenshot.src}
+                alt={device.screenshot.alt}
+                className="max-h-[78vh] max-w-full rounded-sm object-contain shadow-[0_24px_70px_-28px_rgba(0,0,0,0.9)]"
+              />
+            </div>
+
+            <p className="border-t border-white/10 px-4 py-2.5 text-center font-mono text-[8px] uppercase tracking-[0.24em] text-white/35">
+              Esc · click outside to close
+            </p>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   )
 }

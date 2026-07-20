@@ -50,7 +50,7 @@ const TONES = [
 
 const FONTS = [
   { label: 'Talkie Display · ours (Newsreader fork)',  family: 'Talkie Display',       google: null },
-  { label: 'Cormorant Garamond · serif, dramatic',     family: 'Cormorant Garamond',   google: 'Cormorant+Garamond' },
+  { label: 'Cormorant Garamond · serif, dramatic',     family: 'Cormorant Garamond',   google: null },
   { label: 'Newsreader · serif, refined publication',  family: 'Newsreader',           google: 'Newsreader' },
   { label: 'Spectral · serif, restrained workhorse',   family: 'Spectral',             google: 'Spectral' },
   { label: 'Source Serif 4 · serif, modern Adobe',     family: 'Source Serif 4',       google: 'Source+Serif+4' },
@@ -85,10 +85,9 @@ const ACCENT_PRESETS = [
 
 /* Defaults — match what's baked into globals.css for Modern, so
  * "reset all" returns the page to the committed look (not a stale
- * tweaker preview). Talkie Display at 400/-0.015em mirrors the
- * Modern theme's `.font-display` rule (Modern now resolves
- * --font-display to Talkie Display per layout.jsx + globals.css). */
-const DEFAULT_FONT          = 'Talkie Display'
+ * tweaker preview). Cormorant at 400/-0.015em mirrors the Modern
+ * theme's `.font-display` rule and is preloaded via next/font. */
+const DEFAULT_FONT          = 'Cormorant Garamond'
 const DEFAULT_WEIGHT        = 400
 const DEFAULT_TRACK         = -0.015
 const DEFAULT_LEADING       = 1.10

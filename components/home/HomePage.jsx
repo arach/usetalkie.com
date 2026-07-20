@@ -15,7 +15,9 @@ import {
 import SignalTable from '../SignalTable'
 import capturesCatalog from '../../content/captures.json'
 import PanoramicHero from './PanoramicHero'
+import SectionArt from './SectionArt'
 import { getTourItems } from '../../lib/tour'
+import { TALKIE_LICENSE } from '../../shared/config/product-links'
 
 /**
  * HomePage — synthesis composition.
@@ -36,7 +38,7 @@ import { getTourItems } from '../../lib/tour'
  *   - InstallCard (CLI patch-bay) as the developer rail.
  *   - Capture modes / flow / ownership / pricing / CTA sit on cream
  *     canvas with amber accents (eyebrows, FlowStep numbers, pricing
- *     $0) — flipping from trace to amber per the brief's chrome rule.
+ *     $39) — flipping from trace to amber per the brief's chrome rule.
  */
 
 // -----------------------------------------------------------------------------
@@ -197,10 +199,10 @@ export default function HomePage() {
   const watchItems = getTourItems().filter((i) => i.platform === 'watch')
 
   return (
-    <>
+    <div className="home-page-art relative isolate">
       {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
-      <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
+      <section className="home-hero-art relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
+        <div aria-hidden className="home-hero-graticule pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16">
           {/* Donor-shape hero leads with the product proposition (the H1
@@ -230,6 +232,7 @@ export default function HomePage() {
         id="dictation-capture"
         className="relative overflow-hidden border-b border-edge-faint bg-canvas-alt font-mono"
       >
+        <SectionArt variant="technical" tone="alt" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
 
         <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-14 md:px-6 md:py-20 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
@@ -357,8 +360,9 @@ export default function HomePage() {
       {/* ========== CAPTURES · SIGNAL TABLE ========== */}
       <section
         id="capture"
-        className="relative border-t border-edge-faint bg-canvas-alt font-mono"
+        className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
+        <SectionArt slice="31%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
@@ -387,8 +391,9 @@ export default function HomePage() {
       {/* ========== CAPTURE MODES ========== */}
       <section
         id="modes"
-        className="relative border-t border-edge-faint bg-canvas font-mono"
+        className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono"
       >
+        <SectionArt variant="technical" tone="canvas" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
@@ -435,8 +440,9 @@ export default function HomePage() {
       {/* ========== RECOVERY FLOW ========== */}
       <section
         id="context"
-        className="relative border-t border-edge-faint bg-canvas-alt font-mono"
+        className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
+        <SectionArt slice="56%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
@@ -482,8 +488,9 @@ export default function HomePage() {
       {/* ========== OWNERSHIP / ARCHITECTURE ========== */}
       <section
         id="ownership"
-        className="relative border-t border-edge-faint bg-canvas font-mono"
+        className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono"
       >
+        <SectionArt variant="technical" tone="canvas" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
@@ -552,8 +559,9 @@ export default function HomePage() {
       {/* ========== PRICING ========== */}
       <section
         id="pricing"
-        className="relative border-t border-edge-faint bg-canvas-alt font-mono"
+        className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
+        <SectionArt slice="81%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
@@ -565,12 +573,12 @@ export default function HomePage() {
               · PRICING
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Free.
+              One payment.
             </h2>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">
-            {/* Free plan card */}
+            {/* One-time license card */}
             <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-8">
               <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
 
@@ -582,7 +590,7 @@ export default function HomePage() {
                       className="inline-block h-1.5 w-1.5 rounded-full"
                       style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
                     />
-                    PLAN · FREE
+                    PRICE · {TALKIE_LICENSE.billingLabel}
                   </div>
                 </div>
 
@@ -595,7 +603,7 @@ export default function HomePage() {
                         '0 0 18px color-mix(in oklab, var(--amber) 35%, transparent), 0 0 6px color-mix(in oklab, var(--amber) 45%, transparent)',
                     }}
                   >
-                    $0
+                    {TALKIE_LICENSE.displayPrice}
                   </span>
                 </div>
 
@@ -633,7 +641,7 @@ export default function HomePage() {
                       boxShadow: '0 0 18px color-mix(in oklab, var(--amber) 12%, transparent)',
                     }}
                   >
-                    DOWNLOAD · MAC <span aria-hidden>→</span>
+                    GET TALKIE · {TALKIE_LICENSE.displayPrice} <span aria-hidden>→</span>
                   </Link>
                   <Link
                     href="/mobile"
@@ -655,7 +663,7 @@ export default function HomePage() {
               </p>
               <ul className="mt-4 space-y-3 text-[12px] text-ink-muted">
                 {[
-                  ['ALWAYS', 'Core tool · free, no exceptions'],
+                  ['NOW', `${TALKIE_LICENSE.displayPrice} · ${TALKIE_LICENSE.billingLabel} purchase`],
                   ['MAYBE', 'Pro tier · advanced + power-user features'],
                   ['NEVER', 'Selling your voice or transcripts'],
                 ].map(([tag, desc]) => (
@@ -675,7 +683,7 @@ export default function HomePage() {
       {/* ========== FINAL CTA ========== */}
       <section
         id="get"
-        className="relative border-t border-edge-faint bg-canvas font-mono"
+        className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono"
       >
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
@@ -742,7 +750,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
 
