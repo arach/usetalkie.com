@@ -242,11 +242,10 @@ html.dark {
  * paint without removing components from the tree.
  * ───────────────────────────────────────────────────────────────────── */
 html[data-theme="modern"]:not(.dark) {
-  /* Modern uses the Talkie owned type system: Display (Newsreader fork)
-   * for hero / editorial, Sans (Inter fork) for body, Mono (JBM fork)
-   * for labels and code. Cormorant / Inter / JBM remain available as
-   * fallbacks in the font stacks below if Talkie fails to load. */
-  --font-display: var(--font-talkie-display), var(--font-display-modern), Georgia, serif;
+  /* Modern leads with Cormorant Garamond for hero / editorial copy.
+   * Talkie Display remains the local fallback; Sans and Mono continue
+   * to use the owned Inter/JBM forks for body, labels, and code. */
+  --font-display: var(--font-display-modern), var(--font-talkie-display), Georgia, serif;
 
   --canvas:         #ffffff;
   --canvas-alt:     #fafafa;
@@ -338,7 +337,7 @@ html[data-theme="modern"]:not(.dark) {
  * signal. This is a dark material system in its own right; it must not inherit
  * the warm theme's cream-paper Rolodex card. */
 html.dark[data-theme="modern"] {
-  --font-display: var(--font-talkie-display), var(--font-display-modern), Georgia, serif;
+  --font-display: var(--font-display-modern), var(--font-talkie-display), Georgia, serif;
   --font-sans: var(--font-talkie-sans), var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
                'Segoe UI', Roboto, sans-serif;
   --font-mono: var(--font-talkie-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -1304,4 +1303,120 @@ html.dark[data-theme="modern"]:not([data-osci-style]) .home-instrument-light::af
     linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 22%);
   opacity: 0.42;
   mix-blend-mode: screen;
+}
+
+/* One continuous architectural scroll runs behind the full light-mode
+ * homepage. Each section is a translucent paper mask over this single
+ * drawing, so its columns and datum lines continue across boundaries. */
+html[data-theme="modern"]:not(.dark) .home-page-art {
+  background: var(--canvas);
+}
+
+html[data-theme="modern"]:not(.dark) .home-page-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/backgrounds/neo-classical-page-scroll-v2.webp");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: max(100%, 113rem) auto;
+  filter: contrast(0.94) saturate(0.62);
+  opacity: 0.9;
+}
+
+html[data-theme="modern"]:not(.dark) .home-page-art > section {
+  z-index: 1;
+}
+
+html[data-theme="modern"]:not(.dark) .home-page-art > .bg-canvas-alt {
+  background-color: var(--canvas-alt);
+}
+
+html[data-theme="modern"]:not(.dark) .home-section-art--architectural {
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--canvas-alt) 84%, transparent),
+      color-mix(in oklab, var(--canvas-alt) 84%, transparent)
+    ),
+    url("/backgrounds/neo-classical-page-scroll-v2.webp");
+  background-position: center, center var(--art-slice, 50%);
+  background-repeat: no-repeat;
+  background-size: cover, max(100%, 113rem) auto;
+}
+
+html[data-theme="modern"]:not(.dark) .home-section-art--canvas {
+  --section-art-paper: var(--canvas);
+}
+
+html[data-theme="modern"]:not(.dark) .home-section-art--alt {
+  --section-art-paper: var(--canvas-alt);
+}
+
+/* Column-free drafting paper for the denser product sections. The compass
+ * arcs, datum crosshairs, and registration grid keep the technical character
+ * without repeating the hero's architectural silhouette. */
+html[data-theme="modern"]:not(.dark) .home-section-art--technical {
+  background-color: var(--section-art-paper, var(--canvas));
+  background-image:
+    radial-gradient(
+      circle at 10% 36%,
+      transparent 0 9.95rem,
+      color-mix(in oklab, var(--trace) 10%, transparent) 10rem 10.05rem,
+      transparent 10.1rem
+    ),
+    radial-gradient(
+      circle at 90% 70%,
+      transparent 0 14.95rem,
+      color-mix(in oklab, var(--ink) 5%, transparent) 15rem 15.05rem,
+      transparent 15.1rem
+    ),
+    linear-gradient(
+      117deg,
+      transparent 0 22%,
+      color-mix(in oklab, var(--trace) 7%, transparent) 22.05%,
+      transparent 22.1%
+    ),
+    linear-gradient(
+      90deg,
+      transparent calc(50% - 0.5px),
+      color-mix(in oklab, var(--ink) 4%, transparent) 50%,
+      transparent calc(50% + 0.5px)
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--ink) 7%, transparent) 0 0.75px,
+      transparent 1px
+    );
+  background-position: center;
+  background-size: auto, auto, auto, auto, 4rem 4rem;
+}
+
+html[data-theme="modern"]:not(.dark) .home-page-art > .bg-canvas {
+  background-color: color-mix(in oklab, var(--canvas) 95%, transparent);
+}
+
+html[data-theme="modern"]:not(.dark) .home-page-art > .home-hero-art {
+  background-color: color-mix(in oklab, var(--canvas) 28%, transparent);
+  background-image:
+    linear-gradient(180deg, rgba(229, 237, 240, 0.22), rgba(244, 247, 247, 0.08) 54%, rgba(248, 249, 247, 0.38)),
+    radial-gradient(ellipse at 50% 34%, rgba(247, 249, 249, 0.48), transparent 58%);
+}
+
+html[data-theme="modern"]:not(.dark) .home-hero-graticule {
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 1199px) {
+  html[data-theme="modern"]:not(.dark) .home-page-art::before {
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+    opacity: 0.72;
+  }
+
+  html[data-theme="modern"]:not(.dark) .home-section-art--architectural {
+    background-size: cover, 100% auto;
+  }
 }
