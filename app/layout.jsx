@@ -160,7 +160,7 @@ const SITE_SCHEMA = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="modern" data-osci-style="slate" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable} ${talkieDisplay.variable} ${talkieSans.variable} ${talkieMono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="modern" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable} ${talkieDisplay.variable} ${talkieSans.variable} ${talkieMono.variable}`} suppressHydrationWarning>
       <head>
         <JsonLd data={SITE_SCHEMA} />
         {/*
@@ -208,15 +208,11 @@ export default function RootLayout({ children }) {
                 root.removeAttribute('data-theme');
               }
 
-              /* Tone resolver — saved value wins. If none saved AND theme
-                 is Modern, default to "slate" (the Modern-paired tone).
-                 On Warm/Linen with no saved tone, no attribute = phosphor
-                 (the original chassis identity). */
+              /* Tone resolver — saved value wins. With no saved value,
+                 no attribute means the Original chassis treatment. */
               var osci = localStorage.getItem('osci-style');
               if (osci) {
                 root.setAttribute('data-osci-style', osci);
-              } else if (theme === 'modern') {
-                root.setAttribute('data-osci-style', 'slate');
               } else {
                 root.removeAttribute('data-osci-style');
               }

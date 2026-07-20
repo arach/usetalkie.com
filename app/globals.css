@@ -334,21 +334,22 @@ html[data-theme="modern"]:not(.dark) {
   --font-mono: var(--font-talkie-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-/* Dark mode under Modern — keep the cool studio palette but flip the
- * accent to emerald to match Modern-light's donor accent. */
+/* Dark mode under Modern — graphite studio surfaces with a restrained ember
+ * signal. This is a dark material system in its own right; it must not inherit
+ * the warm theme's cream-paper Rolodex card. */
 html.dark[data-theme="modern"] {
   --font-display: var(--font-talkie-display), var(--font-display-modern), Georgia, serif;
   --font-sans: var(--font-talkie-sans), var(--font-sans-classic), ui-sans-serif, system-ui, -apple-system,
                'Segoe UI', Roboto, sans-serif;
   --font-mono: var(--font-talkie-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --canvas:         #0a0a0a;
-  --canvas-alt:     #050505;
-  --canvas-overlay: rgba(10, 10, 10, 0.86);
-  --surface:        #171717;
-  --trace:          #34d399;
-  --trace-glow:     rgba(52, 211, 153, 0.30);
-  --trace-dim:      rgba(52, 211, 153, 0.16);
+  --canvas:         #090a09;
+  --canvas-alt:     #050605;
+  --canvas-overlay: rgba(9, 10, 9, 0.88);
+  --surface:        #171816;
+  --trace:          #c98a4a;
+  --trace-glow:     rgba(201, 138, 74, 0.28);
+  --trace-dim:      rgba(201, 138, 74, 0.16);
   --trace-faint:    transparent;
   --ink:            #fafafa;
   --ink-dim:        #e5e5e5;
@@ -360,20 +361,36 @@ html.dark[data-theme="modern"] {
   --edge-faint:     rgba(255, 255, 255, 0.04);
   --edge-subtle:    transparent;
 
-  --panel-bg:           #0f0f0f;
-  --panel-bg-alt:       #171717;
-  --panel-bg-deep:      #050505;
+  --panel-bg:           #111210;
+  --panel-bg-alt:       #181917;
+  --panel-bg-deep:      #080907;
   --panel-edge:         rgba(255, 255, 255, 0.10);
   --panel-edge-dim:     rgba(255, 255, 255, 0.06);
   --panel-edge-faint:   transparent;
-  --panel-trace:        #34d399;
-  --panel-trace-glow:   transparent;
+  --panel-trace:        #c98a4a;
+  --panel-trace-glow:   rgba(201, 138, 74, 0.18);
+  --panel-trace-dim:    rgba(201, 138, 74, 0.14);
   --panel-trace-faint:  transparent;
-  --panel-scanline:     rgba(52, 211, 153, 0.05);
+  --panel-scanline:     rgba(201, 138, 74, 0.045);
 
-  --screen-bg:          #0a120e;
-  --screen-trace:       #34d399;
-  --screen-trace-glow:  rgba(52, 211, 153, 0.30);
+  --screen-bg:          #100d09;
+  --screen-bg-deep:     #080604;
+  --screen-edge:        rgba(201, 138, 74, 0.20);
+  --screen-edge-dim:    rgba(201, 138, 74, 0.12);
+  --screen-trace:       #dfa15f;
+  --screen-trace-glow:  rgba(223, 161, 95, 0.36);
+  --screen-trace-dim:   rgba(223, 161, 95, 0.18);
+
+  --rolodex-bg:        linear-gradient(180deg, #2b2c29 0%, #1d1e1b 50%, #141512 100%);
+  --rolodex-ink:       #dfa15f;
+  --rolodex-edge:      rgba(255, 255, 255, 0.15);
+  --rolodex-hinge:     rgba(223, 161, 95, 0.24);
+  --rolodex-sheen:     rgba(255, 255, 255, 0.08);
+  --rolodex-rest:      rgba(0, 0, 0, 0.26);
+  --rolodex-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.36),
+    0 16px 36px -18px rgba(0, 0, 0, 0.86);
 }
 
 /* Modern's display face (Cormorant Garamond) was designed at body
@@ -385,6 +402,15 @@ html.dark[data-theme="modern"] {
 html[data-theme="modern"] .font-display {
   font-weight: 400;
   letter-spacing: -0.015em;
+}
+
+/* Baked Modern accent preset. Its weight follows the surrounding display
+ * face (400); only the color changes, using the mode-aware trace token. */
+html[data-theme="modern"] .font-display .italic,
+html[data-theme="modern"] .font-display em,
+html[data-theme="modern"] .font-display i,
+html[data-theme="modern"] [data-hero-accent] {
+  color: var(--trace) !important;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
