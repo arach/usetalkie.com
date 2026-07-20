@@ -2,8 +2,7 @@
 
 import { useEffect } from 'react'
 import { trackAppStoreClick } from '../../../lib/analytics'
-
-const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
+import { TALKIE_PHONE_APP } from '../../../shared/config/product-links'
 
 export default function AppStoreRedirect() {
   useEffect(() => {
@@ -15,7 +14,7 @@ export default function AppStoreRedirect() {
 
     // Small delay to let the analytics event fire before redirecting
     const timeout = setTimeout(() => {
-      window.location.replace(APP_STORE_URL)
+      window.location.replace(TALKIE_PHONE_APP.appStoreUrl)
     }, 150)
 
     return () => clearTimeout(timeout)
@@ -26,7 +25,7 @@ export default function AppStoreRedirect() {
       <div className="text-center">
         <p className="text-lg text-neutral-400">Redirecting to the App Store...</p>
         <a
-          href={APP_STORE_URL}
+          href={TALKIE_PHONE_APP.appStoreUrl}
           className="mt-4 inline-block text-sm text-neutral-500 underline"
         >
           Click here if not redirected

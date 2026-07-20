@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Download, Terminal, Check, Copy, Maximize2, X } from 'lucide-react'
+import { TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * InstallCard — patch-bay-styled install panel.
@@ -18,8 +19,6 @@ import { Download, Terminal, Check, Copy, Maximize2, X } from 'lucide-react'
  *   1. Package-manager tab selection (bun / npm / pnpm)
  *   2. Copy-to-clipboard with a transient "copied" state
  */
-const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
-
 const PACKAGE_MANAGERS = [
   { id: 'bun',  label: 'BUN',  cmd: 'bun add -g @talkie/app' },
   { id: 'npm',  label: 'NPM',  cmd: 'npm install -g @talkie/app' },
@@ -193,7 +192,7 @@ export default function InstallCard() {
             </span>
           </button>
           <a
-            href={APP_STORE_URL}
+            href={TALKIE_PHONE_APP.appStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col leading-tight"

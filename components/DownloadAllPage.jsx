@@ -11,6 +11,7 @@ import CopyCommand from './CopyCommand'
 import PackageManagerTabs from './PackageManagerTabs'
 import QRExpand from './QRExpand'
 import TrackedAnchor from './TrackedAnchor'
+import { TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * v2 DownloadAllPage — body of /downloads. All-platforms, all-channels view.
@@ -36,8 +37,6 @@ const DMG_URL =
   'https://github.com/arach/usetalkie.com/releases/latest/download/Talkie.dmg'
 const CLI_INSTALL_CMD = 'curl -fsSL go.usetalkie.com/install | bash'
 const CLI_ONLY_CMD = 'bun add -g @talkie/cli'
-const APP_STORE_URL =
-  'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
 function Graticule({ opacity = 0.3 }) {
   return (
@@ -204,7 +203,7 @@ export default function DownloadAllPage() {
               <ChannelHeader
                 icon={Smartphone}
                 channel="· CH-B · IPHONE"
-                title="Talkie Mobile"
+                title={TALKIE_PHONE_APP.name}
                 meta="iOS 18+"
               />
 
@@ -215,7 +214,7 @@ export default function DownloadAllPage() {
                     · PRIMARY · APP STORE
                   </p>
                   <TrackedAnchor
-                    href={APP_STORE_URL}
+                    href={TALKIE_PHONE_APP.appStoreUrl}
                     event={{ type: 'appStore', source: 'v2_downloads_page' }}
                     target="_blank"
                     rel="noopener noreferrer"

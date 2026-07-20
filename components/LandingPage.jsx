@@ -30,10 +30,10 @@ import PricingSection from './PricingSection'
 import ThemeToggle from './ThemeToggle'
 import { trackScrollDepth, captureUTMParams } from '../lib/analytics'
 import { MAC_GALLERY, IPHONE_GALLERY } from '../lib/tour'
+import { TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 const HERO_QR_SIZE = 80
 const HERO_QR_EXPANDED_SIZE = 288
-const APP_STORE_URL = 'https://apps.apple.com/us/app/talkie-mobile/id6755734109'
 
 const NAV_LINKS = [
   { label: 'Capture', href: '#capture' },
@@ -911,7 +911,7 @@ export default function LandingPage() {
                   Download for Mac
                 </Link>
                 <a
-                  href="https://apps.apple.com/us/app/talkie-mobile/id6755734109"
+                  href={TALKIE_PHONE_APP.appStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-12 items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-700 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-950/55 dark:text-zinc-300 dark:hover:text-white"
@@ -1141,7 +1141,7 @@ export default function LandingPage() {
               />
             </div>
             <a
-              href={APP_STORE_URL}
+              href={TALKIE_PHONE_APP.appStoreUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-white transition-colors hover:bg-white/20"

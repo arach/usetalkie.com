@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot } from 'lucide-react'
+import { TALKIE_PHONE_APP } from '../../shared/config/product-links'
 
 const PACKAGE_MANAGERS = [
   { id: 'bun',  label: 'BUN',  cmd: 'bun add -g @talkie/app' },
@@ -136,7 +137,7 @@ const DEVICES = [
       eyebrow: 'INSTALL · iPHONE',
       title: 'Get on App Store',
       meta: 'iOS 26+',
-      href: 'https://apps.apple.com/us/app/talkie-mobile/id6755734109',
+      href: TALKIE_PHONE_APP.appStoreUrl,
       Icon: QrCode,
     },
     screenshot: {
@@ -385,7 +386,7 @@ export default function PanoramicHero() {
       /* Chassis (ossi bay) — instrument metaphor for tablet+desktop.
        * Below xl, CompactChassis carries the story without the full
        * three-bay spec/scope/output machine. */
-      className="relative hidden overflow-hidden rounded-md font-mono xl:block"
+      className="home-instrument-light relative hidden overflow-hidden rounded-md font-mono xl:block"
       style={panelStyle}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -467,7 +468,7 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
 
   return (
     <section
-      className="relative mt-8 hidden overflow-hidden rounded-md font-mono sm:block xl:hidden"
+      className="home-instrument-light relative mt-8 hidden overflow-hidden rounded-md font-mono sm:block xl:hidden"
       style={panelStyle}
       onMouseEnter={() => onPause(true)}
       onMouseLeave={() => onPause(false)}
