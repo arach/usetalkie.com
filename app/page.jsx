@@ -1,9 +1,12 @@
 import HomePage from '../components/home/HomePage'
 import MainShell from '../components/MainShell'
 
-const HOME_TITLE = 'Talkie - A remote control for your agents'
+// SEO note: the title pairs the brand line with search vocabulary —
+// "voice dictation for Mac" is what people actually type; "a remote
+// control for your agents" is what makes it Talkie. Keep both halves.
+const HOME_TITLE = 'Talkie — Voice Dictation for Mac & a Remote Control for Your Agents'
 const HOME_DESCRIPTION =
-  'A remote control for your agents. Talk, and the work starts moving.'
+  'Free, local-first voice dictation for Mac, iPhone, and Apple Watch. On-device speech-to-text, and workflows that turn talk into drafts, tasks, files — and moving agents.'
 
 /**
  * Root homepage `/` — renders the panoramic-instrument hero with the

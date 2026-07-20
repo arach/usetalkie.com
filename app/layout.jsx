@@ -142,6 +142,12 @@ const SITE_SCHEMA = {
       operatingSystem: 'macOS, iOS, watchOS',
       url: 'https://usetalkie.com/',
       downloadUrl: 'https://usetalkie.com/downloads/',
+      // "Free" is a strong rich-result hook — price 0 lets Google show it.
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
       description:
         'Voice capture for Mac, iPhone, and Apple Watch with local-first storage, dictation, searchable memos, workflow automation, and CLI access for agents.',
       featureList: [

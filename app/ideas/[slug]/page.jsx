@@ -1,6 +1,7 @@
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { getAllSlugs, getIdeaBySlug } from '../../../lib/ideas'
+import JsonLd from '../../../components/JsonLd'
 import IdeaLayout from '../../../components/IdeaLayout'
 import MainShell from '../../../components/MainShell'
 import TranscriptionDiff from '../../../components/TranscriptionDiff'
@@ -87,8 +88,40 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: 'summary_large_image',
+      // Next.js replaces the layout's `twitter` object wholesale, so
+      // title/description must be restated here or cards ship without them.
+      title: `${idea.title} - Talkie Ideas`,
+      description: idea.description,
       images: [`/og/ideas/${slug}.png`],
     },
+  }
+}
+
+// BlogPosting JSON-LD, generated from the same frontmatter that drives
+// the page. publisher/@id hangs off the site-wide Organization node
+// emitted in app/layout.jsx.
+function ideaSchema(idea, slug) {
+  const url = `https://usetalkie.com/ideas/${slug}/`
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${url}#post`,
+    headline: idea.title,
+    description: idea.description,
+    url,
+    mainEntityOfPage: url,
+    datePublished: idea.date,
+    dateModified: idea.date,
+    image: `https://usetalkie.com/og/ideas/${slug}.png`,
+    keywords: (idea.tags || []).join(', '),
+    author: {
+      '@type': 'Person',
+      name: 'Arach Tchoupani',
+      url: 'https://usetalkie.com/about/',
+    },
+    publisher: { '@id': 'https://usetalkie.com/#organization' },
+    isPartOf: { '@id': 'https://usetalkie.com/#website' },
+    inLanguage: 'en-US',
   }
 }
 
@@ -98,6 +131,7 @@ export default async function IdeaPost({ params }) {
 
   return (
     <MainShell>
+      <JsonLd data={ideaSchema(idea, slug)} />
       <IdeaLayout
         title={idea.title}
         description={idea.description}
