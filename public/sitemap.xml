@@ -277,6 +277,12 @@
     <priority>0.76</priority>
   </url>
   <url>
+    <loc>https://usetalkie.com/ideas/apple-foundation-models/</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://usetalkie.com/ideas/file-based-context-system/</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -291,6 +297,12 @@
   <url>
     <loc>https://usetalkie.com/ideas/how-small-can-you-go/</loc>
     <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://usetalkie.com/ideas/local-intelligence-ideas/</loc>
+    <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

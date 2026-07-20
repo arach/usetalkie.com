@@ -76,6 +76,12 @@ The routing principle we're landing on: **local by default, cloud as an intentio
 
 ## What's next
 
-The Tier 1 set ships in the next build. We'll benchmark each one against a fixed test suite as we go — the test cases in each card above are the starting fixtures.
+The Tier 1 set ships in the next build. We'll benchmark each one against a fixed test suite as we go — the test cases in each card above are the starting fixtures. The grader and comparison notebook live in [arach/training-lab](https://huggingface.co/arach/training-lab) alongside the bash model eval work, under `eval/local-intelligence/`.
 
 The hybrid router is the Tier 2 piece we're building next. Getting the confidence threshold right — when does local output quality warrant escalation — is the interesting engineering problem. We'll write that up separately.
+
+## Eval results
+
+Each card's `testCase` is a machine-graded fixture. The eval notebook in [arach/training-lab](https://huggingface.co/arach/training-lab/blob/main/notebooks/local-intelligence-eval.ipynb) runs all 24 prompts against reference models via the HF Inference API — no GPU required, works on HF Notebooks or Colab. Apple Intelligence results run locally on macOS 26 and get committed once stable.
+
+<EvalComparison title="Local Intelligence Primitives — Model Comparison" />

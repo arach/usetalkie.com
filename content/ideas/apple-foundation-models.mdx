@@ -1,0 +1,134 @@
+---
+title: "The Model Is Already There"
+description: "Apple's FoundationModels framework on macOS 26 lets Talkie run AI processing entirely on-device — no API key, no network call, no cost per request."
+date: "2026-04-04"
+tags: ["apple-intelligence", "foundation-models", "on-device-ml", "macos-26", "privacy"]
+---
+
+macOS 26 ships with `FoundationModels` — a first-party framework that gives apps direct access to the same on-device language model that powers Apple Intelligence. No download required. No API key. No token cost. If you have an Apple Silicon Mac and Apple Intelligence is enabled, the model is already on your machine.
+
+Talkie now treats it as a provider.
+
+## What The Framework Actually Is
+
+`FoundationModels` exposes one model: `SystemLanguageModel.default`. You don't choose it, configure it, or download it. You check whether it's available, open a session, and ask it things.
+
+```swift
+let availability = SystemLanguageModel.default.availability
+switch availability {
+case .available:
+    // proceed
+case .unavailable(let reason):
+    // not enabled, wrong hardware, etc.
+}
+```
+
+The session API is straightforward:
+
+```swift
+let session = LanguageModelSession(instructions: systemPrompt)
+let response = try await session.respond(to: prompt)
+```
+
+Streaming works the same way, but yields snapshots rather than deltas — each snapshot contains the full accumulated response so far, so you diff against the previous one to get the new chunk.
+
+```swift
+var prev = ""
+for try await snapshot in session.streamResponse(to: prompt) {
+    let delta = String(snapshot.content.dropFirst(prev.count))
+    prev = snapshot.content
+    // yield delta
+}
+```
+
+That's the whole surface area for text generation. The complexity lives elsewhere.
+
+## The Provider Abstraction
+
+Talkie has had an `LLMProvider` protocol since early on — the same interface whether you're calling OpenAI, Anthropic, a local Ollama instance, or a fine-tuned model running through MLX. `AppleLocalProvider` implements that protocol and routes through `FoundationModels`.
+
+From the rest of the app's perspective, Apple Intelligence is just another provider. Cleanup rules, summarization, workflow triggers — they go through the same generation path regardless of which backend is handling them. The only difference is what happens at the network layer: with cloud providers, there's a request. With Apple Intelligence, there isn't one.
+
+<ProviderDiagram />
+
+## The Prewarming Problem
+
+On-device models need to be loaded into memory before they can respond. The first request after a cold start incurs that load time. For an app that processes voice notes in the background, a multi-second pause on the first run is noticeable.
+
+`LanguageModelSession` has a `prewarm()` method that triggers the load asynchronously. We call it eagerly:
+
+```swift
+init() {
+    Task {
+        await warmupController.prewarmIfNeeded()
+    }
+}
+```
+
+And again immediately before each generation call, in case the app has been running long enough that the session has gone cold.
+
+The warmup controller is an actor with a simple TTL cache: if we prewarmed in the last five minutes, skip it. Otherwise open a session, call `prewarm()`, and record the time.
+
+```swift
+private actor AppleLocalWarmupController {
+    private let refreshInterval: TimeInterval = 300
+    private var warmSession: Any?
+    private var lastPrewarmAt: Date?
+
+    func prewarmIfNeeded() {
+        guard #available(macOS 26.0, *) else { return }
+        guard modelIsAvailable else { return }
+
+        let now = Date()
+        if let lastPrewarmAt,
+           now.timeIntervalSince(lastPrewarmAt) < refreshInterval {
+            return
+        }
+
+        let session = (warmSession as? LanguageModelSession) ?? LanguageModelSession()
+        session.prewarm()
+        warmSession = session
+        lastPrewarmAt = now
+    }
+}
+```
+
+The held reference to `warmSession` is intentional — it keeps the session object alive between calls so the runtime knows to keep the model warm. Whether the system honors this under memory pressure is opaque, which is why we check on each inference call rather than assuming the upfront prewarm persists.
+
+## What Guarded Compilation Looks Like
+
+`FoundationModels` is macOS 26+ only. Talkie still supports earlier versions, so every use of the framework is wrapped:
+
+```swift
+#if canImport(FoundationModels)
+import FoundationModels
+#endif
+```
+
+And every call site:
+
+```swift
+guard #available(macOS 26.0, *) else {
+    throw LLMError.providerNotAvailable("Requires macOS 26+")
+}
+```
+
+The `canImport` check is compile-time (SDK availability), the `#available` check is runtime (OS version). Both are necessary. This means `AppleLocalProvider` compiles and links cleanly on older SDKs — it just returns empty from `models` and throws on any generation attempt.
+
+## Why This Matters for Voice Notes
+
+The privacy argument is the obvious one: when a cleanup rule runs through Apple Intelligence, the recording, transcript, and processing stay on the device. Nothing touches a server.
+
+But the more practical effect is cost. Talkie's rule system can fire on every capture — every memo, every dictation session. At cloud API rates, that adds up fast for heavy users. With Apple Intelligence handling those calls locally, the marginal cost per processing run is zero.
+
+The tradeoff is capability. The on-device model is smaller than frontier cloud models. For the tasks Talkie currently uses it for — reformatting, extracting structure, summarizing — it performs well. For longer reasoning chains or tasks that need a larger context window, cloud providers are still the better option. Talkie routes accordingly.
+
+We're measuring this gap directly. The 24 local intelligence primitives each have a machine-graded test fixture; the comparison notebook in [arach/training-lab](https://huggingface.co/arach/training-lab/blob/main/notebooks/local-intelligence-eval.ipynb) runs Apple Intelligence results alongside Qwen, Llama, and Mistral at comparable sizes. The numbers are in [the companion article](/ideas/local-intelligence-ideas).
+
+## Current Status
+
+This is running on macOS 26 beta. The framework API surface is still moving — `prewarm()` was added late and the snapshot-based streaming interface is different from what earlier betas shipped. We're tracking the changes but not betting on stability until the GM.
+
+The provider is available now in builds for users with Apple Intelligence enabled. It shows up as "Apple Intelligence (On-Device)" in the model selector, which is accurate: it's their hardware, their model, their privacy guarantees. Talkie is just plumbing.
+
+Eval results update as the beta stabilizes — the notebook is at [arach/training-lab](https://huggingface.co/arach/training-lab) if you want to run it yourself.

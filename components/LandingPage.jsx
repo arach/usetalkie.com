@@ -386,6 +386,9 @@ export default function LandingPage() {
               <Link href="/docs" className="transition-colors hover:text-zinc-900 dark:hover:text-white">
                 Docs
               </Link>
+              <Link href="/ideas" className="transition-colors hover:text-zinc-900 dark:hover:text-white">
+                Ideas
+              </Link>
             </div>
 
             <div className="flex items-center gap-2">
@@ -432,6 +435,13 @@ export default function LandingPage() {
                 className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-700 transition-colors hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
               >
                 Docs
+              </Link>
+              <Link
+                href="/ideas"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-700 transition-colors hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+              >
+                Ideas
               </Link>
               <Link
                 href="/download"

@@ -28,6 +28,8 @@ import {
   LocalIntelligenceCards,
   LocalIntelligencePromotedCards,
 } from '../../../components/blog/LocalIntelligenceCards'
+import ProviderDiagram from '../../../components/blog/ProviderDiagram'
+import EvalComparison from '../../../components/blog/EvalComparison'
 
 const mdxComponents = {
   VersionCompare,
@@ -54,6 +56,8 @@ const mdxComponents = {
   LocalIntelligenceCard,
   LocalIntelligenceCards,
   LocalIntelligencePromotedCards,
+  ProviderDiagram,
+  EvalComparison,
 }
 
 const mdxOptions = {

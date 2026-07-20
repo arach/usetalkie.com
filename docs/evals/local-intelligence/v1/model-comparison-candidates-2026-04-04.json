@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-04-04",
+  "purpose": "Candidate models for local-intelligence benchmark comparisons.",
+  "candidates": [
+    {
+      "model_id": "apple-foundation-models",
+      "display_name": "Apple Foundation Models (on-device)",
+      "provider": "Apple",
+      "class": "system-on-device",
+      "params": "~3B on-device model",
+      "context_window": "Framework-managed",
+      "license": "Apple platform terms",
+      "strengths": [
+        "On-device privacy",
+        "Offline availability",
+        "No per-token inference cost"
+      ],
+      "source_urls": [
+        "https://developer.apple.com/documentation/FoundationModels?language=objc",
+        "https://www.apple.com/cm/newsroom/2025/09/apples-foundation-models-framework-unlocks-new-intelligent-app-experiences/",
+        "https://machinelearning.apple.com/research/introducing-apple-foundation-models"
+      ]
+    },
+    {
+      "model_id": "microsoft/Phi-4-mini-instruct",
+      "display_name": "Phi-4-mini-instruct",
+      "provider": "Microsoft",
+      "class": "small-open",
+      "params": "3.8B",
+      "context_window": "128K",
+      "license": "MIT",
+      "strengths": [
+        "Strong small-model reasoning",
+        "Long context for size",
+        "Permissive license"
+      ],
+      "source_urls": [
+        "https://huggingface.co/microsoft/Phi-4-mini-instruct"
+      ]
+    },
+    {
+      "model_id": "meta-llama/Llama-3.2-3B-Instruct",
+      "display_name": "Llama-3.2-3B-Instruct",
+      "provider": "Meta",
+      "class": "small-open",
+      "params": "3B class",
+      "context_window": "Check model card (license-gated)",
+      "license": "Llama 3.2 Community License",
+      "strengths": [
+        "Wide ecosystem support",
+        "Small footprint options",
+        "Strong baseline for instruction tuning"
+      ],
+      "source_urls": [
+        "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct"
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-3B-Instruct",
+      "display_name": "Qwen2.5-3B-Instruct",
+      "provider": "Qwen",
+      "class": "small-open",
+      "params": "3.09B",
+      "context_window": "32,768 (128K support in family)",
+      "license": "qwen-research",
+      "strengths": [
+        "Good structured output behavior",
+        "Strong multilingual support",
+        "Fast local inference"
+      ],
+      "source_urls": [
+        "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct"
+      ]
+    },
+    {
+      "model_id": "google/gemma-3-4b-it",
+      "display_name": "Gemma-3-4B-IT",
+      "provider": "Google",
+      "class": "small-open",
+      "params": "4B class",
+      "context_window": "128K input for 4B size",
+      "license": "Gemma license",
+      "strengths": [
+        "Strong quality for size",
+        "Large context for small model",
+        "Good multilingual coverage"
+      ],
+      "source_urls": [
+        "https://huggingface.co/google/gemma-3-4b-it"
+      ]
+    },
+    {
+      "model_id": "Qwen/Qwen3-8B-AWQ",
+      "display_name": "Qwen3-8B-AWQ",
+      "provider": "Qwen",
+      "class": "mid-open",
+      "params": "8.2B",
+      "context_window": "32,768 native; 131,072 with YaRN",
+      "license": "Apache-2.0",
+      "strengths": [
+        "Stronger reasoning than 3B class",
+        "AWQ quantized for local use",
+        "Good agentic behavior"
+      ],
+      "source_urls": [
+        "https://huggingface.co/Qwen/Qwen3-8B-AWQ"
+      ]
+    },
+    {
+      "model_id": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
+      "display_name": "Mistral-Small-3.1-24B-Instruct-2503",
+      "provider": "Mistral AI",
+      "class": "large-open",
+      "params": "24B",
+      "context_window": "128K",
+      "license": "Apache-2.0",
+      "strengths": [
+        "High open-weight quality ceiling",
+        "Native JSON/function-calling support",
+        "Strong long-context behavior"
+      ],
+      "source_urls": [
+        "https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503"
+      ]
+    }
+  ],
+  "recommendation": {
+    "quick_smoke_set": [
+      "apple-foundation-models",
+      "microsoft/Phi-4-mini-instruct",
+      "Qwen/Qwen2.5-3B-Instruct"
+    ],
+    "balanced_set": [
+      "apple-foundation-models",
+      "microsoft/Phi-4-mini-instruct",
+      "Qwen/Qwen2.5-3B-Instruct",
+      "google/gemma-3-4b-it",
+      "Qwen/Qwen3-8B-AWQ"
+    ],
+    "ceiling_set": [
+      "mistralai/Mistral-Small-3.1-24B-Instruct-2503"
+    ]
+  }
+}
