@@ -1,13 +1,13 @@
 ---
-title: "Aqua Voice Alternative: Talkie, the Free, Local-First Dictation App for Mac"
-description: "Looking for an Aqua Voice alternative? Talkie is free, on-device voice dictation for Mac, iPhone, and Apple Watch — with a CLI that pipes your voice into scripts and AI agents."
+title: "Aqua Voice Alternative: Talkie, a Local-First Dictation App for Mac"
+description: "Looking for an Aqua Voice alternative? Talkie is on-device voice dictation for Mac, iPhone, and Apple Watch — with a programmable CLI that pipes your voice into scripts and AI agents."
 date: "2026-07-21"
 tags: ["comparison", "dictation", "aqua-voice", "mac", "on-device"]
 ---
 
-Aqua Voice is fast, polished, and cloud-powered, and I mean all three as compliments — it's a real product doing real work. I build Talkie, which bets the other way: Apple-only, on-device, free, and built to turn your voice into data you can script against. So this is a comparison of trade-offs, not a hunt for a winner.
+Aqua Voice is fast, polished, and cloud-powered, and I mean all three as compliments — it's a real product doing real work. I build Talkie, which bets the other way: Apple-only, on-device, local-first, and built to turn your voice into data you can script against. So this is a comparison of trade-offs, not a hunt for a winner.
 
-**Short version:** If you want the fastest cloud AI dictation across Mac, Windows, and iPhone, with aggressive real-time formatting, Aqua Voice is a strong pick. If you're on Apple hardware and want dictation that's free, runs on-device, stores everything locally, and can pipe straight into your scripts and AI agents, Talkie is the better fit. Neither is strictly "better" — they optimize for different things.
+**Short version:** If you want the fastest cloud AI dictation across Mac, Windows, and iPhone, with aggressive real-time formatting, Aqua Voice is a strong pick. If you're on Apple hardware and want dictation that runs on-device, stores everything locally, and can pipe straight into your scripts and AI agents, Talkie is the better fit. Neither is strictly "better" — they optimize for different things.
 
 ## What Aqua Voice does well
 
@@ -25,7 +25,7 @@ That's a real product doing real work. If those are your priorities, you should 
 
 Talkie doesn't try to out-format Aqua. It makes different trade-offs.
 
-**Free and local-first.** Talkie is free, with no subscription and no premium tier gating core features. Aqua's free Starter plan caps you at 1,000 words; unlimited use with the Avalon model is the Pro plan at $8/month (billed annually, as of 2026). Talkie has no word cap and no account required for core use.
+**Local-first and programmable.** Talkie keeps captures on your Apple devices, then exposes them to scripts, workflows, and agents through its CLI. That makes it a tool you can adapt to your own setup, rather than only a dictation layer.
 
 **On-device transcription.** Talkie transcribes locally — Apple Speech on iOS, and the Parakeet v3 local ASR model on Mac. Your audio doesn't leave your device to be transcribed. Aqua's Avalon model does its formatting in the cloud (Aqua emphasizes that it doesn't retain your data on its servers, which is a privacy commitment, but the processing still happens off-device). If on-device is a hard requirement for you, that's a clear line between the two.
 
@@ -39,6 +39,8 @@ That exposes every capture as structured data any script, pipeline, or agent can
 
 **A remote control for your agents.** Because captures are structured and local, you can dictate straight into agentic CLI tools like Claude Code. Talk to your agents instead of typing prompts. This is where Talkie goes somewhere Aqua doesn't aim — less "dictate an email," more "drive your tooling by voice."
 
+**Visual context for agents.** Add a full screenshot, selected screen region, or camera capture to a spoken instruction, so your agent can see the thing you're referring to instead of inferring it from text alone.
+
 **Cross-device via iCloud.** Captures sync across Mac, iPhone, and Apple Watch through iCloud, so you can capture a thought on your wrist and have it on your Mac.
 
 The honest catch: **Talkie is Apple-only** — macOS, iOS, and watchOS, with no Windows, Android, or web. Aqua is cross-platform. If you live on a PC, Talkie isn't an option, full stop.
@@ -47,7 +49,7 @@ The honest catch: **Talkie is Apple-only** — macOS, iOS, and watchOS, with no 
 
 | | Talkie | Aqua Voice |
 |---|---|---|
-| Price | Free, no subscription | Free tier (1,000 words); Pro ~$8/mo annually |
+| Pricing | See current plans | Free tier (1,000 words); Pro ~$8/mo annually |
 | On-device transcription | Yes (Parakeet v3 on Mac, Apple Speech on iOS) | No — cloud processing |
 | Storage | Local SQLite on your Mac | Cloud account (Aqua states no server retention) |
 | CLI for scripts & agents | Yes (`@talkie/cli`) | No |
@@ -62,7 +64,7 @@ The honest catch: **Talkie is Apple-only** — macOS, iOS, and watchOS, with no 
 
 **Choose Aqua Voice if** you want the fastest, most polished cloud dictation with aggressive real-time formatting and grammar cleanup; if you need Windows support or work across a PC and a phone; or if on-screen context awareness and style adaptation are worth a subscription to you. For someone drafting long-form prose or email all day across mixed hardware, Aqua is likely the better buy.
 
-**Choose Talkie if** you're on Apple hardware and want dictation that's free, on-device, and local-first; if you care that your captures live in a database you control; or if you want to dictate into scripts and AI agents rather than just into text fields. If "my voice should be data I can pipe anywhere" resonates, that's Talkie's whole reason for existing.
+**Choose Talkie if** you're on Apple hardware and want dictation that's on-device and local-first; if you care that your captures live in a database you control; or if you want to dictate into scripts and AI agents rather than just into text fields. If "my voice should be data I can pipe anywhere" resonates, that's Talkie's whole reason for existing.
 
 [Download Talkie for Mac and iPhone →](/downloads/)
 
