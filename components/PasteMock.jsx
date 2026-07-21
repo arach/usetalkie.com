@@ -28,18 +28,22 @@ import KeypressCue from './KeypressCue'
  * App registry — drives the dock + the active-app menu-bar label.
  * ──────────────────────────────────────────────────────────────── */
 const APPS = [
-  { kind: 'sms',      label: 'Messages', bg: '#34c759', color: '#fff' },
-  { kind: 'email',    label: 'Mail',     bg: '#fff',    color: '#1d77fc', border: '1px solid rgba(0,0,0,0.12)' },
-  { kind: 'claude',   label: 'Claude',   bg: '#cc785c', color: '#fff' },
-  { kind: 'terminal', label: 'Terminal', bg: '#1f2937', color: '#10b981' },
-  { kind: 'note',     label: 'Notes',    bg: '#fbbf24', color: '#000' },
-  { kind: 'issue',    label: 'GitHub',   bg: '#0d1117', color: '#fff' },
+  { kind: 'agent',    label: 'Codex',   bg: '#111',    color: '#4dff9e' },
+  { kind: 'terminal', label: 'iTerm2',  bg: '#1f2937', color: '#10b981' },
+  { kind: 'finder',   label: 'Finder',  bg: '#4da3ff', color: '#fff' },
+  { kind: 'talkie',   label: 'Talkie',  bg: '#090a09', color: '#4dff9e' },
+  { kind: 'note',     label: 'Notes',   bg: '#fbbf24', color: '#000' },
 ]
 
-function deriveKind(eyebrow) {
+function deriveKind(capture) {
+  if (capture?.surface) return capture.surface
+  const eyebrow = capture?.eyebrow
   if (!eyebrow) return 'note'
   const head = eyebrow.split('·')[0].trim().toUpperCase()
   switch (head) {
+    case 'AGENT': return 'agent'
+    case 'DICTATION': return 'finder'
+    case 'TALKIE': return 'talkie'
     case 'SMS': return 'sms'
     case 'EMAIL': return 'email'
     case 'PROMPT': return 'claude'
@@ -63,12 +67,28 @@ const PASTE_MOCK_CSS = `
   animation: paste-mock-wave 0.9s ease-in-out infinite;
   transform-origin: bottom;
 }
+.paste-mock-talkie-overlay {
+  animation: paste-mock-overlay-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.paste-mock-signal-particle {
+  animation: paste-mock-particle 1.5s ease-in-out infinite;
+}
 @keyframes paste-mock-wave {
   0%, 100% { transform: scaleY(0.25); }
   50% { transform: scaleY(1); }
 }
+@keyframes paste-mock-overlay-in {
+  from { opacity: 0; transform: translate(-50%, -7px) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@keyframes paste-mock-particle {
+  0%, 100% { opacity: 0.15; transform: translateY(3px) scale(0.8); }
+  50% { opacity: 0.85; transform: translateY(-3px) scale(1); }
+}
 @media (prefers-reduced-motion: reduce) {
-  .paste-mock-wave-bar { animation: none; transform: scaleY(0.7); }
+  .paste-mock-wave-bar,
+  .paste-mock-signal-particle { animation: none; transform: none; }
+  .paste-mock-talkie-overlay { animation: none; transform: translateX(-50%); }
 }
 `
 
@@ -76,6 +96,19 @@ const PASTE_MOCK_CSS = `
  * Inline icon glyphs (SVG). Sized for a small dock — 14×14.
  * ──────────────────────────────────────────────────────────────── */
 const Icon = {
+  agent: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
+      <path d="M8 7 4 12l4 5M16 7l4 5-4 5M14 4l-4 16" />
+    </svg>
+  ),
+  finder: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" width="14" height="14">
+      <path d="M5 4h14v16H5zM12 4c-1 3-1 8 0 16M8 9h.01M16 9h.01M8 15c2.5 2 5.5 2 8 0" />
+    </svg>
+  ),
+  talkie: (
+    <span className="font-mono text-[13px] font-bold leading-none">t</span>
+  ),
   sms: (
     <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
       <path d="M4 6 a3 3 0 0 1 3 -3 h10 a3 3 0 0 1 3 3 v8 a3 3 0 0 1 -3 3 h-7 l-4 4 v-4 a3 3 0 0 1 -2 -2.83 z" />
@@ -154,7 +187,7 @@ export default function PasteMock({ capture, phase, keypressCue, revealProgress 
   const reveal = Math.max(0, Math.min(1, revealProgress))
   const visible = (phase === 'review' || reveal > 0) && capture != null
   const recording = phase === 'recording'
-  const kind = capture ? deriveKind(capture.eyebrow) : 'note'
+  const kind = capture ? deriveKind(capture) : 'note'
   const activeApp = APPS.find((a) => a.kind === kind) ?? APPS[0]
   const time = useClock()
 
@@ -166,7 +199,7 @@ export default function PasteMock({ capture, phase, keypressCue, revealProgress 
         style={{
           background:
             'radial-gradient(120% 100% at 50% 0%, var(--canvas) 0%, var(--canvas-alt) 70%, var(--surface) 100%)',
-          minHeight: 240,
+          minHeight: 292,
         }}
       >
         {/* ────── Mac menu bar (theme-aware via canvas-overlay token) ────── */}
@@ -202,31 +235,60 @@ export default function PasteMock({ capture, phase, keypressCue, revealProgress 
           </span>
         </div>
 
-        {/* ────── Recording wave overlay (top center, only during recording) ────── */}
+        {/* ────── Talkie recording overlay (top center, only during recording) ────── */}
         {recording && (
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-9 z-10 flex h-5 -translate-x-1/2 items-end gap-[3px]"
+            className="paste-mock-talkie-overlay pointer-events-none absolute left-1/2 top-9 z-30 flex -translate-x-1/2 items-center gap-3 rounded-full border px-3 py-2 font-mono"
+            style={{
+              minWidth: 238,
+              color: '#d8fbe8',
+              background: 'rgba(7, 12, 10, 0.93)',
+              borderColor: 'rgba(77, 255, 158, 0.3)',
+              boxShadow: '0 10px 30px -12px rgba(0,0,0,0.55), 0 0 20px rgba(77,255,158,0.12)',
+              backdropFilter: 'blur(16px)',
+            }}
           >
-            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+            <span className="inline-flex items-center gap-1.5 text-[8px] uppercase tracking-[0.2em]">
               <span
-                key={i}
-                className="paste-mock-wave-bar block w-[2px] rounded-full"
-                style={{
-                  height: 16,
-                  background: '#10b981',
-                  boxShadow: '0 0 4px rgba(16,185,129,0.55)',
-                  animationDelay: `${i * 0.08}s`,
-                }}
+                className="h-1.5 w-1.5 rounded-full bg-[#4dff9e] animate-pulse"
+                style={{ boxShadow: '0 0 7px #4dff9e' }}
               />
-            ))}
+              Talkie
+            </span>
+            <span className="flex h-4 flex-1 items-end justify-center gap-[2px] border-x border-white/10 px-2">
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <span
+                  key={i}
+                  className="paste-mock-wave-bar block w-[2px] rounded-full"
+                  style={{
+                    height: 14,
+                    background: '#4dff9e',
+                    boxShadow: '0 0 4px rgba(77,255,158,0.55)',
+                    animationDelay: `${i * 0.07}s`,
+                  }}
+                />
+              ))}
+            </span>
+            <span className="text-[8px] uppercase tracking-[0.18em] text-white/55">Listening</span>
+            <span className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 text-[7px] text-[#4dff9e]/60">
+              {['·', '01', '⌁', 'A', '×', '7F', '·'].map((glyph, i) => (
+                <span
+                  key={`${glyph}-${i}`}
+                  className="paste-mock-signal-particle"
+                  style={{ animationDelay: `${i * -0.17}s` }}
+                >
+                  {glyph}
+                </span>
+              ))}
+            </span>
           </div>
         )}
 
         {/* ────── Desktop body — mock window opens here on review ────── */}
         <div
-          className="relative flex items-start justify-center px-4 pt-8 pb-16 sm:px-8"
-          style={{ minHeight: 220 }}
+          className="relative flex items-start justify-center px-4 pb-16 pt-[4.75rem] sm:px-8"
+          style={{ minHeight: 272 }}
         >
           <div
             className="w-full max-w-md"
@@ -263,7 +325,10 @@ export default function PasteMock({ capture, phase, keypressCue, revealProgress 
                 {capture && kind === 'sms'      && <SmsMock     capture={capture} />}
                 {capture && kind === 'email'    && <EmailMock   capture={capture} />}
                 {capture && kind === 'claude'   && <ClaudeMock  capture={capture} />}
+                {capture && kind === 'agent'    && <AgentMock   capture={capture} />}
                 {capture && kind === 'terminal' && <TerminalMock capture={capture} />}
+                {capture && kind === 'finder'   && <FinderMock  capture={capture} />}
+                {capture && kind === 'talkie'   && <TalkieMock  capture={capture} />}
                 {capture && kind === 'issue'    && <IssueMock   capture={capture} />}
                 {capture && kind === 'note'     && <NoteMock    capture={capture} />}
               </div>
@@ -405,16 +470,55 @@ function TerminalMock({ capture }) {
       className="rounded-sm p-3 font-mono text-[11px] leading-relaxed"
       style={{ background: '#0a0a0a', color: '#d4d4d4' }}
     >
-      <div className="flex items-center gap-2">
-        <span style={{ color: '#10b981' }}>$</span>
-        <span style={{ color: '#a3a3a3' }}>talkie search</span>
-        <span style={{ color: '#fafafa' }}>"reconnect"</span>
+      <div className="flex items-start gap-2">
+        <span className="shrink-0" style={{ color: '#10b981' }}>talkie›</span>
+        <span style={{ color: '#fafafa' }}>{capture.input}</span>
       </div>
-      <div className="mt-2 space-y-0.5 text-[10px]" style={{ color: '#737373' }}>
-        <div><span style={{ color: '#10b981' }}>→</span> 2026-04-21 · cli-reconnect-debug · 8 min ago</div>
-        <div><span style={{ color: '#10b981' }}>→</span> 2026-04-19 · search-rerank-bug · 2 days ago</div>
-        <div><span style={{ color: '#10b981' }}>→</span> 2026-04-18 · gateway-flap · 3 days ago</div>
+      <div className="mt-3 text-[9px] uppercase tracking-[0.16em]" style={{ color: '#737373' }}>
+        voice instruction · routed locally
       </div>
+    </div>
+  )
+}
+
+function AgentMock({ capture }) {
+  return (
+    <div className="font-sans text-[12px] text-black">
+      <div className="flex items-start gap-2">
+        <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black font-mono text-[9px] text-[#4dff9e]">
+          ›_
+        </span>
+        <p className="leading-relaxed">{capture.input}</p>
+      </div>
+      <div className="mt-3 flex items-center gap-2 border-t border-black/10 pt-2 text-[9px] uppercase tracking-[0.16em] text-black/45">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#10b981]" />
+        Voice instruction received
+      </div>
+    </div>
+  )
+}
+
+function FinderMock({ capture }) {
+  return (
+    <div className="font-sans text-[12px] text-black">
+      <p className="text-[9px] uppercase tracking-[0.18em] text-black/45">Talkie dictation</p>
+      <p className="mt-2 leading-relaxed text-black/75">{capture.input}</p>
+      <div className="mt-3 flex items-center gap-2 text-[9px] uppercase tracking-[0.16em] text-black/40">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#10b981]" />
+        Captured from the current app
+      </div>
+    </div>
+  )
+}
+
+function TalkieMock({ capture }) {
+  return (
+    <div className="font-sans text-[12px] text-black">
+      <div className="flex items-center justify-between border-b border-black/10 pb-2">
+        <span className="font-medium">Live transcript</span>
+        <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-[#0f9f6e]">local</span>
+      </div>
+      <p className="mt-3 leading-relaxed text-black/75">{capture.input}</p>
     </div>
   )
 }

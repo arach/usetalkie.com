@@ -1,0 +1,146 @@
+{
+  "duration": 12.5,
+  "phrases": [
+    {
+      "text": "Probably go with shades of gray, maybe a little bit of",
+      "start": 0,
+      "end": 5.34,
+      "words": [
+        {
+          "word": "Probably",
+          "start": 0,
+          "end": 0.971
+        },
+        {
+          "word": "go",
+          "start": 0.971,
+          "end": 1.214
+        },
+        {
+          "word": "with",
+          "start": 1.214,
+          "end": 1.699
+        },
+        {
+          "word": "shades",
+          "start": 1.699,
+          "end": 2.427
+        },
+        {
+          "word": "of",
+          "start": 2.427,
+          "end": 2.67
+        },
+        {
+          "word": "gray,",
+          "start": 2.67,
+          "end": 3.155
+        },
+        {
+          "word": "maybe",
+          "start": 3.155,
+          "end": 3.762
+        },
+        {
+          "word": "a",
+          "start": 3.762,
+          "end": 4.005
+        },
+        {
+          "word": "little",
+          "start": 4.005,
+          "end": 4.733
+        },
+        {
+          "word": "bit",
+          "start": 4.733,
+          "end": 5.097
+        },
+        {
+          "word": "of",
+          "start": 5.097,
+          "end": 5.34
+        }
+      ]
+    },
+    {
+      "text": "the accent color—more ember than trace—and just level it up a",
+      "start": 5.34,
+      "end": 11.408,
+      "words": [
+        {
+          "word": "the",
+          "start": 5.34,
+          "end": 5.704
+        },
+        {
+          "word": "accent",
+          "start": 5.704,
+          "end": 6.432
+        },
+        {
+          "word": "color—more",
+          "start": 6.432,
+          "end": 7.524
+        },
+        {
+          "word": "ember",
+          "start": 7.524,
+          "end": 8.131
+        },
+        {
+          "word": "than",
+          "start": 8.131,
+          "end": 8.617
+        },
+        {
+          "word": "trace—and",
+          "start": 8.617,
+          "end": 9.587
+        },
+        {
+          "word": "just",
+          "start": 9.587,
+          "end": 10.073
+        },
+        {
+          "word": "level",
+          "start": 10.073,
+          "end": 10.68
+        },
+        {
+          "word": "it",
+          "start": 10.68,
+          "end": 10.922
+        },
+        {
+          "word": "up",
+          "start": 10.922,
+          "end": 11.165
+        },
+        {
+          "word": "a",
+          "start": 11.165,
+          "end": 11.408
+        }
+      ]
+    },
+    {
+      "text": "little bit.",
+      "start": 11.408,
+      "end": 12.5,
+      "words": [
+        {
+          "word": "little",
+          "start": 11.408,
+          "end": 12.136
+        },
+        {
+          "word": "bit.",
+          "start": 12.136,
+          "end": 12.5
+        }
+      ]
+    }
+  ]
+}

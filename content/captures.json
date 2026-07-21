@@ -1,74 +1,68 @@
 [
   {
-    "slug": "sms-coffee",
-    "eyebrow": "SMS · CASUAL",
-    "input": "Tell Sarah I'll be ten late but bringing coffee.",
-    "output": "Sent to Sarah · 9 words · Messages",
-    "audio": "/captures/sms-coffee.mp3",
-    "vtt": "/captures/sms-coffee.vtt",
-    "durationMs": 5500
+    "slug": "dark-mode-direction",
+    "eyebrow": "DESIGN · DIRECTION",
+    "surface": "agent",
+    "input": "Probably go with shades of gray, maybe a little bit of the accent color—more ember than trace—and just level it up a little bit.",
+    "output": "Typed into Codex · 24 words · 0.39s end-to-end",
+    "audio": "/captures/dark-mode-direction.mp3",
+    "vtt": "/captures/dark-mode-direction.vtt",
+    "alignment": "/captures/dark-mode-direction.alignment.json",
+    "durationMs": 12500
   },
   {
-    "slug": "email-david",
-    "eyebrow": "EMAIL · REPLY",
-    "input": "Reply to David — thanks for the spec, two questions on the auth flow before I sign off.",
-    "output": "Drafted in Mail · 47 words · subject inferred",
-    "audio": "/captures/email-david.mp3",
-    "vtt": "/captures/email-david.vtt",
-    "durationMs": 14000
+    "slug": "scout-review",
+    "eyebrow": "AGENT · REVIEW",
+    "surface": "agent",
+    "input": "I think for some of this, it would be great for you to call Claude through Scout.",
+    "output": "Typed into Codex · 17 words · 0.33s end-to-end",
+    "audio": "/captures/scout-review.mp3",
+    "vtt": "/captures/scout-review.vtt",
+    "alignment": "/captures/scout-review.alignment.json",
+    "durationMs": 5200
   },
   {
-    "slug": "prompt-podcast-names",
-    "eyebrow": "PROMPT · CLAUDE",
-    "input": "Brainstorm three podcast names about productivity tools. No cringe.",
-    "output": "Sent to Claude · returned 3 names · saved to clipboard",
-    "audio": "/captures/prompt-podcast-names.mp3",
-    "vtt": "/captures/prompt-podcast-names.vtt",
-    "durationMs": 7500
+    "slug": "scroll-debug",
+    "eyebrow": "AGENT · DEBUG",
+    "surface": "agent",
+    "input": "Can you look into scrolling being off on this website? I can’t seem to scroll anymore.",
+    "output": "Typed into Codex · 16 words · 1.40s end-to-end",
+    "audio": "/captures/scroll-debug.mp3",
+    "vtt": "/captures/scroll-debug.vtt",
+    "alignment": "/captures/scroll-debug.alignment.json",
+    "durationMs": 8400
   },
   {
-    "slug": "cli-search-reconnect",
-    "eyebrow": "CLI · SEARCH",
-    "input": "Talkie search reconnect from last Tuesday.",
-    "output": "Found 3 captures · ranked by recency",
-    "audio": "/captures/cli-search-reconnect.mp3",
-    "vtt": "/captures/cli-search-reconnect.vtt",
-    "durationMs": 4500
+    "slug": "workflow-refresh",
+    "eyebrow": "AGENT · WORKFLOW",
+    "surface": "agent",
+    "input": "We probably still need a way for the workflows to refresh.",
+    "output": "Typed into Codex · 11 words · 0.74s end-to-end",
+    "audio": "/captures/workflow-refresh.mp3",
+    "vtt": "/captures/workflow-refresh.vtt",
+    "alignment": "/captures/workflow-refresh.alignment.json",
+    "durationMs": 5600
   },
   {
-    "slug": "note-export-default",
-    "eyebrow": "NOTE · THOUGHT",
-    "input": "What if export defaulted to the last destination the user picked? Worth a try.",
-    "output": "Saved to Notes · tagged #idea",
-    "audio": "/captures/note-export-default.mp3",
-    "vtt": "/captures/note-export-default.vtt",
-    "durationMs": 6500
+    "slug": "ship-agent",
+    "eyebrow": "AGENT · SHIP",
+    "surface": "agent",
+    "input": "Use Scout to tell that agent to commit, create a pull request, and merge when they can.",
+    "output": "Typed into Codex · 17 words · 0.36s end-to-end",
+    "audio": "/captures/ship-agent.mp3",
+    "vtt": "/captures/ship-agent.vtt",
+    "alignment": "/captures/ship-agent.alignment.json",
+    "durationMs": 7100
   },
   {
-    "slug": "issue-tab-router",
-    "eyebrow": "ISSUE · BUG",
-    "input": "Third tab click doesn't update the URL — probably the router. Tag it for Friday.",
-    "output": "Drafted GitHub issue · labeled bug · due Friday",
-    "audio": "/captures/issue-tab-router.mp3",
-    "vtt": "/captures/issue-tab-router.vtt",
-    "durationMs": 8500
-  },
-  {
-    "slug": "meeting-decision-cream",
-    "eyebrow": "MEETING · CAPTURE",
-    "input": "Decision — we ship the cream theme on the home, but keep dark on docs.",
-    "output": "Logged · linked to design-system note",
-    "audio": "/captures/meeting-decision-cream.mp3",
-    "vtt": "/captures/meeting-decision-cream.vtt",
-    "durationMs": 7000
-  },
-  {
-    "slug": "journal-local-first",
-    "eyebrow": "JOURNAL · RAMBLE",
-    "input": "Okay so the thing about local-first that keeps coming back is — you stop performing for the cloud.",
-    "output": "Saved to Journal · 18 words · sentiment kept",
-    "audio": "/captures/journal-local-first.mp3",
-    "vtt": "/captures/journal-local-first.vtt",
-    "durationMs": 11000
+    "slug": "see-it-in-action",
+    "eyebrow": "TALKIE · META",
+    "surface": "agent",
+    "input": "I love the way that this is real. This is a very inspired choice. What I would do is instead of showing the toggles, which I would maybe even remove, I would just start with the waveform and just be like, “See it in action,” instead of “What it might sound like.” And then I think what we could do is have our overlay animations as well.",
+    "output": "Typed into Codex · 67 words · shaped this section",
+    "audio": "/captures/see-it-in-action.mp3",
+    "vtt": "/captures/see-it-in-action.vtt",
+    "alignment": "/captures/see-it-in-action.alignment.json",
+    "durationMs": 30900
   }
 ]

@@ -1,0 +1,104 @@
+{
+  "duration": 7.1,
+  "phrases": [
+    {
+      "text": "Use Scout to tell that agent to commit, create a pull",
+      "start": 0,
+      "end": 4.425,
+      "words": [
+        {
+          "word": "Use",
+          "start": 0,
+          "end": 0.309
+        },
+        {
+          "word": "Scout",
+          "start": 0.309,
+          "end": 0.823
+        },
+        {
+          "word": "to",
+          "start": 0.823,
+          "end": 1.029
+        },
+        {
+          "word": "tell",
+          "start": 1.029,
+          "end": 1.441
+        },
+        {
+          "word": "that",
+          "start": 1.441,
+          "end": 1.852
+        },
+        {
+          "word": "agent",
+          "start": 1.852,
+          "end": 2.367
+        },
+        {
+          "word": "to",
+          "start": 2.367,
+          "end": 2.572
+        },
+        {
+          "word": "commit,",
+          "start": 2.572,
+          "end": 3.19
+        },
+        {
+          "word": "create",
+          "start": 3.19,
+          "end": 3.807
+        },
+        {
+          "word": "a",
+          "start": 3.807,
+          "end": 4.013
+        },
+        {
+          "word": "pull",
+          "start": 4.013,
+          "end": 4.425
+        }
+      ]
+    },
+    {
+      "text": "request, and merge when they can.",
+      "start": 4.425,
+      "end": 7.1,
+      "words": [
+        {
+          "word": "request,",
+          "start": 4.425,
+          "end": 5.145
+        },
+        {
+          "word": "and",
+          "start": 5.145,
+          "end": 5.454
+        },
+        {
+          "word": "merge",
+          "start": 5.454,
+          "end": 5.968
+        },
+        {
+          "word": "when",
+          "start": 5.968,
+          "end": 6.38
+        },
+        {
+          "word": "they",
+          "start": 6.38,
+          "end": 6.791
+        },
+        {
+          "word": "can.",
+          "start": 6.791,
+          "end": 7.1
+        }
+      ]
+    }
+  ]
+}

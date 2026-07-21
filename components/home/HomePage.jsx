@@ -227,47 +227,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== DICTATION CAPTURE · SCREENSHOT PROOF ========== */}
-      <section
-        id="dictation-capture"
-        className="relative overflow-hidden border-b border-edge-faint bg-canvas-alt font-mono"
-      >
-        <SectionArt variant="technical" tone="alt" />
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
-
-        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-14 md:px-6 md:py-20 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
-          <div className="max-w-xl">
-            <p
-              className="text-[10px] uppercase tracking-[0.26em]"
-              style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
-            >
-              · DICTATION CAPTURE
-            </p>
-            <h2 className="mt-3 font-display text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-ink md:text-5xl">
-              Set the hotkey. Dictate anywhere.
-            </h2>
-            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink-muted">
-              Talkie makes the capture path explicit: hotkey, push-to-talk, microphone, and the local sounds around each recording.
-            </p>
-            <div className="mt-7">
-              <Link
-                href="/workflows"
-                className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
-                style={{
-                  color: 'var(--amber)',
-                  ...AMBER_TINT,
-                  ...AMBER_GLOW_SOFT,
-                }}
-              >
-                SEE WORKFLOWS <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </div>
-
-          <DictationCaptureFrame />
-        </div>
-      </section>
-
       {/* ========== MOBILE-ONLY HSCROLL · IPHONE / WATCH / MAC SCREENS ==========
           Phone-only visual proof between the textual hero and the
           richer Data Buffer below. Tablet+desktop already get the
@@ -362,24 +321,36 @@ export default function HomePage() {
         id="capture"
         className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
+        <span id="dictation-capture" aria-hidden className="absolute -top-20" />
         <SectionArt slice="31%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
-          <div className="max-w-3xl">
+          <div className="max-w-4xl">
             <p
               className="text-[10px] uppercase tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              · CAPTURES
+              · DICTATION CAPTURE · LIVE EXAMPLES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              What it might sound like.
+              Dictate anywhere. <span className="italic">See it in action.</span>
             </h2>
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              AI-simulated recordings. Max and Sarah are fictional to protect{' '}
-              <span className="italic">Claude&rsquo;s</span> privacy.
-            </p>
+            <div className="mt-4 flex max-w-3xl flex-col gap-4 text-[15px] leading-relaxed text-ink-muted sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+              <p className="max-w-2xl">
+                Set the hotkey once, then speak into any app. These are unscripted
+                Talkie dictations from a real work session, recorded locally and
+                lightly edited for clarity.
+              </p>
+              <Link
+                href="/workflows"
+                className="group inline-flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors hover:text-ink"
+                style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
+              >
+                See workflows
+                <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
           </div>
 
           <div className="mt-10">
@@ -755,46 +726,8 @@ export default function HomePage() {
 }
 
 // -----------------------------------------------------------------------------
-// Sub-components — dictation capture frame, capture mode card, flow step, ownership card
+// Sub-components — capture mode card, flow step, ownership card
 // -----------------------------------------------------------------------------
-
-function DictationCaptureFrame() {
-  return (
-    <figure className="relative">
-      <div className="relative overflow-hidden rounded-md border border-edge bg-surface shadow-[0_18px_60px_-30px_rgba(0,0,0,0.55)]">
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-55" style={GRATICULE_FINE} />
-
-        <div className="relative flex min-h-8 items-center justify-between gap-3 border-b border-edge-dim px-3 text-[8px] uppercase tracking-[0.26em] text-ink-faint sm:px-4">
-          <span className="flex min-w-0 items-center gap-2">
-            <span
-              aria-hidden
-              className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
-            />
-            <span className="truncate">DICTATION · RECORDING</span>
-          </span>
-          <span className="hidden text-ink-subtle sm:inline">HOTKEY · MIC · LOCAL</span>
-        </div>
-
-        <div className="relative p-2 sm:p-3">
-          <div className="overflow-hidden rounded-[0.45rem] border border-edge-dim bg-surface shadow-[0_10px_28px_-22px_rgba(0,0,0,0.55)]">
-            <img
-              src="/screenshots/mac-recording.png"
-              alt="Talkie dictation recording settings on Mac"
-              className="block aspect-[16/10] w-full bg-canvas object-contain"
-              loading="lazy"
-            />
-          </div>
-        </div>
-
-        <div className="relative flex min-h-8 items-center justify-between gap-3 border-t border-edge-dim px-3 text-[8px] uppercase tracking-[0.26em] text-ink-faint sm:px-4">
-          <span>· HOTKEY · PUSH-TO-TALK · MICROPHONE · LOCAL</span>
-          <span className="hidden text-ink-subtle sm:inline">SETTINGS · RECORDING ·</span>
-        </div>
-      </div>
-    </figure>
-  )
-}
 
 function CaptureModeCard({ mode, index }) {
   const Icon = mode.icon
