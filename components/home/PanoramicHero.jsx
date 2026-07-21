@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot, Maximize2, X } from 'lucide-react'
 import { TALKIE_PHONE_APP } from '../../shared/config/product-links'
+import { playSpotlightTick, playSurfaceTick } from '../../lib/sfx'
 
 const PACKAGE_MANAGERS = [
   { id: 'bun',  label: 'BUN',  cmd: 'bun add -g @talkie/app' },
@@ -293,6 +294,7 @@ export default function PanoramicHero() {
   const [paused, setPaused] = useState(false)
   const [spotlightOpen, setSpotlightOpen] = useState(false)
   const flipTimers = useRef([])
+  const audioContextRef = useRef(null)
 
   const device = DEVICES[deviceIdx]
   const useCase = device.useCases[useCaseIdx % device.useCases.length]
@@ -312,7 +314,33 @@ export default function PanoramicHero() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused, spotlightOpen])
 
-  useEffect(() => () => flipTimers.current.forEach(clearTimeout), [])
+  useEffect(() => () => {
+    flipTimers.current.forEach(clearTimeout)
+    if (audioContextRef.current?.state !== 'closed') {
+      audioContextRef.current?.close().catch(() => {})
+    }
+  }, [])
+
+  const playInteraction = (kind, index = deviceIdx) => {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext
+    if (!AudioContextClass) return
+
+    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+      audioContextRef.current = new AudioContextClass()
+    }
+
+    const ctx = audioContextRef.current
+    const play = () => {
+      if (kind === 'surface') playSurfaceTick(ctx, index)
+      else playSpotlightTick(ctx, kind === 'spotlight-open')
+    }
+
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(play).catch(() => {})
+    } else {
+      play()
+    }
+  }
 
   const jumpTo = (next) => {
     setDeviceIdx((prevIdx) => {
@@ -329,6 +357,16 @@ export default function PanoramicHero() {
       flipTimers.current.push(t1, t2)
       return targetIdx
     })
+  }
+
+  const selectDevice = (index) => {
+    playInteraction('surface', index)
+    jumpTo(index)
+  }
+
+  const setSpotlight = (open) => {
+    playInteraction(open ? 'spotlight-open' : 'spotlight-close')
+    setSpotlightOpen(open)
   }
 
   // Panel scope: re-route theme tokens to permanent dark phosphor inside
@@ -371,7 +409,7 @@ export default function PanoramicHero() {
         flipPhase={flipPhase}
         useCaseIdx={useCaseIdx}
         onSelectUseCase={setUseCaseIdx}
-        onCycle={() => jumpTo((prevIdx) => (prevIdx + 1) % DEVICES.length)}
+        onCycle={() => selectDevice((deviceIdx + 1) % DEVICES.length)}
         onPause={setPaused}
       />
 
@@ -379,7 +417,7 @@ export default function PanoramicHero() {
         device={device}
         deviceIdx={deviceIdx}
         useCase={useCase}
-        onJump={jumpTo}
+        onJump={selectDevice}
         panelStyle={panelStyle}
         onPause={setPaused}
       />
@@ -397,7 +435,7 @@ export default function PanoramicHero() {
       <CornerFasteners />
 
       {/* Chassis meta-strip */}
-      <ChassisHeader device={device} deviceIdx={deviceIdx} onJump={jumpTo} />
+      <ChassisHeader device={device} deviceIdx={deviceIdx} onJump={selectDevice} />
 
       {/* Three inset bays. Grid is fluid: collapses to single column on
           narrow viewports, but the panoramic reading is the design
@@ -418,7 +456,7 @@ export default function PanoramicHero() {
           device={device}
           useCase={useCase}
           expanded={spotlightOpen}
-          onExpandedChange={setSpotlightOpen}
+          onExpandedChange={setSpotlight}
         />
       </div>
 
@@ -556,12 +594,7 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.18)',
             }}
           >
-            <img
-              src={device.screenshot.src}
-              alt={device.screenshot.alt}
-              className="h-full w-full max-w-[15rem] rounded-sm object-contain opacity-88 shadow-[0_8px_18px_-16px_rgba(0,0,0,0.75)] md:shadow-[0_10px_24px_-20px_rgba(0,0,0,0.75)]"
-              loading="lazy"
-            />
+            <DeviceScreenshotFrame device={device} mode="compact" />
           </div>
         </div>
 
@@ -1712,21 +1745,12 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
           <button
             type="button"
             onClick={() => onExpandedChange(true)}
-            className="absolute right-2 top-2 z-20 inline-flex items-center gap-1.5 rounded-sm border border-[var(--panel-edge)] bg-[var(--panel-bg)]/90 px-2 py-1.5 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-trace)] shadow-sm backdrop-blur transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-ink)]"
+            className="absolute right-1.5 top-1.5 z-20 inline-flex h-7 w-7 items-center justify-center rounded-sm border border-[var(--panel-edge)] bg-[var(--panel-bg)]/90 text-[var(--panel-trace)] shadow-sm backdrop-blur transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-ink)]"
             aria-label={`Expand ${device.label} output screenshot`}
           >
             <Maximize2 className="h-3 w-3" />
-            <span>Expand</span>
           </button>
-          <img
-            src={device.screenshot.src}
-            alt={device.screenshot.alt}
-            loading="lazy"
-            className="relative z-10 h-[196px] w-[272px] max-w-[calc(100%_-_1.5rem)] rounded-[2px] object-contain"
-            style={{
-              filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.18))',
-            }}
-          />
+          <DeviceScreenshotFrame device={device} mode="bay" />
         </div>
       </div>
 
@@ -1785,11 +1809,7 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
             </div>
 
             <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden bg-black/45 p-4 md:p-6">
-              <img
-                src={device.screenshot.src}
-                alt={device.screenshot.alt}
-                className="max-h-[78vh] max-w-full rounded-sm object-contain shadow-[0_24px_70px_-28px_rgba(0,0,0,0.9)]"
-              />
+              <DeviceScreenshotFrame device={device} mode="spotlight" />
             </div>
 
             <p className="border-t border-white/10 px-4 py-2.5 text-center font-mono text-[8px] uppercase tracking-[0.24em] text-white/35">
@@ -1800,6 +1820,74 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
         document.body
       )}
     </div>
+  )
+}
+
+function DeviceScreenshotFrame({ device, mode = 'bay' }) {
+  const spotlight = mode === 'spotlight'
+  const compact = mode === 'compact'
+
+  if (device.key === 'mac') {
+    const widthClass = spotlight
+      ? 'w-[min(86vw,880px)]'
+      : compact
+        ? 'w-[140px] sm:w-[160px]'
+        : 'w-[min(100%,272px)]'
+
+    return (
+      <div className={`relative z-10 flex flex-col items-center ${widthClass}`}>
+        <div className="w-full overflow-hidden rounded-[5px] border-[4px] border-[#393a38] bg-[#111210] shadow-[0_12px_28px_-16px_rgba(0,0,0,0.8)]">
+          <img
+            src={device.screenshot.src}
+            alt={device.screenshot.alt}
+            loading={spotlight ? 'eager' : 'lazy'}
+            className="block h-auto w-full object-contain"
+          />
+          <div className="relative h-2.5 border-t border-white/5 bg-gradient-to-b from-[#31322f] to-[#20211f]">
+            <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/15" />
+          </div>
+        </div>
+        <div className={`${spotlight ? 'h-6 w-20' : compact ? 'h-2.5 w-8' : 'h-3.5 w-12'} bg-gradient-to-b from-[#343532] to-[#20211f]`} />
+        <div className={`${spotlight ? 'h-2 w-40' : compact ? 'h-1 w-14' : 'h-1.5 w-20'} rounded-full bg-[#292a27] shadow-[0_5px_12px_rgba(0,0,0,0.35)]`} />
+      </div>
+    )
+  }
+
+  if (device.key === 'watch') {
+    const height = spotlight ? 'min(64vh, 590px)' : compact ? '104px' : '158px'
+    return (
+      <div
+        className="relative z-10 flex items-center justify-center"
+        style={{ height, aspectRatio: '416 / 496' }}
+      >
+        <div className="relative h-full w-full rounded-[24%] border-[5px] border-[#454641] bg-[#0a0b09] p-[3px] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.9),inset_0_0_0_1px_rgba(255,255,255,0.14)]">
+          <img
+            src={device.screenshot.src}
+            alt={device.screenshot.alt}
+            loading={spotlight ? 'eager' : 'lazy'}
+            className="h-full w-full rounded-[20%] object-cover"
+          />
+          <span className="absolute -right-[10px] top-[27%] h-[15%] w-[7px] rounded-r-md border border-l-0 border-white/15 bg-[#343532]" />
+          <span className="absolute -right-[8px] top-[48%] h-[8%] w-[5px] rounded-r-sm bg-[#2c2d2a]" />
+        </div>
+      </div>
+    )
+  }
+
+  const imageClass = spotlight
+    ? 'max-h-[76vh] max-w-full'
+    : compact
+      ? 'h-full max-h-[104px] max-w-[15rem]'
+      : 'h-[196px] w-[272px] max-w-[calc(100%_-_1.5rem)]'
+
+  return (
+    <img
+      src={device.screenshot.src}
+      alt={device.screenshot.alt}
+      loading={spotlight ? 'eager' : 'lazy'}
+      className={`relative z-10 rounded-sm object-contain ${imageClass}`}
+      style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.22))' }}
+    />
   )
 }
 

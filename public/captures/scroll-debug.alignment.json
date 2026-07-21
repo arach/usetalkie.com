@@ -1,0 +1,99 @@
+{
+  "duration": 8.4,
+  "phrases": [
+    {
+      "text": "Can you look into scrolling being off on this website? I",
+      "start": 0,
+      "end": 5.6,
+      "words": [
+        {
+          "word": "Can",
+          "start": 0,
+          "end": 0.365
+        },
+        {
+          "word": "you",
+          "start": 0.365,
+          "end": 0.73
+        },
+        {
+          "word": "look",
+          "start": 0.73,
+          "end": 1.217
+        },
+        {
+          "word": "into",
+          "start": 1.217,
+          "end": 1.704
+        },
+        {
+          "word": "scrolling",
+          "start": 1.704,
+          "end": 2.8
+        },
+        {
+          "word": "being",
+          "start": 2.8,
+          "end": 3.409
+        },
+        {
+          "word": "off",
+          "start": 3.409,
+          "end": 3.774
+        },
+        {
+          "word": "on",
+          "start": 3.774,
+          "end": 4.017
+        },
+        {
+          "word": "this",
+          "start": 4.017,
+          "end": 4.504
+        },
+        {
+          "word": "website?",
+          "start": 4.504,
+          "end": 5.357
+        },
+        {
+          "word": "I",
+          "start": 5.357,
+          "end": 5.6
+        }
+      ]
+    },
+    {
+      "text": "can’t seem to scroll anymore.",
+      "start": 5.6,
+      "end": 8.4,
+      "words": [
+        {
+          "word": "can’t",
+          "start": 5.6,
+          "end": 6.087
+        },
+        {
+          "word": "seem",
+          "start": 6.087,
+          "end": 6.574
+        },
+        {
+          "word": "to",
+          "start": 6.574,
+          "end": 6.817
+        },
+        {
+          "word": "scroll",
+          "start": 6.817,
+          "end": 7.548
+        },
+        {
+          "word": "anymore.",
+          "start": 7.548,
+          "end": 8.4
+        }
+      ]
+    }
+  ]
+}

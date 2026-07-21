@@ -42,7 +42,6 @@ import PasteMock from './PasteMock'
  */
 const AUTO_ADVANCE = false
 const AUTO_SELECT_NEXT = true
-const SHOW_TRANSITION_TIMELINE = process.env.NODE_ENV !== 'production'
 const TRANSITION_STEPS = [
   { id: 'minimized', label: 'Minimized', start: 0, end: 10 },
   { id: 'voice', label: 'Voice playback', start: 10, end: 42 },
@@ -59,22 +58,6 @@ const CAPTURE_EXAMPLE_ICONS = {
   ISSUE: Bug,
   MEETING: Users,
   JOURNAL: NotebookPen,
-}
-
-function getTransitionStep(progress) {
-  return (
-    TRANSITION_STEPS.find((step) => progress >= step.start && progress <= step.end) ??
-    TRANSITION_STEPS[TRANSITION_STEPS.length - 1]
-  )
-}
-
-function getStepProgress(progress, step) {
-  const span = Math.max(1, step.end - step.start)
-  return Math.max(0, Math.min(1, (progress - step.start) / span))
-}
-
-function progressFromStep(step, stepProgress) {
-  return step.start + (step.end - step.start) * Math.max(0, Math.min(1, stepProgress))
 }
 
 // Choreography timings — each beat of the capture flow gets enough
@@ -135,8 +118,6 @@ export default function SignalTable({ catalog }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [missingSet, setMissingSet] = useState(() => new Set())
-  const [captionText, setCaptionText] = useState('')
-  const [captionsOn, setCaptionsOn] = useState(true)
   // activationKey: per-slug timestamp captured when a row becomes active.
   // Passed to <SignalTableRow/> as a `key`-prop on its overlay span so the
   // settle-from-trace animation replays on every fresh activation
@@ -154,15 +135,14 @@ export default function SignalTable({ catalog }) {
   // Doesn't reset across pause/resume — once engaged, you're past the
   // "what is this?" moment for the rest of the session.
   const [hasEngaged, setHasEngaged] = useState(false)
-  // Rollout sequence:
-  // 0 compact rail, 1 voice-only rail, 2 waveform, 3 app preview, 4 signal table.
-  // Once a stage is reached, it stays out for the rest of the session.
-  const [rolloutStage, setRolloutStage] = useState(0)
-  const [timelineProgress, setTimelineProgress] = useState(0)
-  const [transitionStepId, setTransitionStepId] = useState('minimized')
+  // Rollout sequence starts at the waveform, then reveals the app preview
+  // and signal table after the first real capture finishes. Once a stage is
+  // reached, it stays out for the rest of the session.
+  const [rolloutStage, setRolloutStage] = useState(2)
+  const [transitionStepId, setTransitionStepId] = useState('voice')
   const [transitionTimers, setTransitionTimers] = useState({
-    minimized: 0,
-    voice: 0,
+    minimized: 1,
+    voice: 1,
     desktop: 0,
     table: 0,
   })
@@ -216,15 +196,8 @@ export default function SignalTable({ catalog }) {
   const sourceMapRef = useRef(new Map()) // slug → MediaElementAudioSourceNode
   const tableRef = useRef(null)
   const rolloutTimeoutsRef = useRef([])
-  const timelineAnimationRef = useRef(null)
   const timerAnimationRefs = useRef({})
   const rolloutCompleteRef = useRef(false)
-  const stopTimelineAnimation = useCallback(() => {
-    if (timelineAnimationRef.current) {
-      cancelAnimationFrame(timelineAnimationRef.current)
-      timelineAnimationRef.current = null
-    }
-  }, [])
   const stopTransitionTimerAnimation = useCallback((id) => {
     if (id) {
       if (timerAnimationRefs.current[id]) {
@@ -245,11 +218,7 @@ export default function SignalTable({ catalog }) {
   }, [])
   const setTransitionStepTimer = useCallback((id, value) => {
     const clamped = Math.max(0, Math.min(1, Number(value) || 0))
-    const step = TRANSITION_STEPS.find((item) => item.id === id)
     setTransitionTimer(id, clamped)
-    if (step) {
-      setTimelineProgress(progressFromStep(step, clamped))
-    }
   }, [setTransitionTimer])
   const animateTransitionTimer = useCallback(
     (id, target, duration = 900) => {
@@ -271,38 +240,6 @@ export default function SignalTable({ catalog }) {
     },
     [setTransitionStepTimer, stopTransitionTimerAnimation, transitionTimers]
   )
-  const applyTimelineProgress = useCallback((value) => {
-    const clamped = Math.max(0, Math.min(100, Number(value) || 0))
-    const step = getTransitionStep(clamped)
-    const local = getStepProgress(clamped, step)
-    setTimelineProgress(clamped)
-    setTransitionStepId(step.id)
-    setTransitionTimers((prev) => ({ ...prev, [step.id]: local }))
-  }, [])
-  const setTimelineProgressClamped = useCallback((value) => {
-    applyTimelineProgress(value)
-  }, [applyTimelineProgress])
-  const animateTimelineTo = useCallback(
-    (target) => {
-      stopTimelineAnimation()
-      const from = timelineProgress
-      const to = Math.max(0, Math.min(100, target))
-      const startedAt = performance.now()
-      const duration = Math.max(420, Math.min(1100, Math.abs(to - from) * 14))
-      const tick = (now) => {
-        const t = Math.min(1, (now - startedAt) / duration)
-        const eased = 1 - Math.pow(1 - t, 3)
-        applyTimelineProgress(from + (to - from) * eased)
-        if (t < 1) {
-          timelineAnimationRef.current = requestAnimationFrame(tick)
-        } else {
-          timelineAnimationRef.current = null
-        }
-      }
-      timelineAnimationRef.current = requestAnimationFrame(tick)
-    },
-    [applyTimelineProgress, stopTimelineAnimation, timelineProgress]
-  )
   const startRollout = useCallback(() => {
     if (rolloutCompleteRef.current) {
       stopTransitionTimerAnimation()
@@ -314,7 +251,6 @@ export default function SignalTable({ catalog }) {
         desktop: 1,
         table: 1,
       })
-      setTimelineProgress(100)
       return
     }
 
@@ -529,7 +465,6 @@ export default function SignalTable({ catalog }) {
     const onPause = () => setIsPlaying(false)
     const onEnded = () => {
       setIsPlaying(false)
-      setCaptionText('')
 
       // STOP pill fires immediately, with the same audible tick as the
       // start cue — capture is now a toggle (ding to start, ding to
@@ -586,7 +521,6 @@ export default function SignalTable({ catalog }) {
             desktop: 1,
             table: 1,
           }))
-          setTimelineProgress(100)
           if (currentSlug) {
             setTranscribeKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
             setActivationKey((prev) => ({ ...prev, [currentSlug]: Date.now() }))
@@ -691,34 +625,6 @@ export default function SignalTable({ catalog }) {
   }, [activeIndex, catalog, missingSet, playIndex, clearChoreography, animateTransitionTimer, setTransitionStepTimer, markCaptureSeen])
 
   // -------------------------------------------------------------------
-  // Captions via TextTrack `cuechange`. Re-bind when the track set
-  // changes (new clip = new <track> child).
-  // -------------------------------------------------------------------
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio || !audio.textTracks || audio.textTracks.length === 0) return
-
-    const track = audio.textTracks[0]
-    track.mode = captionsOn ? 'hidden' : 'disabled' // 'hidden' still fires cuechange
-
-    const onCueChange = () => {
-      const cues = track.activeCues
-      if (!cues || cues.length === 0) {
-        setCaptionText('')
-        return
-      }
-      const text = Array.from(cues)
-        .map((c) => c.text)
-        .join(' ')
-      setCaptionText(text)
-    }
-    track.addEventListener('cuechange', onCueChange)
-    return () => {
-      track.removeEventListener('cuechange', onCueChange)
-    }
-  }, [activeIndex, captionsOn])
-
-  // -------------------------------------------------------------------
   // Cleanup on unmount.
   // -------------------------------------------------------------------
   useEffect(() => {
@@ -726,7 +632,6 @@ export default function SignalTable({ catalog }) {
       clearChoreography()
       rolloutTimeoutsRef.current.forEach(clearTimeout)
       rolloutTimeoutsRef.current = []
-      stopTimelineAnimation()
       stopTransitionTimerAnimation()
       if (ctxRef.current) {
         ctxRef.current.close().catch(() => {})
@@ -735,7 +640,7 @@ export default function SignalTable({ catalog }) {
       analyserRef.current = null
       sourceMapRef.current.clear()
     }
-  }, [clearChoreography, stopTimelineAnimation, stopTransitionTimerAnimation])
+  }, [clearChoreography, stopTransitionTimerAnimation])
 
   const totalRows = catalog.length
 
@@ -767,18 +672,17 @@ export default function SignalTable({ catalog }) {
   const screenVisible = voiceProgress > 0.02
   const previewVisible = desktopProgress > 0.02
   const tableVisible = tableProgress > 0.02
-  const currentStepProgress = timerFor(currentTimelineStep.id)
   const railPrompt =
     currentTimelineStep.id === 'minimized'
-      ? 'Click to hear Max text Sarah'
+      ? 'Click to hear a real Talkie recording'
       : currentTimelineStep.id === 'voice' && voiceProgress < 0.18
-      ? 'Max is texting Sarah'
+      ? 'Recording with Talkie'
       : inActiveCapture
       ? `${isPlaying ? 'PLAYING' : 'STANDBY'} · ${activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}`
       : 'STANDBY · CH-01 / VOICE.IN'
   const screenMaxHeight = Math.round(voiceProgress * 420)
   const screenPadding = screenVisible ? '1rem' : 0
-  const previewMaxHeight = Math.round(desktopProgress * 420)
+  const previewMaxHeight = Math.round(desktopProgress * 500)
   const tableShellProgress = Math.min(1, tableProgress / 0.24)
   const tableSlotProgress = Math.max(0, Math.min(1, (tableProgress - 0.24) / 0.76))
   const tableRowsMaxHeight = Math.round(tableSlotProgress * 72)
@@ -787,45 +691,6 @@ export default function SignalTable({ catalog }) {
 
   return (
     <div className="space-y-10">
-      {SHOW_TRANSITION_TIMELINE && (
-        <TransitionTimeline
-          progress={timelineProgress}
-          steps={TRANSITION_STEPS}
-          currentStep={currentTimelineStep}
-          stepProgress={currentStepProgress}
-          timers={transitionTimers}
-          onScrub={(value) => {
-            stopTimelineAnimation()
-            stopTransitionTimerAnimation()
-            setTimelineProgressClamped(value)
-          }}
-          onStepScrub={(value) => {
-            stopTimelineAnimation()
-            stopTransitionTimerAnimation(currentTimelineStep.id)
-            setTransitionTimer(currentTimelineStep.id, value)
-            setTimelineProgress(progressFromStep(currentTimelineStep, value))
-          }}
-          onTimerChange={(id, value) => {
-            stopTimelineAnimation()
-            stopTransitionTimerAnimation(id)
-            setTransitionTimer(id, value)
-            const step = TRANSITION_STEPS.find((item) => item.id === id)
-            if (step && step.id === currentTimelineStep.id) {
-              setTimelineProgress(progressFromStep(step, value))
-            }
-          }}
-          onSelectStep={(step) => {
-            stopTimelineAnimation()
-            stopTransitionTimerAnimation()
-            setTransitionStepId(step.id)
-            setTimelineProgress(progressFromStep(step, transitionTimers[step.id] ?? 0))
-          }}
-          onAnimateTo={(target) => {
-            stopTransitionTimerAnimation()
-            animateTimelineTo(target)
-          }}
-        />
-      )}
       {/* Trace + caption rail — chassis renders with the always-dark
           panel identity in both themes (instruments-as-objects). The
           inner audio logic / LiveTrace already strokes in --trace, but
@@ -886,7 +751,7 @@ export default function SignalTable({ catalog }) {
                 onClick={() => playIndex(0)}
                 disabled={rolloutStage === 1}
                 className="inline-flex items-center gap-2 truncate text-left transition-colors hover:text-ink-muted disabled:cursor-default disabled:hover:text-ink-faint"
-                aria-label="Click to hear Max text Sarah"
+                aria-label="Play a real Talkie recording"
               >
                 <Play className="h-3 w-3" />
                 <span className="truncate">{railPrompt}</span>
@@ -895,17 +760,7 @@ export default function SignalTable({ catalog }) {
               railPrompt
             )}
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setCaptionsOn((v) => !v)}
-              className="text-[9px] uppercase tracking-[0.22em] text-ink-faint hover:text-ink-muted transition-colors"
-              aria-pressed={captionsOn}
-            >
-              CC · {captionsOn ? 'ON' : 'OFF'}
-            </button>
-            <span className="hidden sm:inline">16kHz · 24-BIT · MONO</span>
-          </div>
+          <span className="hidden sm:inline">16kHz · 24-BIT · MONO</span>
         </div>
 
         {/* Trace area — clickable, with a hover invitation that says
@@ -982,11 +837,14 @@ export default function SignalTable({ catalog }) {
               engine writes the transcription into the row, not here.
               Hidden the moment audio ends so the TRANSCRIBING overlay
               (below) gets the stage cleanly. */}
-          {captionsOn && isPlaying && (
+          {isPlaying && (
             <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center px-6 sm:bottom-6">
               <CinematicCaption
                 audioRef={audioRef}
-                alignSrc={activeCapture?.audio?.replace(/\.mp3$/, '.alignment.json')}
+                alignSrc={
+                  activeCapture?.alignment ??
+                  activeCapture?.audio?.replace(/\.mp3$/, '.alignment.json')
+                }
                 playing={isPlaying}
                 phase="live"
                 finalizeKey={finalizeKey}
@@ -1223,7 +1081,7 @@ function CaptureExamplesRail({ catalog, activeIndex, isPlaying, seenCaptureSlugs
   return (
     <div className="overflow-hidden rounded-md border border-edge-dim bg-surface px-3 py-3 shadow-[0_10px_28px_-24px_rgba(0,0,0,0.45)]">
       <div className="mb-2 flex items-center justify-between gap-3 px-1 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-        <span>Simulated paths · {String(seenCount).padStart(2, '0')} seen</span>
+        <span>Real captures · {String(seenCount).padStart(2, '0')} heard</span>
         <button
           type="button"
           onClick={() => onSelect(nextIndex)}
@@ -1280,138 +1138,6 @@ function CaptureExamplesRail({ catalog, activeIndex, isPlaying, seenCaptureSlugs
                 </span>
               </span>
             </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-function TransitionTimeline({
-  progress,
-  steps,
-  currentStep,
-  stepProgress,
-  timers,
-  onScrub,
-  onStepScrub,
-  onTimerChange,
-  onSelectStep,
-  onAnimateTo,
-}) {
-  const pct = Math.round(progress)
-  const stepPct = Math.round(stepProgress * 100)
-
-  return (
-    <div className="rounded-md border border-edge-dim bg-surface px-4 py-3 font-mono shadow-[0_10px_28px_-24px_rgba(0,0,0,0.45)]">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-[9px] uppercase tracking-[0.24em] text-ink-faint">
-          Rollout timeline · {currentStep.label} · {String(stepPct).padStart(3, '0')}%
-        </div>
-        <div className="flex flex-wrap items-center gap-1.5">
-          {steps.map((step) => (
-            <button
-              key={step.id}
-              type="button"
-              onClick={() => onSelectStep(step)}
-              className={`rounded-sm border px-2 py-1 text-[8px] uppercase tracking-[0.2em] transition-colors hover:border-edge hover:text-ink-muted ${
-                step.id === currentStep.id
-                  ? 'border-edge text-ink-muted'
-                  : 'border-edge-dim text-ink-faint'
-              }`}
-            >
-              {step.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="relative mt-3">
-        <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-edge-dim" />
-        <div
-          className="absolute left-0 top-1/2 h-px -translate-y-1/2"
-          style={{
-            width: `${pct}%`,
-            background: 'var(--amber)',
-            boxShadow: '0 0 8px color-mix(in oklab, var(--amber) 40%, transparent)',
-          }}
-        />
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          value={pct}
-          onChange={(event) => onScrub(Number(event.target.value))}
-          className="relative z-10 block h-7 w-full cursor-ew-resize appearance-none bg-transparent accent-[var(--amber)]"
-          aria-label="Rollout progress"
-        />
-      </div>
-
-      <div className="mt-1 grid grid-cols-4 text-[8px] uppercase tracking-[0.18em] text-ink-subtle">
-        {steps.map((step) => (
-          <button
-            key={step.id}
-            type="button"
-            onClick={() => onAnimateTo(step.end)}
-            className="text-left transition-colors hover:text-ink-muted last:text-right"
-          >
-            {step.end}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-3 grid gap-1.5 text-[8px] uppercase tracking-[0.2em] text-ink-subtle sm:grid-cols-[7.5rem_1fr_3.5rem] sm:items-center">
-        <span>Step timer</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={stepProgress}
-          onChange={(event) => onStepScrub(Number(event.target.value))}
-          className="h-5 w-full cursor-ew-resize accent-[var(--amber)]"
-          aria-label="Step-local progress"
-        />
-        <span className="text-right">{String(stepPct).padStart(3, '0')}%</span>
-      </div>
-
-      <div className="mt-3 grid gap-2 text-[8px] uppercase tracking-[0.2em] text-ink-subtle sm:grid-cols-3">
-        {['voice', 'desktop', 'table'].map((id) => {
-          const value = Math.round((timers[id] ?? 0) * 100)
-          const label =
-            id === 'voice'
-              ? 'Voice/screen'
-              : id === 'desktop'
-              ? 'Desktop'
-              : 'Table'
-          const step = steps.find((item) => item.id === id)
-          return (
-            <div
-              key={id}
-              className={`rounded-sm border px-2 py-1.5 ${
-                currentStep.id === id ? 'border-edge text-ink-muted' : 'border-edge-dim'
-              }`}
-            >
-              <button
-                type="button"
-                onClick={() => step && onSelectStep(step)}
-                className="flex w-full items-center justify-between text-left transition-colors hover:text-ink-muted"
-              >
-                <span>{label}</span>
-                <span>{String(value).padStart(3, '0')}%</span>
-              </button>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={timers[id] ?? 0}
-                onChange={(event) => onTimerChange(id, Number(event.target.value))}
-                className="mt-1 h-4 w-full cursor-ew-resize accent-[var(--amber)]"
-                aria-label={`${label} local timer`}
-              />
-            </div>
           )
         })}
       </div>

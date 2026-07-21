@@ -1,0 +1,389 @@
+{
+  "duration": 30.9,
+  "phrases": [
+    {
+      "text": "I love the way that this is real. This is a",
+      "start": 0,
+      "end": 3.965,
+      "words": [
+        {
+          "word": "I",
+          "start": 0,
+          "end": 0.233
+        },
+        {
+          "word": "love",
+          "start": 0.233,
+          "end": 0.7
+        },
+        {
+          "word": "the",
+          "start": 0.7,
+          "end": 1.049
+        },
+        {
+          "word": "way",
+          "start": 1.049,
+          "end": 1.399
+        },
+        {
+          "word": "that",
+          "start": 1.399,
+          "end": 1.866
+        },
+        {
+          "word": "this",
+          "start": 1.866,
+          "end": 2.332
+        },
+        {
+          "word": "is",
+          "start": 2.332,
+          "end": 2.565
+        },
+        {
+          "word": "real.",
+          "start": 2.565,
+          "end": 3.032
+        },
+        {
+          "word": "This",
+          "start": 3.032,
+          "end": 3.498
+        },
+        {
+          "word": "is",
+          "start": 3.498,
+          "end": 3.731
+        },
+        {
+          "word": "a",
+          "start": 3.731,
+          "end": 3.965
+        }
+      ]
+    },
+    {
+      "text": "very inspired choice. What I would do is instead of showing",
+      "start": 3.965,
+      "end": 9.678,
+      "words": [
+        {
+          "word": "very",
+          "start": 3.965,
+          "end": 4.431
+        },
+        {
+          "word": "inspired",
+          "start": 4.431,
+          "end": 5.364
+        },
+        {
+          "word": "choice.",
+          "start": 5.364,
+          "end": 6.063
+        },
+        {
+          "word": "What",
+          "start": 6.063,
+          "end": 6.53
+        },
+        {
+          "word": "I",
+          "start": 6.53,
+          "end": 6.763
+        },
+        {
+          "word": "would",
+          "start": 6.763,
+          "end": 7.346
+        },
+        {
+          "word": "do",
+          "start": 7.346,
+          "end": 7.579
+        },
+        {
+          "word": "is",
+          "start": 7.579,
+          "end": 7.812
+        },
+        {
+          "word": "instead",
+          "start": 7.812,
+          "end": 8.629
+        },
+        {
+          "word": "of",
+          "start": 8.629,
+          "end": 8.862
+        },
+        {
+          "word": "showing",
+          "start": 8.862,
+          "end": 9.678
+        }
+      ]
+    },
+    {
+      "text": "the toggles, which I would maybe even remove, I would just",
+      "start": 9.678,
+      "end": 15.275,
+      "words": [
+        {
+          "word": "the",
+          "start": 9.678,
+          "end": 10.028
+        },
+        {
+          "word": "toggles,",
+          "start": 10.028,
+          "end": 10.844
+        },
+        {
+          "word": "which",
+          "start": 10.844,
+          "end": 11.427
+        },
+        {
+          "word": "I",
+          "start": 11.427,
+          "end": 11.66
+        },
+        {
+          "word": "would",
+          "start": 11.66,
+          "end": 12.243
+        },
+        {
+          "word": "maybe",
+          "start": 12.243,
+          "end": 12.826
+        },
+        {
+          "word": "even",
+          "start": 12.826,
+          "end": 13.293
+        },
+        {
+          "word": "remove,",
+          "start": 13.293,
+          "end": 13.992
+        },
+        {
+          "word": "I",
+          "start": 13.992,
+          "end": 14.226
+        },
+        {
+          "word": "would",
+          "start": 14.226,
+          "end": 14.809
+        },
+        {
+          "word": "just",
+          "start": 14.809,
+          "end": 15.275
+        }
+      ]
+    },
+    {
+      "text": "start with the waveform and just be like, “See it in",
+      "start": 15.275,
+      "end": 19.939,
+      "words": [
+        {
+          "word": "start",
+          "start": 15.275,
+          "end": 15.858
+        },
+        {
+          "word": "with",
+          "start": 15.858,
+          "end": 16.325
+        },
+        {
+          "word": "the",
+          "start": 16.325,
+          "end": 16.674
+        },
+        {
+          "word": "waveform",
+          "start": 16.674,
+          "end": 17.607
+        },
+        {
+          "word": "and",
+          "start": 17.607,
+          "end": 17.957
+        },
+        {
+          "word": "just",
+          "start": 17.957,
+          "end": 18.423
+        },
+        {
+          "word": "be",
+          "start": 18.423,
+          "end": 18.657
+        },
+        {
+          "word": "like,",
+          "start": 18.657,
+          "end": 19.123
+        },
+        {
+          "word": "“See",
+          "start": 19.123,
+          "end": 19.473
+        },
+        {
+          "word": "it",
+          "start": 19.473,
+          "end": 19.706
+        },
+        {
+          "word": "in",
+          "start": 19.706,
+          "end": 19.939
+        }
+      ]
+    },
+    {
+      "text": "action,” instead of “What it might sound like.” And then I",
+      "start": 19.939,
+      "end": 25.07,
+      "words": [
+        {
+          "word": "action,”",
+          "start": 19.939,
+          "end": 20.639
+        },
+        {
+          "word": "instead",
+          "start": 20.639,
+          "end": 21.455
+        },
+        {
+          "word": "of",
+          "start": 21.455,
+          "end": 21.688
+        },
+        {
+          "word": "“What",
+          "start": 21.688,
+          "end": 22.155
+        },
+        {
+          "word": "it",
+          "start": 22.155,
+          "end": 22.388
+        },
+        {
+          "word": "might",
+          "start": 22.388,
+          "end": 22.971
+        },
+        {
+          "word": "sound",
+          "start": 22.971,
+          "end": 23.554
+        },
+        {
+          "word": "like.”",
+          "start": 23.554,
+          "end": 24.02
+        },
+        {
+          "word": "And",
+          "start": 24.02,
+          "end": 24.37
+        },
+        {
+          "word": "then",
+          "start": 24.37,
+          "end": 24.837
+        },
+        {
+          "word": "I",
+          "start": 24.837,
+          "end": 25.07
+        }
+      ]
+    },
+    {
+      "text": "think what we could do is have our overlay animations as",
+      "start": 25.07,
+      "end": 30.434,
+      "words": [
+        {
+          "word": "think",
+          "start": 25.07,
+          "end": 25.653
+        },
+        {
+          "word": "what",
+          "start": 25.653,
+          "end": 26.119
+        },
+        {
+          "word": "we",
+          "start": 26.119,
+          "end": 26.352
+        },
+        {
+          "word": "could",
+          "start": 26.352,
+          "end": 26.935
+        },
+        {
+          "word": "do",
+          "start": 26.935,
+          "end": 27.169
+        },
+        {
+          "word": "is",
+          "start": 27.169,
+          "end": 27.402
+        },
+        {
+          "word": "have",
+          "start": 27.402,
+          "end": 27.868
+        },
+        {
+          "word": "our",
+          "start": 27.868,
+          "end": 28.218
+        },
+        {
+          "word": "overlay",
+          "start": 28.218,
+          "end": 29.034
+        },
+        {
+          "word": "animations",
+          "start": 29.034,
+          "end": 30.2
+        },
+        {
+          "word": "as",
+          "start": 30.2,
+          "end": 30.434
+        }
+      ]
+    },
+    {
+      "text": "well.",
+      "start": 30.434,
+      "end": 30.9,
+      "words": [
+        {
+          "word": "well.",
+          "start": 30.434,
+          "end": 30.9
+        }
+      ]
+    }
+  ]
+}

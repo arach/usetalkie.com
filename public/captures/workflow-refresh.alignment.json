@@ -1,0 +1,67 @@
+{
+  "duration": 5.6,
+  "phrases": [
+    {
+      "text": "We probably still need a way for the workflows to refresh.",
+      "start": 0,
+      "end": 5.6,
+      "words": [
+        {
+          "word": "We",
+          "start": 0,
+          "end": 0.233
+        },
+        {
+          "word": "probably",
+          "start": 0.233,
+          "end": 1.167
+        },
+        {
+          "word": "still",
+          "start": 1.167,
+          "end": 1.75
+        },
+        {
+          "word": "need",
+          "start": 1.75,
+          "end": 2.217
+        },
+        {
+          "word": "a",
+          "start": 2.217,
+          "end": 2.45
+        },
+        {
+          "word": "way",
+          "start": 2.45,
+          "end": 2.8
+        },
+        {
+          "word": "for",
+          "start": 2.8,
+          "end": 3.15
+        },
+        {
+          "word": "the",
+          "start": 3.15,
+          "end": 3.5
+        },
+        {
+          "word": "workflows",
+          "start": 3.5,
+          "end": 4.55
+        },
+        {
+          "word": "to",
+          "start": 4.55,
+          "end": 4.783
+        },
+        {
+          "word": "refresh.",
+          "start": 4.783,
+          "end": 5.6
+        }
+      ]
+    }
+  ]
+}
