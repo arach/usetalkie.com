@@ -18,23 +18,27 @@ mkdirSync(ogIdeasDir, { recursive: true });
 const interBold = readFileSync(join(__dirname, 'fonts', 'Inter-Bold.ttf'));
 const interRegular = readFileSync(join(__dirname, 'fonts', 'Inter-Regular.ttf'));
 const jetbrainsMono = readFileSync(join(__dirname, 'fonts', 'JetBrainsMono-Regular.ttf'));
-const instrumentSerif = readFileSync(join(__dirname, 'fonts', 'InstrumentSerif-Regular.ttf'));
 
 const fonts = [
   { name: 'Inter', data: interBold, weight: 700, style: 'normal' },
   { name: 'Inter', data: interRegular, weight: 400, style: 'normal' },
   { name: 'JetBrains Mono', data: jetbrainsMono, weight: 400, style: 'normal' },
-  { name: 'Instrument Serif', data: instrumentSerif, weight: 400, style: 'normal' },
 ];
 
 // Talkie brand colors
 const COLORS = {
-  bg: '#0a0a0a',
-  gridLine: '#1a2e1a',
-  accent: '#22c55e', // green-500 (more green)
-  text: '#ffffff',
-  textMuted: '#a1a1aa',
-  crossColor: '#22c55e',
+  paper: '#F4EFE6',
+  paperDeep: '#E4D6BE',
+  ink: '#0E0D0A',
+  muted: '#7A6E5C',
+  edge: '#CFC0A7',
+  hotMic: '#FF5346',
+  cassette: '#E68A3C',
+  // Compatibility aliases for the docs template below.
+  bg: '#F4EFE6',
+  accent: '#FF5346',
+  text: '#0E0D0A',
+  textMuted: '#7A6E5C',
 };
 
 // Helper to create elements
@@ -57,74 +61,113 @@ function truncate(str, max = 140) {
   return str.slice(0, max).replace(/\s+\S*$/, '') + '...';
 }
 
-// Shared brand background elements (grid, glows, corner marks, accent line)
+function ideasTitleSize(title) {
+  if (title.length > 90) return 44;
+  if (title.length > 75) return 48;
+  if (title.length > 58) return 56;
+  return 62;
+}
+
+function captureStrip() {
+  const bars = [22, 44, 76, 36, 96, 58, 28, 72, 48, 84];
+
+  return [
+    h('span', {
+      style: {
+        position: 'absolute', top: 204, right: 76, color: COLORS.paper,
+        fontSize: 10, letterSpacing: '0.16em', fontFamily: 'JetBrains Mono',
+      },
+    }, 'LIVE CAPTURE'),
+    h('div', {
+      style: {
+        position: 'absolute', top: 236, right: 52, width: 102, height: 72,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      },
+    },
+      ...bars.map((height) => h('div', {
+        style: { width: 4, height, backgroundColor: COLORS.hotMic, borderRadius: 2 },
+      }))
+    ),
+    // Screenshot mode — a selected portion of the screen, complete with
+    // handles, rather than another line of explanatory copy.
+    h('div', {
+      style: {
+        position: 'absolute', top: 338, right: 52, width: 102, height: 78,
+        border: '1px solid rgba(244, 239, 230, 0.48)', padding: 8, display: 'flex',
+      },
+    },
+      h('div', {
+        style: {
+          width: 64, height: 43, marginLeft: 12, marginTop: 8,
+          border: `1px dashed ${COLORS.paper}`, backgroundColor: 'rgba(244, 239, 230, 0.10)',
+          position: 'relative', display: 'flex',
+        },
+      },
+        ...[
+          { top: -3, left: -3 }, { top: -3, right: -3 },
+          { bottom: -3, left: -3 }, { bottom: -3, right: -3 },
+        ].map((position) => h('div', {
+          style: { position: 'absolute', ...position, width: 6, height: 6, backgroundColor: COLORS.paper },
+        }))
+      ),
+    ),
+    // Camera mode — a small lens and the record light make the third module
+    // immediately legible without needing to label it.
+    h('div', {
+      style: {
+        position: 'absolute', top: 450, right: 70, width: 66, height: 54,
+        borderRadius: 27, border: `1px solid ${COLORS.paper}`, display: 'flex',
+        alignItems: 'center', justifyContent: 'center',
+      },
+    },
+      h('div', { style: { width: 22, height: 22, borderRadius: 11, border: `4px solid ${COLORS.paper}` } }),
+      h('div', { style: { position: 'absolute', top: 8, right: 9, width: 8, height: 8, borderRadius: 4, backgroundColor: COLORS.hotMic } }),
+    ),
+    h('span', {
+      style: {
+        position: 'absolute', bottom: 76, right: 80, color: COLORS.paper,
+        fontSize: 11, letterSpacing: '0.08em', fontFamily: 'JetBrains Mono',
+      },
+    }, '00:18'),
+  ];
+}
+
+// Shared brand background elements. Keep the cards tactile and print-like;
+// the product has moved beyond the old neon-terminal treatment.
 function brandBackground() {
   return [
-    // Major grid (80px) with emerald tint
     h('div', {
       style: {
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: `linear-gradient(to right, ${COLORS.gridLine} 1px, transparent 1px), linear-gradient(to bottom, ${COLORS.gridLine} 1px, transparent 1px)`,
-        backgroundSize: '80px 80px',
-        opacity: 0.4,
+        backgroundImage: `linear-gradient(118deg, ${COLORS.paper} 0%, ${COLORS.paper} 69%, ${COLORS.paperDeep} 69%, ${COLORS.paperDeep} 100%)`,
       },
     }),
-    // Radial glow from top-left corner
     h('div', {
       style: {
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: `radial-gradient(circle at 80px 80px, rgba(34, 197, 94, 0.12) 0%, transparent 40%)`,
+        position: 'absolute', top: 0, right: 0, width: 206, height: '100%',
+        backgroundColor: COLORS.ink,
       },
     }),
-    // Radial glow from bottom-right corner
     h('div', {
       style: {
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: `radial-gradient(circle at 1120px 560px, rgba(34, 197, 94, 0.10) 0%, transparent 40%)`,
+        position: 'absolute', top: 64, right: 64, width: 78, height: 78,
+        borderRadius: 39, backgroundColor: COLORS.hotMic,
       },
     }),
-    // Top-left corner — horizontal (going right from corner)
     h('div', {
       style: {
-        position: 'absolute', top: 79, left: 80, width: 100, height: 2,
-        background: `linear-gradient(to right, ${COLORS.crossColor}, transparent)`,
-        opacity: 0.7,
+        position: 'absolute', top: 100, right: 78, width: 50, height: 50,
+        border: `1px solid ${COLORS.paper}`,
       },
     }),
-    // Top-left corner — vertical (going down from corner)
     h('div', {
       style: {
-        position: 'absolute', top: 80, left: 79, width: 2, height: 100,
-        background: `linear-gradient(to bottom, ${COLORS.crossColor}, transparent)`,
-        opacity: 0.7,
+        position: 'absolute', bottom: 64, right: 78, width: 50, height: 1,
+        backgroundColor: COLORS.paper,
       },
     }),
-    // Bottom-right corner — horizontal (going left from corner)
-    h('div', {
-      style: {
-        position: 'absolute', top: 559, left: 1020, width: 100, height: 2,
-        background: `linear-gradient(to left, ${COLORS.crossColor}, transparent)`,
-        opacity: 0.7,
-      },
-    }),
-    // Bottom-right corner — vertical (going up from corner)
-    h('div', {
-      style: {
-        position: 'absolute', top: 460, left: 1119, width: 2, height: 100,
-        background: `linear-gradient(to top, ${COLORS.crossColor}, transparent)`,
-        opacity: 0.7,
-      },
-    }),
-    // Bottom accent line
-    h('div', {
-      style: {
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: 4,
-        backgroundColor: COLORS.accent, opacity: 0.6,
-      },
-    }),
+    ...captureStrip(),
   ];
 }
 
@@ -217,65 +260,56 @@ const talkieDocsOG = ({ title, subtitle, tag = 'Documentation' }) => h('div', {
 const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
   style: {
     width: 1200, height: 630, display: 'flex', flexDirection: 'column',
-    backgroundColor: COLORS.bg, fontFamily: 'Inter', position: 'relative', overflow: 'hidden',
+    backgroundColor: COLORS.paper, fontFamily: 'Inter', position: 'relative', overflow: 'hidden',
   },
 },
   ...brandBackground(),
 
-  // Left accent bar (editorial stripe)
-  h('div', {
-    style: {
-      position: 'absolute', top: 0, left: 0, width: 5, height: '100%',
-      background: `linear-gradient(to bottom, transparent 10%, ${COLORS.accent} 30%, ${COLORS.accent} 70%, transparent 90%)`,
-    },
-  }),
-
   // Content container
   h('div', {
     style: {
-      display: 'flex', flexDirection: 'column', padding: '100px 100px 72px 120px',
+      display: 'flex', flexDirection: 'column', padding: '70px 274px 62px 88px',
       position: 'relative', height: '100%',
     },
   },
     // Top row: "Ideas" label + date
     h('div', {
       style: {
-        display: 'flex', alignItems: 'center', gap: 24, marginBottom: 40,
+        display: 'flex', alignItems: 'center', gap: 18, marginBottom: 32,
       },
     },
       h('span', {
         style: {
-          fontSize: 14, fontWeight: 700, color: COLORS.accent,
+          fontSize: 14, fontWeight: 400, color: COLORS.ink,
           textTransform: 'uppercase', letterSpacing: '0.14em',
           fontFamily: 'JetBrains Mono',
         },
-      }, 'Ideas'),
+      }, 'Talkie / Ideas'),
       // Thin separator
       h('div', {
-        style: { width: 1, height: 14, backgroundColor: COLORS.textMuted, opacity: 0.3 },
+        style: { width: 1, height: 14, backgroundColor: COLORS.edge },
       }),
       h('span', {
         style: {
-          fontSize: 14, fontWeight: 400, color: COLORS.textMuted,
+          fontSize: 14, fontWeight: 400, color: COLORS.muted,
           fontFamily: 'JetBrains Mono',
         },
       }, formatDate(date)),
     ),
 
-    // Title — serif, editorial
     h('div', {
       style: {
-        fontSize: 72, fontWeight: 400, color: COLORS.text,
-        lineHeight: 1.1, maxWidth: 920, marginBottom: 28,
-        fontFamily: 'Instrument Serif',
+        fontSize: ideasTitleSize(title), fontWeight: 400, color: COLORS.ink,
+        lineHeight: 1.02, maxWidth: 790, marginBottom: 24,
+        letterSpacing: '-0.035em', fontFamily: 'Inter',
       },
     }, title),
 
     // Description
     description && h('div', {
       style: {
-        fontSize: 22, fontWeight: 400, color: COLORS.textMuted,
-        lineHeight: 1.55, maxWidth: 760,
+        fontSize: 20, fontWeight: 400, color: COLORS.muted,
+        lineHeight: 1.45, maxWidth: 710,
       },
     }, truncate(description, 130)),
 
@@ -290,20 +324,19 @@ const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
     },
       // Tags
       h('div', {
-        style: { display: 'flex', gap: 10 },
+        style: { display: 'flex', gap: 16 },
       },
         ...tags.slice(0, 3).map(tag =>
           h('div', {
             style: {
               display: 'flex', alignItems: 'center',
-              padding: '7px 14px', borderRadius: 5,
-              backgroundColor: 'rgba(34, 197, 94, 0.08)',
-              border: '1px solid rgba(34, 197, 94, 0.18)',
+              padding: '7px 0', borderRadius: 0,
+              borderTop: `1px solid ${COLORS.edge}`,
             },
           },
             h('span', {
               style: {
-                fontSize: 12, fontWeight: 400, color: COLORS.accent,
+                fontSize: 11, fontWeight: 400, color: COLORS.ink,
                 textTransform: 'uppercase', letterSpacing: '0.08em',
                 fontFamily: 'JetBrains Mono',
               },
@@ -314,7 +347,7 @@ const talkieIdeasOG = ({ title, description, date, tags = [] }) => h('div', {
       // URL
       h('span', {
         style: {
-          fontSize: 14, fontWeight: 400, color: COLORS.textMuted,
+          fontSize: 13, fontWeight: 400, color: COLORS.muted,
           fontFamily: 'JetBrains Mono', letterSpacing: '0.01em',
         },
       }, 'usetalkie.com/ideas'),
