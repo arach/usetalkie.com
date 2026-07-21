@@ -1,15 +1,15 @@
 ---
-title: "DictaFlow alternative: Talkie, if you want free, fully on-device dictation with a CLI"
-description: "A DictaFlow alternative for people who want dictation that stays on-device, costs nothing, and exposes captures as structured data you can pipe into scripts and AI agents."
+title: "DictaFlow alternative: Talkie for local-first dictation with a CLI"
+description: "A DictaFlow alternative for people who want dictation that stays on-device and exposes captures as structured data they can pipe into scripts and AI agents."
 date: "2026-07-21"
 tags: ["comparison", "dictation", "dictaflow", "mac", "on-device"]
 ---
 
 DictaFlow and Talkie both let you talk instead of type, and both run on a Mac — past that, we're built for pretty different people. I build Talkie, so here's the honest split rather than a takedown of a decent app.
 
-DictaFlow is a hybrid dictation tool: local Whisper-based recognition paired with cloud reasoning for cleanup and formatting, available across Windows, Mac, and mobile. Talkie is Apple-only, transcribes fully on-device, stores everything locally, is free, and treats each capture as structured data you can query from the command line and feed to AI agents.
+DictaFlow is a hybrid dictation tool: local Whisper-based recognition paired with cloud reasoning for cleanup and formatting, available across Windows, Mac, and mobile. Talkie is Apple-only, transcribes fully on-device, stores everything locally, and treats each capture as structured data you can query from the command line and feed to AI agents.
 
-**Short version:** If you need Windows support, cloud-grade formatting, and dictation into locked-down enterprise apps, DictaFlow is the better fit. If you want dictation that never leaves your machine, costs nothing, syncs to your Watch and phone, and doubles as a scriptable data layer for your agents, pick Talkie.
+**Short version:** If you need Windows support, cloud-grade formatting, and dictation into locked-down enterprise apps, DictaFlow is the better fit. If you want dictation that never leaves your machine, syncs to your Watch and phone, and doubles as a scriptable data layer for your agents, pick Talkie.
 
 ## What DictaFlow does well
 
@@ -26,7 +26,7 @@ If your day is Windows plus remote desktops and you want AI-polished output, tha
 
 Talkie isn't trying to be a better version of DictaFlow. It's built for people who want their voice input to stay private and become usable data.
 
-**Everything is on-device, and it's free.** Talkie transcribes with Apple Speech on iPhone and Parakeet v3, a local ASR model, on Mac. No audio leaves your machine for a cloud reasoning step, because there is no cloud step. There's no subscription, no premium gate, and no account or API key for core use. DictaFlow's hybrid model means some audio reaches cloud servers for the reasoning component; Talkie's doesn't.
+**Everything is on-device and programmable.** Talkie transcribes with Apple Speech on iPhone and Parakeet v3, a local ASR model, on Mac. No audio leaves your machine for a cloud reasoning step, because there is no cloud step. The local capture store and CLI make the result available to scripts, workflows, and agents. DictaFlow's hybrid model means some audio reaches cloud servers for the reasoning component; Talkie's doesn't.
 
 **Captures are structured, searchable, local knowledge.** Each dictation lands in a local-first SQLite database on the Mac. Instead of firing text into a box and forgetting it, you get a searchable record of what you've said, kept on your own disk.
 
@@ -48,7 +48,7 @@ Once installed, your dictations aren't trapped in an app — they're queryable d
 
 | | Talkie | DictaFlow |
 |---|---|---|
-| Price | Free, no subscription | Subscription (~$5–7/mo), small free tier |
+| Pricing | See current plans | Subscription (~$5–7/mo), small free tier |
 | On-device transcription | Yes — Parakeet v3 (Mac), Apple Speech (iOS) | Partial — local recognition, cloud reasoning |
 | Storage | Local-first SQLite on your Mac | App-managed, cloud reasoning involved |
 | CLI for scripts & agents | Yes — `@talkie/cli` | No |

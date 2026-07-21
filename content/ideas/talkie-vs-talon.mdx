@@ -1,13 +1,13 @@
 ---
 title: "Talon Voice alternative for dictation that drives your agents"
-description: "Looking for a Talon Voice alternative? Talkie is free, on-device Mac dictation that turns speech into structured captures you pipe straight into Claude Code and other agents."
+description: "Looking for a Talon Voice alternative? Talkie is on-device Mac dictation that turns speech into structured captures you pipe straight into Claude Code and other agents."
 date: "2026-07-21"
 tags: ["comparison", "dictation", "talon", "voice-coding", "mac"]
 ---
 
 I have real respect for Talon — it lets people run an entire computer, and write actual code, without touching a keyboard, and for many it's the difference between working and not. I build Talkie, which is a far smaller idea, and being honest about that gap is the fastest way to help you choose. Talon is a commitment you learn; Talkie is meant to disappear.
 
-**Short version:** Talon controls your entire computer by voice. Talkie doesn't. Talkie is free, on-device dictation and capture for Mac and iPhone that turns your speech into structured, searchable data — and then pipes it into agents like Claude Code. If you want a full voice-control OS layer, use Talon. If you want to talk instead of type and feed that text to your tools, use Talkie. They overlap a little around "voice + code," but they're doing different jobs.
+**Short version:** Talon controls your entire computer by voice. Talkie doesn't. Talkie is on-device dictation and capture for Mac and iPhone that turns your speech into structured, searchable data — and then pipes it into agents like Claude Code. If you want a full voice-control OS layer, use Talon. If you want to talk instead of type and feed that text to your tools, use Talkie. They overlap a little around "voice + code," but they're doing different jobs.
 
 ## What Talon does well
 
@@ -26,7 +26,7 @@ The trade-off is real: Talon has a steep learning curve. You're learning a comma
 Talkie isn't trying to control your computer. It's trying to make dictation dead simple and then get the text out of the way and into your tools.
 
 - **Simplicity, dictation-first.** Talk, get text. There's no command grammar to memorize and no config to maintain. You're dictating, not programming a voice OS.
-- **Free.** No subscription, no premium gate.
+- **Local-first and programmable.** Captures live locally, and the CLI makes them available to scripts, workflows, and agentic tools.
 - **On-device.** Transcription runs locally — Apple Speech on iPhone, Parakeet v3 for local ASR on Mac. Your captures live in a local-first SQLite database on the Mac, with no account or API key for core use.
 - **Structured captures, not just a text stream.** Every dictation becomes a searchable, structured capture — local knowledge you can query, not a transient paste.
 - **A CLI for your scripts and agents.** Talkie ships `@talkie/cli`, which exposes your captures as structured data for pipelines:
@@ -45,7 +45,7 @@ The honest limitation: Talkie is Apple-only, and it won't move your cursor or le
 
 | | Talkie | Talon |
 |---|---|---|
-| Price | Free | Free public version + Patreon patron/beta tier |
+| Pricing | See current plans | Free public version + Patreon patron/beta tier |
 | On-device | Yes (Parakeet v3 on Mac, Apple Speech on iOS) | Yes (local engine, Conformer in beta) |
 | Primary job | Dictation + structured capture | Full hands-free computer control |
 | Learning curve | Minimal — talk, get text | Steep — command grammars + Python config |
@@ -60,7 +60,7 @@ The honest limitation: Talkie is Apple-only, and it won't move your cursor or le
 
 Pick **Talon** if you need to operate your computer without your hands — for accessibility, for RSI recovery, or because you want to write code entirely by voice. Nothing here matches it for full hands-free control, and if that's your requirement, the learning curve is worth it. Talon is the right tool for that job.
 
-Pick **Talkie** if what you actually want is to stop typing so much: fast, free, on-device dictation whose output isn't just pasted text but structured captures you can search, script, and pipe into your agents. If your day is "talk out a prompt, let Claude Code do the work," Talkie is built for exactly that, and it works the same way across your Mac, iPhone, and Watch.
+Pick **Talkie** if what you actually want is to stop typing so much: on-device dictation whose output isn't just pasted text but structured captures you can search, script, and pipe into your agents. If your day is "talk out a prompt, let Claude Code do the work," Talkie is built for exactly that, and it works the same way across your Mac, iPhone, and Watch.
 
 They're not really competitors. Talon is a voice-control OS layer. Talkie is dictation that feeds your agents. Plenty of people would be well served by either — or both.
 
