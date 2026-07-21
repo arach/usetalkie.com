@@ -1,0 +1,25 @@
+row_id,card_id,title,tier,task_type,primary_metric,assertion_count
+01__memo-auto-title__base_v1,memo-auto-title,Memo Auto-Title (<1s),ship-soon,structured-generation,pass_rate_rule_checks,3
+02__memo-type-detection__base_v1,memo-type-detection,Memo Type Detection,ship-soon,classification,label_accuracy,3
+03__action-item-extraction__base_v1,action-item-extraction,Action Item Extraction With Confidence,ship-soon,extraction,item_f1,3
+04__transcript-cleanup-presets__base_v1,transcript-cleanup-presets,Transcript Cleanup Presets,ship-soon,rewrite,fact_preservation_rate,3
+05__what-matters-summary__base_v1,what-matters-summary,Top-3 What Matters Summary,ship-soon,summarization,top_k_recall,3
+06__calendar-intent-detection__base_v1,calendar-intent-detection,Calendar Intent Detection,ship-soon,temporal-extraction,event_slot_accuracy,3
+07__reminder-normalization__base_v1,reminder-normalization,Reminder Phrasing Normalization,ship-soon,normalization,imperative_phrase_compliance,3
+08__private-redaction-pass__base_v1,private-redaction-pass,Private Redaction Pass,ship-soon,safety-redaction,pii_leak_rate,3
+09__writing-style-memory__base_v1,writing-style-memory,Per-User Writing Style Memory,local-first,style-transfer,style_constraint_pass_rate,2
+10__similar-memo-recall__base_v1,similar-memo-recall,Find Similar Memo (Semantic Recall),local-first,ranking,mrr,2
+11__project-clustering__base_v1,project-clustering,Project Clustering From Voice History,local-first,clustering,cluster_pair_f1,2
+12__next-step-suggestion-engine__base_v1,next-step-suggestion-engine,Next-Step Suggestion Engine,local-first,recommendation,action_selection_accuracy,2
+13__follow-up-question-generator__base_v1,follow-up-question-generator,Follow-Up Question Generator,local-first,question-generation,question_utility_judge,2
+14__hybrid-model-router__base_v1,hybrid-model-router,Hybrid Local/Cloud Router,local-first,routing,route_accuracy,2
+15__context-packet-builder__base_v1,context-packet-builder,Context Packet Builder,local-first,context-selection,token_budget_compliance,2
+16__conversation-to-checklist__base_v1,conversation-to-checklist,Conversation To Checklist Transformer,local-first,structuring,order_accuracy,3
+17__personal-knowledge-graph__base_v1,personal-knowledge-graph,Personal Knowledge Graph From Voice,big-swings,graph-extraction,node_edge_f1,2
+18__catch-me-up-daily-brief__base_v1,catch-me-up-daily-brief,Catch Me Up Daily Brief,big-swings,narrative-summary,section_coverage_rate,3
+19__contradiction-drift-detection__base_v1,contradiction-drift-detection,Contradiction And Drift Detection,big-swings,contradiction-detection,conflict_detection_f1,2
+20__momentum-scoring__base_v1,momentum-scoring,Momentum Scoring,big-swings,scoring,score_mae,2
+21__local-agent-loop__base_v1,local-agent-loop,Local Agent Loop For Memo Processing,big-swings,pipeline-orchestration,step_completion_accuracy,2
+22__meeting-live-structure__base_v1,meeting-live-structure,Meeting Mode Live Rolling Structure,big-swings,incremental-state-update,state_update_accuracy,2
+23__intent-trend-alerts__base_v1,intent-trend-alerts,Intent Trend Alerts,big-swings,alerting,alert_precision,1
+24__voice-os-command-layer__base_v1,voice-os-command-layer,Voice-Based Operating Layer,big-swings,command-planning,plan_validity_rate,2

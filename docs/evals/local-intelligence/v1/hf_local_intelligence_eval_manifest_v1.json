@@ -1,0 +1,55 @@
+{
+  "dataset_name": "talkie-local-intelligence-eval-v1",
+  "description": "Evaluation rows derived from Talkie local-intelligence primitive cards.",
+  "version": "v1",
+  "total_rows": 24,
+  "tiers": {
+    "ship-soon": 8,
+    "local-first": 8,
+    "big-swings": 8
+  },
+  "task_types": {
+    "structured-generation": 1,
+    "classification": 1,
+    "extraction": 1,
+    "rewrite": 1,
+    "summarization": 1,
+    "temporal-extraction": 1,
+    "normalization": 1,
+    "safety-redaction": 1,
+    "style-transfer": 1,
+    "ranking": 1,
+    "clustering": 1,
+    "recommendation": 1,
+    "question-generation": 1,
+    "routing": 1,
+    "context-selection": 1,
+    "structuring": 1,
+    "graph-extraction": 1,
+    "narrative-summary": 1,
+    "contradiction-detection": 1,
+    "scoring": 1,
+    "pipeline-orchestration": 1,
+    "incremental-state-update": 1,
+    "alerting": 1,
+    "command-planning": 1
+  },
+  "files": {
+    "jsonl": "hf_local_intelligence_eval_v1.jsonl",
+    "csv": "hf_local_intelligence_eval_v1.csv"
+  },
+  "schema": {
+    "required_fields": [
+      "row_id",
+      "card_id",
+      "tier",
+      "task_type",
+      "prompt",
+      "input_example",
+      "expected_output",
+      "assertions",
+      "scoring"
+    ],
+    "output_contract": "All model outputs should be valid JSON matching expected_output.format."
+  }
+}

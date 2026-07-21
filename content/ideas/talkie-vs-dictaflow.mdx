@@ -1,0 +1,74 @@
+---
+title: "DictaFlow alternative: Talkie, if you want free, fully on-device dictation with a CLI"
+description: "A DictaFlow alternative for people who want dictation that stays on-device, costs nothing, and exposes captures as structured data you can pipe into scripts and AI agents."
+date: "2026-07-21"
+tags: ["comparison", "dictation", "dictaflow", "mac", "on-device"]
+---
+
+DictaFlow and Talkie both let you talk instead of type, and both run on a Mac — past that, we're built for pretty different people. I build Talkie, so here's the honest split rather than a takedown of a decent app.
+
+DictaFlow is a hybrid dictation tool: local Whisper-based recognition paired with cloud reasoning for cleanup and formatting, available across Windows, Mac, and mobile. Talkie is Apple-only, transcribes fully on-device, stores everything locally, is free, and treats each capture as structured data you can query from the command line and feed to AI agents.
+
+**Short version:** If you need Windows support, cloud-grade formatting, and dictation into locked-down enterprise apps, DictaFlow is the better fit. If you want dictation that never leaves your machine, costs nothing, syncs to your Watch and phone, and doubles as a scriptable data layer for your agents, pick Talkie.
+
+## What DictaFlow does well
+
+DictaFlow is a capable, general-purpose dictation app, and it covers ground Talkie deliberately doesn't.
+
+- **Cross-platform.** It runs on Windows and Mac, with mobile access, so it fits mixed-OS setups. Talkie is Apple-only.
+- **Cloud reasoning for formatting.** Its hybrid model uses local recognition plus cloud cleanup, which can produce stronger punctuation, structure, and rewrites than a purely local pipeline.
+- **Typing into stubborn environments.** DictaFlow simulates keystrokes into Citrix, RDP, and VMware sessions where clipboard paste fails — genuinely useful for clinical, legal, and enterprise remote-desktop work.
+- **Custom vocabulary and corrections.** It handles specialized terminology and lets you correct mid-sentence by voice ("actually," "I mean"), which is a nice touch for long-form dictation.
+
+If your day is Windows plus remote desktops and you want AI-polished output, that's a real, honest reason to choose DictaFlow.
+
+## Where Talkie is different
+
+Talkie isn't trying to be a better version of DictaFlow. It's built for people who want their voice input to stay private and become usable data.
+
+**Everything is on-device, and it's free.** Talkie transcribes with Apple Speech on iPhone and Parakeet v3, a local ASR model, on Mac. No audio leaves your machine for a cloud reasoning step, because there is no cloud step. There's no subscription, no premium gate, and no account or API key for core use. DictaFlow's hybrid model means some audio reaches cloud servers for the reasoning component; Talkie's doesn't.
+
+**Captures are structured, searchable, local knowledge.** Each dictation lands in a local-first SQLite database on the Mac. Instead of firing text into a box and forgetting it, you get a searchable record of what you've said, kept on your own disk.
+
+**There's a CLI.** Talkie ships a command-line tool that exposes your captures as structured data for scripts, pipelines, and agents.
+
+```
+bun add -g @talkie/cli
+```
+
+Once installed, your dictations aren't trapped in an app — they're queryable data you can grep, transform, and route wherever you want.
+
+**Dictate straight into AI agents.** Because of that data layer, Talkie works as a remote control for your agents. You can dictate into agentic CLIs like Claude Code, speaking prompts and instructions instead of typing them. This is the part no general dictation app is built for.
+
+**Cross-device by design.** Talkie syncs over iCloud across Mac, iPhone, and Apple Watch. You can capture a thought from your wrist and have it on your Mac. DictaFlow spans more operating systems; Talkie goes deeper into the Apple ecosystem, Watch included.
+
+## Side by side
+
+| | Talkie | DictaFlow |
+|---|---|---|
+| Price | Free, no subscription | Subscription (~$5–7/mo), small free tier |
+| On-device transcription | Yes — Parakeet v3 (Mac), Apple Speech (iOS) | Partial — local recognition, cloud reasoning |
+| Storage | Local-first SQLite on your Mac | App-managed, cloud reasoning involved |
+| CLI for scripts & agents | Yes — `@talkie/cli` | No |
+| Dictate into AI agents | Yes — e.g. Claude Code | Not a focus |
+| Cross-device | Mac, iPhone, Apple Watch (iCloud) | Windows, Mac, iPhone, Android |
+| Windows support | No (Apple-only) | Yes |
+| Cloud AI formatting | No (fully local) | Yes |
+| Enterprise remote-desktop typing | No | Yes (Citrix/RDP/VMware) |
+
+## Which one should you pick?
+
+Be honest with yourself about the workflow.
+
+Pick **DictaFlow** if you work on Windows, or across Windows and Mac; if you dictate into Citrix, RDP, or VMware sessions; or if you want cloud reasoning to polish long-form output and don't mind a subscription and audio reaching a server. Those are legitimate strengths, and Talkie doesn't match them.
+
+Pick **Talkie** if you're all-in on Apple hardware, want transcription that stays fully on-device, don't want to pay a subscription, and — most of all — want your dictation to be structured data you can search, script against, and pipe into AI agents. If "dictate a prompt into Claude Code from my terminal" sounds useful, that's Talkie's whole reason to exist.
+
+They overlap on the surface — you talk, text appears — but they optimize for different things: DictaFlow for reach and cloud polish, Talkie for privacy, price, and programmability.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading:
+- [Dictate into Claude Code](/workflows/dictate-to-claude/)
+- [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
+- [The best dictation apps for Mac](/ideas/best-dictation-apps-for-mac/)

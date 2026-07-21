@@ -23,7 +23,8 @@
     "og:generate": "node scripts/generate-og.js",
     "image:signal-weave": "node scripts/process-voice-illustration.js",
     "illustration:process": "node scripts/process-voice-illustration.js",
-    "mockup": "node scripts/create-iphone-mockup.js"
+    "mockup": "node scripts/create-iphone-mockup.js",
+    "eval:export-cards": "node scripts/export-eval-data.js"
   },
   "dependencies": {
     "@pierre/diffs": "^1.0.11",

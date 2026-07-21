@@ -1,0 +1,72 @@
+---
+title: "Aqua Voice Alternative: Talkie, the Free, Local-First Dictation App for Mac"
+description: "Looking for an Aqua Voice alternative? Talkie is free, on-device voice dictation for Mac, iPhone, and Apple Watch — with a CLI that pipes your voice into scripts and AI agents."
+date: "2026-07-21"
+tags: ["comparison", "dictation", "aqua-voice", "mac", "on-device"]
+---
+
+Aqua Voice is fast, polished, and cloud-powered, and I mean all three as compliments — it's a real product doing real work. I build Talkie, which bets the other way: Apple-only, on-device, free, and built to turn your voice into data you can script against. So this is a comparison of trade-offs, not a hunt for a winner.
+
+**Short version:** If you want the fastest cloud AI dictation across Mac, Windows, and iPhone, with aggressive real-time formatting, Aqua Voice is a strong pick. If you're on Apple hardware and want dictation that's free, runs on-device, stores everything locally, and can pipe straight into your scripts and AI agents, Talkie is the better fit. Neither is strictly "better" — they optimize for different things.
+
+## What Aqua Voice does well
+
+Aqua Voice has earned its reputation, and it's worth being honest about why.
+
+- **Speed and real-time formatting.** Aqua's Avalon model streams text as you talk and cleans it up on the fly — fixing grammar, phrasing, and formatting without a visible pause. It markets itself at roughly 230 words per minute, and the low-latency feel is genuinely good.
+- **Smart, context-aware editing.** Aqua reads what's on your screen to inform transcription and formatting, and supports voice-driven edits and custom instructions. It adapts to your writing style over time.
+- **Accuracy.** It benchmarks well (Aqua cites 97.3% accuracy on AISpeak) and handles technical vocabulary via a custom dictionary.
+- **Cross-platform.** Mac, Windows, and now iOS. If your work spans a PC and a phone, that reach matters.
+- **Works everywhere.** System-level integration means it drops into Gmail, Slack, Docs, VS Code, Cursor, and most other apps.
+
+That's a real product doing real work. If those are your priorities, you should probably just use Aqua.
+
+## Where Talkie is different
+
+Talkie doesn't try to out-format Aqua. It makes different trade-offs.
+
+**Free and local-first.** Talkie is free, with no subscription and no premium tier gating core features. Aqua's free Starter plan caps you at 1,000 words; unlimited use with the Avalon model is the Pro plan at $8/month (billed annually, as of 2026). Talkie has no word cap and no account required for core use.
+
+**On-device transcription.** Talkie transcribes locally — Apple Speech on iOS, and the Parakeet v3 local ASR model on Mac. Your audio doesn't leave your device to be transcribed. Aqua's Avalon model does its formatting in the cloud (Aqua emphasizes that it doesn't retain your data on its servers, which is a privacy commitment, but the processing still happens off-device). If on-device is a hard requirement for you, that's a clear line between the two.
+
+**Your voice becomes data.** This is the real differentiator. Talkie stores captures in a local SQLite database on your Mac, and ships a CLI that reads that database directly:
+
+```
+bun add -g @talkie/cli
+```
+
+That exposes every capture as structured data any script, pipeline, or agent can consume. Your dictation stops being ephemeral text in a box and becomes queryable, searchable local knowledge.
+
+**A remote control for your agents.** Because captures are structured and local, you can dictate straight into agentic CLI tools like Claude Code. Talk to your agents instead of typing prompts. This is where Talkie goes somewhere Aqua doesn't aim — less "dictate an email," more "drive your tooling by voice."
+
+**Cross-device via iCloud.** Captures sync across Mac, iPhone, and Apple Watch through iCloud, so you can capture a thought on your wrist and have it on your Mac.
+
+The honest catch: **Talkie is Apple-only** — macOS, iOS, and watchOS, with no Windows, Android, or web. Aqua is cross-platform. If you live on a PC, Talkie isn't an option, full stop.
+
+## Side by side
+
+| | Talkie | Aqua Voice |
+|---|---|---|
+| Price | Free, no subscription | Free tier (1,000 words); Pro ~$8/mo annually |
+| On-device transcription | Yes (Parakeet v3 on Mac, Apple Speech on iOS) | No — cloud processing |
+| Storage | Local SQLite on your Mac | Cloud account (Aqua states no server retention) |
+| CLI for scripts & agents | Yes (`@talkie/cli`) | No |
+| Dictate into AI agents | Yes (e.g. Claude Code) | Not a primary focus |
+| Cross-device | Mac, iPhone, Apple Watch via iCloud | Mac, Windows, iPhone |
+| Platform reach | Apple-only | Mac, Windows, iOS |
+| Real-time AI formatting | Minimal | Strong (Avalon model) |
+| On-screen context awareness | No | Yes |
+| Accuracy benchmarks | Local model | Publishes high benchmark scores |
+
+## Which one should you pick?
+
+**Choose Aqua Voice if** you want the fastest, most polished cloud dictation with aggressive real-time formatting and grammar cleanup; if you need Windows support or work across a PC and a phone; or if on-screen context awareness and style adaptation are worth a subscription to you. For someone drafting long-form prose or email all day across mixed hardware, Aqua is likely the better buy.
+
+**Choose Talkie if** you're on Apple hardware and want dictation that's free, on-device, and local-first; if you care that your captures live in a database you control; or if you want to dictate into scripts and AI agents rather than just into text fields. If "my voice should be data I can pipe anywhere" resonates, that's Talkie's whole reason for existing.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading:
+- [Dictate to Claude Code](/workflows/dictate-to-claude/)
+- [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
+- [Best dictation apps for Mac](/ideas/best-dictation-apps-for-mac/)
