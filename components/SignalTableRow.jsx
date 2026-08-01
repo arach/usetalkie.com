@@ -52,20 +52,8 @@ export default function SignalTableRow({
 
   return (
     <div
-      role={onActivate ? 'button' : undefined}
-      tabIndex={onActivate ? 0 : undefined}
       onClick={onActivate ? handleRowClick : undefined}
-      onKeyDown={
-        onActivate
-          ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                handleRowClick()
-              }
-            }
-          : undefined
-      }
-      className={`relative grid grid-cols-[28px_64px_1fr] items-start gap-3 px-4 py-3.5 transition-colors ${
+      className={`relative grid grid-cols-[44px_52px_1fr] items-start gap-2 px-3 py-3.5 transition-colors sm:grid-cols-[28px_64px_1fr] sm:gap-3 sm:px-4 ${
         index % 2 === 0 ? 'bg-canvas' : 'bg-canvas-alt'
       } ${index > 0 ? 'border-t border-edge-subtle' : ''} ${
         onActivate ? 'cursor-pointer hover:bg-surface focus:outline-none focus-visible:ring-1 focus-visible:ring-trace' : ''
@@ -93,7 +81,7 @@ export default function SignalTableRow({
         onClick={handlePlayClick}
         disabled={missing}
         aria-label={playing ? 'Pause' : 'Play'}
-        className={`mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-sm border transition-all ${
+        className={`inline-flex h-11 w-11 items-center justify-center rounded-sm border transition-all sm:mt-0.5 sm:h-6 sm:w-6 ${
           playing
             ? 'border-trace text-trace'
             : missing
@@ -109,7 +97,7 @@ export default function SignalTableRow({
             : undefined
         }
       >
-        {playing ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
+        {playing ? <Pause className="h-4 w-4 sm:h-3 sm:w-3" /> : <Play className="h-4 w-4 sm:h-3 sm:w-3" />}
       </button>
 
       {/* Stage */}

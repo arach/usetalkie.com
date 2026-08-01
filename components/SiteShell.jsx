@@ -58,8 +58,8 @@ export default function SiteShell({ children }) {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-edge-faint bg-canvas-overlay backdrop-blur-md font-mono">
-        <div className="mx-auto flex h-12 max-w-6xl items-center justify-between px-4 md:px-6">
-          <Link href="/" className="flex items-center group" aria-label="Talkie home">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 md:h-12 md:px-6">
+          <Link href="/" className="group flex min-h-11 items-center md:min-h-0" aria-label="Talkie home">
             <Wordmark size={28} state="listening" pulse />
           </Link>
 
@@ -75,7 +75,7 @@ export default function SiteShell({ children }) {
             <ThemeToggle />
             <Link
               href="/downloads"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge px-3 py-1.5 text-[9px] uppercase tracking-[0.22em] text-trace transition-all hover:-translate-y-px"
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-3 py-1.5 text-[9px] uppercase tracking-[0.22em] text-ink transition-all hover:-translate-y-px hover:text-trace md:min-h-0"
               style={{
                 background: 'color-mix(in oklab, var(--trace) 6%, transparent)',
               }}
@@ -122,14 +122,14 @@ export default function SiteShell({ children }) {
             <div className="flex items-center gap-3">
               <Link
                 href="/downloads"
-                className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
+                className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-trace transition-all hover:-translate-y-px"
                 style={{ background: 'color-mix(in oklab, var(--trace) 6%, transparent)' }}
               >
                 DOWNLOAD · MAC <span>→</span>
               </Link>
               <Link
                 href="/mobile"
-                className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
               >
                 APP STORE <span>↗</span>
               </Link>

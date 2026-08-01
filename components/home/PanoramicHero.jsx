@@ -472,14 +472,14 @@ export default function PanoramicHero() {
 
 function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle, onPause }) {
   return (
-    <section className="relative pb-3 pt-1 text-center md:pb-8 md:pt-14">
+    <section className="relative pb-5 pt-3 text-center md:pb-8 md:pt-14">
       {/* Donor-shape headline: "Talk to your" inline with the Rolodex
           flip card, sized 1em relative to the H1 and baseline-nudged
           so the card sits visually grounded under the typography.
           Sizing matches donor v1 verbatim (clamp 2.8rem → 5.6rem,
           tracking -0.025em, leading 0.92). */}
       <h1
-        className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-1 font-display text-[clamp(1.6rem,7vw,2rem)] font-normal leading-[1.05] tracking-[-0.02em] text-ink md:gap-y-2 md:text-[clamp(2.8rem,9vw,5.6rem)] md:leading-[0.92] md:tracking-[-0.025em]"
+        className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-y-2 font-display text-[clamp(2.15rem,10.5vw,2.75rem)] font-normal leading-[0.98] tracking-[-0.02em] text-ink md:flex-row md:flex-wrap md:items-baseline md:gap-x-[0.28em] md:gap-y-2 md:text-[clamp(2.8rem,9vw,5.6rem)] md:leading-[0.92] md:tracking-[-0.025em]"
         aria-label={`Talk to your ${device.label}`}
       >
         <span className="shrink-0">Talk to your</span>
@@ -742,7 +742,7 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
 
   return (
     <div
-      className="mx-auto mt-6 flex w-full max-w-[40rem] flex-col items-stretch px-4 md:mt-8"
+      className="mx-auto mt-7 flex w-full max-w-[40rem] flex-col items-stretch px-2 md:mt-8 md:px-4"
       aria-live="polite"
     >
       {rows.map(({ offset, i }) => {
@@ -754,9 +754,9 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
             type="button"
             onClick={() => !isActive && onSelect(i)}
             aria-current={isActive ? 'true' : undefined}
-            className="grid grid-cols-[1fr_1rem_1fr] items-baseline rounded-sm px-2 py-0.5 text-[12px] leading-snug transition-opacity hover:opacity-90 md:grid-cols-[1fr_2.5rem_1fr] md:py-1 md:text-[15px] md:leading-relaxed"
+            className="grid min-h-11 grid-cols-[1fr_1rem_1fr] items-center rounded-sm px-2 py-1.5 text-[12px] leading-snug transition-opacity hover:opacity-90 md:min-h-0 md:grid-cols-[1fr_2.5rem_1fr] md:py-1 md:text-[15px] md:leading-relaxed"
             style={{
-              opacity: isActive ? 1 : 0.32,
+              opacity: isActive ? 1 : 0.46,
               cursor: isActive ? 'default' : 'pointer',
             }}
           >

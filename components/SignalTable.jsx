@@ -955,11 +955,9 @@ export default function SignalTable({ catalog }) {
       >
         <div
           ref={tableRef}
-          tabIndex={0}
-          role="listbox"
+          role="group"
           aria-label="Talkie capture catalog"
-          aria-activedescendant={`signal-row-${activeIndex}`}
-          className="relative overflow-hidden rounded-md focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+          className="relative overflow-hidden rounded-md"
           style={{
             background: 'var(--panel-bg)',
             color: 'var(--panel-ink)',
@@ -1008,8 +1006,6 @@ export default function SignalTable({ catalog }) {
                 <div
                   key={capture.slug}
                   id={`signal-row-${index}`}
-                  role="option"
-                  aria-selected={index === activeIndex}
                   className="overflow-hidden"
                   style={{
                     maxHeight: `${Math.round(rowReveal * 72)}px`,

@@ -1420,3 +1420,42 @@ html[data-theme="modern"]:not(.dark) .home-hero-graticule {
     background-size: cover, 100% auto;
   }
 }
+
+/* Phone composition: preserve the architectural source at its natural
+ * proportions instead of squeezing the 1823×7200 drawing to viewport width
+ * and repeating it every ~1500px. Section-local paper masks stay calm so the
+ * illustration reads as a hero material, not as an overlay on every card and
+ * screenshot. */
+@media (max-width: 767px) {
+  html[data-theme="modern"]:not(.dark) .home-page-art {
+    --trace: #047857;
+    --trace-glow: rgba(4, 120, 87, 0.22);
+    --trace-dim: rgba(4, 120, 87, 0.16);
+    --amber: #047857;
+  }
+
+  html[data-theme="modern"]:not(.dark) .home-page-art::before {
+    background-position: 49% top;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    filter: contrast(0.9) saturate(0.45);
+    opacity: 0.24;
+  }
+
+  html[data-theme="modern"]:not(.dark) .home-section-art--architectural {
+    background-image: linear-gradient(
+      color-mix(in oklab, var(--canvas-alt) 94%, transparent),
+      color-mix(in oklab, var(--canvas-alt) 94%, transparent)
+    );
+  }
+
+  html[data-theme="modern"]:not(.dark) .home-page-art > .home-hero-art {
+    background-color: color-mix(in oklab, var(--canvas) 72%, transparent);
+    background-image: radial-gradient(
+      ellipse at 50% 35%,
+      rgba(255, 255, 255, 0.82),
+      rgba(255, 255, 255, 0.34) 58%,
+      transparent 82%
+    );
+  }
+}
