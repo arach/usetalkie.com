@@ -5,7 +5,13 @@ import { Play, Pause } from 'lucide-react'
  *
  * No state, no effects — usable from both server (SSR shell) and client
  * (the live SignalTable island). All interactivity is wired through
- * props (`onClick`, `onPlay`).
+ * props (`onActivate`, `onTogglePlay`).
+ *
+ * Interaction model (no nested interactive):
+ *   - Play/pause is the sole button in the transport column.
+ *   - Row activation is a separate button covering stage + body so
+ *     there is one clear interactive owner per action (axe nested-
+ *     interactive safe).
  *
  * Active rows get a phosphor halo via inline CSS-var-backed box-shadow;
  * "no audio yet" rows show a tiny indicator next to the play button
@@ -27,7 +33,7 @@ export default function SignalTableRow({
   onActivate,
   onTogglePlay,
 }) {
-  const handleRowClick = () => {
+  const handleActivate = () => {
     if (onActivate) onActivate(index)
   }
 
@@ -52,24 +58,9 @@ export default function SignalTableRow({
 
   return (
     <div
-      role={onActivate ? 'button' : undefined}
-      tabIndex={onActivate ? 0 : undefined}
-      onClick={onActivate ? handleRowClick : undefined}
-      onKeyDown={
-        onActivate
-          ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                handleRowClick()
-              }
-            }
-          : undefined
-      }
-      className={`relative grid grid-cols-[28px_64px_1fr] items-start gap-3 px-4 py-3.5 transition-colors ${
+      className={`relative grid grid-cols-[44px_64px_1fr] items-start gap-2 px-3 py-3.5 transition-colors sm:grid-cols-[44px_64px_1fr] sm:gap-3 sm:px-4 ${
         index % 2 === 0 ? 'bg-canvas' : 'bg-canvas-alt'
-      } ${index > 0 ? 'border-t border-edge-subtle' : ''} ${
-        onActivate ? 'cursor-pointer hover:bg-surface focus:outline-none focus-visible:ring-1 focus-visible:ring-trace' : ''
-      }`}
+      } ${index > 0 ? 'border-t border-edge-subtle' : ''}`}
       style={activeStyle}
       aria-current={active ? 'true' : undefined}
     >
@@ -87,13 +78,13 @@ export default function SignalTableRow({
         />
       )}
 
-      {/* Transport */}
+      {/* Transport — sole interactive owner for play/pause */}
       <button
         type="button"
         onClick={handlePlayClick}
         disabled={missing}
         aria-label={playing ? 'Pause' : 'Play'}
-        className={`mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-sm border transition-all ${
+        className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-trace ${
           playing
             ? 'border-trace text-trace'
             : missing
@@ -109,9 +100,47 @@ export default function SignalTableRow({
             : undefined
         }
       >
-        {playing ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
+        {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
       </button>
 
+      {/* Activation owner — stage + body. Separate from play so we never
+          nest interactive controls. Keyboard listbox navigation still
+          lives on the parent SignalTable chassis. */}
+      {onActivate ? (
+        <button
+          type="button"
+          onClick={handleActivate}
+          className="col-span-2 grid min-h-11 grid-cols-[64px_1fr] items-start gap-2 rounded-sm text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-trace sm:gap-3"
+          aria-label={`Select capture ${stage}: ${capture.eyebrow}`}
+        >
+          <RowBody
+            stage={stage}
+            capture={capture}
+            active={active}
+            missing={missing}
+            showOutput={showOutput}
+            transcribeKey={transcribeKey}
+          />
+        </button>
+      ) : (
+        <div className="col-span-2 grid min-h-11 grid-cols-[64px_1fr] items-start gap-2 sm:gap-3">
+          <RowBody
+            stage={stage}
+            capture={capture}
+            active={active}
+            missing={missing}
+            showOutput={showOutput}
+            transcribeKey={transcribeKey}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function RowBody({ stage, capture, active, missing, showOutput, transcribeKey }) {
+  return (
+    <>
       {/* Stage */}
       <span
         className={`mt-1 text-[10px] uppercase tracking-[0.22em] ${active ? 'text-trace' : 'text-trace'}`}
@@ -140,13 +169,10 @@ export default function SignalTableRow({
             finishes its transcribing beat, the parent bumps
             transcribeKey, which fires two keyed overlays here:
               1. row-paste-type — phosphor selection band sweeping
-                 L→R across the text width (~280ms). Reads as a
-                 cursor writing decisively.
+                 L→R across the text width (~280ms).
               2. row-paste-text — the text behind briefly turns
-                 trace + soft glow, then settles back to ink
-                 (~520ms total color transition).
-            The two combine into "engine just typed this here." Both
-            are keyed by `transcribeKey` so each fire replays cleanly. */}
+                 trace + soft glow, then settles back to ink.
+            Both are keyed by `transcribeKey` so each fire replays. */}
         <p className={`relative mt-1.5 overflow-hidden text-[13px] italic leading-snug ${active ? 'text-ink' : 'text-ink-muted'}`}>
           {active && transcribeKey != null && (
             <span
@@ -176,6 +202,6 @@ export default function SignalTableRow({
           </p>
         )}
       </div>
-    </div>
+    </>
   )
 }

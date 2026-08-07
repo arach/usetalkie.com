@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot, Maximize2, X } from 'lucide-react'
+import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot, FileText, Maximize2, X } from 'lucide-react'
 import { TALKIE_PHONE_APP } from '../../shared/config/product-links'
 import { playSpotlightTick, playSurfaceTick } from '../../lib/sfx'
 
@@ -17,16 +17,15 @@ const PACKAGE_MANAGERS = [
  * PanoramicHero — homepage synthesis composition.
  *
  * One chassis, three inset bays:
- *   LEFT   · INPUT  — keyboard-key transducer + device-aware install affordance
- *   CENTER · SCOPE  — animated waveform (idle, gets richer when device flips)
- *                     + decoded transcription line underneath
- *   RIGHT  · OUTPUT — device screenshot + per-use-case artifact line
+ *   LEFT   · CONTEXT — device screen + the situation where speech begins
+ *   CENTER · PROCESS — animated waveform + decoded transcription
+ *   RIGHT  · RESULT  — usable outcome + artifact receipt + install affordance
  *
  * The sub-hero (CinematicHero) carries a user-driven use-case roller.
  * Clicking a row sets useCaseIdx; the entire chassis re-syncs:
  *   - sub-hero shows the active action → outcome summary
  *   - ScopeBay shows what was literally said (transcription)
- *   - OutputBay shows what landed (artifact)
+ *   - ResultBay shows what landed (artifact)
  * Three views of the same scenario, decomposed across the pipeline.
  *
  * Above the bays: a single chassis meta-strip (eyebrow, channel, REV).
@@ -56,31 +55,31 @@ const DEVICES = [
     ],
     useCases: [
       {
-        action: 'Voice a rough draft',
-        outcome: 'Cleanup rule runs',
+        action: 'Dictate a rough draft',
+        outcome: 'The revised draft is ready',
         transcription:
           'okay the intro is doing too much, lemme lead with the conflict instead, see if it lands',
-        artifact: 'Draft refined · 127→89 words · 3 cuts',
+        artifact: '89 words · 3 edits',
       },
       {
         action: 'Record the meeting',
-        outcome: 'Meeting notes ready',
+        outcome: 'The meeting notes are ready',
         transcription:
           'alex pushed back on the migration window, we settled on staging-first friday, jamie owns the rollback',
-        artifact: 'Meeting notes · 6 items · 4 owners',
+        artifact: '6 action items · 4 owners',
       },
       {
         action: 'Describe the bug',
-        outcome: 'GitHub issue filed',
+        outcome: 'The GitHub issue is ready',
         transcription:
           'cmd-shift-3 on the empty state crashes it, started after 0.4.1, can repro 2 of 3',
-        artifact: 'Issue #482 filed · 3 logs attached',
+        artifact: 'Issue 482 · 3 logs attached',
       },
     ],
     install: {
       kind: 'dmg',
       eyebrow: 'INSTALL · MAC',
-      title: 'Download .dmg',
+      title: 'Download Talkie for Mac',
       meta: '12 mb',
       href: '/downloads',
       Icon: Download,
@@ -113,31 +112,31 @@ const DEVICES = [
     ],
     useCases: [
       {
-        action: 'Ramble five minutes',
-        outcome: 'Brief queued',
+        action: 'Record a research question',
+        outcome: 'The research brief is queued',
         transcription:
           'why are we seeing churn spike in week three of trial, dig the cohort, check the onboarding redesign',
-        artifact: 'Brief queued · ETA ~12 min',
+        artifact: 'Estimated time · 12 minutes',
       },
       {
-        action: 'Snap + voice an idea',
-        outcome: 'Spec at your desk',
+        action: 'Add a voice note to an image',
+        outcome: 'The draft specification is ready',
         transcription:
           'this latte cup curvature, i want this on the talkie hardware sketch, riff for a desk render',
-        artifact: 'Spec drafted · 1 ref image',
+        artifact: '1 reference image attached',
       },
       {
         action: 'Describe the problem',
-        outcome: 'Picked up on Mac',
+        outcome: 'The investigation runs on Mac',
         transcription:
           'build keeps failing on the dependabot lockfile, pull the last 5 runs, see if it is a single transitive',
-        artifact: 'Mac picked it up · running',
+        artifact: 'Status · running on Mac',
       },
     ],
     install: {
       kind: 'qr',
       eyebrow: 'INSTALL · iPHONE',
-      title: 'Get on App Store',
+      title: 'Get Talkie for iPhone',
       meta: 'iOS 26+',
       href: TALKIE_PHONE_APP.appStoreUrl,
       Icon: QrCode,
@@ -170,31 +169,31 @@ const DEVICES = [
     ],
     useCases: [
       {
-        action: 'Tap mid-thought',
-        outcome: 'Searchable by tonight',
+        action: 'Record a meeting note',
+        outcome: 'The note is searchable',
         transcription:
           'what if install had a try-without-account path, lower friction first run, sign in after first capture',
-        artifact: 'Captured · indexed at 21:00',
+        artifact: 'Indexed at 21:00',
       },
       {
         action: 'Capture without stopping',
-        outcome: 'Waiting on your Mac',
+        outcome: 'The follow-up is on your Mac',
         transcription:
           'follow up with marc on licensing, the simple non-commercial language was cleaner, ask if his team signs',
-        artifact: 'Waiting on Mac · 1 todo',
+        artifact: '1 action item on Mac',
       },
       {
-        action: 'The 3am idea',
-        outcome: 'Still there at 9am',
+        action: 'Record an idea at night',
+        outcome: 'The idea is ready in the morning',
         transcription:
           'that pricing tier we kept dancing around, it is just two tiers, solo and team, rest is over-engineering',
-        artifact: 'Logged · 3:14am · still here',
+        artifact: 'Recorded at 03:14',
       },
     ],
     install: {
       kind: 'handoff',
       eyebrow: 'INSTALL · WATCH',
-      title: 'Pairs with iPhone',
+      title: 'Set up Talkie on Watch',
       meta: 'watch app',
       href: '/mobile',
       Icon: Watch,
@@ -227,31 +226,31 @@ const DEVICES = [
     ],
     useCases: [
       {
-        action: 'Voice the trigger',
-        outcome: 'Workflow scheduled',
+        action: 'Describe a recurring task',
+        outcome: 'The workflow is scheduled',
         transcription:
           'every weekday 6am, pull the top 3 github issues by reactions, draft a triage, drop in my morning inbox',
-        artifact: 'Workflow scheduled · daily 06:00',
+        artifact: 'Runs on weekdays at 06:00',
       },
       {
-        action: 'Wire a daily',
-        outcome: 'Brief lands at 7am',
+        action: 'Create a daily brief',
+        outcome: 'The brief arrives at 07:00',
         transcription:
           '5-line brief on the macos voice ml landscape, apple wwdc signals, any new on-device frameworks',
-        artifact: 'Brief at 07:00 · 5 sources',
+        artifact: 'Delivery time · 07:00 · 5 sources',
       },
       {
-        action: 'Sketch a recipe',
-        outcome: 'Recipe armed',
+        action: 'Describe an event workflow',
+        outcome: 'The workflow is ready',
         transcription:
           'anytime someone tags me on a github issue, draft a 1-para reply with a clarifying question, hold for review',
-        artifact: 'Recipe armed · awaiting trigger',
+        artifact: 'Status · waiting for the event',
       },
     ],
     install: {
       kind: 'handoff',
       eyebrow: 'CONFIGURE · AGENTS',
-      title: 'Wire a workflow',
+      title: 'Open Talkie workflows',
       meta: 'workflows',
       href: '/workflows',
       Icon: Bot,
@@ -276,6 +275,161 @@ const DEVICES = [
   },
 ]
 
+const SCENARIO_DETAILS = {
+  mac: [
+    {
+      title: 'A draft is open.',
+      body: 'The cursor is in the draft. The next sentence is clear, but typing would interrupt the work.',
+      constraint: 'Typing would interrupt the work.',
+      need: 'Add the next sentence in the open draft.',
+      moment: 'Talkie enters the speech in the open draft.',
+      outputLabel: 'Revised draft',
+      destination: 'Active app',
+      outputState: 'Complete',
+      outputBody: 'Talkie keeps the original text. Then the cleanup workflow creates a shorter draft for review.',
+      payload: ['"workflow": "cleanup_draft"', '"status": "complete"', '"cuts": 3'],
+    },
+    {
+      title: 'The meeting has ended.',
+      body: 'The decisions and action items are still easy to remember. Another task will soon need attention.',
+      constraint: 'Another task needs attention soon.',
+      need: 'Save the decisions and action items.',
+      moment: 'Talkie records the meeting debrief.',
+      outputLabel: 'Meeting notes',
+      destination: 'Talkie library',
+      outputState: 'Ready',
+      outputBody: 'Talkie creates structured meeting notes. The notes include the decisions, action items, owners, and open questions.',
+      payload: ['"workflow": "meeting_notes"', '"items": 6', '"owners": 4'],
+    },
+    {
+      title: 'A software error is visible.',
+      body: 'The evidence is still on the screen. The steps that caused the error are easy to describe.',
+      constraint: 'The evidence will not stay visible.',
+      need: 'Save the error and the steps that caused it.',
+      moment: 'Talkie records the error description.',
+      outputLabel: 'GitHub issue',
+      destination: 'GitHub',
+      outputState: 'Filed',
+      outputBody: 'Talkie creates a structured GitHub issue. The issue includes the steps, app version, and logs.',
+      payload: ['"workflow": "github_issue"', '"issue": 482', '"logs": 3'],
+    },
+  ],
+  iphone: [
+    {
+      title: 'A research question needs attention away from the desk.',
+      body: 'The important details are clear. A polished research prompt is not ready.',
+      constraint: 'A polished prompt is not ready.',
+      need: 'Save the full research question.',
+      moment: 'Talkie records the research question.',
+      outputLabel: 'Research brief',
+      destination: 'Research queue',
+      outputState: 'Queued',
+      outputBody: 'Talkie creates a research brief and adds it to the queue. The brief is available on the Mac.',
+      payload: ['"workflow": "research_brief"', '"status": "queued"', '"eta": "12m"'],
+    },
+    {
+      title: 'An image needs an explanation.',
+      body: 'A useful reference is in view. The image alone does not explain what matters.',
+      constraint: 'The image does not explain what matters.',
+      need: 'Keep the image and explanation together.',
+      moment: 'Talkie saves the image and the explanation.',
+      outputLabel: 'Draft specification',
+      destination: 'Mac',
+      outputState: 'Ready',
+      outputBody: 'Talkie creates a structured specification. The specification includes the image and the recorded explanation.',
+      payload: ['"workflow": "draft_spec"', '"status": "ready"', '"references": 1'],
+    },
+    {
+      title: 'A build fails away from the Mac.',
+      body: 'The likely investigation is already clear. The work must continue on the Mac.',
+      constraint: 'The investigation must run on the Mac.',
+      need: 'Send a precise investigation.',
+      moment: 'Talkie sends the investigation to the Mac.',
+      outputLabel: 'Mac investigation',
+      destination: 'Mac',
+      outputState: 'Running',
+      outputBody: 'Talkie starts the investigation on the Mac. The instruction does not require re-entry.',
+      payload: ['"workflow": "mac_handoff"', '"status": "running"', '"runs": 5'],
+    },
+  ],
+  watch: [
+    {
+      title: 'The previous meeting has ended.',
+      body: 'The previous meeting has ended. Its decisions are still clear during the walk to the next meeting.',
+      constraint: 'The next meeting starts soon.',
+      need: 'Save the decisions from the previous meeting.',
+      moment: 'Talkie records the meeting note on the Watch.',
+      outputLabel: 'Note on iPhone',
+      destination: 'iPhone',
+      outputState: 'Synced',
+      outputBody: 'Talkie transcribes and summarizes the note. The result is available on iPhone.',
+      payload: ['"source": "watch"', '"status": "indexed"', '"synced_to": "phone"'],
+    },
+    {
+      title: 'Both hands are busy.',
+      body: 'A useful thought appears during another task. Stopping the task would interrupt the work.',
+      constraint: 'Stopping would interrupt the current task.',
+      need: 'Save the follow-up without using a phone.',
+      moment: 'Talkie records the thought on the Watch.',
+      outputLabel: 'Follow-up on Mac',
+      destination: 'Mac',
+      outputState: 'Ready',
+      outputBody: 'Talkie creates a searchable note. The note identifies the next action.',
+      payload: ['"source": "watch"', '"status": "waiting"', '"todos": 1'],
+    },
+    {
+      title: 'An idea needs to be recorded at night.',
+      body: 'It is late. The idea is clear now but may be difficult to recall in the morning.',
+      constraint: 'The idea may be difficult to recall in the morning.',
+      need: 'Save one sentence now.',
+      moment: 'Talkie records the idea on the Watch.',
+      outputLabel: 'Searchable note',
+      destination: 'Talkie library',
+      outputState: 'Saved',
+      outputBody: 'Talkie saves the time, transcript, and context. This information makes the idea clear in the morning.',
+      payload: ['"source": "watch"', '"captured_at": "03:14"', '"status": "searchable"'],
+    },
+  ],
+  agents: [
+    {
+      title: 'A repeated task needs automation.',
+      body: 'The task repeats every weekday. The source, schedule, and required result stay the same.',
+      constraint: 'Manual setup repeats every weekday.',
+      need: 'Save one schedule and one set of instructions.',
+      moment: 'Talkie records the workflow instruction.',
+      outputLabel: 'Scheduled workflow',
+      destination: 'Agent runtime',
+      outputState: 'Scheduled',
+      outputBody: 'Talkie creates a workflow that runs on weekdays. The workflow is available for review before it runs.',
+      payload: ['"schedule": "weekdays 06:00"', '"status": "scheduled"', '"destination": "inbox"'],
+    },
+    {
+      title: 'A daily brief is required.',
+      body: 'The subject, sources, length, and delivery time are fixed. The same setup repeats each morning.',
+      constraint: 'The same setup repeats each morning.',
+      need: 'Deliver one brief at a fixed time.',
+      moment: 'Talkie records the brief requirements.',
+      outputLabel: 'Daily brief',
+      destination: 'Inbox',
+      outputState: 'Scheduled',
+      outputBody: 'Talkie saves the instruction as a daily workflow. The workflow delivers the brief at the specified time.',
+      payload: ['"delivery": "07:00"', '"sources": 5', '"status": "armed"'],
+    },
+    {
+      title: 'An event must start a workflow.',
+      body: 'A GitHub mention starts the work. A person must approve the drafted reply before it is sent.',
+      constraint: 'A person must approve the reply.',
+      need: 'Draft the reply and wait for review.',
+      moment: 'Talkie records the event and the action.',
+      outputLabel: 'Workflow with review',
+      destination: 'Review queue',
+      outputState: 'Waiting',
+      outputBody: 'Talkie creates a workflow that drafts the reply. The workflow waits for approval before it sends the reply.',
+      payload: ['"trigger": "github_mention"', '"review": "required"', '"status": "armed"'],
+    },
+  ],
+}
+
 const ROTATION_MS = 5400
 const FLIP_OUT_MS = 140
 const FLIP_IN_MS = 220
@@ -284,7 +438,7 @@ export default function PanoramicHero() {
   const [deviceIdx, setDeviceIdx] = useState(0)
   // useCaseIdx is the single source of truth for the synchronized
   // pipeline: sub-hero summary roller, ScopeBay transcription, and
-  // OutputBay artifact all read from device.useCases[useCaseIdx]. The
+  // ResultBay artifact all read from device.useCases[useCaseIdx]. The
   // user drives advancement by clicking the roller — there is no auto-
   // rotate (devices already auto-rotate; nesting two timers reads as
   // busy). When the device flips, we reset to position 0 so each
@@ -292,7 +446,6 @@ export default function PanoramicHero() {
   const [useCaseIdx, setUseCaseIdx] = useState(0)
   const [flipPhase, setFlipPhase] = useState('idle') // 'idle' | 'out' | 'in'
   const [paused, setPaused] = useState(false)
-  const [spotlightOpen, setSpotlightOpen] = useState(false)
   const flipTimers = useRef([])
   const audioContextRef = useRef(null)
 
@@ -302,17 +455,6 @@ export default function PanoramicHero() {
   useEffect(() => {
     setUseCaseIdx(0)
   }, [deviceIdx])
-
-  // Auto-rotate. Pause on hover anywhere over the chassis so a viewer
-  // can take in a single device without the rotation kicking off.
-  useEffect(() => {
-    if (paused || spotlightOpen) return
-    const id = window.setInterval(() => {
-      jumpTo((prev) => (prev + 1) % DEVICES.length)
-    }, ROTATION_MS)
-    return () => window.clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paused, spotlightOpen])
 
   useEffect(() => () => {
     flipTimers.current.forEach(clearTimeout)
@@ -364,11 +506,6 @@ export default function PanoramicHero() {
     jumpTo(index)
   }
 
-  const setSpotlight = (open) => {
-    playInteraction(open ? 'spotlight-open' : 'spotlight-close')
-    setSpotlightOpen(open)
-  }
-
   // Panel scope: re-route theme tokens to permanent dark phosphor inside
   // the chassis (instruments-as-objects). Anything inside the chassis
   // that reads --trace, --ink, --edge, --canvas through CSS vars renders
@@ -413,56 +550,15 @@ export default function PanoramicHero() {
         onPause={setPaused}
       />
 
-      <CompactChassis
+      <ScenarioStage
         device={device}
         deviceIdx={deviceIdx}
         useCase={useCase}
+        useCaseIdx={useCaseIdx}
         onJump={selectDevice}
         panelStyle={panelStyle}
         onPause={setPaused}
       />
-
-    <div
-      /* Chassis (ossi bay) — instrument metaphor for tablet+desktop.
-       * Below xl, CompactChassis carries the story without the full
-       * three-bay spec/scope/output machine. */
-      className="home-instrument-light relative hidden overflow-hidden rounded-md font-mono xl:block"
-      style={panelStyle}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      {/* Corner fasteners — mirrors Path B's chassis grammar. */}
-      <CornerFasteners />
-
-      {/* Chassis meta-strip */}
-      <ChassisHeader device={device} deviceIdx={deviceIdx} onJump={selectDevice} />
-
-      {/* Three inset bays. Grid is fluid: collapses to single column on
-          narrow viewports, but the panoramic reading is the design
-          target — it's how the instrument tells its story. */}
-      <div className="relative grid grid-cols-1 gap-px bg-[var(--panel-edge-dim)] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.32fr)_minmax(0,1.1fr)]">
-        {/* SIGNAL PATH WIRES — rendered inside ScopeBay flanking the
-            screen well so they self-align with ScopePort jacks
-            regardless of bay height. See SignalWire below. */}
-
-        {/* LEFT BAY · INPUT — keyboard-key transducer + install affordance */}
-        <InputBay device={device} flipPhase={flipPhase} />
-
-        {/* CENTER BAY · SCOPE — animated trace + decoded transcription */}
-        <ScopeBay device={device} useCase={useCase} flipPhase={flipPhase} />
-
-        {/* RIGHT BAY · OUTPUT — device screenshot + per-case artifact */}
-        <OutputBay
-          device={device}
-          useCase={useCase}
-          expanded={spotlightOpen}
-          onExpandedChange={setSpotlight}
-        />
-      </div>
-
-      {/* Chassis status footer — channel meter, signal-path label */}
-      <ChassisFooter device={device} />
-    </div>
     </>
   )
 }
@@ -472,14 +568,14 @@ export default function PanoramicHero() {
 
 function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle, onPause }) {
   return (
-    <section className="relative pb-3 pt-1 text-center md:pb-8 md:pt-14">
+    <section className="relative pb-3 pt-1 text-center md:pb-6 md:pt-8 xl:pb-8 xl:pt-14">
       {/* Donor-shape headline: "Talk to your" inline with the Rolodex
           flip card, sized 1em relative to the H1 and baseline-nudged
           so the card sits visually grounded under the typography.
           Sizing matches donor v1 verbatim (clamp 2.8rem → 5.6rem,
           tracking -0.025em, leading 0.92). */}
       <h1
-        className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-1 font-display text-[clamp(1.6rem,7vw,2rem)] font-normal leading-[1.05] tracking-[-0.02em] text-ink md:gap-y-2 md:text-[clamp(2.8rem,9vw,5.6rem)] md:leading-[0.92] md:tracking-[-0.025em]"
+        className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-1 font-display text-[clamp(1.6rem,7vw,2rem)] font-normal leading-[1.05] tracking-[-0.02em] text-ink md:gap-y-2 md:text-[clamp(2.35rem,5.5vw,3.75rem)] md:leading-[0.98] md:tracking-[-0.025em] xl:text-[clamp(2.8rem,9vw,5.6rem)] xl:leading-[0.92]"
         aria-label={`Talk to your ${device.label}`}
       >
         <span className="shrink-0">Talk to your</span>
@@ -493,7 +589,7 @@ function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle
 
       {/* Use-case roller — three rows visible (prev / current / next),
           same donor-shape three-column grid. The active row drives the
-          entire chassis: ScopeBay's transcription and OutputBay's
+          entire chassis: ScopeBay's transcription and ResultBay's
           artifact both read from useCases[useCaseIdx]. User-driven —
           click a row to jump, no auto-rotate so the sub-hero stays
           calm and lets the device rotor be the only auto-motion axis. */}
@@ -502,7 +598,311 @@ function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle
         idx={useCaseIdx}
         onSelect={onSelectUseCase}
       />
+
     </section>
+  )
+}
+
+/**
+ * THESIS: Explain Talkie through lived scenarios, not telemetry.
+ * OWN-WORLD: Keep the existing quiet technical chassis, but let real app
+ * moments and editorial copy carry it instead of oscilloscope decoration.
+ * STORY: A visitor recognizes their situation, sees the product action,
+ * then understands the useful cross-device outcome.
+ * FIRST VIEWPORT: Situation left, large replaceable demo center with the
+ * install action directly below, and outcome right.
+ * FORM: A responsive scenario stage; current explainers are code-native
+ * stand-ins designed to be replaced by updated product videos.
+ */
+function ScenarioStage({ device, deviceIdx, useCase, useCaseIdx, onJump, panelStyle, onPause }) {
+  const detail = SCENARIO_DETAILS[device.key]?.[useCaseIdx] || SCENARIO_DETAILS[device.key]?.[0]
+
+  return (
+    <section
+      className="home-instrument-light relative mt-7 overflow-hidden rounded-md font-mono sm:mt-8"
+      style={panelStyle}
+      onMouseEnter={() => onPause(true)}
+      onMouseLeave={() => onPause(false)}
+      onFocus={() => onPause(true)}
+      onBlur={() => onPause(false)}
+    >
+      <CornerFasteners />
+
+      <div className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-[var(--panel-edge-dim)] px-3 py-2 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)] sm:grid-cols-[1fr_auto_1fr] sm:px-4 sm:text-[9px] sm:tracking-[0.24em]">
+        <span className="flex min-w-0 items-center gap-2">
+          <span
+            aria-hidden
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--panel-trace)]"
+            style={{ boxShadow: '0 0 6px var(--panel-trace)' }}
+          />
+          <span className="truncate text-[var(--panel-trace)]">Talkie</span>
+        </span>
+        <CompactDeviceSelector deviceIdx={deviceIdx} onJump={onJump} />
+        <span className="hidden sm:block" aria-hidden />
+      </div>
+
+      <div className="grid gap-px bg-[var(--panel-edge-dim)] min-[700px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] min-[700px]:grid-rows-[minmax(0,1fr)_auto_auto] xl:grid-cols-[minmax(0,0.86fr)_minmax(0,1.5fr)_minmax(0,0.94fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
+        <ScenarioNarrative detail={detail} useCase={useCase} />
+        <ScenarioMoment device={device} detail={detail} useCase={useCase} />
+        <ScenarioOutcome detail={detail} useCase={useCase} />
+      </div>
+    </section>
+  )
+}
+
+function ScenarioNarrative({ detail, useCase }) {
+  const sceneFacts = [
+    { label: 'Context', value: detail.title, lead: true },
+    { label: 'Constraint', value: detail.constraint },
+    { label: 'Need', value: detail.need },
+  ]
+
+  return (
+    <aside className="grid min-h-[330px] grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-start-1 min-[700px]:row-span-2 min-[700px]:row-start-1 min-[700px]:min-h-[430px] min-[700px]:grid-rows-subgrid">
+      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+        <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Situation</p>
+
+        <dl className="mt-8 border-y border-[var(--panel-edge-dim)]">
+          {sceneFacts.map((fact) => (
+            <div
+              key={fact.label}
+              className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-[var(--panel-edge-dim)] py-3.5 last:border-b-0"
+            >
+              <dt className="pt-1 text-[7px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)]">
+                {fact.label}
+              </dt>
+              <dd className={fact.lead
+                ? 'font-display text-xl leading-tight tracking-[-0.02em] text-[var(--panel-ink)]'
+                : 'text-[11px] leading-relaxed text-[var(--panel-ink-muted)]'}
+              >
+                {fact.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+        <ScenarioFooterHeader label="Input" meta="Voice" />
+        <p className="text-[11px] italic leading-relaxed text-[var(--panel-ink-dim)]">
+          “{useCase.transcription}”
+        </p>
+      </div>
+    </aside>
+  )
+}
+
+function ScenarioMoment({ device, detail, useCase }) {
+  const Install = device.install
+  const InstallIcon = Install.Icon
+  const isExternal = Install.href.startsWith('http')
+  const ctaClass =
+    'group flex min-h-12 w-full items-center justify-between gap-3 rounded-md border border-[var(--panel-edge)] bg-[var(--panel-bg)] px-3 py-2.5 text-[var(--panel-ink)] shadow-[0_8px_20px_-18px_rgba(0,0,0,0.45)] transition-[border-color,background-color,box-shadow] hover:border-[var(--panel-ink-muted)] hover:bg-[var(--panel-bg-alt)] hover:shadow-[0_10px_22px_-18px_rgba(0,0,0,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--panel-trace)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-bg-alt)]'
+  const ctaChildren = (
+    <>
+      <span className="flex min-w-0 items-center gap-3">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-[var(--panel-edge-dim)] bg-[var(--panel-bg-alt)] text-[var(--panel-trace)] transition-colors group-hover:border-[var(--panel-edge)]">
+          <InstallIcon className="h-3.5 w-3.5" aria-hidden />
+        </span>
+        <span className="min-w-0 truncate font-sans text-[12px] font-medium leading-tight">{Install.title}</span>
+      </span>
+      <span className="flex shrink-0 items-center gap-2 text-[8px] uppercase tracking-[0.16em] text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-ink-muted)]">
+        <span>{Install.meta}</span>
+        <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden />
+      </span>
+    </>
+  )
+
+  return (
+    <div className="grid grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-start-2 min-[700px]:row-span-2 min-[700px]:row-start-1 min-[700px]:min-h-[430px] min-[700px]:grid-rows-subgrid">
+      <div className="flex flex-col bg-[var(--panel-bg-alt)] p-4 sm:p-5 lg:p-6">
+        <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Action</p>
+
+        <div className="mt-4 flex min-h-[280px] flex-1 items-center justify-center overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-4 sm:min-h-[320px] lg:min-h-0">
+          <ProductMoment device={device} detail={detail} useCase={useCase} />
+        </div>
+
+        <p className="mt-3 text-center text-[9px] uppercase tracking-[0.18em] text-[var(--panel-ink-muted)]">
+          {detail.moment}
+        </p>
+      </div>
+
+      <div className="bg-[var(--panel-bg-alt)] p-5 sm:p-6 lg:p-7">
+        <ScenarioFooterHeader label="Download" meta={device.label} />
+        {isExternal ? (
+          <a href={Install.href} target="_blank" rel="noopener noreferrer" className={ctaClass}>
+            {ctaChildren}
+          </a>
+        ) : (
+          <Link href={Install.href} className={ctaClass}>
+            {ctaChildren}
+          </Link>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function ProductMoment({ device, detail, useCase }) {
+  if (device.key === 'watch') {
+    return (
+      <div className="relative flex aspect-[5/6] h-[250px] max-h-full flex-col overflow-hidden rounded-[2.25rem] border border-white/15 bg-[#050505] px-5 py-6 text-center text-white shadow-[0_18px_32px_-22px_rgba(0,0,0,0.9)]">
+        <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.2em] text-white/50">
+          <span>Talkie</span>
+          <span>10:14</span>
+        </div>
+        <div className="my-auto">
+          <p className="text-[10px] uppercase tracking-[0.24em] text-[#ff5b60]">● Recording</p>
+          <p className="mt-4 text-4xl font-light tabular-nums">0:05</p>
+          <p className="mx-auto mt-4 max-w-[13rem] text-[10px] leading-relaxed text-white/65">
+            {useCase.action}
+          </p>
+        </div>
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[5px] border-[#ff4b52] bg-[#3a0b0e] shadow-[0_8px_18px_-10px_rgba(255,75,82,0.9)]">
+          <span className="h-5 w-5 rounded-md bg-[#ff4b52] motion-safe:animate-pulse" />
+        </div>
+      </div>
+    )
+  }
+
+  if (device.key === 'iphone') {
+    return (
+      <div className="relative flex h-[280px] w-[158px] max-w-full flex-col overflow-hidden rounded-[2rem] border border-white/15 bg-[#080808] p-4 text-white shadow-[0_18px_32px_-22px_rgba(0,0,0,0.9)]">
+        <div className="mx-auto h-3 w-14 rounded-full bg-black" />
+        <div className="mt-5 text-center">
+          <p className="text-[8px] uppercase tracking-[0.22em] text-white/45">Talkie · capture</p>
+          <p className="mt-5 text-[10px] font-medium leading-relaxed">{useCase.action}</p>
+        </div>
+        <div className="my-auto space-y-2">
+          <span className="block h-1 rounded-full bg-white/15" />
+          <span className="block h-1 w-4/5 rounded-full bg-white/15" />
+          <span className="block h-1 w-2/3 rounded-full bg-white/15" />
+        </div>
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6e73]">
+          <span className="h-3.5 w-3.5 rounded-sm bg-white" />
+        </div>
+      </div>
+    )
+  }
+
+  if (device.key === 'agents') {
+    return (
+      <div className="w-full max-w-lg px-3">
+        <div className="overflow-hidden rounded-[0.8rem] border-[5px] border-[#202220] bg-[#0b0c0b] text-white shadow-[0_20px_34px_-22px_rgba(0,0,0,0.85)]">
+          <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 text-[8px] uppercase tracking-[0.2em] text-white/45">
+            <span>Talkie agent</span>
+            <span className="text-emerald-400">Ready</span>
+          </div>
+          <div className="p-5">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">Input</p>
+            <p className="mt-3 text-[12px] leading-relaxed text-white/80">{useCase.transcription}</p>
+            <div className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4 text-[10px] text-emerald-300">
+              <Play className="h-3.5 w-3.5" aria-hidden />
+              {useCase.outcome}
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto h-8 w-16 border-x-[7px] border-[#262826] bg-[#303230]" aria-hidden />
+        <div className="mx-auto h-2.5 w-32 rounded-t-full bg-[#262826] shadow-[0_8px_12px_-8px_rgba(0,0,0,0.7)]" aria-hidden />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xl px-2 text-[#151515]">
+      <div className="rounded-t-[1rem] border-[5px] border-[#252625] bg-[#252625] p-1.5 shadow-[0_22px_34px_-22px_rgba(0,0,0,0.72)]">
+        <div className="overflow-hidden rounded-[0.55rem] bg-[#f4f4f2]">
+          <div className="flex items-center gap-2 border-b border-black/10 px-4 py-2.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ff625d]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#f2c14e]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#44c267]" />
+            <span className="ml-auto text-[8px] uppercase tracking-[0.18em] text-black/40">Dictation active</span>
+          </div>
+          <div className="p-5 sm:p-6">
+            <p className="text-[9px] uppercase tracking-[0.2em] text-black/40">Current draft</p>
+            <p className="mt-4 font-sans text-[15px] leading-relaxed text-black/80">
+              {useCase.transcription}
+              <span className="ml-1 inline-block h-4 w-px translate-y-0.5 bg-emerald-500 motion-safe:animate-pulse" />
+            </p>
+            <div className="mt-6 flex items-center justify-between border-t border-black/10 pt-3 text-[9px] uppercase tracking-[0.16em] text-black/45">
+              <span>Talkie is listening</span>
+              <span>⌘ ⇧ D</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="relative mx-auto h-4 w-[106%] -translate-x-[3%] rounded-b-[0.75rem] border border-black/15 bg-[#d7d8d6] shadow-[0_12px_18px_-14px_rgba(0,0,0,0.65)]" aria-hidden>
+        <span className="absolute left-1/2 top-0 h-1.5 w-20 -translate-x-1/2 rounded-b-md bg-[#b8bab7]" />
+      </div>
+    </div>
+  )
+}
+
+function ScenarioOutcome({ detail, useCase }) {
+  const outputFile = `${detail.outputLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}.md`
+
+  return (
+    <aside className="grid min-h-[330px] grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-span-2 min-[700px]:col-start-1 min-[700px]:row-start-3 min-[700px]:min-h-0 min-[700px]:grid-cols-[minmax(0,1.4fr)_minmax(15rem,0.6fr)] min-[700px]:grid-rows-1 xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:row-start-1 xl:min-h-[430px] xl:grid-cols-1 xl:grid-rows-subgrid">
+      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+        <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Result</p>
+
+        <article className="mt-8 overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] shadow-[0_12px_24px_-24px_rgba(0,0,0,0.45)]" aria-label={`${detail.outputLabel} Markdown output`}>
+          <div className="flex items-center justify-between gap-3 border-b border-[var(--panel-edge-dim)] bg-[var(--panel-bg-alt)] px-3 py-2.5 text-[8px]">
+            <span className="flex min-w-0 items-center gap-2 text-[var(--panel-ink-muted)]">
+              <FileText className="h-3 w-3 shrink-0 text-[var(--panel-trace)]" aria-hidden />
+              <span className="truncate">{outputFile}</span>
+            </span>
+            <span className="flex shrink-0 items-center gap-2 uppercase tracking-[0.18em] text-[var(--panel-trace)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
+              {detail.outputState}
+            </span>
+          </div>
+
+          <div className="p-4">
+            <div className="flex items-start gap-2">
+              <span className="mt-0.5 font-mono text-[13px] text-[var(--panel-trace)]" aria-hidden>#</span>
+              <h3 className="font-display text-2xl font-normal leading-tight tracking-[-0.02em] text-[var(--panel-ink)]">
+                {detail.outputLabel}
+              </h3>
+            </div>
+            <p className="mt-3 text-[12px] leading-relaxed text-[var(--panel-ink-muted)]">
+              {detail.outputBody}
+            </p>
+
+            <div className="mt-5 overflow-hidden border-y border-[var(--panel-edge-dim)] text-[9px]">
+              <div className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-[var(--panel-edge-dim)] bg-[var(--panel-bg-alt)] px-2 py-2 uppercase tracking-[0.16em] text-[var(--panel-ink-faint)]">
+                <span>Field</span>
+                <span>Value</span>
+              </div>
+              <div className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-[var(--panel-edge-dim)] px-2 py-2.5">
+                <span className="text-[var(--panel-ink-faint)]">Destination</span>
+                <span className="text-[var(--panel-ink-dim)]">{detail.destination}</span>
+              </div>
+              <div className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 px-2 py-2.5">
+                <span className="text-[var(--panel-ink-faint)]">Details</span>
+                <span className="text-[var(--panel-ink-dim)]">{useCase.artifact}</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+        <ScenarioFooterHeader label="Output" meta="JSON" />
+        <pre className="overflow-x-auto text-[9px] leading-relaxed text-[var(--panel-ink-muted)]" aria-label="Example structured result">
+          {'{\n  '}{detail.payload.join(',\n  ')}{'\n}'}
+        </pre>
+      </div>
+    </aside>
+  )
+}
+
+function ScenarioFooterHeader({ label, meta }) {
+  return (
+    <div className="mb-3 flex h-3 items-center justify-between gap-3 text-[8px] uppercase leading-none tracking-[0.22em] text-[var(--panel-ink-faint)]">
+      <span>{label}</span>
+      <span>{meta}</span>
+    </div>
   )
 }
 
@@ -513,7 +913,7 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
 
   return (
     <section
-      className="home-instrument-light relative mt-8 hidden overflow-hidden rounded-md font-mono sm:block xl:hidden"
+      className="home-instrument-light relative mt-7 block overflow-hidden rounded-md font-mono sm:mt-8 xl:hidden"
       style={panelStyle}
       onMouseEnter={() => onPause(true)}
       onMouseLeave={() => onPause(false)}
@@ -522,7 +922,7 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
     >
       <CornerFasteners />
 
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-[var(--panel-edge-dim)] px-3 py-2.5 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)] sm:px-4 sm:py-3 sm:text-[9px] sm:tracking-[0.24em]">
+      <div className="grid grid-cols-[1fr_auto] items-center gap-2 border-b border-[var(--panel-edge-dim)] px-3 py-1 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)] sm:grid-cols-[1fr_auto_1fr] sm:px-4 sm:text-[9px] sm:tracking-[0.24em] md:py-1.5">
         <span className="flex min-w-0 items-center gap-2 whitespace-nowrap">
           <span
             aria-hidden
@@ -539,19 +939,38 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
 
         <CompactDeviceSelector deviceIdx={deviceIdx} onJump={onJump} />
 
-        <span className="justify-self-end whitespace-nowrap opacity-80">
+        <span className="hidden justify-self-end whitespace-nowrap opacity-80 sm:block">
           16KHZ <span className="hidden md:inline">· MONO</span>
         </span>
       </div>
 
-      <div className="grid gap-px bg-[var(--panel-edge-dim)] sm:grid-cols-2">
-        <div className="bg-[var(--panel-bg)] p-4 md:p-5">
+      <div className="grid grid-cols-2 gap-px bg-[var(--panel-edge-dim)]">
+        <div className="bg-[var(--panel-bg-alt)] p-3 sm:p-4 md:p-5">
           <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
-            <span>· WAVE</span>
+            <span>· CONTEXT</span>
             <span>{device.label}</span>
           </div>
+
           <div
-            className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-md border md:mt-4 md:h-32"
+            className="mt-2.5 flex h-20 items-center justify-center overflow-hidden rounded-md border p-2 sm:mt-3 sm:h-24 sm:p-2.5 md:mt-4 md:h-32 md:p-3"
+            style={{
+              borderColor: 'var(--panel-edge-dim)',
+              background:
+                'linear-gradient(180deg, color-mix(in oklab, var(--panel-trace) 7%, var(--panel-bg)), color-mix(in oklab, var(--panel-trace) 3%, var(--panel-bg)))',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.18)',
+            }}
+          >
+            <DeviceScreenshotFrame device={device} mode="compact" />
+          </div>
+        </div>
+
+        <div className="bg-[var(--panel-bg)] p-3 sm:p-4 md:p-5">
+          <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
+            <span>· PROCESS</span>
+            <span>{device.inputSpec.channel}</span>
+          </div>
+          <div
+            className="mt-2.5 flex h-20 items-center justify-center overflow-hidden rounded-md border sm:mt-3 sm:h-24 md:mt-4 md:h-32"
             style={{
               borderColor: 'var(--screen-edge-dim)',
               background: 'var(--screen-bg)',
@@ -579,41 +998,22 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
           </div>
         </div>
 
-        <div className="bg-[var(--panel-bg-alt)] p-4 md:p-5">
-          <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
-            <span>· SCREEN</span>
-            <span>{device.inputSpec.status}</span>
-          </div>
-
-          <div
-            className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-md border p-2.5 md:mt-4 md:h-32 md:p-3"
-            style={{
-              borderColor: 'var(--panel-edge-dim)',
-              background:
-                'linear-gradient(180deg, color-mix(in oklab, var(--panel-trace) 7%, var(--panel-bg)), color-mix(in oklab, var(--panel-trace) 3%, var(--panel-bg)))',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.18)',
-            }}
-          >
-            <DeviceScreenshotFrame device={device} mode="compact" />
-          </div>
-        </div>
-
-        <div className="bg-[var(--panel-bg)] p-4 md:p-5">
+        <div className="order-3 col-span-2 bg-[var(--panel-bg)] p-3 sm:col-span-1 sm:p-4 md:p-5">
           <div className="text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
-            · CAPTION
+            · SITUATION
           </div>
-          <h2 className="mt-2 font-display text-xl font-normal leading-tight tracking-[-0.01em] text-[var(--panel-ink)] md:mt-3 md:text-2xl">
+          <h2 className="mt-2 font-display text-lg font-normal leading-tight tracking-[-0.01em] text-[var(--panel-ink)] sm:text-xl md:mt-3 md:text-2xl">
             {useCase.action}
           </h2>
-          <p className="mt-2 text-[12px] leading-relaxed text-[var(--panel-ink-muted)] md:text-[13px]">
+          <p className="mt-2 text-[11px] leading-relaxed text-[var(--panel-ink-muted)] sm:text-[12px] md:text-[13px]">
             {useCase.transcription}
           </p>
         </div>
 
-        <div className="bg-[var(--panel-bg-alt)] p-4 md:p-5">
+        <div className="order-4 col-span-2 bg-[var(--panel-bg-alt)] p-3 sm:col-span-1 sm:p-4 md:p-5">
           <div className="flex items-center justify-between gap-3 text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)] md:text-[9px] md:tracking-[0.24em]">
             <span>· RESULT</span>
-            <span>{device.screenshot.caption}</span>
+            <span>OUTPUT</span>
           </div>
           <div className="mt-3 flex items-start gap-3">
             <DeviceIcon
@@ -621,10 +1021,10 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
               style={{ color: 'var(--screen-trace)', filter: 'drop-shadow(0 0 4px var(--screen-trace-glow))' }}
             />
             <div className="min-w-0">
-              <p className="text-[12px] leading-relaxed text-[var(--screen-ink)] md:text-[13px]">
+              <p className="text-[12px] leading-relaxed text-[var(--panel-ink)] md:text-[13px]">
                 {useCase.outcome}
               </p>
-              <p className="mt-1 truncate text-[11px] text-[var(--screen-ink-muted)]">
+              <p className="mt-1 truncate text-[11px] text-[var(--panel-ink-muted)]">
                 {useCase.artifact}
               </p>
             </div>
@@ -632,24 +1032,24 @@ function CompactChassis({ device, deviceIdx, useCase, onJump, panelStyle, onPaus
         </div>
       </div>
 
-      <div className="border-t border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-3 md:p-4">
+      <div className="border-t border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-2 sm:p-3 md:p-4">
         <Link
           href={Install.href}
-          className="flex w-full items-center justify-between gap-3 rounded-sm border px-3 py-2.5 text-[9px] uppercase tracking-[0.22em] transition-colors hover:text-[var(--panel-ink)]"
+          className="group flex min-h-11 w-full items-center justify-between gap-3 rounded-md border px-4 py-3 text-[9px] font-semibold uppercase tracking-[0.22em] transition-[transform,box-shadow] hover:-translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--panel-trace)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-bg)] active:translate-y-0"
           style={{
-            borderColor: 'var(--panel-edge-dim)',
-            color: 'var(--panel-trace)',
-            background: 'color-mix(in oklab, var(--panel-trace) 7%, transparent)',
-            textShadow: '0 0 4px var(--panel-trace-glow)',
+            borderColor: 'var(--panel-ink)',
+            color: 'var(--panel-bg)',
+            background: 'var(--panel-ink)',
+            boxShadow: '0 5px 12px -8px rgba(0,0,0,0.72)',
           }}
         >
           <span className="flex min-w-0 items-center gap-2">
             <InstallIcon className="h-3.5 w-3.5 shrink-0" />
             <span className="truncate">{Install.title}</span>
           </span>
-          <span className="flex shrink-0 items-center gap-2 text-[8px] text-[var(--panel-ink-faint)]">
+          <span className="flex shrink-0 items-center gap-2 text-[8px] opacity-70 transition-opacity group-hover:opacity-100">
             {Install.meta}
-            <ArrowRight className="h-3 w-3" />
+            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
           </span>
         </Link>
       </div>
@@ -662,7 +1062,7 @@ function CompactDeviceSelector({ deviceIdx, onJump }) {
     <div
       role="tablist"
       aria-label="Surface"
-      className="inline-flex items-center justify-center gap-1 justify-self-center rounded-sm border border-[var(--panel-edge-dim)] px-1.5 py-1"
+      className="inline-flex items-center justify-center gap-0.5 justify-self-center rounded-sm border border-[var(--panel-edge-dim)] px-1 py-px"
       style={{ background: 'rgba(255,255,255,0.02)' }}
     >
       {DEVICES.map((device, index) => {
@@ -673,9 +1073,10 @@ function CompactDeviceSelector({ deviceIdx, onJump }) {
             key={device.key}
             type="button"
             role="tab"
+            aria-label={`Show ${device.label}`}
             aria-selected={active}
             onClick={() => onJump(index)}
-            className="flex min-w-0 items-center justify-center gap-1.5 rounded-sm px-1.5 py-1 text-[8px] uppercase tracking-[0.18em] transition-colors md:px-2 md:text-[9px] md:tracking-[0.22em]"
+            className="flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-sm px-2 text-[8px] uppercase tracking-[0.18em] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--panel-trace)] min-[700px]:h-11 min-[700px]:min-w-11 min-[700px]:px-3 min-[700px]:tracking-[0.16em] xl:h-9 xl:min-w-9 xl:px-2.5 xl:text-[9px] xl:tracking-[0.22em]"
             style={{
               background: active
                 ? 'color-mix(in oklab, var(--panel-trace) 12%, transparent)'
@@ -684,8 +1085,8 @@ function CompactDeviceSelector({ deviceIdx, onJump }) {
               textShadow: active ? '0 0 4px var(--panel-trace-glow)' : 'none',
             }}
           >
-            <Icon className="h-3 w-3 shrink-0" />
-            <span className="hidden min-w-0 truncate md:inline">{device.label}</span>
+            <Icon className="h-3.5 w-3.5 shrink-0" />
+            <span className="hidden min-w-0 truncate min-[700px]:inline">{device.label}</span>
           </button>
         )
       })}
@@ -754,17 +1155,23 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
             type="button"
             onClick={() => !isActive && onSelect(i)}
             aria-current={isActive ? 'true' : undefined}
-            className="grid grid-cols-[1fr_1rem_1fr] items-baseline rounded-sm px-2 py-0.5 text-[12px] leading-snug transition-opacity hover:opacity-90 md:grid-cols-[1fr_2.5rem_1fr] md:py-1 md:text-[15px] md:leading-relaxed"
+            className={`grid min-h-11 grid-cols-[1fr_1rem_1fr] items-center rounded-sm px-2 py-2 text-[12px] leading-snug transition-colors md:grid-cols-[1fr_2.5rem_1fr] md:py-1.5 md:text-[15px] md:leading-relaxed ${
+              isActive
+                ? 'text-ink'
+                : 'text-ink-muted hover:bg-surface/60 hover:text-ink-dim'
+            }`}
             style={{
-              opacity: isActive ? 1 : 0.32,
+              // Inactive rows stay quieter but meet AA on cream + dark
+              // paper: use color tokens, not opacity that washes out.
+              opacity: isActive ? 1 : 0.78,
               cursor: isActive ? 'default' : 'pointer',
             }}
           >
-            <span className="text-right text-ink-muted">{uc.action}</span>
-            <span aria-hidden className="select-none text-center text-ink-faint">
+            <span className={`text-right ${isActive ? 'text-ink-muted' : 'text-ink-faint'}`}>{uc.action}</span>
+            <span aria-hidden className={`select-none text-center ${isActive ? 'text-ink-faint' : 'text-ink-subtle'}`}>
               →
             </span>
-            <span className="text-left text-ink">{uc.outcome}</span>
+            <span className={`text-left ${isActive ? 'text-ink' : 'text-ink-muted'}`}>{uc.outcome}</span>
           </button>
         )
       })}
@@ -788,7 +1195,7 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
         onFocus={() => onPause(true)}
         onBlur={() => onPause(false)}
         aria-label={`Cycle device — currently ${label}. Click to advance.`}
-        className="relative -mb-[0.10em] inline-flex w-[5em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-semibold leading-[1] tracking-[-0.01em]"
+        className="relative -mb-[0.10em] inline-flex min-h-11 w-[5em] min-w-11 cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-semibold leading-[1] tracking-[-0.01em] focus:outline-none focus-visible:ring-1 focus-visible:ring-trace md:min-h-[1.15em] md:min-w-[2.75rem]"
         style={{
           color: 'var(--rolodex-ink)',
           background: 'var(--rolodex-bg)',
@@ -798,7 +1205,7 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
             flipPhase === 'out'
               ? 'flap-out 140ms ease-in forwards'
               : flipPhase === 'in'
-              ? 'flap-in 200ms cubic-bezier(0.22,1.2,0.36,1) forwards'
+              ? 'flap-in 200ms cubic-bezier(0.22,1,0.36,1) forwards'
               : undefined,
         }}
       >
@@ -990,69 +1397,70 @@ function DeviceRail({ deviceIdx, onJump }) {
   )
 }
 
-function InputBay({ device, flipPhase }) {
+function ResultBay({ device, useCase }) {
   const Install = device.install
+  const DeviceIcon = device.Icon
 
   return (
     <div className="relative flex bg-[var(--panel-bg)]">
       <div className="flex min-w-0 flex-1 flex-col gap-4 p-5 sm:p-6 lg:p-7">
-        {/* DECK 1: Header — eyebrow + device label (light) + jack info */}
+        {/* DECK 1: Header — the rightmost bay is the useful outcome. */}
         <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
           <span>
             <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-              · INPUT
+              · RESULT
             </span>
             <span className="opacity-70"> · {device.label.toUpperCase()}</span>
           </span>
-          <span className="opacity-70">JACK 01</span>
+          <span className="opacity-70">RECEIPT 01</span>
         </div>
 
-        {/* DECK 2: SPEC divider — same Y as ScopeBay's SIGNAL and
-            OutputBay's RUNNING ON line. No numbered badge: kept the
-            chassis dividers visually identical across all three bays
-            so the eye reads one continuous deck rhythm. */}
-        <SectionDivider label="SPEC" />
+        <SectionDivider label="OUTCOME" />
 
-        {/* DECK 3: Artifact — framed spec-sheet panel. Fixed 220px to
-            match ScopeBay's screen well and OutputBay's screenshot
-            well. Same frame grammar (rounded-md + border + recessed
-            shadow + corner brackets) so the three artifacts read as
-            siblings on a shared chassis rule. Inside: nutrition-label
-            spec rows on top, divider, capability bullets at bottom.
-            No flex-1 — the wrapper takes exactly 220px so the deck-4
-            divider below sits at the same Y across all three bays. */}
         <div className="flex items-start">
           <div
-            className="relative flex h-[220px] w-full flex-col overflow-hidden rounded-md border"
+            className="relative flex h-[220px] w-full flex-col overflow-hidden rounded-md border p-4"
             style={{
               borderColor: 'var(--screen-edge-dim)',
-              boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.04)',
+              background: 'var(--panel-bg-alt)',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.06)',
             }}
           >
             <ScreenCornerBrackets />
-            <div className="relative flex flex-1 flex-col gap-3 px-3.5 py-3">
-              <SpecRows spec={device.inputSpec} />
-              <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.28em] text-[var(--panel-ink-subtle)]">
-                <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
-                <span>· CAPS ·</span>
-                <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
-              </div>
-              <FeatureList features={device.features} />
+            <div className="relative flex items-center justify-between text-[8px] uppercase tracking-[0.22em] text-[var(--panel-ink-faint)]">
+              <span className="flex items-center gap-2">
+                <span
+                  aria-hidden
+                  className="h-1.5 w-1.5 rounded-full bg-[var(--panel-trace)]"
+                  style={{ boxShadow: '0 0 5px var(--panel-trace-glow)' }}
+                />
+                Complete
+              </span>
+              <span>{device.label}</span>
+            </div>
+
+            <div className="relative my-auto">
+              <DeviceIcon
+                className="h-5 w-5 text-[var(--panel-trace)]"
+                style={{ filter: 'drop-shadow(0 0 4px var(--panel-trace-glow))' }}
+                aria-hidden
+              />
+              <h2 className="mt-3 font-display text-2xl font-normal leading-tight tracking-[-0.02em] text-[var(--panel-ink)]">
+                {useCase.outcome}
+              </h2>
+              <p className="mt-3 text-[11px] leading-relaxed text-[var(--panel-ink-dim)]">
+                {useCase.artifact}
+              </p>
+            </div>
+
+            <div className="relative border-t border-[var(--panel-edge-dim)] pt-2 text-[9px] leading-snug text-[var(--panel-ink-muted)]">
+              From “{useCase.action}”
             </div>
           </div>
         </div>
 
-        {/* DECK 4: INSTALL divider — aligns with ScopeBay's DECODED
-            and OutputBay's SURFACE. */}
-        <SectionDivider label="INSTALL" />
+        <SectionDivider label="NEXT" />
 
-        {/* Below deck 4: install jack + small CLI fallback (Mac only).
-            QR for iPhone was tried then dropped — the bottom row
-            reads cleaner without a tall supplement. The wrapper is
-            pinned at min-h-[26px] (the CLI link's height) so the
-            chassis stays the same height across all four devices —
-            iPhone/Watch/Agents have an empty 26px slot, Mac fills
-            it with the CLI affordance. */}
         <DeviceInstallJack install={Install} />
         <div className="min-h-[26px]">
           {Install.kind === 'dmg' && <CliFallbackLink />}
@@ -1240,30 +1648,28 @@ function DeviceInstallJack({ install }) {
   // overflowing into the adjacent ScopeBay (clipped silently by the
   // chassis overflow-hidden — but the install card was extending
   // ~170px past the Watch bay's right edge before this fix).
-  // Solid button-look: panel-bg-alt fill (auto theme-flips: light gray on
-  // Modern, warm-charcoal on Warm) + full panel-edge border + bright
-  // panel-ink text. No phosphor wash — that 4% trace tint read as a
-  // half-selected highlight, not a clickable button.
+  // Solid inverse button-look matches the compact chassis CTA and keeps
+  // the next action distinct from the result receipt above it.
   const sharedClass =
-    'group flex min-w-0 items-center gap-2.5 overflow-hidden rounded-sm border border-[var(--panel-edge)] px-2.5 py-1.5 transition-colors hover:border-[var(--panel-trace)]'
+    'group flex min-h-10 min-w-0 items-center gap-2.5 overflow-hidden rounded-sm border border-[var(--panel-ink)] px-2.5 py-1.5 transition-transform hover:-translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--panel-trace)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-bg)]'
   const sharedStyle = {
-    background: 'var(--panel-bg-alt)',
+    background: 'var(--panel-ink)',
+    color: 'var(--panel-bg)',
   }
   const inner = (
     <>
       <Icon
-        className="h-3.5 w-3.5 shrink-0 text-[var(--panel-trace)]"
-        style={{ filter: 'drop-shadow(0 0 3px var(--panel-trace-glow))' }}
+        className="h-3.5 w-3.5 shrink-0"
       />
-      <span className="min-w-0 flex-1 truncate text-[12px] text-[var(--panel-ink)]">
+      <span className="min-w-0 flex-1 truncate text-[12px]">
         {install.title}
       </span>
-      <span className="shrink-0 truncate text-[10px] uppercase tracking-[0.18em] text-[var(--panel-ink-faint)]">
+      <span className="shrink-0 truncate text-[10px] uppercase tracking-[0.18em] opacity-65">
         {install.meta}
       </span>
       <span
         aria-hidden
-        className="shrink-0 text-[12px] text-[var(--panel-ink-faint)] transition-colors group-hover:text-[var(--panel-trace)]"
+        className="shrink-0 text-[12px] opacity-65 transition-[opacity,transform] group-hover:translate-x-0.5 group-hover:opacity-100"
       >
         {isExternal ? '↗' : '→'}
       </span>
@@ -1360,7 +1766,7 @@ function ScopeBay({ device, useCase, flipPhase }) {
       <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
         <span>
           <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-            · SCOPE
+              · PROCESS
           </span>
           <span className="opacity-70"> · {device.label.toUpperCase()}</span>
         </span>
@@ -1671,10 +2077,10 @@ function TranscriptionView({ text }) {
 }
 
 // -----------------------------------------------------------------------------
-// RIGHT BAY · device screenshot in inset display well
+// LEFT BAY · device context in an inset display well
 // -----------------------------------------------------------------------------
 
-function OutputBay({ device, useCase, expanded, onExpandedChange }) {
+function SourceBay({ device, useCase, expanded, onExpandedChange }) {
   useEffect(() => {
     if (!expanded) return
 
@@ -1691,22 +2097,22 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
     }
   }, [expanded, onExpandedChange])
 
-  // Four-deck structure mirroring InputBay and ScopeBay:
-  //   1. Header (· OUTPUT · device | JACK 02)
+  // Four-deck structure mirroring ResultBay and ScopeBay:
+  //   1. Header (· CONTEXT · device | SOURCE 01)
   //   2. Secondary line (RUNNING ON · device with live LED)
   //   3. Artifact — screenshot well (flex-1, fills remaining)
-  //   4. Detail divider (· SURFACE ·) + caption
+  //   4. Detail divider (· SITUATION ·) + caption
   return (
     <div className="relative flex flex-col gap-4 bg-[var(--panel-bg)] p-5 sm:p-6">
       {/* DECK 1: Header — eyebrow + device label (light) + jack info */}
       <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-[var(--panel-ink-faint)]">
         <span>
           <span style={{ color: 'var(--panel-trace)', textShadow: '0 0 4px var(--panel-trace-glow)' }}>
-            · OUTPUT
+            · CONTEXT
           </span>
           <span className="opacity-70"> · {device.label.toUpperCase()}</span>
         </span>
-        <span className="opacity-70">JACK 02</span>
+        <span className="opacity-70">SOURCE 01</span>
       </div>
 
       {/* DECK 2: Secondary line — live status with LED. Same min-height
@@ -1718,7 +2124,7 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
           className="inline-block h-1 w-1 shrink-0 rounded-full bg-[var(--panel-trace)]"
           style={{ boxShadow: '0 0 4px var(--panel-trace)' }}
         />
-        <span>· RUNNING ON · {device.label.toUpperCase()} ·</span>
+        <span>· ON {device.label.toUpperCase()} ·</span>
         <span aria-hidden className="h-px flex-1" style={{ background: 'var(--panel-edge-dim)' }} />
       </div>
 
@@ -1746,7 +2152,7 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
             type="button"
             onClick={() => onExpandedChange(true)}
             className="absolute right-1.5 top-1.5 z-20 inline-flex h-7 w-7 items-center justify-center rounded-sm border border-[var(--panel-edge)] bg-[var(--panel-bg)]/90 text-[var(--panel-trace)] shadow-sm backdrop-blur transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-ink)]"
-            aria-label={`Expand ${device.label} output screenshot`}
+            aria-label={`Expand ${device.label} source screen`}
           >
             <Maximize2 className="h-3 w-3" />
           </button>
@@ -1756,13 +2162,9 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
 
       {/* DECK 4: Detail divider — SURFACE rail aligns with InputBay's
           INSTALL divider and ScopeBay's DECODED divider. */}
-      <SectionDivider label="SURFACE" />
+      <SectionDivider label="SITUATION" />
 
-      {/* Below deck 4: the artifact — the receipt for what landed
-          on this surface. Driven by the shared useCaseIdx so it
-          matches the sub-hero summary and the ScopeBay transcription.
-          Sentence case (vs the previous uppercase caption) so per-
-          use-case detail can read naturally as a status line. */}
+      {/* Below deck 4: a caption-sized description of the input scene. */}
       <div className="flex items-start gap-2 text-[11px] leading-snug text-[var(--panel-ink-dim)]">
         <span
           aria-hidden
@@ -1772,7 +2174,10 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
             boxShadow: '0 0 4px var(--panel-trace-glow)',
           }}
         />
-        <span>{useCase.artifact}</span>
+        <span>
+          <strong className="font-medium text-[var(--panel-ink)]">{useCase.action}</strong>
+          <span className="text-[var(--panel-ink-muted)]"> · {device.screenshot.caption}</span>
+        </span>
       </div>
 
       {expanded && createPortal(
@@ -1780,7 +2185,7 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
           role="dialog"
           aria-modal="true"
-          aria-label={`${device.label} output spotlight`}
+          aria-label={`${device.label} source screen`}
           onClick={() => onExpandedChange(false)}
         >
           <div className="absolute inset-0 bg-black/[0.88] backdrop-blur-md" />
@@ -1792,10 +2197,10 @@ function OutputBay({ device, useCase, expanded, onExpandedChange }) {
             <div className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3 font-mono md:px-5">
               <div className="min-w-0">
                 <p className="text-[9px] uppercase tracking-[0.26em] text-[var(--trace)]">
-                  · Output spotlight · {device.label}
+                  · Source screen · {device.label}
                 </p>
                 <p className="mt-1 truncate text-[11px] text-white/55">
-                  {device.screenshot.caption} · {useCase.artifact}
+                  {device.screenshot.caption} · {useCase.action}
                 </p>
               </div>
               <button

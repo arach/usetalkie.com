@@ -1310,6 +1310,8 @@ html.dark[data-theme="modern"]:not([data-osci-style]) .home-instrument-light::af
  * homepage. Each section is a translucent paper mask over this single
  * drawing, so its columns and datum lines continue across boundaries. */
 html[data-theme="modern"]:not(.dark) .home-page-art {
+  --home-art-max-width: 113rem;
+  --home-art-slice-width: min(33.333vw, calc(var(--home-art-max-width) / 3));
   background: var(--canvas);
 }
 
@@ -1322,9 +1324,48 @@ html[data-theme="modern"]:not(.dark) .home-page-art::before {
   background-image: url("/backgrounds/neo-classical-page-scroll-v2.webp");
   background-position: center top;
   background-repeat: no-repeat;
-  background-size: max(100%, 113rem) auto;
+  /* Keep the 1823px source near its native scale. Wide viewports reveal
+   * more canvas instead of enlarging the architectural decoration. */
+  background-size: var(--home-art-max-width) auto;
   filter: contrast(0.94) saturate(0.62);
   opacity: 0.9;
+}
+
+.home-page-artwork {
+  display: none;
+}
+
+/* Three-slice wide-screen artwork. The architectural edges stop growing
+ * when they reach the source image's native scale. The quieter center crop
+ * repeats between them, so ultrawide and 4K canvases can extend without
+ * enlarging columns, arches, or drafting line weights. */
+@media (min-width: 1200px) {
+  html[data-theme="modern"]:not(.dark) .home-page-art::before {
+    display: none;
+  }
+
+  html[data-theme="modern"]:not(.dark) .home-page-artwork {
+    display: grid;
+    grid-template-columns:
+      var(--home-art-slice-width)
+      minmax(0, 1fr)
+      var(--home-art-slice-width);
+    filter: contrast(0.94) saturate(0.62);
+    opacity: 0.9;
+  }
+
+  .home-page-artwork__left {
+    background: url("/backgrounds/neo-classical-page-scroll-v2-left.webp") left top / 100% auto no-repeat;
+  }
+
+  .home-page-artwork__center {
+    background: url("/backgrounds/neo-classical-page-scroll-v2-center.webp") left top / var(--home-art-slice-width) auto repeat-x;
+  }
+
+  .home-page-artwork__right {
+    background: url("/backgrounds/neo-classical-page-scroll-v2-right.webp") right top / 100% auto no-repeat;
+  }
+
 }
 
 html[data-theme="modern"]:not(.dark) .home-page-art > section {
@@ -1344,7 +1385,7 @@ html[data-theme="modern"]:not(.dark) .home-section-art--architectural {
     url("/backgrounds/neo-classical-page-scroll-v2.webp");
   background-position: center, center var(--art-slice, 50%);
   background-repeat: no-repeat;
-  background-size: cover, max(100%, 113rem) auto;
+  background-size: cover, var(--home-art-max-width) auto;
 }
 
 html[data-theme="modern"]:not(.dark) .home-section-art--canvas {
@@ -1353,6 +1394,33 @@ html[data-theme="modern"]:not(.dark) .home-section-art--canvas {
 
 html[data-theme="modern"]:not(.dark) .home-section-art--alt {
   --section-art-paper: var(--canvas-alt);
+}
+
+/* Section-level architectural backgrounds use the same three-slice system
+ * as the continuous page artwork. Keep this after the base rule so the
+ * wide-screen composition wins in the cascade. */
+@media (min-width: 1200px) {
+  html[data-theme="modern"]:not(.dark) .home-section-art--architectural {
+    background-image:
+      linear-gradient(
+        color-mix(in oklab, var(--canvas-alt) 84%, transparent),
+        color-mix(in oklab, var(--canvas-alt) 84%, transparent)
+      ),
+      url("/backgrounds/neo-classical-page-scroll-v2-left.webp"),
+      url("/backgrounds/neo-classical-page-scroll-v2-right.webp"),
+      url("/backgrounds/neo-classical-page-scroll-v2-center.webp");
+    background-position:
+      center,
+      left var(--art-slice, 50%),
+      right var(--art-slice, 50%),
+      left var(--art-slice, 50%);
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat-x;
+    background-size:
+      cover,
+      var(--home-art-slice-width) auto,
+      var(--home-art-slice-width) auto,
+      var(--home-art-slice-width) auto;
+  }
 }
 
 /* Column-free drafting paper for the denser product sections. The compass
@@ -1414,10 +1482,65 @@ html[data-theme="modern"]:not(.dark) .home-hero-graticule {
   html[data-theme="modern"]:not(.dark) .home-page-art::before {
     background-repeat: repeat-y;
     background-size: 100% auto;
-    opacity: 0.72;
+    opacity: 0.48;
+    filter: contrast(0.9) saturate(0.55) brightness(1.04);
   }
 
   html[data-theme="modern"]:not(.dark) .home-section-art--architectural {
     background-size: cover, 100% auto;
+    background-image:
+      linear-gradient(
+        color-mix(in oklab, var(--canvas-alt) 90%, transparent),
+        color-mix(in oklab, var(--canvas-alt) 90%, transparent)
+      ),
+      url("/backgrounds/neo-classical-page-scroll-v2.webp");
+  }
+
+  html[data-theme="modern"]:not(.dark) .home-page-art > .home-hero-art {
+    background-color: color-mix(in oklab, var(--canvas) 72%, transparent);
+    background-image:
+      linear-gradient(180deg, rgba(244, 247, 247, 0.72), rgba(244, 247, 247, 0.55) 54%, rgba(248, 249, 247, 0.78)),
+      radial-gradient(ellipse at 50% 34%, rgba(247, 249, 249, 0.7), transparent 58%);
+  }
+}
+
+/* Header Get App CTA — ink (not low-contrast modern trace green) so
+ * light mode meets WCAG AA while dark mode keeps a readable phosphor
+ * treatment via the same ink/edge tokens. */
+.site-header-cta {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+}
+.site-header-cta:hover {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 11%, transparent);
+}
+.site-header-cta-dot {
+  background: var(--ink);
+  box-shadow: 0 0 4px color-mix(in oklab, var(--ink) 45%, transparent);
+}
+html.dark .site-header-cta {
+  color: var(--trace);
+  background: color-mix(in oklab, var(--trace) 10%, transparent);
+  border-color: var(--edge);
+}
+html.dark .site-header-cta:hover {
+  color: var(--trace);
+  background: color-mix(in oklab, var(--trace) 16%, transparent);
+}
+html.dark .site-header-cta-dot {
+  background: var(--trace);
+  box-shadow: 0 0 4px var(--trace);
+}
+
+/* Mobile gallery labels — ink-muted (≥4.5:1 on canvas) instead of faint. */
+.home-gallery-label {
+  color: var(--ink-muted);
+}
+
+/* Phone-width overflow guard for home rails / instrument chrome. */
+@media (max-width: 639px) {
+  .home-page-art {
+    overflow-x: clip;
   }
 }

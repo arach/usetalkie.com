@@ -29,7 +29,7 @@ export default function ThemeToggle() {
       type="button"
       aria-label="Toggle theme"
       onClick={toggle}
-      className="inline-flex items-center justify-center rounded-sm border border-edge-dim px-2 py-1.5 text-ink-faint hover:text-trace hover:border-edge transition-colors"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-edge-dim text-ink-muted transition-colors hover:text-ink hover:border-edge focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
     >
       {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
     </button>
