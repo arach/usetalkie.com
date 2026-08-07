@@ -1,8 +1,8 @@
 # Comparison matrix redesign review — DictaFlow page
 
-**Scope:** Independent review of `/compare/dictaflow/#comparison-matrix`  
-**Live:** `http://talkie.localhost:1355/compare/dictaflow/#comparison-matrix`  
-**Date:** 2026-07-22  
+**Scope:** Independent review of `/compare/dictaflow/#comparison-matrix`
+**Live:** `http://talkie.localhost:1355/compare/dictaflow/#comparison-matrix`
+**Date:** 2026-07-22
 **Status:** Recommendation only — no implementation changes in this pass.
 
 ---
@@ -438,11 +438,11 @@ Suggested additions (non-blocking warnings first):
 
 After implementation, a cold reader at `#comparison-matrix` should be able to answer:
 
-1. Which product fits **Windows + Citrix**? → DictaFlow  
-2. Which product fits **Apple + searchable captures + CLI**? → Talkie  
-3. Is Talkie worse at dictation quality in general? → **Not claimed**; output style differs  
-4. Is pricing a factor on the page? → **No**  
-5. Does either column look “selected” by color alone? → **No**  
+1. Which product fits **Windows + Citrix**? → DictaFlow
+2. Which product fits **Apple + searchable captures + CLI**? → Talkie
+3. Is Talkie worse at dictation quality in general? → **Not claimed**; output style differs
+4. Is pricing a factor on the page? → **No**
+5. Does either column look “selected” by color alone? → **No**
 6. Is Android listed without Telegram? → **No**
 
 Also re-run:
@@ -457,10 +457,10 @@ and spot-check desktop + 390px mobile on DictaFlow, plus one non-enterprise page
 
 ## Priority order for implementers
 
-1. **Content:** rewrite DictaFlow `pages.json` picks + rows (sample above).  
-2. **CSS:** neutralize Talkie championship styling.  
-3. **MDX:** move matrix up; drop redundant “Side by side”.  
-4. **Component:** maturity notes + self-contained heading.  
+1. **Content:** rewrite DictaFlow `pages.json` picks + rows (sample above).
+2. **CSS:** neutralize Talkie championship styling.
+3. **MDX:** move matrix up; drop redundant “Side by side”.
+4. **Component:** maturity notes + self-contained heading.
 5. **Validator warnings** and cross-page pick de-duplication (follow-up).
 
 ---
