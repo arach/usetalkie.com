@@ -131,13 +131,14 @@ export default function FeedbackWidget() {
     return (
       <button
         onClick={() => setIsOpen(true)}
+        className="hidden sm:inline-flex"
         style={{
           position: 'fixed',
-          bottom: '24px',
-          right: '24px',
+          bottom: 'max(12px, env(safe-area-inset-bottom))',
+          right: '12px',
           zIndex: 9998,
           padding: '12px',
-          backgroundColor: '#10b981',
+          backgroundColor: '#047857',
           color: 'white',
           borderRadius: '50%',
           border: 'none',
@@ -146,11 +147,11 @@ export default function FeedbackWidget() {
           transition: 'all 0.2s',
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = '#059669'
+          e.currentTarget.style.backgroundColor = '#065f46'
           e.currentTarget.style.transform = 'scale(1.1)'
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = '#10b981'
+          e.currentTarget.style.backgroundColor = '#047857'
           e.currentTarget.style.transform = 'scale(1)'
         }}
         aria-label="Send feedback"
@@ -161,8 +162,11 @@ export default function FeedbackWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] w-full max-w-md animate-in slide-in-from-bottom-4 duration-200">
-      <div className="mx-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-2xl overflow-hidden">
+    <div
+      className="fixed inset-x-0 z-[9999] w-full animate-in slide-in-from-bottom-4 duration-200 sm:left-auto sm:right-6 sm:max-w-md"
+      style={{ bottom: 'max(12px, env(safe-area-inset-bottom))' }}
+    >
+      <div className="mx-3 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 sm:mx-0">
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 bg-emerald-50 dark:bg-emerald-950/30 border-b border-emerald-200 dark:border-emerald-900">
@@ -175,7 +179,7 @@ export default function FeedbackWidget() {
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
+            className="inline-flex h-11 w-11 items-center justify-center text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-white"
             aria-label="Close"
           >
             <X className="w-4 h-4" />

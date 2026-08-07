@@ -197,6 +197,16 @@ export default function HomePage() {
     .filter((i) => i.platform === 'mac' && MAC_HSCROLL_ORDER.includes(i.slug))
     .sort((a, b) => macOrder(a.slug) - macOrder(b.slug))
   const watchItems = getTourItems().filter((i) => i.platform === 'watch')
+  const mobileSurfacePreviews = [
+    {
+      platform: 'iPhone',
+      item: iphoneItems.find((item) => item.slug === 'iphone-welcome'),
+      label: 'Home & library',
+      width: 'w-[72vw] max-w-[17rem]',
+    },
+    { platform: 'Watch', item: watchItems[0], width: 'w-[64vw] max-w-[15rem]' },
+    { platform: 'Mac', item: macItems[0], width: 'w-[82vw] max-w-[19rem]' },
+  ].filter((preview) => preview.item)
 
   return (
     <div className="home-page-art relative isolate">
@@ -227,90 +237,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== MOBILE-ONLY HSCROLL · IPHONE / WATCH / MAC SCREENS ==========
-          Phone-only visual proof between the textual hero and the
-          richer Data Buffer below. Tablet+desktop already get the
-          panoramic chassis as their visual anchor, so this section
-          is `md:hidden` to keep the rich layout untouched. */}
-      <section className="border-b border-edge-faint bg-canvas-alt py-7 md:hidden">
-        <p className="px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
-          · ON YOUR iPHONE
-        </p>
-
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {iphoneItems.map((item) => (
+      {/* ========== MOBILE-ONLY SURFACE RAIL ==========
+          One deliberate proof card per platform replaces the three long
+          screenshot catalogs. The full catalog still lives at /tour; the
+          homepage now gives a phone visitor the system in one swipe. */}
+      <section className="relative z-[1] border-b border-edge-faint bg-canvas-alt py-10 md:hidden">
+        <div className="px-4">
+          <p className="text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
+            · TALKIE EVERYWHERE
+          </p>
+          <div className="mt-2 flex flex-col items-start gap-1">
+            <h2 className="max-w-[18rem] font-display text-[2rem] font-normal leading-[1.02] tracking-[-0.02em] text-ink">
+              One thought. Every surface.
+            </h2>
             <Link
-              key={item.slug}
-              href={`/tour/${item.slug}/`}
-              className="group flex-shrink-0 snap-start"
+              href="/tour"
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-ink-muted"
             >
-              <div className="w-[170px] overflow-hidden rounded-[1.5rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="aspect-[9/19] w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-                {item.title}
-              </p>
+              Full tour <ArrowRight className="h-3 w-3" />
             </Link>
-          ))}
+          </div>
         </div>
 
-        <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
-          · ON YOUR WATCH
-        </p>
-
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {watchItems.map((item) => (
+        <div className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {mobileSurfacePreviews.map(({ platform, item, label, width }, index) => (
             <Link
-              key={item.slug}
+              key={platform}
               href={`/tour/${item.slug}/`}
-              className="group flex-shrink-0 snap-start"
+              className={`group flex-shrink-0 snap-start overflow-hidden rounded-md border border-edge-dim bg-surface ${width}`}
             >
-              <div className="w-[142px] overflow-hidden rounded-[1.25rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
+              <div className="flex h-[15.5rem] items-center justify-center overflow-hidden bg-[var(--panel-bg)] p-3">
                 <img
                   src={item.src}
                   alt={item.title}
-                  className="aspect-[5/6] w-full object-cover"
-                  loading="lazy"
+                  className="h-full w-full object-contain transition-transform duration-300 group-active:scale-[0.98]"
+                  loading={index === 0 ? 'eager' : 'lazy'}
                 />
               </div>
-              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-                {item.title}
-              </p>
-            </Link>
-          ))}
-        </div>
-
-        {/* Mac strip — landscape cards, fewer items, sits right under
-            the mobile HScrolls so the user sees every surface without
-            scrolling far. Same snap behavior, wider cards (16/10
-            aspect ratio mirrors mac screens). */}
-        <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
-          · ON YOUR MAC
-        </p>
-
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {macItems.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/tour/${item.slug}/`}
-              className="group flex-shrink-0 snap-start"
-            >
-              <div className="w-[280px] overflow-hidden rounded-[1.25rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="aspect-[16/10] w-full object-cover"
-                  loading="lazy"
-                />
+              <div className="flex min-h-16 items-center justify-between gap-4 border-t border-edge-faint px-4 py-3 font-mono">
+                <div>
+                  <p className="text-[9px] uppercase tracking-[0.24em]" style={{ color: 'var(--amber)' }}>
+                    {platform}
+                  </p>
+                  <p className="mt-1 text-[12px] text-ink-muted">{label ?? item.title}</p>
+                </div>
+                <ArrowRight className="h-4 w-4 shrink-0 text-ink-faint" />
               </div>
-              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-                {item.title}
-              </p>
             </Link>
           ))}
         </div>
@@ -325,7 +297,7 @@ export default function HomePage() {
         <SectionArt slice="31%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
           <div className="max-w-4xl">
             <p
               className="text-[10px] uppercase tracking-[0.26em]"
@@ -336,7 +308,7 @@ export default function HomePage() {
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Dictate anywhere. <span className="italic">See it in action.</span>
             </h2>
-            <div className="mt-4 flex max-w-3xl flex-col gap-4 text-[15px] leading-relaxed text-ink-muted sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+            <div className="mt-4 flex max-w-3xl flex-col gap-3 text-[15px] leading-relaxed text-ink-muted sm:flex-row sm:items-end sm:justify-between sm:gap-8">
               <p className="max-w-2xl">
                 Set the hotkey once, then speak into any app. These are unscripted
                 Talkie dictations from a real work session, recorded locally and
@@ -344,7 +316,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/workflows"
-                className="group inline-flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors hover:text-ink"
+                className="group inline-flex min-h-11 shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors hover:text-ink"
                 style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
               >
                 See workflows
@@ -353,7 +325,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-10">
+          <div className="mt-8 md:mt-10">
             <SignalTable catalog={capturesCatalog} />
           </div>
         </div>
@@ -367,7 +339,7 @@ export default function HomePage() {
         <SectionArt variant="technical" tone="canvas" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
               className="text-[10px] uppercase tracking-[0.26em]"
@@ -383,7 +355,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
             {CAPTURE_MODES.slice(0, 3).map((m, i) => (
               <CaptureModeCard key={m.title} mode={m} index={i} />
             ))}
@@ -400,7 +372,7 @@ export default function HomePage() {
           <div className="mt-6 md:hidden">
             <Link
               href="/tour"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
             >
               MORE MODES <ArrowRight className="h-3 w-3" />
             </Link>
@@ -416,7 +388,7 @@ export default function HomePage() {
         <SectionArt slice="56%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
               className="text-[10px] uppercase tracking-[0.26em]"
@@ -434,7 +406,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14 space-y-0">
+          <div className="mt-10 space-y-0 md:mt-14">
             {FLOW_STEPS.map((step) => (
               <FlowStep key={step.id} step={step} />
             ))}
@@ -448,7 +420,7 @@ export default function HomePage() {
           original composition; on mobile we hoist it down here so
           it works as a chapter divider between operational
           (Recovery Flow) and trust (Ownership) themes. */}
-      <section className="border-y border-edge-faint bg-canvas py-14 md:hidden">
+      <section className="relative z-[1] border-y border-edge-faint bg-canvas py-12 md:hidden">
         <p className="mx-auto max-w-md px-4 text-center font-display text-2xl italic leading-snug text-ink-dim">
           <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
           A remote control for your agents.
@@ -464,7 +436,7 @@ export default function HomePage() {
         <SectionArt variant="technical" tone="canvas" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
               className="text-[10px] uppercase tracking-[0.26em]"
@@ -480,7 +452,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+          <div className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-3 md:gap-5">
             {OWNERSHIP_CARDS.map((card) => (
               <OwnershipCard key={card.title} card={card} />
             ))}
@@ -514,7 +486,7 @@ export default function HomePage() {
           <div className="mt-10">
             <Link
               href="/security"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
               style={{
                 color: 'var(--amber)',
                 ...AMBER_TINT,
@@ -535,7 +507,7 @@ export default function HomePage() {
         <SectionArt slice="81%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
               className="text-[10px] uppercase tracking-[0.26em]"
@@ -548,9 +520,9 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:mt-12 lg:grid-cols-[1.1fr_1fr]">
             {/* One-time license card */}
-            <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-8">
+            <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-5 sm:p-8">
               <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
 
               <div className="relative">
@@ -604,7 +576,7 @@ export default function HomePage() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
                     href="/downloads"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
                     style={{
                       color: 'var(--amber)',
                       ...AMBER_TINT,
@@ -616,7 +588,7 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/mobile"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     iPHONE & WATCH <span aria-hidden>↗</span>
                   </Link>
@@ -658,9 +630,9 @@ export default function HomePage() {
       >
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-24">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-8">
+            <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-5 sm:p-8">
               <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
               <div className="relative">
                 <p
@@ -678,7 +650,7 @@ export default function HomePage() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
                     href="/downloads"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
                     style={{
                       color: 'var(--amber)',
                       ...AMBER_TINT,
@@ -690,7 +662,7 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/security"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     HOW PRIVACY WORKS <Lock className="h-3 w-3" />
                   </Link>
@@ -700,7 +672,7 @@ export default function HomePage() {
 
             <Link
               href="/philosophy"
-              className="group block rounded-md border border-edge bg-surface p-8 transition-all hover:-translate-y-0.5"
+              className="group block rounded-md border border-edge bg-surface p-5 transition-all hover:-translate-y-0.5 sm:p-8"
             >
               <div className="flex items-center gap-2.5">
                 <span
@@ -782,10 +754,10 @@ function CaptureModeCard({ mode, index }) {
 
 function FlowStep({ step }) {
   return (
-    <div className="grid grid-cols-1 gap-6 border-t border-edge-faint py-10 md:grid-cols-[140px_1fr] md:gap-10 md:py-12">
-      <div>
+    <div className="grid grid-cols-1 gap-0 border-t border-edge-faint py-8 md:grid-cols-[140px_1fr] md:gap-10 md:py-12">
+      <div className="hidden md:block">
         <div
-          className="hidden font-display text-5xl font-normal leading-none tracking-[-0.04em] opacity-95 md:block"
+          className="font-display text-5xl font-normal leading-none tracking-[-0.04em] opacity-95"
           style={{
             color: 'var(--amber)',
             textShadow:
