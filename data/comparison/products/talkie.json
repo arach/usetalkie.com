@@ -1,0 +1,410 @@
+{
+  "slug": "talkie",
+  "name": "Talkie",
+  "officialUrl": "https://usetalkie.com/",
+  "checkedAt": "2026-07-22",
+  "archetypes": ["live-dictation", "personal-capture", "agent-input"],
+  "claims": {
+    "job.primary": {
+      "dimension": "job",
+      "label": "Primary workflow",
+      "value": "Live dictation, durable personal capture, and voice input for your own tools and agents.",
+      "outcome": "Speak into an app now without throwing the capture away afterward.",
+      "platforms": ["macOS", "iOS", "watchOS"],
+      "privacyBoundary": "Core recognition can run on-device; optional sync and configured providers have separate boundaries.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "README.md", "locator": "Overview"},
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "Voice, Capture, and Automation command groups"}
+      ],
+      "editorialNote": "Do not position Talkie as a meeting bot, batch transcription suite, or accessibility controller."
+    },
+    "capture.live_dictation": {
+      "dimension": "capture",
+      "label": "Live dictation",
+      "value": "Hold-to-talk dictation with text returned to the active app.",
+      "outcome": "Replace typing without changing apps.",
+      "platforms": ["macOS", "iOS keyboard extension"],
+      "privacyBoundary": "Audio is handled by the selected recognition engine.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieAgent", "locator": "DictationInput.swift"},
+        {"kind": "repo", "source": "docs/specs/tlk-014-ios-keyboard-ux.md", "locator": "implemented keyboard flow"}
+      ]
+    },
+    "capture.voice_memos": {
+      "dimension": "capture",
+      "label": "Voice memos",
+      "value": "Recorded memos retain audio, transcript, and derived results such as summaries or tasks.",
+      "outcome": "Keep spoken thinking as a revisitable object, not only pasted text.",
+      "platforms": ["macOS", "iOS", "watchOS capture"],
+      "privacyBoundary": "Stored locally with optional sync paths.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "memos command"},
+        {"kind": "repo", "source": "apps/macos/Talkie", "locator": "MemoRecordingController.swift"}
+      ]
+    },
+    "capture.visual_context": {
+      "dimension": "capture",
+      "label": "Visual context",
+      "value": "Screenshots, selected regions, short screen clips, and camera captures can accompany spoken context.",
+      "outcome": "Show an agent what you mean instead of describing the screen from memory.",
+      "platforms": ["macOS"],
+      "privacyBoundary": "Captured media is stored with the local Talkie data; downstream workflows may add their own boundary.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "captures, screenshots, and clips commands"},
+        {"kind": "repo", "source": "apps/macos/TalkieKit", "locator": "ScreenshotCaptureService.swift and ScreenCaptureOverlay.swift"}
+      ]
+    },
+    "capture.ocr": {
+      "dimension": "capture",
+      "label": "OCR on captures",
+      "value": "Captured screenshots can expose recognized text alongside the media.",
+      "outcome": "Search or route what was visible without manually retyping it.",
+      "platforms": ["macOS"],
+      "privacyBoundary": "Apple Vision processing is local.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieAgent/Services/Screenshots/VisionOCRService.swift", "locator": "Vision OCR service"},
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "captures --ocr"}
+      ]
+    },
+    "capture.file_transcription": {
+      "dimension": "capture",
+      "label": "Audio and video files",
+      "value": "Talkie retains recordings it captures, but it is not substantiated as a batch audio/video transcription suite.",
+      "outcome": "Choose a dedicated file transcriber for large media backlogs, subtitles, and watch folders.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "Not applicable to an unsupported workflow claim.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": [],
+      "editorialNote": "Do not turn the absence of a batch workflow into a negative on pages where file transcription is the competitor's whole category."
+    },
+    "capture.remote_desktop": {
+      "dimension": "capture",
+      "label": "Locked-down app delivery",
+      "value": "Normal active-app insertion; no substantiated Citrix/RDP/VMware keystroke-injection mode.",
+      "outcome": "Not the fit for environments where clipboard delivery is blocked.",
+      "platforms": ["macOS"],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": []
+    },
+    "capture.meetings": {
+      "dimension": "capture",
+      "label": "Meeting capture",
+      "value": "Personal recording and dictation, not an automatic attendee for Zoom, Meet, or Teams.",
+      "outcome": "Use a meeting assistant when the job is to join calls and create a shared record.",
+      "platforms": [],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": []
+    },
+    "processing.locus": {
+      "dimension": "processing",
+      "label": "Core speech processing",
+      "value": "Core speech recognition runs on-device. iCloud sync and optional user-configured AI providers are separate, opt-in data paths.",
+      "outcome": "Dictate offline while retaining a clear boundary around features that do use a service.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "On-device for core ASR; CloudKit for enabled sync; third-party boundary only for configured AI workflows.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieAgent", "locator": "EngineSettingsSection.swift"},
+        {"kind": "repo", "source": "README.md", "locator": "optional OPENAI/ANTHROPIC/GEMINI/GROQ keys"},
+        {"kind": "site", "source": "public/llms.txt", "locator": "optional providers and webhooks"}
+      ],
+      "editorialNote": "Never collapse processing, sync, and workflow-provider boundaries into the phrase 'everything stays on-device.'"
+    },
+    "processing.models": {
+      "dimension": "processing",
+      "label": "Recognition engines",
+      "value": "Selectable local Parakeet and Whisper models on Mac, with Apple Speech and Parakeet paths on iOS.",
+      "outcome": "Choose a local engine for the hardware and capture path instead of being locked to one model.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "Local model inference.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieAgent", "locator": "EngineSettingsSection.swift"},
+        {"kind": "repo", "source": "docs/review/talkie-engine.md", "locator": "family:modelId model identifiers"},
+        {"kind": "repo", "source": "apps/ios", "locator": "HeadlessDictationService.swift / ParakeetModelManager"}
+      ],
+      "editorialNote": "This corrects the current comparison copy that describes Talkie as a fixed Parakeet-on-Mac / Apple-Speech-on-iOS system."
+    },
+    "processing.languages": {
+      "dimension": "processing",
+      "label": "Language coverage",
+      "value": "Varies by the selected local engine; no stable public language count is substantiated in the repository.",
+      "outcome": "Buyers should verify their language in the app rather than rely on a marketing total.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "Local model inference.",
+      "maturity": "unknown",
+      "confidence": "high",
+      "evidence": [],
+      "editorialNote": "Do not publish a Talkie language count, accuracy percentage, or words-per-minute claim without a dated benchmark."
+    },
+    "output.transcript_style": {
+      "dimension": "output",
+      "label": "Default output",
+      "value": "Capture-first transcription that stays relatively close to what was said; additional transformations are explicit workflows.",
+      "outcome": "Preserve the source capture while choosing when to transform it.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "Depends on the selected transformation; core transcript remains local.",
+      "maturity": "verified",
+      "confidence": "medium",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieServer", "locator": "workflow and action pipeline"}
+      ]
+    },
+    "output.dictionary": {
+      "dimension": "output",
+      "label": "Custom vocabulary",
+      "value": "Dictionary architecture is implemented in parts but remains draft/spec territory as a product claim.",
+      "publicValue": "No published custom-vocabulary capability today.",
+      "outcome": "Not yet safe to promise as a published differentiator.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "Local configuration.",
+      "maturity": "planned",
+      "confidence": "medium",
+      "evidence": [
+        {"kind": "repo", "source": "docs/specs/tlk-013", "locator": "draft status"},
+        {"kind": "repo", "source": "docs/specs/app-scoped-dictionaries.md", "locator": "dictionary design"}
+      ],
+      "editorialNote": "Keep this out of public matrices until the shipped product state is confirmed."
+    },
+    "output.context_awareness": {
+      "dimension": "output",
+      "label": "Context awareness",
+      "value": "Context is attached deliberately through app metadata, screenshots, regions, clips, or camera capture; Talkie does not claim continuous screen-reading for every dictation.",
+      "outcome": "Choose when visual context is part of a capture instead of granting blanket screen access.",
+      "platforms": ["macOS"],
+      "privacyBoundary": "User-initiated local capture; downstream agent boundaries remain separate.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "captures and --context"},
+        {"kind": "repo", "source": "apps/macos/TalkieAgent", "locator": "RecordingVisualContext.swift"}
+      ]
+    },
+    "output.diarization": {
+      "dimension": "output",
+      "label": "Speaker separation",
+      "value": "No substantiated speaker-diarization product claim.",
+      "outcome": "Use a meeting or media transcription tool when named speakers are required.",
+      "platforms": [],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": []
+    },
+    "output.meeting_intelligence": {
+      "dimension": "output",
+      "label": "Meeting intelligence",
+      "value": "Workflows can summarize personal captures, but Talkie does not provide a meeting-native summary, speaker, and action-item system.",
+      "outcome": "Personal automation is available; team meeting intelligence is not the product's job.",
+      "platforms": ["macOS"],
+      "privacyBoundary": "Workflow-dependent.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": []
+    },
+    "data.store": {
+      "dimension": "data",
+      "label": "Capture record",
+      "value": "A structured local capture library backed by Core Data/SQLite-compatible stores rather than a transient paste buffer.",
+      "outcome": "Search and reuse previous dictations, memos, and media.",
+      "platforms": ["macOS", "iOS"],
+      "privacyBoundary": "Local by default; enabled iCloud sync uses CloudKit.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "ARCHITECTURE.md", "locator": "NSPersistentCloudKitContainer and TalkieAgent GRDB stores"},
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "local SQLite access"}
+      ],
+      "editorialNote": "Say 'structured local library' publicly; 'local SQLite database' is too implementation-specific for every app surface."
+    },
+    "data.search": {
+      "dimension": "data",
+      "label": "Search and filters",
+      "value": "Full-text search with filters for source, type, app, time, attached media, summaries, tasks, audio, and segments.",
+      "outcome": "Retrieve a spoken capture by meaning and context instead of remembering where it was pasted.",
+      "platforms": ["macOS", "CLI"],
+      "privacyBoundary": "Local FTS5 index.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "search command and filter table"}
+      ]
+    },
+    "data.sync": {
+      "dimension": "data",
+      "label": "Device continuity",
+      "value": "Optional iCloud/CloudKit sync across Apple devices, plus paired-device bridge paths for local network or Tailscale setups.",
+      "outcome": "Capture on one Apple device and continue from another.",
+      "platforms": ["macOS", "iOS", "watchOS"],
+      "privacyBoundary": "CloudKit uses Apple infrastructure; paired-device paths use authenticated LAN/Tailscale connections.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "ARCHITECTURE.md", "locator": "CloudKitSyncManager and NSPersistentCloudKitContainer"},
+        {"kind": "repo", "source": "SECURITY.md", "locator": "pairing and bridge security"}
+      ]
+    },
+    "data.portability": {
+      "dimension": "data",
+      "label": "Portability",
+      "value": "CLI access, JSON and path output, plus archive, clean, and data-path commands.",
+      "outcome": "Move captures into scripts or backups without scraping the UI.",
+      "platforms": ["macOS", "CLI"],
+      "privacyBoundary": "Local filesystem and stdout unless the user routes output elsewhere.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "--json, --paths, and data commands"}
+      ]
+    },
+    "automation.cli": {
+      "dimension": "automation",
+      "label": "Command-line access",
+      "value": "The `@talkie/cli` package queries dictations, memos, media, search results, workflows, devices, and data paths.",
+      "outcome": "Treat voice captures as inputs to tools rather than content trapped in an app.",
+      "platforms": ["macOS", "terminal"],
+      "privacyBoundary": "Reads local data; invoked commands determine any downstream boundary.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "command reference"},
+        {"kind": "repo", "source": "packages/npm/cli/package.json", "locator": "package name"}
+      ]
+    },
+    "automation.sdk_api": {
+      "dimension": "automation",
+      "label": "SDK and API",
+      "value": "A TypeScript client package and local gateway/bridge APIs expose Talkie to custom integrations.",
+      "outcome": "Build against Talkie without automating its UI.",
+      "platforms": ["TypeScript", "local services"],
+      "privacyBoundary": "Depends on the configured gateway and integration.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/sdk", "locator": "@talkie/client"},
+        {"kind": "repo", "source": "docs/specs/tlk-006-gateway-protocol.md", "locator": "gateway protocol"}
+      ]
+    },
+    "automation.workflows": {
+      "dimension": "automation",
+      "label": "Workflow engine",
+      "value": "Captured speech and context can enter Talkie workflows with durable run history and explicit actions.",
+      "outcome": "Turn a capture into a repeatable process instead of a one-off paste.",
+      "platforms": ["macOS", "iOS-triggered Mac execution"],
+      "privacyBoundary": "Each action/provider has its own declared boundary.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieServer/Workflow", "locator": "WorkflowExecutor.swift, WorkflowDefinition.swift, AutoRunProcessor.swift"},
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "workflows command"}
+      ]
+    },
+    "automation.agents": {
+      "dimension": "automation",
+      "label": "Agent input",
+      "value": "Dictations and visual context can be routed into agentic terminals such as Claude Code.",
+      "outcome": "Use voice plus the current screen as an instruction package for an agent.",
+      "platforms": ["macOS", "terminal"],
+      "privacyBoundary": "Local capture first; the chosen agent or model has a separate boundary.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "apps/macos/TalkieAgent/Services/Agents", "locator": "ManagedAgentWorkspaceStore.swift and AgentRuntime.swift"},
+        {"kind": "repo", "source": "packages/npm/cli/src/commands/terminal.ts", "locator": "terminal integration"}
+      ]
+    },
+    "automation.integrations": {
+      "dimension": "automation",
+      "label": "Integration style",
+      "value": "CLI, SDK, gateway, webhooks, and configurable workflows for building your own path; not a catalog of meeting/CRM connectors.",
+      "outcome": "Compose a local or developer-owned workflow instead of adopting a vendor's collaboration stack.",
+      "platforms": ["macOS", "TypeScript", "HTTP"],
+      "privacyBoundary": "Each configured integration declares its own boundary.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "automation commands"},
+        {"kind": "repo", "source": "packages/npm/sdk", "locator": "client package"},
+        {"kind": "site", "source": "components/docs/ExtensibilityPage.jsx", "locator": "webhooks and URL schemes"}
+      ]
+    },
+    "automation.scripting": {
+      "dimension": "automation",
+      "label": "Scripting model",
+      "value": "External CLI, TypeScript SDK, JSON, gateway APIs, and workflow definitions operate on captured data.",
+      "outcome": "Automate around durable capture objects without learning a voice-command grammar.",
+      "platforms": ["macOS", "TypeScript", "shell"],
+      "privacyBoundary": "Script-dependent.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "packages/npm/cli/README.md", "locator": "JSON and path output"},
+        {"kind": "repo", "source": "packages/npm/sdk", "locator": "TypeScript SDK"}
+      ]
+    },
+    "reach.platforms": {
+      "dimension": "reach",
+      "label": "Supported platforms",
+      "value": "Apple-focused: macOS, iPhone/iPad surfaces, and Apple Watch capture.",
+      "outcome": "Deep Apple-device continuity, with no Windows, Android, or Linux client claim.",
+      "platforms": ["macOS", "iOS", "iPadOS", "watchOS"],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "verified",
+      "confidence": "high",
+      "evidence": [
+        {"kind": "repo", "source": "README.md", "locator": "repository layout and app targets"}
+      ]
+    },
+    "collaboration.meetings": {
+      "dimension": "collaboration",
+      "label": "Meeting workflow",
+      "value": "Not a meeting bot or shared meeting workspace.",
+      "outcome": "Use Talkie for personal capture; choose a meeting product for automatic call attendance and team records.",
+      "platforms": [],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": [],
+      "editorialNote": "A deliberate category boundary, not a missing checkbox to score against every competitor."
+    },
+    "collaboration.voice_control": {
+      "dimension": "collaboration",
+      "label": "Hands-free computer control",
+      "value": "Dictation-focused; not a complete cursor, click, grammar, or accessibility control layer.",
+      "outcome": "Use a dedicated accessibility/voice-control product when full hands-free operation is required.",
+      "platforms": [],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": []
+    },
+    "collaboration.teams": {
+      "dimension": "collaboration",
+      "label": "Team administration",
+      "value": "Personal capture product; no substantiated shared dictionaries, shared snippets, usage dashboards, or enterprise admin layer.",
+      "outcome": "Best evaluated as an individual tool rather than a centrally managed team writing system.",
+      "platforms": [],
+      "privacyBoundary": "Not applicable.",
+      "maturity": "conceded_gap",
+      "confidence": "high",
+      "evidence": []
+    }
+  }
+}

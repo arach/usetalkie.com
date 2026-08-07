@@ -37,7 +37,7 @@ usetalkie.com/
 
 ```bash
 # Install dependencies
-bun install  # or npm install
+bun install
 
 # Run dev server
 bun run dev  # Opens at http://localhost:5173

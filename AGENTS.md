@@ -11,10 +11,10 @@ Marketing website for Talkie built with Next.js and React.
 ## Build
 
 ```bash
-pnpm install
-pnpm dev          # http://localhost:3000
-pnpm build        # Production build
-pnpm start        # Serve production build
+bun install
+bun dev           # http://localhost:5173
+bun run build     # Production build
+bun start        # Serve production build
 ```
 
 ## Stack
@@ -22,7 +22,7 @@ pnpm start        # Serve production build
 - **Framework**: Next.js 14+ (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Package Manager**: pnpm
+- **Package Manager**: Bun
 
 ## Project Structure
 
@@ -49,9 +49,8 @@ Landing/
 ## Commands
 
 ```bash
-pnpm dev                      # Development server
-pnpm build                    # Production build
-pnpm lint                     # ESLint
+bun dev                       # Development server
+bun run build                 # Production build
 node scripts/generate-og-image.js  # Regenerate OG image
 ```
 
@@ -108,7 +107,7 @@ export function FeatureCard({ title, description, icon }: FeatureCardProps) {
 Static export compatible. Deploy to Vercel, Netlify, or any static host.
 
 ```bash
-pnpm build
+bun run build
 # Output in .next/ or out/ depending on config
 ```
 

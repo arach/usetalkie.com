@@ -13,7 +13,7 @@ I build Talkie, and Aiko is one of the apps I happily point people to — it's a
 
 Aiko, by Sindre Sorhus, is one of the cleanest on-device transcription apps on Apple platforms. It runs OpenAI's Whisper locally — the large v3 model on macOS, medium or small on iPhone and iPad depending on memory — so nothing leaves your device. You drag in an audio or video file, or import a Voice Memo, and it produces accurate text across roughly 100 languages with automatic language detection.
 
-It's dead simple by design. Export to plain text, JSON, CSV, or SRT subtitles. Batch-transcribe through Apple Shortcuts. Optionally translate to English. There's no subscription — it's a one-time purchase (around $24) with no upsells — and no fuss. For turning meetings, lectures, interviews, and podcasts into text, offline and privately, it's a genuinely good tool that does one job well.
+It's deliberately simple. Export to plain text, JSON, CSV, or SRT subtitles, automate recording and transcription through Apple Shortcuts, and optionally translate to English. For turning meetings, lectures, interviews, and podcasts into text offline and privately, it is a genuinely good tool that does one job well.
 
 The thing to understand is the shape of that job: Aiko transcribes recordings you already have. It is not a system-wide "dictate into any app" tool, and it has no scripting or agent layer. That's not a flaw — it's a deliberately narrow scope.
 
@@ -23,7 +23,7 @@ Talkie starts from the other end. Instead of transcribing files after the fact, 
 
 **Live, system-wide dictation.** Talk into your editor, your terminal, a chat box, an email — Talkie transcribes as you speak. On Mac it uses Parakeet v3, a fast local ASR model; on iPhone it uses Apple's on-device Speech. No file to import, no round trip.
 
-**Structured, searchable storage.** Every capture lands in a local-first SQLite database on your Mac. Your dictation isn't a one-off paste that disappears — it becomes durable, searchable local knowledge you can go back to, filter, and build on. No account, no API key for core use.
+**Structured, searchable storage.** Captures enter a structured local library. A dictation does not have to remain a one-off paste — it becomes durable, searchable material you can filter and build on, with optional sync and workflow boundaries kept separate.
 
 **A CLI for scripts and agents.** This is the real divergence. Talkie ships a command-line tool that exposes your captures as structured data:
 
@@ -41,16 +41,7 @@ Now your voice is queryable from scripts and pipelines. You can feed captures in
 
 ## Side by side
 
-| | Talkie | Aiko |
-|---|---|---|
-| Pricing | See current plans | One-time ~$24 (no subscription) |
-| On-device transcription | Yes (Parakeet v3 on Mac, Apple Speech on iOS) | Yes (Whisper, local) |
-| Live / system-wide dictation | Yes | No |
-| Structured, searchable storage | Yes (local SQLite) | No — exports text/JSON/SRT per file |
-| CLI for scripts & agents | Yes (`@talkie/cli`) | No |
-| Dictate into AI agents | Yes (e.g. Claude Code) | No |
-| Cross-device | Mac, iPhone, Apple Watch (iCloud) | Mac, iPhone, iPad, Vision |
-| Simple file/recording transcription | Not the focus | Yes — this is what it's built for |
+<EvidenceComparison competitor="aiko" />
 
 ## Which one should you pick?
 
@@ -67,4 +58,4 @@ They're not really competitors so much as adjacent tools. Plenty of people would
 Related reading:
 - [Dictate into Claude Code](/workflows/dictate-to-claude/)
 - [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
-- [The best dictation apps for Mac](/ideas/best-dictation-apps-for-mac/)
+- [The best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

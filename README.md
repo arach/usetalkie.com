@@ -13,7 +13,7 @@ Static marketing site for Talkie built with Next.js and Tailwind CSS. Configured
 ```bash
 bun install
 bun dev
-# portless prints the local preview URL
+# opens at http://localhost:5173
 ```
 
 ## Build & Preview
@@ -80,7 +80,7 @@ Local:
 ```bash
 export NEXT_PUBLIC_REGULAR_PRICE=29.99
 export NEXT_PUBLIC_LAUNCH_PRICE=2.99
-npm run dev
+bun dev
 ```
 
 CI (GitHub Actions): add repository variables (or secrets) with those names to customize the deployed site.

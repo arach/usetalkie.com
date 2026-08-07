@@ -1160,8 +1160,9 @@ html[data-chassis-rotor="on"] .chassis-rotor-host { display: inline-flex; }
 
 /* Subtle focus rings */
 :focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(250,250,250,0.08);
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px color-mix(in oklab, var(--trace) 24%, transparent);
 }
 
 /* Map mono font to GA-loaded JetBrains Mono variable */

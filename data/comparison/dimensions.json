@@ -1,0 +1,56 @@
+[
+  {
+    "id": "job",
+    "label": "Job to be done",
+    "kind": "workflow",
+    "buyerQuestion": "What kind of work is the product actually designed to replace?"
+  },
+  {
+    "id": "capture",
+    "label": "Capture and input",
+    "kind": "capability",
+    "buyerQuestion": "What can I speak, record, or attach, and how does capture begin?"
+  },
+  {
+    "id": "processing",
+    "label": "Recognition and processing",
+    "kind": "capability",
+    "buyerQuestion": "Where is speech processed, which engines are available, and does it work offline?"
+  },
+  {
+    "id": "output",
+    "label": "Output and refinement",
+    "kind": "capability",
+    "buyerQuestion": "Do I get a close transcript, polished writing, a meeting record, or computer commands?"
+  },
+  {
+    "id": "data",
+    "label": "Data ownership and retrieval",
+    "kind": "workflow",
+    "buyerQuestion": "Where do captures live, can I find them later, and can I take them elsewhere?"
+  },
+  {
+    "id": "automation",
+    "label": "Automation and integration",
+    "kind": "capability",
+    "buyerQuestion": "Can captures become inputs to scripts, agents, workflows, or other systems?"
+  },
+  {
+    "id": "reach",
+    "label": "Platform and device reach",
+    "kind": "workflow",
+    "buyerQuestion": "Does it run on the devices and operating systems where I work?"
+  },
+  {
+    "id": "collaboration",
+    "label": "Collaboration and control",
+    "kind": "workflow",
+    "buyerQuestion": "Is this for a solo workflow, a team record, or hands-free computer control?"
+  },
+  {
+    "id": "business",
+    "label": "Business facts",
+    "kind": "business",
+    "buyerQuestion": "What are the current commercial, licensing, and administrative constraints?"
+  }
+]

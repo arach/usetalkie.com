@@ -27,7 +27,7 @@ Talkie isn't trying to control your computer. It's trying to make dictation dead
 
 - **Simplicity, dictation-first.** Talk, get text. There's no command grammar to memorize and no config to maintain. You're dictating, not programming a voice OS.
 - **Local-first and programmable.** Captures live locally, and the CLI makes them available to scripts, workflows, and agentic tools.
-- **On-device.** Transcription runs locally — Apple Speech on iPhone, Parakeet v3 for local ASR on Mac. Your captures live in a local-first SQLite database on the Mac, with no account or API key for core use.
+- **Local recognition and durable capture.** Talkie offers local Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iPhone. Captures enter a structured local library rather than a voice-command grammar.
 - **Structured captures, not just a text stream.** Every dictation becomes a searchable, structured capture — local knowledge you can query, not a transient paste.
 - **A CLI for your scripts and agents.** Talkie ships `@talkie/cli`, which exposes your captures as structured data for pipelines:
 
@@ -43,18 +43,7 @@ The honest limitation: Talkie is Apple-only, and it won't move your cursor or le
 
 ## Side by side
 
-| | Talkie | Talon |
-|---|---|---|
-| Pricing | See current plans | Free public version + Patreon patron/beta tier |
-| On-device | Yes (Parakeet v3 on Mac, Apple Speech on iOS) | Yes (local engine, Conformer in beta) |
-| Primary job | Dictation + structured capture | Full hands-free computer control |
-| Learning curve | Minimal — talk, get text | Steep — command grammars + Python config |
-| CLI / structured data | Yes (`@talkie/cli`, local SQLite) | Scriptable via embedded Python |
-| Dictate into AI agents | Yes — remote control for Claude Code etc. | Not the focus |
-| Full computer control (cursor, clicks, commands) | No | Yes |
-| Voice coding grammars | No | Yes |
-| Accessibility / no-hands operation | No | Yes — a core strength |
-| Platforms | macOS, iPhone, Apple Watch | macOS, Windows, Linux |
+<EvidenceComparison competitor="talon" />
 
 ## Which one should you pick?
 
@@ -69,4 +58,4 @@ They're not really competitors. Talon is a voice-control OS layer. Talkie is dic
 Related reading:
 - [Dictate to Claude Code](/workflows/dictate-to-claude/)
 - [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
-- [Best dictation apps for Mac](/ideas/best-dictation-apps-for-mac/)
+- [Best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

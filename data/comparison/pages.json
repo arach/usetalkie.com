@@ -1,0 +1,166 @@
+[
+  {
+    "competitor": "aiko",
+    "archetype": "file-transcription",
+    "picks": {
+      "talkie": {"title": "Live capture you can reuse", "points": ["Dictate at the cursor", "Search past captures", "CLI and workflows"]},
+      "competitor": {"title": "Private file transcription", "points": ["Import audio or video", "On-device Whisper", "Exports and Shortcuts"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Dictation + durable capture", "competitor": "Transcribing recordings"},
+      {"claim": "capture.live_dictation", "label": "Live input", "talkie": "System-wide dictation", "competitor": "Not the product's job"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "On-device core recognition", "competitor": "On-device Whisper"},
+      {"claim": "data.portability", "label": "After capture", "talkie": "Queryable local record", "competitor": "File and subtitle exports"},
+      {"claim": "automation.cli", "label": "Automation", "talkie": "CLI, SDK, workflows", "competitor": "Apple Shortcuts"},
+      {"claim": "reach.platforms", "label": "Devices", "talkie": "Mac, iPhone, Watch", "competitor": "Mac, iPhone, iPad, Vision"}
+    ]
+  },
+  {
+    "competitor": "apple-dictation",
+    "archetype": "os-feature",
+    "picks": {
+      "talkie": {"title": "Keep and reuse what you say", "points": ["Searchable capture history", "Mac, iPhone, and Watch", "CLI and workflows"]},
+      "competitor": {"title": "Dictate with zero setup", "points": ["Already built in", "Works in text fields", "No extra capture system"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Dictation + capture history", "competitor": "Immediate text entry"},
+      {"claim": "capture.live_dictation", "label": "Start", "talkie": "Install and choose a trigger", "competitor": "Built into the OS"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "Local engines available", "competitor": "Varies by language and device"},
+      {"claim": "data.store", "label": "After dictation", "talkie": "Searchable local record", "competitor": "Text stays in destination"},
+      {"claim": "automation.cli", "label": "Automation", "talkie": "CLI, SDK, workflows", "competitor": "OS text input"},
+      {"claim": "reach.platforms", "label": "Reach", "talkie": "Deep Apple workflow", "competitor": "Ubiquitous on Apple devices"}
+    ]
+  },
+  {
+    "competitor": "aqua-voice",
+    "archetype": "ai-writing",
+    "picks": {
+      "talkie": {"title": "Local capture that becomes data", "points": ["On-device core recognition", "Searchable capture library", "CLI, SDK, and workflows"]},
+      "competitor": {"title": "Polished writing at the cursor", "points": ["Aggressive AI cleanup", "Screen-aware formatting", "Mac, Windows, and iPhone"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Capturing reusable voice data", "competitor": "Producing finished writing"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "On-device core recognition", "competitor": "Cloud; no offline mode"},
+      {"claim": "output.transcript_style", "label": "Output", "talkie": "Close transcript, explicit workflows", "competitor": "Automatic rewrite and formatting"},
+      {"claim": "output.context_awareness", "label": "Screen context", "talkie": "Attach it deliberately", "competitor": "Optional Deep Context"},
+      {"claim": "data.store", "label": "Capture record", "talkie": "Structured local library", "competitor": "Account and retention controls"},
+      {"claim": "reach.platforms", "label": "Devices", "talkie": "Mac, iPhone, Watch", "competitor": "Mac, Windows, iPhone"}
+    ]
+  },
+  {
+    "competitor": "dictaflow",
+    "archetype": "enterprise-dictation",
+    "picks": {
+      "talkie": {"title": "Local capture that becomes data", "points": ["On-device core recognition", "Searchable capture library", "CLI, SDK, and workflows"]},
+      "competitor": {"title": "Polished dictation almost anywhere", "points": ["Windows and Mac", "Selected-text editing", "Citrix, RDP, and VMware"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Capture, retrieval, automation", "competitor": "Cross-platform text delivery"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "On-device core recognition", "competitor": "Choose local or cloud"},
+      {"claim": "output.transcript_style", "label": "Output", "talkie": "Close transcript, explicit workflows", "competitor": "AI cleanup and voice editing"},
+      {"claim": "capture.remote_desktop", "label": "Locked-down apps", "talkie": "Normal app insertion", "competitor": "Types when paste is blocked"},
+      {"claim": "data.store", "label": "Capture record", "talkie": "Searchable local library", "competitor": "Cursor-first workflow"},
+      {"claim": "automation.cli", "label": "Automation", "talkie": "CLI, SDK, workflows", "competitor": "Dictates into tool UIs"},
+      {"claim": "reach.platforms", "label": "Devices", "talkie": "Mac, iPhone, Watch", "competitor": "Windows, Mac, iPhone, Android"}
+    ]
+  },
+  {
+    "competitor": "dragon",
+    "archetype": "professional-dictation",
+    "picks": {
+      "talkie": {"title": "Apple-first capture and automation", "points": ["Local recognition", "Searchable personal library", "CLI and agent workflows"]},
+      "competitor": {"title": "Professional Windows dictation", "points": ["Specialized vocabulary", "Deep voice commands", "Mature professional workflow"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Personal capture + agents", "competitor": "Professional dictation"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "Local engines available", "competitor": "Varies by Dragon edition"},
+      {"claim": "output.dictionary", "label": "Vocabulary", "talkie": "No published capability today", "competitor": "A core strength"},
+      {"claim": "collaboration.voice_control", "label": "Hands-free control", "talkie": "Not a full control layer", "competitor": "Commands, macros, navigation"},
+      {"claim": "automation.cli", "label": "Automation", "talkie": "CLI, SDK, workflows", "competitor": "Voice commands and macros"},
+      {"claim": "reach.platforms", "label": "Desktop", "talkie": "Native macOS", "competitor": "Windows 10 and 11"}
+    ]
+  },
+  {
+    "competitor": "macwhisper",
+    "archetype": "file-transcription",
+    "picks": {
+      "talkie": {"title": "Voice capture for your own tools", "points": ["Dictation and personal capture", "Searchable local library", "CLI, SDK, and agents"]},
+      "competitor": {"title": "A full media transcription desk", "points": ["Files, meetings, and subtitles", "Wide model selection", "Editing, speakers, and exports"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Durable personal capture", "competitor": "Media transcription"},
+      {"claim": "capture.file_transcription", "label": "Files", "talkie": "Not a batch transcriber", "competitor": "Batch, YouTube, watch folders"},
+      {"claim": "capture.meetings", "label": "Meetings", "talkie": "Personal recording only", "competitor": "Mic + system audio"},
+      {"claim": "processing.models", "label": "Models", "talkie": "Local Parakeet + Whisper", "competitor": "Broad local + cloud catalog"},
+      {"claim": "output.diarization", "label": "Speakers", "talkie": "No published diarization", "competitor": "Automatic + manual assignment"},
+      {"claim": "data.portability", "label": "Exports", "talkie": "JSON, paths, archive", "competitor": "Subtitles, docs, web, custom"},
+      {"claim": "automation.integrations", "label": "Automation", "talkie": "CLI, SDK, workflows", "competitor": "Watch folders + app integrations"}
+    ]
+  },
+  {
+    "competitor": "otter",
+    "archetype": "meeting-assistant",
+    "picks": {
+      "talkie": {"title": "Personal dictation and capture", "points": ["Local core recognition", "Searchable personal library", "Scripts and agent workflows"]},
+      "competitor": {"title": "Shared meeting intelligence", "points": ["Joins and records calls", "Speakers, summaries, actions", "Team knowledge and integrations"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "One person speaking to tools", "competitor": "Teams remembering meetings"},
+      {"claim": "capture.meetings", "label": "Calls", "talkie": "Does not join meetings", "competitor": "Zoom, Meet, and Teams"},
+      {"claim": "output.meeting_intelligence", "label": "After the call", "talkie": "Personal workflows", "competitor": "Summary, speakers, action items"},
+      {"claim": "collaboration.meetings", "label": "Collaboration", "talkie": "Personal library", "competitor": "Shared meeting workspace"},
+      {"claim": "data.store", "label": "Data home", "talkie": "Structured local library", "competitor": "Cloud team knowledge"},
+      {"claim": "automation.integrations", "label": "Integrations", "talkie": "CLI, SDK, workflows", "competitor": "Meeting and business apps"}
+    ]
+  },
+  {
+    "competitor": "superwhisper",
+    "archetype": "ai-writing",
+    "picks": {
+      "talkie": {"title": "Capture history you can program", "points": ["Local core recognition", "Searchable personal library", "CLI, SDK, and workflows"]},
+      "competitor": {"title": "Flexible AI writing modes", "points": ["Deep rewriting and prompts", "Files and meetings", "Local or cloud models"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Capture, retrieval, automation", "competitor": "Flexible AI dictation"},
+      {"claim": "capture.meetings", "label": "Meetings", "talkie": "Not the product's job", "competitor": "Recording + speaker separation"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "On-device core recognition", "competitor": "Choose local or cloud"},
+      {"claim": "output.transcript_style", "label": "Output", "talkie": "Close transcript, explicit workflows", "competitor": "Promptable modes and rewrites"},
+      {"claim": "output.context_awareness", "label": "Screen context", "talkie": "Attach it deliberately", "competitor": "Super Mode uses app context"},
+      {"claim": "data.store", "label": "Capture record", "talkie": "Structured local library", "competitor": "History; boundary varies by mode"},
+      {"claim": "reach.platforms", "label": "Devices", "talkie": "Mac, iPhone, Watch", "competitor": "Mac, Windows, iPhone, iPad"}
+    ]
+  },
+  {
+    "competitor": "talon",
+    "archetype": "voice-control",
+    "picks": {
+      "talkie": {"title": "Dictation without a command system", "points": ["Quick hold-to-talk", "Durable capture history", "Voice input for agents"]},
+      "competitor": {"title": "Control the computer hands-free", "points": ["Cursor, clicks, and commands", "Voice coding grammars", "Python customization"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Dictation + capture", "competitor": "Hands-free computer control"},
+      {"claim": "capture.live_dictation", "label": "Dictation", "talkie": "The primary interaction", "competitor": "One part of a control system"},
+      {"claim": "collaboration.voice_control", "label": "Full control", "talkie": "Not an accessibility layer", "competitor": "Cursor, clicks, keyboard, apps"},
+      {"claim": "automation.scripting", "label": "Customization", "talkie": "CLI, SDK, workflows", "competitor": "Python + command grammars"},
+      {"claim": "output.transcript_style", "label": "Output", "talkie": "Speech captured as text/data", "competitor": "Deterministic commands"},
+      {"claim": "reach.platforms", "label": "Desktop", "talkie": "macOS", "competitor": "Mac, Windows, Linux"}
+    ]
+  },
+  {
+    "competitor": "wispr-flow",
+    "archetype": "ai-writing",
+    "picks": {
+      "talkie": {"title": "Local capture that becomes data", "points": ["On-device core recognition", "Searchable capture library", "CLI, SDK, and workflows"]},
+      "competitor": {"title": "Polished writing across devices", "points": ["AI edits and personalization", "Mac, Windows, iPhone, Android", "Shared team vocabulary"]}
+    },
+    "rows": [
+      {"claim": "job.primary", "label": "Best at", "talkie": "Capture, retrieval, automation", "competitor": "Polished cross-platform writing"},
+      {"claim": "processing.locus", "label": "Processing", "talkie": "On-device core recognition", "competitor": "Always cloud transcription"},
+      {"claim": "output.transcript_style", "label": "Output", "talkie": "Close transcript, explicit workflows", "competitor": "Automatic edits and formatting"},
+      {"claim": "output.dictionary", "label": "Personalization", "talkie": "No published dictionary today", "competitor": "Dictionary, snippets, styles"},
+      {"claim": "data.store", "label": "Capture record", "talkie": "Structured local library", "competitor": "Optional cloud sync"},
+      {"claim": "collaboration.teams", "label": "Teams", "talkie": "Personal product", "competitor": "Shared tools and admin"},
+      {"claim": "reach.platforms", "label": "Devices", "talkie": "Mac, iPhone, Watch", "competitor": "Mac, Windows, iPhone, Android"}
+    ]
+  }
+]
