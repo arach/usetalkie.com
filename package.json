@@ -17,6 +17,7 @@
     "postbuild": "echo 'Build complete'",
     "seo:audit": "bun scripts/seo-audit.mjs",
     "aeo:audit": "bun scripts/seo-audit.mjs",
+    "comparison:check": "bun scripts/validate-comparison-data.mjs",
     "indexnow:dry-run": "bun scripts/indexnow-submit.mjs --all --dry-run",
     "indexnow:submit": "bun scripts/indexnow-submit.mjs",
     "indexnow:submit:all": "bun scripts/indexnow-submit.mjs --all",

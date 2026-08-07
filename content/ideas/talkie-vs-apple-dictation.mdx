@@ -23,7 +23,7 @@ The ceiling shows up when you want dictation to be more than transcription into 
 
 Talkie starts from the same on-device premise as Apple, then treats each capture as something worth keeping and building on.
 
-**Structured, searchable local storage.** On the Mac, Talkie transcribes with Parakeet v3, a local ASR model, and writes results to a local SQLite database. On iPhone it uses Apple's on-device speech. There's no account or API key for core use. The difference from Apple Dictation is what happens after the words are recognized: instead of vanishing into a field, every capture becomes a durable, searchable local record you can go back to.
+**Structured, searchable capture.** Talkie offers selectable local Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iPhone. The difference from Apple Dictation is what happens after recognition: instead of existing only in the destination field, each capture can remain a durable, searchable record. Optional iCloud sync is a separate storage boundary.
 
 **A CLI and a data layer for agents.** Because captures live in a real database, Talkie ships a CLI that reads it directly:
 
@@ -41,16 +41,7 @@ That turns your dictation into structured data you can pipe into scripts, pipeli
 
 ## Side by side
 
-| | Talkie | Apple Dictation |
-|---|---|---|
-| Pricing | See current plans | Built into Apple platforms |
-| On-device | Yes (Parakeet v3 on Mac, Apple Speech on iOS) | Yes (on Apple Silicon / modern hardware) |
-| Structured, searchable storage | Yes (local SQLite) | No |
-| CLI for scripts & agents | Yes (`@talkie/cli`) | No |
-| Dictate into AI agents | Yes (e.g. Claude Code) | No |
-| Cross-device capture | Yes (Mac / iPhone / Watch via iCloud) | Per-device only |
-| Zero install / already present | No (small install) | Yes, built into the OS |
-| Works everywhere text is typed | Mac + iPhone + Watch | Universal across every app and field |
+<EvidenceComparison competitor="apple-dictation" />
 
 Two of those rows go to Apple on purpose. Being built into the operating system and working in literally every text field is a genuine advantage, and no third-party app matches it.
 
@@ -67,4 +58,4 @@ If that second description is you, you've outgrown the built-in one.
 Related reading:
 - [Dictate to Claude Code](/workflows/dictate-to-claude/)
 - [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
-- [Best dictation apps for Mac](/ideas/best-dictation-apps-for-mac/)
+- [Best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

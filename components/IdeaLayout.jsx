@@ -175,6 +175,297 @@ const IDEA_PROSE_CSS = `
   font-size: 0.85em;
 }
 
+/* Comparison matrices — keep the article treatment, but make dense
+ * side-by-side data scan like a product table instead of raw Markdown. */
+.comparison-table {
+  margin: 2rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--edge-dim);
+  border-radius: 10px;
+  padding: 0.6rem;
+  background: var(--canvas-alt);
+  box-shadow: 0 18px 44px -38px rgba(0, 0, 0, 0.5);
+}
+.comparison-table:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+.comparison-table table {
+  width: 100%;
+  min-width: 680px;
+  margin: 0;
+  border: 0;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  table-layout: fixed;
+  font-size: 12px;
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+}
+.comparison-table th,
+.comparison-table td {
+  padding: 0.9rem 1rem;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.comparison-table thead th {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 0;
+}
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+  width: 32%;
+  color: var(--ink);
+}
+.comparison-table tbody td:not(:first-child) {
+  color: var(--ink);
+  background: var(--surface);
+}
+.comparison-table tbody td:first-child {
+  border: 1px solid var(--edge-faint);
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
+  background: var(--canvas-alt);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.comparison-table th:nth-child(2),
+.comparison-table td:nth-child(2) {
+  border-left: 1px solid color-mix(in oklab, var(--amber) 38%, var(--edge-faint));
+}
+.comparison-table thead th:nth-child(2) {
+  color: var(--amber);
+  background: transparent;
+}
+.comparison-table tbody td:nth-child(2) {
+  border-top: 1px solid var(--edge-faint);
+  border-bottom: 1px solid var(--edge-faint);
+}
+.comparison-table tbody td:last-child {
+  border: 1px solid var(--edge-faint);
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
+  background: var(--surface);
+}
+.comparison-table code {
+  padding: 0.1rem 0.3rem;
+  border: 1px solid var(--edge-faint);
+  border-radius: 3px;
+  background: var(--canvas-alt);
+  color: var(--ink);
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+.evidence-comparison {
+  margin: 2.25rem 0;
+}
+.evidence-comparison .comparison-table {
+  margin: 0.8rem 0 0;
+}
+.evidence-comparison__picks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+.evidence-comparison__picks article {
+  min-width: 0;
+  padding: 1rem 1.05rem 1.05rem;
+  border: 1px solid var(--edge-dim);
+  border-radius: 9px;
+  background: var(--surface);
+}
+.evidence-comparison__picks article:first-child {
+  border-top-color: color-mix(in oklab, var(--amber) 55%, var(--edge-dim));
+}
+.evidence-comparison__picks > article > span {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.evidence-comparison__picks article:first-child > span {
+  color: var(--amber);
+}
+.evidence-comparison__picks h3 {
+  margin: 0 0 0.75rem;
+  color: var(--ink);
+  font-family: var(--font-display, ui-serif, Georgia, serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.evidence-comparison__picks ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.evidence-comparison__picks li {
+  position: relative;
+  margin: 0;
+  padding-left: 0.8rem;
+  color: var(--ink-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.evidence-comparison__picks li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--ink-subtle);
+}
+.evidence-comparison .comparison-table table {
+  border-spacing: 0 0.35rem;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.evidence-comparison .comparison-table th,
+.evidence-comparison .comparison-table td {
+  padding: 0.66rem 0.75rem;
+}
+.evidence-comparison .comparison-table th:first-child,
+.evidence-comparison .comparison-table td:first-child {
+  width: 27%;
+}
+.evidence-comparison__label {
+  display: block;
+  color: var(--ink);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: nowrap;
+}
+.evidence-comparison__sources {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  color: var(--ink-muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+.evidence-comparison__sources p {
+  max-width: 31rem;
+  margin: 0;
+}
+.evidence-comparison__sources ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.evidence-comparison__sources a {
+  color: var(--ink-dim);
+  text-decoration: underline;
+  text-decoration-color: var(--edge-dim);
+  text-underline-offset: 0.2em;
+}
+
+@media (max-width: 640px) {
+  .evidence-comparison__picks {
+    grid-template-columns: 1fr;
+  }
+  .evidence-comparison__picks article {
+    padding: 0.9rem;
+  }
+  .evidence-comparison__sources {
+    display: block;
+  }
+  .evidence-comparison__sources ul {
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+  }
+  .comparison-table {
+    padding: 0.5rem;
+    overflow: visible;
+  }
+  .comparison-table table {
+    min-width: 0;
+    border-spacing: 0;
+  }
+  .comparison-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .comparison-table tbody,
+  .comparison-table tr,
+  .comparison-table td {
+    display: block;
+    width: 100%;
+  }
+  .comparison-table tbody tr {
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--edge-faint);
+    border-radius: 7px;
+    background: var(--surface);
+  }
+  .comparison-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+  .comparison-table tbody td,
+  .comparison-table tbody td:first-child,
+  .comparison-table tbody td:nth-child(2),
+  .comparison-table tbody td:last-child {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    border: 0;
+    border-bottom: 1px solid var(--edge-faint);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--ink);
+  }
+  .comparison-table tbody td:first-child {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .comparison-table tbody td:not(:first-child) {
+    display: grid;
+    grid-template-columns: minmax(5.5rem, 0.34fr) 1fr;
+    gap: 0.75rem;
+  }
+  .comparison-table tbody td:not(:first-child)::before {
+    content: attr(data-column);
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--ink-subtle);
+  }
+  .comparison-table tbody td:nth-child(2)::before {
+    color: var(--amber);
+  }
+  .comparison-table tbody td:last-child {
+    border-bottom: 0;
+  }
+}
+
 /* Image pop-out — at md+ images escape the prose column into the page
  * gutter (max-w-5xl wrapper) so they read as intentional artifacts
  * rather than column-flush "broken" edges. ~3rem each side; well
@@ -219,7 +510,19 @@ function getStatusBadge(status) {
   return null
 }
 
-export default function IdeaLayout({ title, description, date, tags, entryType, status, readMinutes, children }) {
+export default function IdeaLayout({
+  title,
+  description,
+  date,
+  tags,
+  entryType,
+  status,
+  readMinutes,
+  indexHref = '/ideas',
+  indexLabel = 'ALL IDEAS',
+  lead = null,
+  children,
+}) {
   const entryBadge = getEntryBadge(entryType)
   const statusBadge = getStatusBadge(status)
 
@@ -235,11 +538,11 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
         <div className="relative mx-auto max-w-3xl px-4 py-10 md:px-6 md:py-14">
           {/* Crumb back to the index */}
           <Link
-            href="/ideas"
+            href={indexHref}
             className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-faint transition-colors duration-200 hover:text-amber"
           >
             <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>
-            <span>ALL IDEAS</span>
+            <span>{indexLabel}</span>
           </Link>
 
           {/* Badges */}
@@ -308,6 +611,8 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
         </div>
       </section>
 
+      {lead}
+
       {/* ========== ARTICLE ========== */}
       <article className="relative bg-canvas-alt">
         <div className="relative mx-auto max-w-3xl px-4 py-10 md:px-6 md:py-14">
@@ -343,11 +648,11 @@ export default function IdeaLayout({ title, description, date, tags, entryType, 
         <div className="mx-auto max-w-3xl px-4 py-12 md:px-6 md:py-14">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <Link
-              href="/ideas"
+              href={indexHref}
               className="group inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-amber"
             >
               <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span>
-              <span>ALL IDEAS</span>
+              <span>{indexLabel}</span>
             </Link>
 
             <div

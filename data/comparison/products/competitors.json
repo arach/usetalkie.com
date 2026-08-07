@@ -1,0 +1,215 @@
+[
+  {
+    "slug": "aiko",
+    "name": "Aiko",
+    "officialUrl": "https://sindresorhus.com/aiko",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["file-transcription"],
+    "sources": {
+      "product": {"url": "https://sindresorhus.com/aiko", "label": "Aiko product page"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Private, on-device transcription of recordings and audio/video files.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "Not a live transcription or system-wide dictation product.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"], "editorialNote": "A category boundary, not a defect."},
+      "capture.file_transcription": {"dimension": "capture", "label": "Audio and video files", "value": "Record in Aiko or import audio/video files, then transcribe them on-device.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "On-device Whisper transcription; no audio or text leaves the device for core transcription.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.models": {"dimension": "processing", "label": "Recognition engines", "value": "Whisper-based local transcription, optimized as a simple file workflow rather than a model workbench.", "maturity": "verified", "confidence": "medium", "sourceIds": ["product"]},
+      "data.portability": {"dimension": "data", "label": "Portability", "value": "Exports and Shortcuts actions support text-oriented file workflows, including subtitle use cases.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Mac, iPhone, iPad, and Apple Vision Pro.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "Apple Shortcuts actions for recording, transcription, and export; not a general capture-data CLI.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]}
+    }
+  },
+  {
+    "slug": "otter",
+    "name": "Otter.ai",
+    "officialUrl": "https://otter.ai/",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["meeting-assistant", "team-knowledge"],
+    "sources": {
+      "product": {"url": "https://otter.ai/", "label": "Otter.ai product page"},
+      "privacy": {"url": "https://otter.ai/privacy-security", "label": "Otter privacy and security"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "An AI meeting assistant and shared meeting-knowledge system.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.meetings": {"dimension": "capture", "label": "Meeting capture", "value": "Joins or records Zoom, Google Meet, and Microsoft Teams conversations for live transcription.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "output.meeting_intelligence": {"dimension": "output", "label": "Meeting intelligence", "value": "Meeting summaries, action items, speaker-aware transcripts, and conversational access to meeting knowledge.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "collaboration.meetings": {"dimension": "collaboration", "label": "Shared meeting workflow", "value": "Shared transcripts, team knowledge, comments, exports, and administrative controls are central to the product.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Cloud service; recordings and transcripts are processed and stored in Otter systems subject to account controls.", "maturity": "verified", "confidence": "high", "sourceIds": ["privacy"]},
+      "data.store": {"dimension": "data", "label": "Capture record", "value": "A cloud account holds searchable, shareable meeting records and team knowledge.", "maturity": "verified", "confidence": "high", "sourceIds": ["product", "privacy"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported surfaces", "value": "Web/mobile meeting workflow connected to Zoom, Google Meet, and Microsoft Teams rather than an OS-wide dictation layer.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.integrations": {"dimension": "automation", "label": "Integration style", "value": "Meeting and business integrations including conferencing, Slack, Salesforce, HubSpot, Notion, Jira, Asana, Google Drive, Dropbox, and workflow triggers.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]}
+    }
+  },
+  {
+    "slug": "superwhisper",
+    "name": "Superwhisper",
+    "officialUrl": "https://superwhisper.com/",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["live-dictation", "ai-writing", "meeting-recording"],
+    "sources": {
+      "intro": {"url": "https://superwhisper.com/docs/get-started/introduction", "label": "Superwhisper introduction"},
+      "pro": {"url": "https://superwhisper.com/docs/get-started/sw-pro", "label": "Superwhisper Pro features"},
+      "windows": {"url": "https://superwhisper.com/windows", "label": "Superwhisper for Windows"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Context-aware AI dictation with modes, local/cloud model choice, and meeting/file transcription.", "maturity": "verified", "confidence": "high", "sourceIds": ["intro", "pro"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "System-wide dictation into the active application with customizable modes.", "maturity": "verified", "confidence": "high", "sourceIds": ["intro"]},
+      "capture.file_transcription": {"dimension": "capture", "label": "Audio and video files", "value": "Transcribes existing media files in addition to live voice input.", "maturity": "verified", "confidence": "high", "sourceIds": ["pro"]},
+      "capture.meetings": {"dimension": "capture", "label": "Meeting capture", "value": "Records meetings and produces transcripts with speaker separation.", "maturity": "verified", "confidence": "high", "sourceIds": ["pro"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Offers local offline models and optional cloud models; the chosen mode determines the data boundary.", "maturity": "verified", "confidence": "high", "sourceIds": ["intro", "pro"]},
+      "output.transcript_style": {"dimension": "output", "label": "Default output", "value": "Promptable modes and AI processing can deeply rewrite, structure, and transform dictated text.", "maturity": "verified", "confidence": "high", "sourceIds": ["pro"]},
+      "output.dictionary": {"dimension": "output", "label": "Custom vocabulary", "value": "Custom vocabulary and modes support names, jargon, formatting, and repeatable writing behavior.", "maturity": "verified", "confidence": "high", "sourceIds": ["pro"]},
+      "output.context_awareness": {"dimension": "output", "label": "Context awareness", "value": "Super Mode can use application and screen context to improve the current dictation.", "maturity": "verified", "confidence": "high", "sourceIds": ["pro"]},
+      "data.store": {"dimension": "data", "label": "Capture record", "value": "Local or cloud behavior depends on the selected model and enabled features; the product also maintains dictation history.", "maturity": "verified", "confidence": "medium", "sourceIds": ["intro", "pro"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "macOS, Windows, iPhone, and iPad.", "maturity": "verified", "confidence": "high", "sourceIds": ["intro", "windows"]},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "Modes and prompts automate text transformation; no public local capture-data CLI comparable to Talkie's is documented.", "maturity": "not_advertised", "confidence": "medium", "sourceIds": ["pro"]}
+    }
+  },
+  {
+    "slug": "talon",
+    "name": "Talon Voice",
+    "officialUrl": "https://talonvoice.com/",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["voice-control", "accessibility", "voice-coding"],
+    "sources": {
+      "product": {"url": "https://talonvoice.com/", "label": "Talon Voice product page"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Hands-free computer control and voice coding through speech, sounds, eye tracking, and scripts.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "Includes dictation, but text entry sits inside a larger command-and-control system.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Local speech engine options are part of Talon's privacy and low-latency control model; exact engine availability varies by release.", "maturity": "verified", "confidence": "medium", "sourceIds": ["product"]},
+      "output.transcript_style": {"dimension": "output", "label": "Default output", "value": "Command grammars and voice coding prioritize deterministic control, not AI-polished prose.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "collaboration.voice_control": {"dimension": "collaboration", "label": "Hands-free computer control", "value": "Full cursor, click, keyboard, application, and coding control, with eye tracking and noise controls available.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.scripting": {"dimension": "automation", "label": "Scripting model", "value": "An embedded Python scripting system and community command grammars customize the control layer.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "macOS, Windows, and Linux.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]}
+    }
+  },
+  {
+    "slug": "wispr-flow",
+    "name": "Wispr Flow",
+    "officialUrl": "https://wisprflow.ai/",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["live-dictation", "ai-writing", "team-dictation"],
+    "sources": {
+      "features": {"url": "https://wisprflow.ai/features", "label": "Wispr Flow features"},
+      "privacy": {"url": "https://wisprflow.ai/privacy", "label": "Wispr Flow privacy"},
+      "controls": {"url": "https://wisprflow.ai/data-controls", "label": "Wispr Flow data controls"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Cloud AI dictation in every app, with automatic editing, personalization, developer context, and team tools.", "maturity": "verified", "confidence": "high", "sourceIds": ["features"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "System-wide dictation on desktop and mobile with real-time backtracking and formatting.", "maturity": "verified", "confidence": "high", "sourceIds": ["features"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Transcription always occurs in the cloud. Privacy Mode controls training use; Private Cloud Sync controls storage and dependent features.", "maturity": "verified", "confidence": "high", "sourceIds": ["privacy", "controls"]},
+      "output.transcript_style": {"dimension": "output", "label": "Default output", "value": "Automatic filler removal, punctuation, list formatting, correction handling, and app-aware writing styles.", "maturity": "verified", "confidence": "high", "sourceIds": ["features"]},
+      "output.dictionary": {"dimension": "output", "label": "Custom vocabulary", "value": "Personal and shared dictionaries, snippets, and styles; corrections can teach the personal dictionary.", "maturity": "verified", "confidence": "high", "sourceIds": ["features"]},
+      "output.context_awareness": {"dimension": "output", "label": "Context awareness", "value": "Optional app and screen context, plus developer features for filenames, syntax, and technical jargon.", "maturity": "verified", "confidence": "high", "sourceIds": ["features", "privacy"]},
+      "data.store": {"dimension": "data", "label": "Capture record", "value": "Cloud sync can store notes, transcripts, and audio across devices. With sync off, retained notes stay device-local, while transcription still uses cloud processing.", "maturity": "verified", "confidence": "high", "sourceIds": ["privacy", "controls"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Mac, Windows, iPhone, and Android.", "maturity": "verified", "confidence": "high", "sourceIds": ["features"]},
+      "collaboration.teams": {"dimension": "collaboration", "label": "Team administration", "value": "Shared dictionaries and snippets, usage dashboards, enterprise controls, HIPAA options, and audited security programs.", "maturity": "verified", "confidence": "high", "sourceIds": ["features", "privacy"]},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "Strong developer-aware text insertion and AI commands; no public local capture-data CLI comparable to Talkie's is documented.", "maturity": "not_advertised", "confidence": "medium", "sourceIds": ["features"]}
+    }
+  },
+  {
+    "slug": "apple-dictation",
+    "name": "Apple Dictation",
+    "officialUrl": "https://support.apple.com/guide/mac-help/use-dictation-mh40584/mac",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["live-dictation", "os-feature"],
+    "sources": {
+      "product": {"url": "https://support.apple.com/guide/mac-help/use-dictation-mh40584/mac", "label": "Apple Dictation user guide"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Built-in speech-to-text anywhere macOS accepts typed text.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "Immediate OS-level dictation with no separate app to open.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Processing location varies by language, Mac model, and Dictation settings; Apple documents both device and server processing paths.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"], "editorialNote": "Do not simplify this to a blanket on-device claim."},
+      "output.transcript_style": {"dimension": "output", "label": "Default output", "value": "Direct text entry with punctuation and formatting commands; no durable capture workflow.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "data.store": {"dimension": "data", "label": "Capture record", "value": "Text goes to the destination field; Dictation is not a searchable capture library.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Built into Apple operating systems and available per device without a separate install.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "An OS text-input feature rather than a structured capture API or CLI.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]}
+    }
+  },
+  {
+    "slug": "aqua-voice",
+    "name": "Aqua Voice",
+    "officialUrl": "https://aquavoice.com/",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["live-dictation", "ai-writing"],
+    "sources": {
+      "faq": {"url": "https://aquavoice.com/info/faq", "label": "Aqua Voice FAQ"},
+      "windows": {"url": "https://aquavoice.com/windows", "label": "Aqua Voice for Windows"},
+      "privacy": {"url": "https://aquavoice.com/info/privacy", "label": "Aqua Voice privacy policy"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "System-wide AI dictation that turns rough speech into polished writing at the cursor.", "maturity": "verified", "confidence": "high", "sourceIds": ["faq"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "Hold a trigger and dictate into any app with a text cursor.", "maturity": "verified", "confidence": "high", "sourceIds": ["faq"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Cloud processing with no offline mode. Privacy Mode and enterprise zero-data-retention controls change retention, not processing location.", "maturity": "verified", "confidence": "high", "sourceIds": ["windows", "privacy"]},
+      "output.transcript_style": {"dimension": "output", "label": "Default output", "value": "Strong real-time cleanup, grammar correction, filler removal, and destination-aware formatting through Aqua's Avalon model.", "maturity": "verified", "confidence": "high", "sourceIds": ["faq"]},
+      "output.dictionary": {"dimension": "output", "label": "Custom vocabulary", "value": "Up to 800 custom-dictionary entries plus standing style rules.", "maturity": "verified", "confidence": "high", "sourceIds": ["faq"]},
+      "output.context_awareness": {"dimension": "output", "label": "Context awareness", "value": "Optional Deep Context reads relevant on-screen material to improve casing, names, code, and jargon; Aqua says that context is not stored.", "maturity": "verified", "confidence": "high", "sourceIds": ["faq"]},
+      "data.store": {"dimension": "data", "label": "Capture record", "value": "Account-based cloud service. Transcript retention depends on Privacy Mode and plan controls rather than a local-first capture library.", "maturity": "verified", "confidence": "high", "sourceIds": ["faq", "privacy"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Mac, Windows 10/11, and iPhone.", "maturity": "verified", "confidence": "high", "sourceIds": ["windows", "faq"], "editorialNote": "The previous page incorrectly omitted or contradicted current Windows support."},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "Optimized for polished text insertion and voice editing rather than exposing a local capture-data CLI.", "maturity": "verified", "confidence": "medium", "sourceIds": ["faq"]}
+    }
+  },
+  {
+    "slug": "dictaflow",
+    "name": "DictaFlow",
+    "officialUrl": "https://dictaflow.io/",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["live-dictation", "enterprise-dictation"],
+    "sources": {
+      "product": {"url": "https://dictaflow.io/", "label": "DictaFlow product page and FAQ"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Controlled hold-to-talk dictation and selected-text editing, including difficult enterprise app environments.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "Hold a keyboard or mouse trigger, speak, and release to type at the cursor.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.remote_desktop": {"dimension": "capture", "label": "Locked-down app delivery", "value": "Can type characters with an adjustable delay in Citrix, VMware, RDP, and other environments where clipboard paste fails.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Offers local processing for sensitive work and cloud cleanup for stronger formatting and reasoning.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "output.transcript_style": {"dimension": "output", "label": "Default output", "value": "AI cleanup, mid-sentence self-correction, formatting instructions, and selected-text editing.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "output.dictionary": {"dimension": "output", "label": "Specialized vocabulary", "value": "Advertises support for technical, medical, legal, names, acronyms, code terms, and 100+ languages.", "maturity": "verified", "confidence": "medium", "sourceIds": ["product"], "editorialNote": "Do not convert vendor claims into a comparative accuracy ranking."},
+      "data.store": {"dimension": "data", "label": "Capture record", "value": "A dictation-to-cursor workflow; the public product page does not document a Talkie-style local, queryable capture library.", "maturity": "not_advertised", "confidence": "medium", "sourceIds": ["product"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Windows, Mac, iPhone, and Android through Telegram.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "Dictates into IDEs, terminals, AI chat apps, and other cursor targets; no public structured capture-data CLI is documented.", "maturity": "not_advertised", "confidence": "medium", "sourceIds": ["product"]}
+    }
+  },
+  {
+    "slug": "dragon",
+    "name": "Dragon Professional",
+    "officialUrl": "https://dragon.nuance.com/en-us/dragon-professional",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["professional-dictation", "voice-control"],
+    "sources": {
+      "product": {"url": "https://dragon.nuance.com/en-us/dragon-professional", "label": "Nuance Dragon Professional"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "Professional Windows dictation, transcription, custom vocabulary, and voice-command automation.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "Long-form professional dictation with voice editing and commands.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Processing and deployment vary by Dragon edition; evaluate the specific Professional or enterprise product rather than applying one cloud/local label.", "maturity": "verified", "confidence": "medium", "sourceIds": ["product"]},
+      "output.dictionary": {"dimension": "output", "label": "Specialized vocabulary", "value": "Custom words, commands, and professional vocabulary are central product strengths, with domain editions available elsewhere in the Dragon line.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "collaboration.voice_control": {"dimension": "collaboration", "label": "Hands-free computer control", "value": "Deep voice commands, macros, navigation, and application control.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Current Dragon Professional desktop product targets Windows 10/11; Dragon Anywhere covers mobile workflows. No current native Mac desktop product is advertised.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.cli": {"dimension": "automation", "label": "Automation surface", "value": "Voice-command and macro customization inside the Dragon ecosystem rather than a local capture-data CLI.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]}
+    }
+  },
+  {
+    "slug": "macwhisper",
+    "name": "MacWhisper",
+    "officialUrl": "https://goodsnooze.gumroad.com/l/macwhisper",
+    "checkedAt": "2026-07-22",
+    "archetypes": ["file-transcription", "live-dictation", "meeting-recording"],
+    "sources": {
+      "product": {"url": "https://goodsnooze.gumroad.com/l/macwhisper", "label": "MacWhisper official product page"}
+    },
+    "claims": {
+      "job.primary": {"dimension": "job", "label": "Primary workflow", "value": "A broad Mac transcription workbench for files, recordings, meetings, subtitles, editing, and system-wide dictation.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.live_dictation": {"dimension": "capture", "label": "Live dictation", "value": "System-wide dictation and a menu-bar/global transcription surface.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.file_transcription": {"dimension": "capture", "label": "Audio and video files", "value": "Drag-and-drop, batch transcription, YouTube input, watch folders, and broad audio/video format support.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "capture.meetings": {"dimension": "capture", "label": "Meeting capture", "value": "Records microphone and system audio for Zoom, Teams, Webex, Discord, and other meetings.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.locus": {"dimension": "processing", "label": "Core speech processing", "value": "Local transcription by default, with optional user-configured cloud transcription and AI services.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "processing.models": {"dimension": "processing", "label": "Recognition engines", "value": "Whisper families, WhisperKit/distilled and custom GGML models, Parakeet v2/v3, plus optional cloud engines.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "output.diarization": {"dimension": "output", "label": "Speaker separation", "value": "Automatic speaker recognition and manual speaker assignment, with local and cloud options depending on configuration.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "data.portability": {"dimension": "data", "label": "Portability", "value": "Exports subtitle, document, web, data, and custom formats; retains editable transcripts with synchronized playback.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "reach.platforms": {"dimension": "reach", "label": "Supported platforms", "value": "Mac-first desktop app with separate iPhone and iPad availability.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]},
+      "automation.integrations": {"dimension": "automation", "label": "Integration style", "value": "Notion, Make, n8n, Zapier, webhooks, Obsidian, watch folders, and multiple user-supplied AI providers.", "maturity": "verified", "confidence": "high", "sourceIds": ["product"]}
+    }
+  }
+]
