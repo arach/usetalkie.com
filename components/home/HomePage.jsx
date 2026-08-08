@@ -16,7 +16,6 @@ import SignalTable from '../SignalTable'
 import capturesCatalog from '../../content/captures.json'
 import PanoramicHero from './PanoramicHero'
 import SectionArt from './SectionArt'
-import { getTourItems } from '../../lib/tour'
 import { TALKIE_LICENSE } from '../../shared/config/product-links'
 
 /**
@@ -161,50 +160,19 @@ const AMBER_TINT_SUBTLE = { background: 'color-mix(in oklab, var(--amber) 5%, tr
 // -----------------------------------------------------------------------------
 
 export default function HomePage() {
-  /* HScroll order is editorial, not lib/tour's authoring order:
-   * Recording first (live waveform = terminal-shaped active state),
-   * Library second (the memo list), Ready third (the capture-idle
-   * state), then the rest in original order. */
-  const IPHONE_HSCROLL_ORDER = [
-    'iphone-recording',
-    'iphone-library',
-    'iphone-ready',
-    'iphone-welcome',
-    'iphone-memo-detail',
-    'iphone-sync',
-    'iphone-settings',
-  ]
-  const orderIndex = (slug) => {
-    const i = IPHONE_HSCROLL_ORDER.indexOf(slug)
-    return i === -1 ? Infinity : i
-  }
-  const iphoneItems = getTourItems()
-    .filter((i) => i.platform === 'iphone')
-    .sort((a, b) => orderIndex(a.slug) - orderIndex(b.slug))
-
-  /* Mac HScroll — verified app-rendered surfaces for the core voice path. */
-  const MAC_HSCROLL_ORDER = [
-    'mac-home',
-    'mac-recording',
-    'mac-transcription-settings',
-    'mac-dictionary',
-  ]
-  const macOrder = (slug) => {
-    const i = MAC_HSCROLL_ORDER.indexOf(slug)
-    return i === -1 ? Infinity : i
-  }
-  const macItems = getTourItems()
-    .filter((i) => i.platform === 'mac' && MAC_HSCROLL_ORDER.includes(i.slug))
-    .sort((a, b) => macOrder(a.slug) - macOrder(b.slug))
-  const watchItems = getTourItems().filter((i) => i.platform === 'watch')
-
   return (
     <div className="home-page-art relative isolate">
+      <div aria-hidden className="home-page-artwork pointer-events-none absolute inset-0 z-0">
+        <span className="home-page-artwork__left" />
+        <span className="home-page-artwork__center" />
+        <span className="home-page-artwork__right" />
+      </div>
+
       {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
       <section className="home-hero-art relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <div aria-hidden className="home-hero-graticule pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-16">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 xl:py-16">
           {/* Donor-shape hero leads with the product proposition (the H1
               and placard live inside PanoramicHero now, since they're
               tied to the rotating device state). The chassis below is
@@ -224,95 +192,6 @@ export default function HomePage() {
             A remote control for your agents.
             <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
           </p>
-        </div>
-      </section>
-
-      {/* ========== MOBILE-ONLY HSCROLL · IPHONE / WATCH / MAC SCREENS ==========
-          Phone-only visual proof between the textual hero and the
-          richer Data Buffer below. Tablet+desktop already get the
-          panoramic chassis as their visual anchor, so this section
-          is `md:hidden` to keep the rich layout untouched. */}
-      <section className="border-b border-edge-faint bg-canvas-alt py-7 md:hidden">
-        <p className="px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
-          · ON YOUR iPHONE
-        </p>
-
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {iphoneItems.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/tour/${item.slug}/`}
-              className="group flex-shrink-0 snap-start"
-            >
-              <div className="w-[170px] overflow-hidden rounded-[1.5rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="aspect-[9/19] w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-                {item.title}
-              </p>
-            </Link>
-          ))}
-        </div>
-
-        <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
-          · ON YOUR WATCH
-        </p>
-
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {watchItems.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/tour/${item.slug}/`}
-              className="group flex-shrink-0 snap-start"
-            >
-              <div className="w-[142px] overflow-hidden rounded-[1.25rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="aspect-[5/6] w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-                {item.title}
-              </p>
-            </Link>
-          ))}
-        </div>
-
-        {/* Mac strip — landscape cards, fewer items, sits right under
-            the mobile HScrolls so the user sees every surface without
-            scrolling far. Same snap behavior, wider cards (16/10
-            aspect ratio mirrors mac screens). */}
-        <p className="mt-8 px-4 text-[10px] uppercase tracking-[0.26em]" style={{ color: 'var(--amber)' }}>
-          · ON YOUR MAC
-        </p>
-
-        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scroll-pl-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {macItems.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/tour/${item.slug}/`}
-              className="group flex-shrink-0 snap-start"
-            >
-              <div className="w-[280px] overflow-hidden rounded-[1.25rem] border border-edge-dim bg-surface shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)] transition-transform active:scale-[0.97]">
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="aspect-[16/10] w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <p className="mt-2 px-1 text-center text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-                {item.title}
-              </p>
-            </Link>
-          ))}
         </div>
       </section>
 
@@ -344,7 +223,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/workflows"
-                className="group inline-flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors hover:text-ink"
+                className="group inline-flex min-h-11 shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors hover:text-ink"
                 style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
               >
                 See workflows
@@ -400,7 +279,7 @@ export default function HomePage() {
           <div className="mt-6 md:hidden">
             <Link
               href="/tour"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
             >
               MORE MODES <ArrowRight className="h-3 w-3" />
             </Link>
@@ -514,7 +393,7 @@ export default function HomePage() {
           <div className="mt-10">
             <Link
               href="/security"
-              className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
               style={{
                 color: 'var(--amber)',
                 ...AMBER_TINT,
@@ -604,7 +483,7 @@ export default function HomePage() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
                     href="/downloads"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
                     style={{
                       color: 'var(--amber)',
                       ...AMBER_TINT,
@@ -616,7 +495,7 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/mobile"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     iPHONE & WATCH <span aria-hidden>↗</span>
                   </Link>
@@ -678,7 +557,7 @@ export default function HomePage() {
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Link
                     href="/downloads"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
                     style={{
                       color: 'var(--amber)',
                       ...AMBER_TINT,
@@ -690,7 +569,7 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href="/security"
-                    className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
                   >
                     HOW PRIVACY WORKS <Lock className="h-3 w-3" />
                   </Link>

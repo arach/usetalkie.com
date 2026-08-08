@@ -86,13 +86,13 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' }
+      { url: '/favicon.svg?v=talkie-t', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=talkie-t', sizes: '16x16 32x32 48x48', type: 'image/x-icon' }
     ],
     apple: [
       { url: '/icon-1024.png', sizes: '1024x1024' }
     ],
-    shortcut: ['/favicon.svg']
+    shortcut: ['/favicon.svg?v=talkie-t']
   },
   twitter: {
     card: 'summary_large_image',

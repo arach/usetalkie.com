@@ -5,8 +5,8 @@ import { Wordmark } from './brand/Wordmark'
 /**
  * Brand page — /brand
  *
- * The receipts for how Talkie carries itself. Wordmark variants, color
- * tokens, type, voice, motion, usage. This is the page a designer
+ * Talkie's brand guide. Wordmark variants, color tokens, type, voice,
+ * motion, usage. This is the page a designer
  * external to the team lands on and immediately knows the rules.
  *
  * Custody owner: @talkie-brand (Scout). Source-of-truth materials are
@@ -146,7 +146,7 @@ export default function BrandPage() {
             <div className="max-w-2xl">
               <Wordmark size={120} state="listening" pulse />
               <h1 className="mt-10 font-display text-4xl leading-tight tracking-[-0.02em] text-ink md:text-5xl">
-                The receipts for how Talkie carries itself.
+                Talkie’s brand guide.
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-relaxed text-ink-faint">
                 Wordmark, color, type, voice, motion. Everything on this page is loaded from the real components and tokens — no duplicated values, no drift. If the brand evolves, this page evolves with it.
@@ -169,7 +169,7 @@ export default function BrandPage() {
       {/* Wordmark */}
       <Section
         eyebrow="Wordmark"
-        title="The lockup is the brand."
+        title="The Talkie wordmark."
         kicker="Talkie's wordmark is the dotless mono with a Hot Mic dot floating above the i. Red means listening — never decoration. Use the Wordmark component; never re-type the letters."
       >
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
