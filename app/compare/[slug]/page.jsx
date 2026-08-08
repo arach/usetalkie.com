@@ -60,24 +60,52 @@ function comparisonSchema(comparison, slug) {
   const url = `https://usetalkie.com/compare/${slug}/`
   return {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    '@id': `${url}#article`,
-    headline: comparison.title,
-    description: comparison.description,
-    url,
-    mainEntityOfPage: url,
-    datePublished: comparison.date,
-    dateModified: comparison.date,
-    image: `https://usetalkie.com/og/ideas/${comparison.sourceSlug}.png`,
-    keywords: (comparison.tags || []).join(', '),
-    author: {
-      '@type': 'Person',
-      name: 'Arach Tchoupani',
-      url: 'https://usetalkie.com/about/',
-    },
-    publisher: { '@id': 'https://usetalkie.com/#organization' },
-    isPartOf: { '@id': 'https://usetalkie.com/#website' },
-    inLanguage: 'en-US',
+    '@graph': [
+      {
+        '@type': 'Article',
+        '@id': `${url}#article`,
+        headline: comparison.title,
+        description: comparison.description,
+        url,
+        mainEntityOfPage: url,
+        datePublished: comparison.date,
+        dateModified: comparison.date,
+        image: `https://usetalkie.com/og/ideas/${comparison.sourceSlug}.png`,
+        keywords: (comparison.tags || []).join(', '),
+        author: {
+          '@type': 'Person',
+          name: 'Arach Tchoupani',
+          url: 'https://usetalkie.com/about/',
+        },
+        publisher: { '@id': 'https://usetalkie.com/#organization' },
+        isPartOf: { '@id': 'https://usetalkie.com/#website' },
+        inLanguage: 'en-US',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Talkie',
+            item: 'https://usetalkie.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Compare Talkie',
+            item: 'https://usetalkie.com/compare/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: comparison.title,
+            item: url,
+          },
+        ],
+      },
+    ],
   }
 }
 

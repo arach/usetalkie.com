@@ -110,24 +110,52 @@ function ideaSchema(idea, slug) {
   const url = `https://usetalkie.com/ideas/${slug}/`
   return {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    '@id': `${url}#post`,
-    headline: idea.title,
-    description: idea.description,
-    url,
-    mainEntityOfPage: url,
-    datePublished: idea.date,
-    dateModified: idea.date,
-    image: `https://usetalkie.com/og/ideas/${slug}.png`,
-    keywords: (idea.tags || []).join(', '),
-    author: {
-      '@type': 'Person',
-      name: 'Arach Tchoupani',
-      url: 'https://usetalkie.com/about/',
-    },
-    publisher: { '@id': 'https://usetalkie.com/#organization' },
-    isPartOf: { '@id': 'https://usetalkie.com/#website' },
-    inLanguage: 'en-US',
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        '@id': `${url}#post`,
+        headline: idea.title,
+        description: idea.description,
+        url,
+        mainEntityOfPage: url,
+        datePublished: idea.date,
+        dateModified: idea.date,
+        image: `https://usetalkie.com/og/ideas/${slug}.png`,
+        keywords: (idea.tags || []).join(', '),
+        author: {
+          '@type': 'Person',
+          name: 'Arach Tchoupani',
+          url: 'https://usetalkie.com/about/',
+        },
+        publisher: { '@id': 'https://usetalkie.com/#organization' },
+        isPartOf: { '@id': 'https://usetalkie.com/#website' },
+        inLanguage: 'en-US',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Talkie',
+            item: 'https://usetalkie.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Ideas',
+            item: 'https://usetalkie.com/ideas/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: idea.title,
+            item: url,
+          },
+        ],
+      },
+    ],
   }
 }
 
