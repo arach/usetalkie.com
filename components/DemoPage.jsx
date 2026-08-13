@@ -231,7 +231,7 @@ export default function DemoPage() {
                   Get early access.
                 </h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
-                  macOS 26+ · DMG, App Store, or one CLI command.
+                  macOS 14+ · DMG or one CLI command.
                 </p>
               </div>
               <Link

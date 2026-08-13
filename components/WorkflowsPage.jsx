@@ -338,7 +338,7 @@ export default function WorkflowsPage() {
               </Link>
               <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
                 <Workflow className="h-3.5 w-3.5 text-trace" />
-                macOS 26+ · Workflow Editor
+                macOS 14+ · Workflow Editor
               </span>
               <span className="inline-flex items-center gap-2 rounded-sm border border-edge-dim px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-ink-muted">
                 <Terminal className="h-3.5 w-3.5 text-amber" />

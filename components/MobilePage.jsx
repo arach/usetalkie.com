@@ -60,7 +60,7 @@ export default function MobilePage() {
                 className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-sm border border-ink bg-ink px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-canvas transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-16px_rgba(0,0,0,0.5)]"
               >
                 <Download className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
-                <span>Download on the App Store</span>
+                <span>Get the free app</span>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </TrackedAnchor>
               <a
@@ -75,11 +75,11 @@ export default function MobilePage() {
             <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[9px] uppercase tracking-[0.2em] text-ink-faint">
               <span className="inline-flex items-center gap-1.5">
                 <Smartphone className="h-3 w-3 text-trace" />
-                iPhone
+                iPhone · {TALKIE_PHONE_APP.displayPrice}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Watch className="h-3 w-3 text-trace" />
-                Apple Watch included
+                Apple Watch · {TALKIE_PHONE_APP.displayPrice}
               </span>
               <span>Available on the App Store</span>
             </div>
@@ -173,6 +173,9 @@ export default function MobilePage() {
               Catch it on iPhone.
               <span className="italic text-ink-muted"> Finish it on Mac.</span>
             </h2>
+            <p className="mx-auto mt-3 max-w-xl font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">
+              iPhone and Apple Watch are free · The current Mac build is free
+            </p>
           </div>
           <div className="mt-10">
             <InstallCard />

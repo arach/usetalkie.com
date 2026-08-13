@@ -39,7 +39,7 @@ const TRACE_TINT_FAINT = { background: 'color-mix(in oklab, var(--trace) 4%, tra
 
 const STORY_PARAGRAPHS = [
   'The way work happens now demands a different velocity. Parallel thoughts, parallel surfaces, parallel models all running at once. I lived in SuperWhisper, Wispr Flow, and dozens more. None did more than dictation. Their business models made it hard to be open. So I started building little things to keep up. They found their way back into Talkie.',
-  'A native macOS app that lives in your menu bar, transcribes locally on your Mac, and gets out of your way. No subscriptions, no cloud dependency. Press a key, speak, your words land wherever you’re already working: Cursor, Slack, the terminal, the model you’re talking to.',
+  'A native macOS app that lives in your menu bar, transcribes locally on your Mac, and gets out of your way. The planned paid offer is one payment, not a subscription. Local dictation does not require a Talkie cloud service. Press a key, speak, and your words land wherever you are already working: Cursor, Slack, the terminal, or the model you are talking to.',
   'Dictation was the start. Talkie is becoming a place to think, work, reflect, push things forward. Not a second brain. Not a race to zero-latency anything. Not full duplex. Just your thoughts, your workflows, your tools.',
 ]
 

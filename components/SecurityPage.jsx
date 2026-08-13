@@ -49,7 +49,7 @@ const PRINCIPLES = [
     title: 'You own the keys',
     icon: KeyRound,
     body:
-      'We use Apple’s CloudKit for sync. Your data is encrypted with keys managed by your Apple ID. We (Talkie Systems) have no access to these keys and cannot decrypt your data.',
+      'We use Apple’s CloudKit for sync. Your data is encrypted with keys managed by your Apple ID. Talkie does not hold these keys and cannot use them to decrypt your data.',
   },
   {
     num: '03',
@@ -641,7 +641,7 @@ export default function SecurityPage() {
                   ))}
                 </ul>
                 <div className="mt-6 border-t border-rose-800/20 pt-4 font-mono text-[9px] uppercase tracking-[0.24em] text-rose-700 transition-colors duration-200 group-hover:text-rose-600">
-                  TALKIE SYSTEMS · NO ACCESS
+                  TALKIE · NO ACCESS
                 </div>
               </div>
             </div>
@@ -718,7 +718,7 @@ export default function SecurityPage() {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-0 overflow-hidden rounded-sm border border-edge lg:grid-cols-3">
-            {/* Talkie Systems — No Access */}
+            {/* Talkie vendor — no access */}
             <div className="group flex flex-col border-b border-edge-faint bg-surface p-8 transition-colors duration-200 hover:bg-canvas-alt lg:border-b-0 lg:border-r">
               <div className="mb-1 self-end rounded-sm border border-edge-dim px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-amber transition-colors duration-200 group-hover:border-amber/60">
                 No Access
@@ -728,7 +728,7 @@ export default function SecurityPage() {
                   <CloudOff className="h-6 w-6 text-ink-faint transition-colors duration-200 group-hover:text-amber" />
                 </div>
                 <h3 className="mt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-ink">
-                  Talkie Systems Inc.
+                  Talkie
                 </h3>
                 <span className="mt-1 font-mono text-[9px] uppercase tracking-[0.18em] text-ink-subtle">
                   (The Vendor)
@@ -876,7 +876,7 @@ export default function SecurityPage() {
                       Zero Server Access
                     </h4>
                     <p className="mt-1 text-[12px] leading-relaxed text-ink-faint">
-                      Neither Apple nor Talkie Systems can decrypt your data, even under warrant.
+                      Talkie does not hold the encryption keys for this data.
                     </p>
                   </div>
                 </div>

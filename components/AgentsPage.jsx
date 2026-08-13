@@ -389,7 +389,7 @@ export default function AgentsPage() {
       {/* DOWNLOAD — focused install footer */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
-          <DownloadBay caption="Wire up your first agent in three minutes. macOS 26+, Apple Silicon, Claude CLI optional." />
+          <DownloadBay caption="Wire up your first agent in three minutes. macOS 14+, Apple Silicon, Claude CLI optional." />
         </div>
       </section>
     </>

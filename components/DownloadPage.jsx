@@ -7,6 +7,7 @@ import {
   Waves,
 } from 'lucide-react'
 import CopyCommand from './CopyCommand'
+import { TALKIE_MAC_OFFER } from '../shared/config/product-links'
 
 /**
  * v2 DownloadPage — body of /download (and /dl, which renders the
@@ -89,8 +90,8 @@ export default function DownloadPage() {
             <span className="italic text-ink-muted">One signed binary.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
-            DMG, App Store, or a single command. Local-first by default. Your
-            words stay on your devices.
+            Use the signed DMG or one command. The current build is free.
+            The paid Mac offer is planned.
           </p>
         </div>
       </section>
@@ -113,6 +114,16 @@ export default function DownloadPage() {
             </div>
 
             <div className="space-y-7 p-6 md:p-8">
+              <div className="rounded-sm border border-edge-faint bg-canvas-alt px-4 py-3">
+                <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
+                  · {TALKIE_MAC_OFFER.statusLabel}
+                </p>
+                <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-muted">
+                  {TALKIE_MAC_OFFER.trialLabel}, then {TALKIE_MAC_OFFER.displayPrice} USD once.
+                  The trial and checkout are not active yet.
+                </p>
+              </div>
+
               {/* Primary: DMG download */}
               <div>
                 <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
@@ -172,7 +183,7 @@ export default function DownloadPage() {
                 <StatRow
                   icon={Cpu}
                   label="REQUIRES"
-                  value="macOS 26+ · iOS 26+ · Apple Silicon"
+                  value="macOS 14+ · Apple Silicon"
                 />
                 <StatRow
                   icon={ShieldCheck}

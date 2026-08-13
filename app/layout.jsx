@@ -4,8 +4,8 @@ import { Space_Grotesk, JetBrains_Mono, Fraunces, Inter, Cormorant_Garamond } fr
 import localFont from 'next/font/local'
 import DevConsole from '../components/DevConsole'
 import FeedbackWidget from '../shared/components/FeedbackWidget'
-import StudioPanel from '../components/StudioPanel'
 import JsonLd from '../components/JsonLd'
+import { TALKIE_MAC_OFFER, TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
 const jetmono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' })
@@ -136,20 +136,21 @@ const SITE_SCHEMA = {
     },
     {
       '@type': 'SoftwareApplication',
-      '@id': 'https://usetalkie.com/#app',
-      name: 'Talkie',
+      '@id': 'https://usetalkie.com/#mac-app',
+      name: 'Talkie for Mac',
       applicationCategory: 'ProductivityApplication',
-      operatingSystem: 'macOS, iOS, watchOS',
-      url: 'https://usetalkie.com/',
+      operatingSystem: 'macOS',
+      url: 'https://usetalkie.com/mac/',
       downloadUrl: 'https://usetalkie.com/downloads/',
-      // "Free" is a strong rich-result hook — price 0 lets Google show it.
+      isAccessibleForFree: true,
       offers: {
         '@type': 'Offer',
         price: '0',
         priceCurrency: 'USD',
+        description: TALKIE_MAC_OFFER.currentBuildLabel,
       },
       description:
-        'Voice capture for Mac, iPhone, and Apple Watch with local-first storage, dictation, searchable memos, workflow automation, and CLI access for agents.',
+        'The current Talkie for Mac build is free to download. It provides local dictation, searchable memos, workflows, and CLI access.',
       featureList: [
         'Mac hotkey dictation',
         'Voice memos with transcripts and summaries',
@@ -158,6 +159,25 @@ const SITE_SCHEMA = {
         'Structured CLI output for agents',
         'Optional external LLM and webhook integrations',
       ],
+      publisher: { '@id': 'https://usetalkie.com/#organization' },
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://usetalkie.com/#mobile-app',
+      name: TALKIE_PHONE_APP.name,
+      applicationCategory: 'ProductivityApplication',
+      operatingSystem: 'iOS, watchOS',
+      url: 'https://usetalkie.com/mobile/',
+      downloadUrl: TALKIE_PHONE_APP.appStoreUrl,
+      isAccessibleForFree: true,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      description:
+        'Free voice capture for iPhone and Apple Watch. Captures can sync to the user\'s Mac through the user\'s iCloud account.',
       publisher: { '@id': 'https://usetalkie.com/#organization' },
       inLanguage: 'en-US',
     },
@@ -190,38 +210,10 @@ export default function RootLayout({ children }) {
               var rotor = localStorage.getItem('chassis-rotor');
               if (rotor === 'on') root.setAttribute('data-chassis-rotor', 'on');
 
-              /* Design-theme resolver chain — applies before first paint.
-                 Precedence (highest wins): URL ?theme=... > localStorage
-                 'design-theme' > 'modern' (public default). URL param
-                 sticks to localStorage so a campaign link visit persists.
-                 Returning visitors with explicit warm/linen preference
-                 keep theirs; only no-localStorage visitors get the new
-                 modern default. */
-              var url = new URLSearchParams(location.search);
-              var urlTheme = url.get('theme');
-              var validThemes = ['warm', 'linen', 'modern'];
-              var theme = 'modern';
-              if (urlTheme && validThemes.indexOf(urlTheme) !== -1) {
-                theme = urlTheme;
-                localStorage.setItem('design-theme', theme);
-              } else {
-                var savedTheme = localStorage.getItem('design-theme');
-                if (savedTheme && validThemes.indexOf(savedTheme) !== -1) theme = savedTheme;
-              }
-              if (theme === 'modern' || theme === 'linen') {
-                root.setAttribute('data-theme', theme);
-              } else {
-                root.removeAttribute('data-theme');
-              }
-
-              /* Tone resolver — saved value wins. With no saved value,
-                 no attribute means the Original chassis treatment. */
-              var osci = localStorage.getItem('osci-style');
-              if (osci) {
-                root.setAttribute('data-osci-style', osci);
-              } else {
-                root.removeAttribute('data-osci-style');
-              }
+              /* The public design is fixed to the reviewed launch preset.
+                 Theme experiments no longer read from URL or local storage. */
+              root.setAttribute('data-theme', 'modern');
+              root.removeAttribute('data-osci-style');
             } catch (e) {}
           `,
           }}
@@ -242,7 +234,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${grotesk.className} min-h-screen bg-white text-slate-800 antialiased`}>
         {children}
-        <StudioPanel />
         <FeedbackWidget />
         {process.env.NODE_ENV === 'development' && <DevConsole />}
       </body>

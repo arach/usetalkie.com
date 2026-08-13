@@ -35,8 +35,9 @@ const FOOTER_SECTIONS = [
     label: 'Resources',
     links: [
       { label: 'Docs',    href: '/docs' },
+      { label: 'Support', href: '/support' },
       { label: 'CLI',     href: '/docs/cli' },
-      { label: 'Pricing', href: '/#pricing' },
+      { label: 'Privacy', href: '/privacypolicy.html' },
       { label: 'Ideas',   href: '/ideas' },
     ],
   },
@@ -87,7 +88,7 @@ export default function SiteShell({ children }) {
                 aria-hidden
                 className="site-header-cta-dot inline-block h-1.5 w-1.5 rounded-full"
               />
-              GET APP
+              DOWNLOADS
             </Link>
           </div>
         </div>
@@ -127,13 +128,13 @@ export default function SiteShell({ children }) {
                 className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink transition-all hover:-translate-y-px"
                 style={{ background: 'color-mix(in oklab, var(--ink) 6%, transparent)' }}
               >
-                DOWNLOAD · MAC <span>→</span>
+                CURRENT MAC BUILD <span>→</span>
               </Link>
               <Link
                 href="/mobile"
                 className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
               >
-                APP STORE <span>↗</span>
+                FREE MOBILE APPS <span>↗</span>
               </Link>
             </div>
           </div>
@@ -175,7 +176,7 @@ export default function SiteShell({ children }) {
 
           {/* Bottom metadata row */}
           <div className="mt-12 border-t border-edge-subtle pt-6 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
-            <span>(C) {new Date().getFullYear()} TALKIE SYSTEMS</span>
+            <span>(C) {new Date().getFullYear()} TALKIE</span>
           </div>
         </div>
       </footer>

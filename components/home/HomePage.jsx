@@ -9,14 +9,14 @@ import {
   HardDrive,
   Cloud,
   Cpu,
-  Lock,
   ArrowRight,
 } from 'lucide-react'
 import SignalTable from '../SignalTable'
+import InstallCard from '../InstallCard'
 import capturesCatalog from '../../content/captures.json'
+import DemoFilmHero from './DemoFilmHero'
 import PanoramicHero from './PanoramicHero'
 import SectionArt from './SectionArt'
-import { TALKIE_LICENSE } from '../../shared/config/product-links'
 
 /**
  * HomePage — synthesis composition.
@@ -34,10 +34,10 @@ import { TALKIE_LICENSE } from '../../shared/config/product-links'
  *     dropped here; the hero already shows one screenshot per device
  *     in the OUTPUT bay, and the SignalTable provides the "what
  *     real captures look like" texture without needing more thumbnails.
- *   - InstallCard (CLI patch-bay) as the developer rail.
- *   - Capture modes / flow / ownership / pricing / CTA sit on cream
- *     canvas with amber accents (eyebrows, FlowStep numbers, pricing
- *     $39) — flipping from trace to amber per the brief's chrome rule.
+ *   - InstallCard (CLI patch-bay) as the download rail.
+ *   - Capture modes / flow / ownership / downloads sit on cream canvas
+ *     with amber accents — flipping from trace to amber per the brief's
+ *     chrome rule.
  */
 
 // -----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ const OWNERSHIP_CARDS = [
     icon: Cloud,
     pin: 'U2',
     title: 'Sync through your iCloud',
-    body: 'Sync runs through your iCloud account. No third-party servers involved.',
+    body: 'Sync runs through your iCloud account. Talkie does not operate the sync server.',
   },
   {
     icon: Cpu,
@@ -144,7 +144,7 @@ const GRATICULE_FINE = {
 }
 
 // Amber takes over the chrome on cream surfaces (per brief): eyebrows,
-// FlowStep numbers, pricing $0, header live dot. This makes the cream
+// FlowStep numbers and header live dots. This makes the cream
 // canvas a chromatic event without bleeding phosphor into light mode.
 const AMBER_GLOW_SOFT = { textShadow: '0 0 4px color-mix(in oklab, var(--amber) 32%, transparent)' }
 const AMBER_GLOW_DOT = { boxShadow: '0 0 6px color-mix(in oklab, var(--amber) 45%, transparent)' }
@@ -168,16 +168,16 @@ export default function HomePage() {
         <span className="home-page-artwork__right" />
       </div>
 
-      {/* ========== HERO — PANORAMIC INSTRUMENT ========== */}
+      {/* ========== HERO — REAL PRODUCT FILM ========== */}
+      <DemoFilmHero />
+
+      {/* ========== PRODUCT MODEL — PANORAMIC INSTRUMENT ========== */}
       <section className="home-hero-art relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <div aria-hidden className="home-hero-graticule pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 xl:py-16">
-          {/* Donor-shape hero leads with the product proposition (the H1
-              and placard live inside PanoramicHero now, since they're
-              tied to the rotating device state). The chassis below is
-              the deeper structure — instrument as evidence, not as
-              headline. */}
+          {/* The product proposition and scenario system explain the film
+              after the visitor has seen Talkie work. */}
           <PanoramicHero />
 
           {/* Brand callback — the positioning line
@@ -217,9 +217,10 @@ export default function HomePage() {
             </h2>
             <div className="mt-4 flex max-w-3xl flex-col gap-4 text-[15px] leading-relaxed text-ink-muted sm:flex-row sm:items-end sm:justify-between sm:gap-8">
               <p className="max-w-2xl">
-                Set the hotkey once, then speak into any app. These are unscripted
-                Talkie dictations from a real work session, recorded locally and
-                lightly edited for clarity.
+                Set the hotkey once, then speak into any app. This staged capture
+                shows the same global shortcut in a note, a temporary chat, and
+                Claude Code. Talkie stores each result locally with its source and
+                recording metadata.
               </p>
               <Link
                 href="/workflows"
@@ -355,7 +356,7 @@ export default function HomePage() {
               Your voice stays yours.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Everything lives on your devices, syncs through your iCloud, transcribes on the chip you already paid for. External models are opt-in, with your keys, not ours.
+              Your recordings and transcripts start on your devices. You can sync them through your iCloud account. External models are optional and use the keys that you provide.
             </p>
           </div>
 
@@ -406,196 +407,76 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== PRICING ========== */}
+      {/* ========== DOWNLOADS ========== */}
       <section
-        id="pricing"
+        id="downloads"
         className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
+        <span id="get" aria-hidden className="absolute -top-20" />
         <SectionArt slice="81%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
         <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <div className="max-w-3xl">
-            <p
-              className="text-[10px] uppercase tracking-[0.26em]"
-              style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
-            >
-              · PRICING
-            </p>
-            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              One payment.
-            </h2>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_1fr]">
-            {/* One-time license card */}
-            <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-8">
-              <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
-
-              <div className="relative">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
-                    <span
-                      aria-hidden
-                      className="inline-block h-1.5 w-1.5 rounded-full"
-                      style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
-                    />
-                    PRICE · {TALKIE_LICENSE.billingLabel}
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <span
-                    className="font-display text-6xl font-normal tracking-[-0.02em]"
-                    style={{
-                      color: 'var(--amber)',
-                      textShadow:
-                        '0 0 18px color-mix(in oklab, var(--amber) 35%, transparent), 0 0 6px color-mix(in oklab, var(--amber) 45%, transparent)',
-                    }}
-                  >
-                    {TALKIE_LICENSE.displayPrice}
-                  </span>
-                </div>
-
-                <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {[
-                    'Full Mac, iPhone & Watch app access',
-                    'On-device transcription (Apple Silicon)',
-                    'Encrypted iCloud sync via your Apple ID',
-                    'Workflows + CLI + audit trail',
-                    'Bring your own provider keys',
-                    'No telemetry tied to your content',
-                  ].map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex items-start gap-2.5 text-[13px] leading-relaxed text-ink-muted"
-                    >
-                      <span
-                        className="mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full"
-                        style={{ background: 'var(--amber)', ...AMBER_GLOW_DOT }}
-                        aria-hidden
-                      />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <Link
-                    href="/downloads"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
-                    style={{
-                      color: 'var(--amber)',
-                      ...AMBER_TINT,
-                      ...AMBER_GLOW_SOFT,
-                      boxShadow: '0 0 18px color-mix(in oklab, var(--amber) 12%, transparent)',
-                    }}
-                  >
-                    GET TALKIE · {TALKIE_LICENSE.displayPrice} <span aria-hidden>→</span>
-                  </Link>
-                  <Link
-                    href="/mobile"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
-                  >
-                    iPHONE & WATCH <span aria-hidden>↗</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Side panel */}
-            <div className="rounded-md border border-edge-dim bg-surface p-6">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(30rem,1fr)] lg:items-center lg:gap-16">
+            <div className="max-w-xl">
               <p
                 className="text-[10px] uppercase tracking-[0.26em]"
                 style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
               >
-                · ROADMAP
+                · DOWNLOADS
               </p>
-              <ul className="mt-4 space-y-3 text-[12px] text-ink-muted">
-                {[
-                  ['NOW', `${TALKIE_LICENSE.displayPrice} · ${TALKIE_LICENSE.billingLabel} purchase`],
-                  ['MAYBE', 'Pro tier · advanced + power-user features'],
-                  ['NEVER', 'Selling your voice or transcripts'],
-                ].map(([tag, desc]) => (
-                  <li key={tag} className="flex items-start gap-3">
-                    <span className="mt-0.5 inline-block rounded-sm border border-edge-dim px-1.5 py-0.5 text-[8px] uppercase tracking-[0.22em] text-ink-faint">
-                      {tag}
-                    </span>
-                    <span className="leading-relaxed">{desc}</span>
-                  </li>
-                ))}
-              </ul>
+              <h2 className="mt-3 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
+                Install Talkie where you use your voice.
+              </h2>
+              <p className="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-ink-muted">
+                Install the Mac app for dictation, the local library, workflows, and the CLI.
+                Install Talkie Phone to capture on iPhone and Apple Watch. Every surface connects to one Talkie library.
+              </p>
+
+              <div className="mt-9 border-y border-edge-dim">
+                <DownloadStoryRow
+                  label="MAC · WORK SURFACE"
+                  detail="Use the signed DMG or a package manager. Requires macOS 14 or later."
+                />
+                <DownloadStoryRow
+                  label="iPHONE + WATCH · CAPTURE SURFACES"
+                  detail="Open Talkie Phone in the App Store. The iPhone and Apple Watch apps are free."
+                  divided
+                />
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/mac"
+                  className="inline-flex min-h-11 items-center rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                  style={{ color: 'var(--amber)', ...AMBER_TINT, ...AMBER_GLOW_SOFT }}
+                >
+                  EXPLORE MAC <span aria-hidden className="ml-2">→</span>
+                </Link>
+                <Link
+                  href="/mobile"
+                  className="inline-flex min-h-11 items-center rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all hover:-translate-y-0.5 hover:border-edge hover:text-ink"
+                >
+                  EXPLORE MOBILE <span aria-hidden className="ml-2">→</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="min-w-0">
+              <InstallCard />
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ========== FINAL CTA ========== */}
-      <section
-        id="get"
-        className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono"
-      >
-        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
-
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
-            <div className="relative overflow-hidden rounded-md border border-edge bg-surface p-8">
-              <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />
-              <div className="relative">
-                <p
-                  className="text-[10px] uppercase tracking-[0.26em]"
-                  style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
-                >
-                  · READY TO INSTALL
-                </p>
-                <h3 className="mt-3 font-display text-3xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                  Start with your Mac.
-                </h3>
-                <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
-                  iPhone and Watch help you catch the thought. Mac is where Talkie earns its keep. DMG, App Store, or a single CLI command.
-                </p>
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <Link
-                    href="/downloads"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
-                    style={{
-                      color: 'var(--amber)',
-                      ...AMBER_TINT,
-                      ...AMBER_GLOW_SOFT,
-                      boxShadow: '0 0 18px color-mix(in oklab, var(--amber) 12%, transparent)',
-                    }}
-                  >
-                    DOWNLOAD FOR MAC <ArrowRight className="h-3 w-3" />
-                  </Link>
-                  <Link
-                    href="/security"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:text-ink hover:border-edge"
-                  >
-                    HOW PRIVACY WORKS <Lock className="h-3 w-3" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-
+          <div className="mt-10 flex flex-col gap-3 border-t border-edge-faint pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-ink-faint">
+              CURRENT DOWNLOADS · MAC · iPHONE · APPLE WATCH · CLI
+            </p>
             <Link
-              href="/philosophy"
-              className="group block rounded-md border border-edge bg-surface p-8 transition-all hover:-translate-y-0.5"
+              href="/downloads"
+              className="text-[10px] uppercase tracking-[0.24em] transition-colors hover:text-ink"
+              style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
-              <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-1.5 w-1.5 rounded-full border border-edge-dim"
-                />
-                <span className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
-                  FURTHER READING
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-3xl font-normal leading-[1.1] tracking-[-0.01em] text-ink">
-                Why local-first matters.
-              </h3>
-              <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
-                The philosophy behind a little app that stays out of your way and keeps your voice on your side. Keep reading <span aria-hidden>→</span>
-              </p>
+              VIEW THE FULL DOWNLOAD GUIDE <span aria-hidden>→</span>
             </Link>
           </div>
         </div>
@@ -605,8 +486,17 @@ export default function HomePage() {
 }
 
 // -----------------------------------------------------------------------------
-// Sub-components — capture mode card, flow step, ownership card
+// Sub-components — capture mode card, flow step, ownership card, download row
 // -----------------------------------------------------------------------------
+
+function DownloadStoryRow({ label, detail, divided = false }) {
+  return (
+    <div className={`grid gap-2 py-4 sm:grid-cols-[13rem_1fr] sm:items-start ${divided ? 'border-t border-edge-faint' : ''}`}>
+      <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">{label}</p>
+      <p className="text-[12px] leading-relaxed text-ink-muted">{detail}</p>
+    </div>
+  )
+}
 
 function CaptureModeCard({ mode, index }) {
   const Icon = mode.icon
