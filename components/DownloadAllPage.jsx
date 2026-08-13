@@ -11,7 +11,7 @@ import CopyCommand from './CopyCommand'
 import PackageManagerTabs from './PackageManagerTabs'
 import QRExpand from './QRExpand'
 import TrackedAnchor from './TrackedAnchor'
-import { TALKIE_PHONE_APP } from '../shared/config/product-links'
+import { TALKIE_MAC_OFFER, TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * v2 DownloadAllPage — body of /downloads. All-platforms, all-channels view.
@@ -124,8 +124,8 @@ export default function DownloadAllPage() {
             <span className="italic text-ink-muted">Same library.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
-            Talkie ships on Mac and iPhone. Both use the same local library.
-            Install one or both; they sync through your own iCloud, never ours.
+            Download the current Mac build for free. The iPhone and Apple Watch apps are also free.
+            The planned paid Mac offer is shown below.
           </p>
         </div>
       </section>
@@ -141,10 +141,25 @@ export default function DownloadAllPage() {
                 icon={Laptop}
                 channel="· CH-A · MAC"
                 title="Talkie for Mac"
-                meta="macOS 26+ · Apple Silicon"
+                meta="macOS 14+ · Apple Silicon"
               />
 
               <div className="space-y-6 p-5 md:p-6">
+                <div className="rounded-sm border border-edge-faint bg-canvas-alt px-4 py-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
+                      · {TALKIE_MAC_OFFER.currentBuildLabel}
+                    </p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-ink-faint">
+                      PAID OFFER · PLANNED
+                    </p>
+                  </div>
+                  <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-muted">
+                    The planned offer is a {TALKIE_MAC_OFFER.trialLabel}, then{' '}
+                    {TALKIE_MAC_OFFER.displayPrice} USD once. The trial and checkout are not active yet.
+                  </p>
+                </div>
+
                 {/* Primary: package-manager tabs */}
                 <div>
                   <div className="flex items-center gap-2">
@@ -204,7 +219,7 @@ export default function DownloadAllPage() {
                 icon={Smartphone}
                 channel="· CH-B · IPHONE"
                 title={TALKIE_PHONE_APP.name}
-                meta="iOS 18+"
+                meta={`${TALKIE_PHONE_APP.displayPrice} · iOS 26+`}
               />
 
               <div className="space-y-6 p-5 md:p-6">
@@ -242,8 +257,8 @@ export default function DownloadAllPage() {
                 {/* Cross-channel note */}
                 <div className="rounded-sm border border-edge-faint bg-canvas-alt px-4 py-3">
                   <p className="font-mono text-[10px] leading-relaxed text-ink-muted">
-                    iPhone captures sync to your Mac through your own iCloud
-                    Private DB. No Talkie servers in the path.
+                    Talkie for iPhone and Apple Watch is free. Captures sync to your Mac
+                    through your iCloud account.
                   </p>
                 </div>
               </div>
@@ -256,7 +271,7 @@ export default function DownloadAllPage() {
             <StatRow
               icon={Cpu}
               label="REQUIRES"
-              value="macOS 26+ · iOS 26+"
+              value="macOS 14+ · iOS 26+ · watchOS 10+"
             />
             <StatRow
               icon={ShieldCheck}

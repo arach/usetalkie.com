@@ -1,0 +1,10 @@
+WEBVTT
+
+00:00:06.566 --> 00:00:14.752
+Friday release update. Dictation now works across the editor, the terminal, and the browser. The release candidate is ready for review.
+
+00:00:26.010 --> 00:00:29.155
+Great progress. Please share any blockers before Friday.
+
+00:00:39.127 --> 00:00:44.821
+Commit the Talkie demo updates with the real-time timer, the calm recording indicator, and the final metadata view.

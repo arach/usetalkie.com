@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Download, Terminal, Check, Copy, Maximize2, X } from 'lucide-react'
-import { TALKIE_PHONE_APP } from '../shared/config/product-links'
+import { TALKIE_MAC_OFFER, TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * InstallCard — patch-bay-styled install panel.
@@ -154,7 +154,7 @@ export default function InstallCard() {
               className="mt-1 text-[10px] uppercase tracking-[0.18em]"
               style={{ color: 'var(--panel-ink-faint)' }}
             >
-              universal · 12 mb
+              {TALKIE_MAC_OFFER.currentBuildLabel}
             </span>
           </span>
         </Link>
@@ -210,7 +210,7 @@ export default function InstallCard() {
               className="mt-1 text-[10px] uppercase tracking-[0.18em]"
               style={{ color: 'var(--panel-ink-faint)' }}
             >
-              tap to open · scan to install
+              {TALKIE_PHONE_APP.displayPrice} · tap or scan
             </span>
           </a>
         </div>

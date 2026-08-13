@@ -22,3 +22,9 @@ logs/
 !.gitkeep
 # OpenScout local state
 .openscout/project.json
+
+# Local video production files. Final website videos ship through Vercel Blob.
+/public/videos/talkie-cross-app-demo*.mp4
+/public/videos/talkie-editor-dictation*.mp4
+/public/videos/work-*/
+/video/
