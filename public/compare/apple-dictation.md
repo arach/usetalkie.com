@@ -1,0 +1,62 @@
+# The Apple Dictation Alternative for When Built-In Isn't Enough: Talkie
+
+An honest Apple Dictation alternative comparison. Both work on-device. Where Talkie differs: structured local storage, a programmable CLI, and dictating into AI agents like Claude Code.
+
+- Canonical page: https://usetalkie.com/compare/apple-dictation/
+- Author: Arach Tchoupani
+- Published: 2026-07-21
+
+Your Mac and iPhone already dictate — the double-tap of the Globe key, that little microphone in every text field. I build Talkie, and I'll say the quiet part first: for a lot of people, the built-in one is genuinely enough, and any honest comparison has to start there. This is really about the moment you outgrow it.
+
+**Short version:** Apple Dictation is built in, on-device on modern Apple hardware, and genuinely good enough for most quick dictation. Talkie is also on-device, but it treats your voice as data: it stores captures in a local, searchable database, exposes them through a programmable CLI, and lets you dictate straight into agentic tools like Claude Code. If you just want to talk into a text field, stay with Apple. If you want your voice to feed scripts and agents, keep reading.
+
+## What Apple Dictation does well
+
+The best thing about Apple Dictation is that it's already there. Zero install, zero account, zero cost. You trigger it with a keyboard shortcut, and it works in essentially any app that accepts text, across macOS, iOS, and iPadOS.
+
+On Apple Silicon Macs (M1 and later), transcription runs on-device by default, so your audio does not leave the machine and works offline. It handles auto-punctuation, spoken formatting commands like "new paragraph," and switching between languages. Recent releases have pushed this further: Apple's newer "advanced" dictation uses an on-device model that meaningfully improves accuracy, capitalization, and punctuation on supported hardware (roughly M3-and-up Macs and the latest iPhones). It is a real upgrade.
+
+For firing off a message, jotting a note, or filling in a form by voice, this is all you need. Apple Dictation is the correct choice for a lot of people, and there's no shame in that.
+
+The ceiling shows up when you want dictation to be more than transcription into whatever field happens to have focus. There's no custom vocabulary, so names, jargon, and product terms get mangled. There's no AI reformatting of what you said into something else. And critically, there's no structured record of your captures, no way to script them, and no way to point them at an agent. The transcript lands in a text box and that's the end of it.
+
+## Where Talkie is different
+
+Talkie starts from the same on-device premise as Apple, then treats each capture as something worth keeping and building on.
+
+**Structured, searchable capture.** Talkie offers selectable local Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iPhone. The difference from Apple Dictation is what happens after recognition: instead of existing only in the destination field, each capture can remain a durable, searchable record. Optional iCloud sync is a separate storage boundary.
+
+**A CLI and a data layer for agents.** Because captures live in a real database, Talkie ships a CLI that reads it directly:
+
+```
+bun add -g @talkie/cli
+```
+
+That turns your dictation into structured data you can pipe into scripts, pipelines, and agents. This is the thing Apple Dictation fundamentally cannot do — there's no developer surface, no query interface, nothing to hook into.
+
+**Dictate into Claude Code and other agents.** This is the real differentiator. Talkie lets you dictate into agentic CLIs like Claude Code, so your voice becomes a remote control for your agents. You talk; the agent acts. Apple Dictation can type your words into a terminal, but it has no concept of the agent on the other side.
+
+**Give agents visual context.** Talkie can pair that spoken instruction with a full screenshot, a selected screen region, or a camera capture. Your agent gets the thing you're pointing at, not only your description of it.
+
+**Cross-device capture.** Talkie syncs across Mac, iPhone, and Apple Watch over iCloud, so a thought caught on your wrist is on your Mac when you sit down. Apple Dictation works on each device, but it doesn't give you a shared, searchable body of captures across them.
+
+## Side by side
+
+See the sourced comparison matrix on the canonical HTML page.
+
+Two of those rows go to Apple on purpose. Being built into the operating system and working in literally every text field is a genuine advantage, and no third-party app matches it.
+
+## Which one should you pick?
+
+Pick Apple Dictation if you want occasional, quick dictation with zero setup. It's free, it's private on modern hardware, it's everywhere, and for texts, notes, and short messages it's honestly fine. Most people don't need more than this, and telling you otherwise would be dishonest.
+
+Pick Talkie when you want your voice to become data rather than disappear into a text field — when you want captures you can search, a CLI you can script against, cross-device capture, and the ability to dictate straight into agents like Claude Code. That's a different job than the one Apple set out to do, and it's the job Talkie is built for.
+
+If that second description is you, you've outgrown the built-in one.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading:
+- [Dictate to Claude Code](/workflows/dictate-to-claude/)
+- [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
+- [Best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

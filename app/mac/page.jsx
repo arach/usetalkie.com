@@ -5,7 +5,10 @@ export const metadata = {
   title: 'Talkie for Mac - Local Voice Dictation',
   description: 'Download the current free Mac build. A 7-day trial and a $39 one-time license for up to two Macs are planned.',
   keywords: ['dictation', 'voice to text', 'macos', 'workflow', 'local', 'privacy', 'productivity'],
-  alternates: { canonical: 'https://usetalkie.com/mac/' },
+  alternates: {
+    canonical: 'https://usetalkie.com/mac/',
+    types: { 'text/markdown': 'https://usetalkie.com/mac.md' },
+  },
   openGraph: {
     title: 'Talkie for Mac - Local Voice Dictation',
     description: 'Download the current free Mac build. A 7-day trial and a $39 one-time license for up to two Macs are planned.',

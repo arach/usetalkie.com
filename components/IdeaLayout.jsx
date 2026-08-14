@@ -593,6 +593,14 @@ export default function IdeaLayout({
                   {formatDate(date)}
                 </time>
               )}
+              {date && (
+                <>
+                  <span aria-hidden className="text-ink-subtle opacity-60">·</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-subtle">
+                    By <Link href="/about" className="underline decoration-edge-dim underline-offset-4 hover:text-amber">Arach Tchoupani</Link>
+                  </span>
+                </>
+              )}
               {readMinutes && (
                 <>
                   <span aria-hidden className="text-ink-subtle opacity-60">·</span>

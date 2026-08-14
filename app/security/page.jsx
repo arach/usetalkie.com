@@ -4,7 +4,10 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Security & Privacy - Talkie',
   description: 'Local library, iCloud sync, on-device transcription, and optional external providers with your own keys.',
-  alternates: { canonical: 'https://usetalkie.com/security/' },
+  alternates: {
+    canonical: 'https://usetalkie.com/security/',
+    types: { 'text/markdown': 'https://usetalkie.com/security.md' },
+  },
   openGraph: {
     title: 'Security & Privacy - Talkie',
     description: 'Local library, iCloud sync, on-device transcription, and optional external providers with your own keys.',

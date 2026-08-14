@@ -37,6 +37,7 @@ const FOOTER_SECTIONS = [
       { label: 'Docs',    href: '/docs' },
       { label: 'Support', href: '/support' },
       { label: 'CLI',     href: '/docs/cli' },
+      { label: 'Compare', href: '/compare' },
       { label: 'Privacy', href: '/privacypolicy.html' },
       { label: 'Ideas',   href: '/ideas' },
     ],

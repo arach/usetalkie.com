@@ -4,7 +4,10 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Free Talkie App for iPhone and Apple Watch',
   description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
-  alternates: { canonical: 'https://usetalkie.com/mobile/' },
+  alternates: {
+    canonical: 'https://usetalkie.com/mobile/',
+    types: { 'text/markdown': 'https://usetalkie.com/mobile.md' },
+  },
   openGraph: {
     title: 'Free Talkie App for iPhone and Apple Watch',
     description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',

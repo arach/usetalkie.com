@@ -1,0 +1,62 @@
+# Aiko alternative: when file transcription isn't live dictation
+
+Looking for an Aiko alternative? Aiko transcribes audio files on-device with Whisper. Talkie does live dictation and turns captures into structured, agent-ready data.
+
+- Canonical page: https://usetalkie.com/compare/aiko/
+- Author: Arach Tchoupani
+- Published: 2026-07-21
+
+I build Talkie, and Aiko is one of the apps I happily point people to — it's a clean, focused tool and Sindre Sorhus has taste. We both run speech-to-text locally on Apple hardware and keep your audio off the cloud. But we solve different problems, and it's worth being precise about which one you actually need.
+
+**Short version:** Aiko transcribes audio files and recordings after the fact — drag in a voice memo or a lecture, get accurate text out, all on-device. Talkie is live dictation: you speak into any app in real time, and every capture becomes structured, searchable data you can pipe into scripts and AI agents. If you want to convert existing recordings, Aiko is excellent. If you want your voice to drive your machine, that's Talkie.
+
+## What Aiko does well
+
+Aiko, by Sindre Sorhus, is one of the cleanest on-device transcription apps on Apple platforms. It runs OpenAI's Whisper locally — the large v3 model on macOS, medium or small on iPhone and iPad depending on memory — so nothing leaves your device. You drag in an audio or video file, or import a Voice Memo, and it produces accurate text across roughly 100 languages with automatic language detection.
+
+It's deliberately simple. Export to plain text, JSON, CSV, or SRT subtitles, automate recording and transcription through Apple Shortcuts, and optionally translate to English. For turning meetings, lectures, interviews, and podcasts into text offline and privately, it is a genuinely good tool that does one job well.
+
+The thing to understand is the shape of that job: Aiko transcribes recordings you already have. It is not a system-wide "dictate into any app" tool, and it has no scripting or agent layer. That's not a flaw — it's a deliberately narrow scope.
+
+## Where Talkie is different
+
+Talkie starts from the other end. Instead of transcribing files after the fact, it's built for live dictation into whatever you're doing right now.
+
+**Live, system-wide dictation.** Talk into your editor, your terminal, a chat box, an email — Talkie transcribes as you speak. On Mac it uses Parakeet v3, a fast local ASR model; on iPhone it uses Apple's on-device Speech. No file to import, no round trip.
+
+**Structured, searchable storage.** Captures enter a structured local library. A dictation does not have to remain a one-off paste — it becomes durable, searchable material you can filter and build on, with optional sync and workflow boundaries kept separate.
+
+**A CLI for scripts and agents.** This is the real divergence. Talkie ships a command-line tool that exposes your captures as structured data:
+
+```
+bun add -g @talkie/cli
+```
+
+Now your voice is queryable from scripts and pipelines. You can feed captures into other tools, automate around them, or hand them to an agent as input.
+
+**Dictate into AI agents.** Because captures are structured and the CLI is scriptable, Talkie works as a remote control for your agents. You can dictate straight into agentic CLIs like Claude Code — speak a task, let the agent run with it. Aiko has no equivalent; it stops at producing a transcript.
+
+**Give agents visual context.** Talkie can send a full screenshot, a selected screen region, or a camera capture alongside a spoken instruction. Your agent gets the thing you're pointing at, not only your description of it.
+
+**Cross-device.** Talkie syncs over iCloud across Mac, iPhone, and Apple Watch, so a capture on your wrist is there on your laptop.
+
+## Side by side
+
+See the sourced comparison matrix on the canonical HTML page.
+
+## Which one should you pick?
+
+Be honest with yourself about the workflow.
+
+If your task is "I have recordings and I want accurate text out of them" — interviews, lectures, meeting audio, video files — Aiko is the right pick. It's simple, private, offline, a cheap one-time buy, and it does that job with very little ceremony. You don't need a database or a CLI to caption a video or transcribe a podcast, and Talkie isn't trying to replace that.
+
+If your task is "I want to speak instead of type, everywhere, and have that voice become something my tools and agents can act on," that's Talkie. Live dictation into any app, captures that persist as structured local data, and a CLI that turns your voice into an input for scripts and agents — including dictating directly into Claude Code — is a fundamentally different capability than file transcription.
+
+They're not really competitors so much as adjacent tools. Plenty of people would reasonably run both: Aiko for the occasional recording, Talkie for day-to-day dictation and agent workflows.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading:
+- [Dictate into Claude Code](/workflows/dictate-to-claude/)
+- [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
+- [The best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

@@ -1,0 +1,62 @@
+# Talkie vs Dragon: A Dragon Alternative for Mac That Actually Runs on Your Mac
+
+Looking for a Dragon dictation alternative for Mac? Dragon left the consumer Mac market years ago. Talkie is an on-device, Mac-native option that also feeds your agents.
+
+- Canonical page: https://usetalkie.com/compare/dragon/
+- Author: Arach Tchoupani
+- Published: 2026-07-21
+
+If you went looking for Dragon on your Mac, you probably hit the key constraint quickly: Nuance's current Dragon Professional desktop product advertises Windows 10 and 11, not macOS. I build Talkie, and a lot of people find it for exactly that reason. So this is not two current Mac apps head to head; it is a choice between a Windows professional-dictation system and an Apple-focused capture product.
+
+**Short version:** Dragon is still a serious professional dictation engine — but not on your Mac. If you want a native Mac dictation app that runs on-device and plugs into your terminal and coding agents, Talkie is the honest recommendation. If you genuinely need Dragon's command-and-control or specialized medical/legal vocabularies, you'll be doing that on Windows or in Dragon's professional cloud, not on macOS.
+
+## What Dragon does well
+
+Give Dragon its due. Where it runs, it is a heavyweight, and no lightweight tool fully replaces it.
+
+- **Raw accuracy.** Dragon has decades of speech-recognition research behind it and a profile that adapts to your voice over time. For long-form professional dictation, it is still among the most accurate options available.
+- **Voice command and control.** Dragon isn't only transcription. You can navigate, edit, format, correct, and drive applications entirely by voice ("select that," "bold the last sentence," "open the file menu"). This is a genuine accessibility and hands-free workflow that most modern dictation apps do not attempt.
+- **Specialized vocabularies.** Dragon Medical One and the legal/professional editions ship domain vocabularies — clinical terminology, drug names, legal phrasing — tuned for people whose accuracy requirements are non-negotiable.
+
+The catch for this page is platform fit. Dragon Professional is a Windows product, Dragon Anywhere covers mobile work, and the broader Dragon line includes specialized professional and healthcare offerings. None of that makes Dragon weak; it means a Mac buyer is evaluating workflow migration, not feature parity between two native Mac apps.
+
+## Where Talkie is different
+
+Talkie doesn't try to be Dragon. It's built for the Mac (and iPhone and Apple Watch) user who wants fast, private dictation now — and who increasingly works alongside AI agents.
+
+- **Mac-native and actively developed.** Talkie is built for macOS, iOS, and watchOS. It's not a legacy port limping along; it's a current app for current Apple hardware.
+- **Local-first.** Talkie keeps transcription and captures on your Apple devices instead of treating them as a cloud service.
+- **Local recognition and durable capture.** Talkie offers selectable local Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iPhone. Captures enter a structured local library; enabled iCloud sync and optional AI workflows have separate data boundaries.
+- **A CLI for scripts and agents.** Talkie exposes your captures as structured data through a command-line tool:
+
+```
+bun add -g @talkie/cli
+```
+
+That turns dictation into something you can pipe into scripts, pipelines, and agents instead of just dropping text into a box.
+
+- **Dictate into your coding agents.** You can speak into agentic CLIs like Claude Code — Talkie acts as a remote control for your agents, letting you drive real work by voice.
+- **Show agents what you mean.** Add a full screenshot, selected screen region, or camera capture to your spoken instruction, so an agent has the visual context as well as the words.
+- **Cross-device.** Optional iCloud sync keeps captures moving across Mac, iPhone, and Apple Watch while preserving a searchable personal library.
+
+## Side by side
+
+See the sourced comparison matrix on the canonical HTML page.
+
+## Which one should you pick?
+
+Be honest with yourself about what you actually need.
+
+Pick **Dragon** if you require professional command-and-control or specialized accuracy — hands-free driving of your entire OS, or clinical/legal vocabularies where every term must land. Just know that means a supported platform, which today is Windows or Dragon's professional cloud and mobile products, not a Mac desktop app.
+
+Pick **Talkie** if you're a Mac user who wants on-device dictation that fits a modern workflow. Talkie won't match Dragon's command-and-control or its tuned medical/legal accuracy, and it isn't trying to. What it does is give you private, native voice capture on the hardware you actually own — and then hand that voice to your terminal and your agents, which Dragon doesn't do at all.
+
+For most people typing "Dragon dictation alternative for Mac" into a search bar, the real question isn't "which is more powerful." It's "what runs on my Mac in 2026." Talkie does.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading:
+
+- [Dictate into Claude Code](/workflows/dictate-to-claude/)
+- [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
+- [The best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

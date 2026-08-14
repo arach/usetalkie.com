@@ -6,7 +6,7 @@ import MainShell from '../components/MainShell'
 // control for your agents" is what makes it Talkie. Keep both halves.
 const HOME_TITLE = 'Talkie - Voice Dictation for Mac and a Remote Control for Your Agents'
 const HOME_DESCRIPTION =
-  'Local-first voice dictation for Mac, iPhone, and Apple Watch. Download the current Mac build or get Talkie Phone from the App Store.'
+  'Talkie is a local-first voice dictation app for Mac, iPhone, and Apple Watch. It turns speech into text, searchable captures, workflows, and agent input.'
 
 /**
  * Root homepage `/` — renders the panoramic-instrument hero with the
@@ -18,7 +18,10 @@ export const metadata = {
   title: HOME_TITLE,
   description: HOME_DESCRIPTION,
   applicationName: 'Talkie',
-  alternates: { canonical: 'https://usetalkie.com/' },
+  alternates: {
+    canonical: 'https://usetalkie.com/',
+    types: { 'text/markdown': 'https://usetalkie.com/index.md' },
+  },
   openGraph: {
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,

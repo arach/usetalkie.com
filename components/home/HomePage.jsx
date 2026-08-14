@@ -213,7 +213,7 @@ export default function HomePage() {
               · DICTATION CAPTURE · LIVE EXAMPLES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Dictate anywhere. <span className="italic">See it in action.</span>
+              How do I dictate into any Mac app?
             </h2>
             <div className="mt-4 flex max-w-3xl flex-col gap-4 text-[15px] leading-relaxed text-ink-muted sm:flex-row sm:items-end sm:justify-between sm:gap-8">
               <p className="max-w-2xl">
@@ -256,7 +256,7 @@ export default function HomePage() {
               · CAPTURE MODES
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              One capture. <span className="italic text-ink-muted">Works everywhere.</span>
+              What can Talkie do with a voice capture?
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A capture can become a note, a draft, a search, or the start of a workflow. Say it once, then use it where it belongs.
@@ -305,12 +305,10 @@ export default function HomePage() {
               · COMING BACK LATER
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Voice notes are easy to save.
-              <br />
-              <span className="italic text-ink-muted">Harder to use.</span>
+              How can I find a voice note later?
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Talkie keeps enough of the moment intact that coming back later feels less like archaeology and more like picking work back up.
+              Talkie stores the transcript, time, app, and project context with each capture so it stays searchable.
             </p>
           </div>
 
@@ -353,7 +351,7 @@ export default function HomePage() {
               · OWNERSHIP
             </p>
             <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
-              Your voice stays yours.
+              Where does Talkie store voice data?
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               Your recordings and transcripts start on your devices. You can sync them through your iCloud account. External models are optional and use the keys that you provide.
@@ -426,11 +424,11 @@ export default function HomePage() {
                 · DOWNLOADS
               </p>
               <h2 className="mt-3 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
-                Install Talkie where you use your voice.
+                How much does Talkie cost?
               </h2>
               <p className="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-ink-muted">
-                Install the Mac app for dictation, the local library, workflows, and the CLI.
-                Install Talkie Phone to capture on iPhone and Apple Watch. Every surface connects to one Talkie library.
+                The current Mac build is free. Talkie Phone and the Apple Watch app are free.
+                A 7-day trial and a $39 one-time Mac license are planned. The trial and checkout are not active yet.
               </p>
 
               <div className="mt-9 border-y border-edge-dim">
