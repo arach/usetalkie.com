@@ -8,7 +8,10 @@ const PAGE_DESCRIPTION =
 export const metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: 'https://usetalkie.com/downloads/' },
+  alternates: {
+    canonical: 'https://usetalkie.com/downloads/',
+    types: { 'text/markdown': 'https://usetalkie.com/downloads.md' },
+  },
   openGraph: {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,

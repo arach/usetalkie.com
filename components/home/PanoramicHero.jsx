@@ -601,6 +601,11 @@ function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle
         />
       </h2>
 
+      <p className="mx-auto mt-5 max-w-3xl text-balance text-[14px] leading-relaxed text-ink-muted md:mt-7 md:text-[16px]">
+        Talkie is a local-first voice dictation app for Mac users who want
+        searchable captures, workflows, and voice input for agents.
+      </p>
+
       {/* Use-case roller — three rows visible (prev / current / next),
           same donor-shape three-column grid. The active row drives the
           entire chassis: ScopeBay's transcription and ResultBay's
