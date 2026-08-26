@@ -238,21 +238,12 @@ function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
           aria-label="Open the Talkie for Mac tour"
           className="group relative mx-auto block w-[92%] -translate-x-[2%] text-left sm:w-[88%] md:w-[88%]"
         >
-          <div className="rounded-t-[18px] border border-zinc-300 bg-gradient-to-b from-zinc-100 to-zinc-300 p-[5px] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.34)] transition-transform duration-300 group-hover:-translate-y-1 dark:border-zinc-600 dark:from-zinc-700 dark:to-zinc-900 md:rounded-t-[26px] md:p-[7px]">
-            <div className="relative overflow-hidden rounded-t-[12px] border border-black/80 bg-black md:rounded-t-[18px]">
-              <span className="absolute left-1/2 top-[5px] z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-zinc-700 ring-1 ring-black md:top-[7px]" />
-              <img
-                src="/screenshots/mac-home.png"
-                alt="Talkie open on a MacBook"
-                className="block h-auto w-full contrast-[1.12] saturate-[1.04]"
-                loading="eager"
-              />
-            </div>
-          </div>
-          <div className="relative h-4 rounded-b-[40%] border-x border-b border-zinc-300 bg-gradient-to-b from-zinc-100 to-zinc-300 shadow-[0_12px_18px_-12px_rgba(15,23,42,0.5)] dark:border-zinc-600 dark:from-zinc-600 dark:to-zinc-800 md:h-6">
-            <span className="absolute left-1/2 top-0 h-[3px] w-[18%] -translate-x-1/2 rounded-b-md bg-zinc-400/70 dark:bg-zinc-500" />
-          </div>
-          <div className="mx-auto h-1.5 w-[94%] rounded-b-full bg-zinc-400/60 blur-[0.2px] dark:bg-black/80" />
+          <img
+            src="/screenshots/mac-home-3d.png"
+            alt="Talkie open on a dimensional Mac display"
+            className="block h-auto w-full rounded-2xl ring-1 ring-zinc-900/5 transition-transform duration-300 group-hover:-translate-y-1 dark:ring-white/10"
+            loading="eager"
+          />
         </button>
 
         <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[172px] rounded-2xl border border-zinc-200/80 bg-white/85 p-3 text-left shadow-[0_20px_45px_-28px_rgba(15,23,42,0.24)] backdrop-blur-md dark:border-zinc-700/80 dark:bg-zinc-900/90 sm:block md:left-[3%] md:w-[184px]">
