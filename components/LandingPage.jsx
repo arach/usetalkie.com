@@ -192,6 +192,89 @@ const OWNERSHIP_PILLS = [
   'Encrypted iCloud sync',
 ]
 
+/* A tiny retro CRT monitor that autorolls the silent dictation loop.
+ * Progress and timecode are driven through refs on timeupdate so the
+ * 4Hz tick never re-renders the hero. */
+function RetroLoopMonitor() {
+  const progressRef = useRef(null)
+  const timeRef = useRef(null)
+
+  const handleTimeUpdate = (e) => {
+    const v = e.currentTarget
+    if (!v.duration) return
+    if (progressRef.current) {
+      progressRef.current.style.width = `${(v.currentTime / v.duration) * 100}%`
+    }
+    if (timeRef.current) {
+      const s = Math.floor(v.currentTime)
+      timeRef.current.textContent = `0:${String(s).padStart(2, '0')}`
+    }
+  }
+
+  return (
+    <div>
+      <div className="rounded-[14px] border border-zinc-400/60 bg-gradient-to-b from-[#edeae2] to-[#d3cfc3] p-2 shadow-[0_22px_45px_-26px_rgba(15,23,42,0.45),inset_0_1px_0_rgba(255,255,255,0.7)] dark:border-zinc-600 dark:from-zinc-600 dark:to-zinc-800 dark:shadow-[0_22px_45px_-24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)]">
+        <div className="relative overflow-hidden rounded-[8px] border border-black/70 bg-[#131412] p-[3px] shadow-[inset_0_2px_5px_rgba(0,0,0,0.65)]">
+          <div className="relative overflow-hidden rounded-[5px]">
+            <video
+              src="/videos/talkie-editor-dictation.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              onTimeUpdate={handleTimeUpdate}
+              aria-label="Talkie dictation demo: speech becomes text at the cursor"
+              className="block aspect-[16/7] w-full object-cover object-top"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.13]"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)',
+              }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(130% 95% at 50% 42%, transparent 58%, rgba(0,0,0,0.22) 100%), linear-gradient(112deg, rgba(255,255,255,0.2) 0%, transparent 26%)',
+              }}
+            />
+            <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/40">
+              <div ref={progressRef} className="h-full w-0 bg-amber-500/90" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-1.5 flex items-center justify-between px-1">
+          <div className="flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.85)]" />
+            <span className="font-mono text-[8px] font-bold uppercase tracking-[0.22em] text-zinc-600 dark:text-zinc-300">
+              Dictation
+            </span>
+          </div>
+          <div
+            aria-hidden
+            className="h-2 w-10 opacity-50 dark:opacity-40 dark:invert"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(90deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 4px)',
+            }}
+          />
+          <span ref={timeRef} className="font-mono text-[8px] tabular-nums text-zinc-600 dark:text-zinc-300">
+            0:00
+          </span>
+        </div>
+      </div>
+      <div className="mx-auto h-2 w-14 rounded-b-[6px] bg-gradient-to-b from-[#cfcabd] to-[#b6b1a3] shadow-[0_8px_12px_-8px_rgba(15,23,42,0.5)] dark:from-zinc-700 dark:to-zinc-800" />
+      <p className="mt-2.5 inline-block rounded-md bg-white/75 px-2 py-1 text-[11.5px] leading-snug text-zinc-800 backdrop-blur-sm dark:bg-zinc-900/80 dark:text-zinc-100">
+        Say the thought — the words land at the cursor.
+      </p>
+    </div>
+  )
+}
+
 function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
   return (
     <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
@@ -246,25 +329,8 @@ function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
           />
         </button>
 
-        <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[236px] overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/90 text-left shadow-[0_20px_45px_-28px_rgba(15,23,42,0.24)] backdrop-blur-md dark:border-zinc-700/80 dark:bg-zinc-900/90 sm:block md:left-[3%] md:w-[264px]">
-          <video
-            src="/videos/talkie-editor-dictation.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-label="Talkie dictation demo: speech becomes text at the cursor"
-            className="block aspect-[16/7] w-full border-b border-zinc-200/70 object-cover object-top dark:border-zinc-700/70"
-          />
-          <div className="p-3">
-            <div className="flex items-center gap-2 text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-              Dictation · Live
-            </div>
-            <p className="mt-2 text-[12px] leading-snug text-zinc-800 dark:text-zinc-100">
-              Say the thought — the words land at the cursor.
-            </p>
-          </div>
+        <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[236px] text-left sm:block md:left-[3%] md:w-[264px]">
+          <RetroLoopMonitor />
         </div>
 
         <button
