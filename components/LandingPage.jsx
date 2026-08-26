@@ -246,17 +246,25 @@ function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
           />
         </button>
 
-        <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[172px] rounded-2xl border border-zinc-200/80 bg-white/85 p-3 text-left shadow-[0_20px_45px_-28px_rgba(15,23,42,0.24)] backdrop-blur-md dark:border-zinc-700/80 dark:bg-zinc-900/90 sm:block md:left-[3%] md:w-[184px]">
-          <div className="flex items-center gap-2 text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-            Captured on iPhone
+        <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[236px] overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/90 text-left shadow-[0_20px_45px_-28px_rgba(15,23,42,0.24)] backdrop-blur-md dark:border-zinc-700/80 dark:bg-zinc-900/90 sm:block md:left-[3%] md:w-[264px]">
+          <video
+            src="/videos/talkie-editor-dictation.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-label="Talkie dictation demo: speech becomes text at the cursor"
+            className="block aspect-[16/7] w-full border-b border-zinc-200/70 object-cover object-top dark:border-zinc-700/70"
+          />
+          <div className="p-3">
+            <div className="flex items-center gap-2 text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+              Dictation · Live
+            </div>
+            <p className="mt-2 text-[12px] leading-snug text-zinc-800 dark:text-zinc-100">
+              Say the thought — the words land at the cursor.
+            </p>
           </div>
-          <p className="mt-2.5 text-[13px] leading-snug text-zinc-800 dark:text-zinc-100">
-            Turn the meeting notes into tomorrow’s action list.
-          </p>
-          <p className="mt-3 text-[10px] font-mono text-zinc-500 dark:text-zinc-400">
-            Ready on your Mac
-          </p>
         </div>
 
         <button
