@@ -22,3 +22,6 @@ logs/
 !.gitkeep
 # OpenScout local state
 .openscout/project.json
+
+# HyperFrames video working directory (renders/sources live here, not in git)
+/video/
