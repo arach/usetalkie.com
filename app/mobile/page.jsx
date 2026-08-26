@@ -2,12 +2,15 @@ import MobilePage from '../../components/MobilePage'
 import MainShell from '../../components/MainShell'
 
 export const metadata = {
-  title: 'Talkie for Mobile - Catch it while it is still live',
-  description: 'Capture on iPhone and Apple Watch when you are away from your desk, then pick the thread back up on your Mac.',
-  alternates: { canonical: 'https://usetalkie.com/mobile/' },
+  title: 'Free Talkie App for iPhone and Apple Watch',
+  description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
+  alternates: {
+    canonical: 'https://usetalkie.com/mobile/',
+    types: { 'text/markdown': 'https://usetalkie.com/mobile.md' },
+  },
   openGraph: {
-    title: 'Talkie for Mobile - Catch it while it is still live',
-    description: 'Capture on iPhone and Apple Watch when you are away from your desk, then pick the thread back up on your Mac.',
+    title: 'Free Talkie App for iPhone and Apple Watch',
+    description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
     url: 'https://usetalkie.com/mobile/',
     siteName: 'Talkie',
     images: [
@@ -23,8 +26,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie for Mobile - Catch it while it is still live',
-    description: 'Capture on iPhone and Apple Watch when you are away from your desk, then pick the thread back up on your Mac.',
+    title: 'Free Talkie App for iPhone and Apple Watch',
+    description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
     images: ['/og-image.png'],
   },
 }

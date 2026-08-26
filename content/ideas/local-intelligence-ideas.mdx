@@ -1,6 +1,6 @@
 ---
 title: "What Apple's On-Device Model Actually Does"
-description: "We tested Apple's Foundation Models against 24 real Talkie use cases. Here's what works, what needs a prompt, and what stays free forever."
+description: "We tested Apple's Foundation Models against 24 real Talkie use cases. Here is what works, what needs a prompt, and what runs without an external model fee."
 date: "2026-04-04"
 tags: ["apple-intelligence", "foundation-models", "on-device-ml", "benchmarks", "privacy"]
 ---
@@ -70,7 +70,7 @@ Each of the Tier 1 primitives fires on every capture. For a user who records 10 
 
 Privacy is the other side of the same coin. The private redaction primitive — masking names, account numbers, health identifiers before anything leaves the device — only makes sense as a local operation. Sending the unredacted transcript to a cloud API to redact it would defeat the purpose.
 
-The routing principle we're landing on: **local by default, cloud as an intentional escalation**. Users who never connect an API key get a capable, private, free processing layer. Users who want deeper reasoning or larger context windows can opt into cloud providers without changing how the rest of the system works.
+The routing principle we're landing on: **local by default, cloud as an intentional escalation**. Users who never connect an API key get a capable, private processing layer with no external model fee. Users who want deeper reasoning or larger context windows can opt into cloud providers without changing how the rest of the system works.
 
 ---
 

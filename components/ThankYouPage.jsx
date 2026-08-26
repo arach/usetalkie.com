@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Check, Mail, Sparkles, Laptop, Smartphone, ArrowRight } from 'lucide-react'
+import { TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * /thank-you — confirmation page on the oscilloscope canvas.
@@ -35,8 +36,8 @@ const NEXT_STEPS = [
   },
   {
     icon: Sparkles,
-    title: 'Early access + launch discount.',
-    body: 'You will be among the first invited before the public broadcast.',
+    title: 'Product updates.',
+    body: 'We will send an update when the paid Mac offer is ready to test.',
   },
 ]
 
@@ -102,25 +103,27 @@ export default function ThankYouPage() {
         <div className="mt-12 w-full">
           <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
             <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--trace-dim)' }} />
-            <span>· GET TALKIE NOW</span>
+            <span>· CURRENT DOWNLOADS</span>
             <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--edge-subtle)' }} />
           </div>
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <a
-              href="https://app.usetalkie.com/dl"
+              href="/downloads"
               className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
             >
               <Laptop className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" aria-hidden />
-              DOWNLOAD · MAC
+              CURRENT MAC BUILD
               <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </a>
             <a
-              href="https://app.usetalkie.com/testflight"
+              href={TALKIE_PHONE_APP.appStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-edge-dim px-4 py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
             >
               <Smartphone className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" aria-hidden />
-              TESTFLIGHT · iPHONE
+              FREE · iPHONE & WATCH
               <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
             </a>
           </div>

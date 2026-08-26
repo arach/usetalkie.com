@@ -1,0 +1,55 @@
+# Talkie vs Superwhisper: A Local-First Alternative for Mac
+
+Looking for a Superwhisper alternative? Talkie runs speech-to-text on-device, syncs across Mac, iPhone, and Apple Watch, and hands your voice to the command line and your AI agents. An honest comparison.
+
+- Canonical page: https://usetalkie.com/compare/superwhisper/
+- Author: Arach Tchoupani
+- Published: 2026-07-21
+
+Superwhisper is the app people name first when they hear what I'm building — and fair enough, it's polished and genuinely powerful. I build Talkie, so take the bias as stated. What follows is my honest read on where the two overlap, where they don't, and who each one is really for.
+
+Short version: **Superwhisper is a polished, powerful dictation app with a deep menu of AI reformatting modes across macOS, Windows, and iOS. Talkie is Apple-native, local-first, and treats your voice as data your scripts and agents can use.** They solve overlapping problems from different angles.
+
+## What Superwhisper does well
+
+Let's be fair, because it's a genuinely good app. Superwhisper has a mature "modes" system — predefined Message, Email, and Voice modes plus custom modes powered by a long list of language models (GPT‑5, Claude, Llama, Gemini, and more). It records meetings and generates notes, transcribes audio and video files, supports 100+ languages with translation to English, and can run offline on Apple Silicon. It's cross-platform, which matters if you live on Windows. If your work is heavily multilingual, or you want a big catalogue of LLM formatting styles and you're happy to pay for it, Superwhisper is a strong choice.
+
+Its pricing reflects that scope: a free tier with 15 minutes of premium access before dropping to basic features, a Pro plan at $8/month, and a premium one-time lifetime license. Powerful, but not free — and the best reformatting leans on cloud models unless you deliberately stay on local ones.
+
+## Where Talkie is different
+
+Talkie starts from three commitments that shape everything else.
+
+**Core recognition can stay local.** Talkie offers selectable Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iOS. Dictations and memos enter a structured local library; enabled iCloud sync and optional AI workflows are separate boundaries.
+
+**Your voice becomes data, not just pasted text.** This is the real dividing line. Superwhisper is excellent at getting polished text *into the app you're looking at*. Talkie keeps a durable capture record and exposes it through a CLI, so scripts, pipelines, and agents can work with what you said afterward:
+
+```bash
+bun add -g @talkie/cli
+```
+
+No accounts, no keys — it talks to the SQLite database on your Mac. That turns a pile of voice memos into structured, searchable, scriptable knowledge instead of transcripts trapped inside an app.
+
+**It's a remote control for your agents.** Because your voice is available at the command line, you can dictate straight into agentic tools like Claude Code. Talk, and the work starts moving — a prompt, a task, a file edit — without retyping. If you spend your day in a terminal with an AI agent, this is a workflow Superwhisper simply isn't shaped to do.
+
+**It gives agents visual context, too.** Add a full screenshot, selected screen region, or camera capture to a spoken instruction. Instead of hoping an agent reconstructs the scene from your words, you can show it exactly what you mean.
+
+**It spans Mac, iPhone, and Apple Watch.** Capture a thought on your wrist while walking, and it's synced through iCloud and waiting on your Mac. The trade-off is that Talkie is Apple-only — no Windows — which is the honest flip side of being deeply native.
+
+## Side by side
+
+See the sourced comparison matrix on the canonical HTML page.
+
+## Which one should you pick?
+
+**Choose Superwhisper if** you're on Windows, you need broad multilingual support or meeting transcription, or you want a deep menu of models, prompts, and formatting modes.
+
+**Choose Talkie if** you're on Apple hardware and you want dictation that's private by default and — crucially — hands your voice to the command line and your agents. If "talk to my terminal" and "keep my captures as local, scriptable data" sound like your kind of thing, that's exactly what Talkie is built for.
+
+You don't have to guess. Try both in your own workflow and see which one disappears into it.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+And if the agents angle is what caught your eye, here's [how dictating to Claude Code works](/workflows/dictate-to-claude/), and [why Talkie ships a CLI](/ideas/why-talkie-has-a-cli/) in the first place.
+
+See also: [the best dictation apps for Mac, compared](/compare/best-dictation-apps-for-mac/).

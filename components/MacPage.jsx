@@ -5,6 +5,7 @@ import MacHowItWorks from './MacHowItWorks'
 import MacFeatures from './MacFeatures'
 import MacUseCases from './MacUseCases'
 import DownloadBay from './DownloadBay'
+import { TALKIE_MAC_OFFER } from '../shared/config/product-links'
 
 /**
  * MacPage — body of /mac. Pure server component.
@@ -63,6 +64,61 @@ export default function MacPage() {
       <MacHowItWorks />
       <MacFeatures />
       <MacUseCases />
+
+      {/* PLANNED PAID OFFER */}
+      <section id="mac-pricing" className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+          <p
+            className="text-[10px] uppercase tracking-[0.26em] text-trace"
+            style={{ textShadow: '0 0 4px var(--trace-glow)' }}
+          >
+            · {TALKIE_MAC_OFFER.statusLabel}
+          </p>
+          <div className="mt-4 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <h2 className="font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+                {TALKIE_MAC_OFFER.trialLabel}.{' '}
+                <span className="italic text-ink-muted">
+                  {TALKIE_MAC_OFFER.displayPrice} once.
+                </span>
+              </h2>
+              <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
+                This offer is planned. The trial and checkout are not active yet.
+                You can download the current Mac build for free.
+              </p>
+            </div>
+
+            <dl className="grid gap-px overflow-hidden rounded-md border border-edge-dim bg-edge-faint sm:grid-cols-2">
+              {[
+                ['TRIAL START', TALKIE_MAC_OFFER.trialStartLabel],
+                ['TO START', TALKIE_MAC_OFFER.trialRequirementsLabel],
+                ['LICENSE', TALKIE_MAC_OFFER.deviceLabel],
+                ['UPDATES', TALKIE_MAC_OFFER.updatesLabel],
+                ['AFTER TRIAL', TALKIE_MAC_OFFER.expiryLabel],
+                ['YOUR DATA', TALKIE_MAC_OFFER.dataAccessLabel],
+              ].map(([term, detail]) => (
+                <div key={term} className="bg-surface p-5">
+                  <dt className="text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+                    {term}
+                  </dt>
+                  <dd className="mt-2 text-[12px] leading-relaxed text-ink-muted">
+                    {detail}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
 
       {/* DOWNLOAD — clear, focused install footer (replaces the bigger
           patch-bay chassis here; that one lives on /downloads where

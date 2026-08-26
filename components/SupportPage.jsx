@@ -13,6 +13,8 @@ import {
   Workflow,
   AlertCircle,
 } from 'lucide-react'
+import JsonLd from './JsonLd'
+import { TALKIE_MAC_OFFER, TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * /support — server-rendered support / knowledge-base page.
@@ -38,7 +40,7 @@ const KB_SECTIONS = [
         icon: Download,
         title: 'Installing Talkie',
         body:
-          'Download Talkie from the Mac App Store or install via CLI with `curl -fsSL go.usetalkie.com/install | bash`. The CLI installer downloads the app, installs the command-line tools, and launches Talkie automatically.',
+          'Download the signed Mac build from the Talkie downloads page. You can also install it with `curl -fsSL go.usetalkie.com/install | bash`. The command downloads the app, installs the command-line tools, and launches Talkie.',
       },
       {
         icon: Mic,
@@ -56,30 +58,60 @@ const KB_SECTIONS = [
   },
   {
     code: '02',
+    label: 'PLANNED MAC OFFER',
+    articles: [
+      {
+        icon: Key,
+        title: 'Is the paid Mac offer active?',
+        body:
+          `No. The current Mac build is free to download. The planned offer is a ${TALKIE_MAC_OFFER.trialLabel}, then ${TALKIE_MAC_OFFER.displayPrice} USD as a ${TALKIE_MAC_OFFER.billingLabel} payment. Checkout and license activation are not active yet.`,
+      },
+      {
+        icon: Mic,
+        title: 'How will the trial work?',
+        body:
+          `${TALKIE_MAC_OFFER.trialStartLabel}. ${TALKIE_MAC_OFFER.trialRequirementsLabel}. ${TALKIE_MAC_OFFER.automaticChargeLabel}. These rules describe the planned offer, not the current build.`,
+      },
+      {
+        icon: HardDrive,
+        title: 'What will happen after the trial?',
+        body:
+          `${TALKIE_MAC_OFFER.expiryLabel}. ${TALKIE_MAC_OFFER.dataAccessLabel}. This behavior must be implemented and tested before the paid offer starts.`,
+      },
+      {
+        icon: Smartphone,
+        title: 'Are the mobile apps part of the Mac license?',
+        body:
+          `${TALKIE_PHONE_APP.name} and the Apple Watch app are free. They do not require a Mac license.`,
+      },
+    ],
+  },
+  {
+    code: '03',
     label: 'DATA & PRIVACY',
     articles: [
       {
         icon: HardDrive,
         title: 'Where is my data stored?',
         body:
-          'All data lives in a local SQLite database on your Mac. If you enable iCloud sync, data is encrypted with your Apple ID keys and stored in a Private CloudKit container. Talkie Systems has zero access to your data.',
+          'Your Talkie library is stored in a local SQLite database on your Mac. If you enable iCloud sync, Apple stores the synced copy in your private CloudKit container. Talkie does not operate a server for your synced library.',
       },
       {
         icon: RefreshCw,
         title: 'Syncing across devices',
         body:
-          'Talkie uses Apple iCloud (CloudKit) to sync between your devices. Data is encrypted end-to-end with your Apple ID. Enable sync in Settings > iCloud. All synced devices must be signed into the same Apple ID.',
+          'Talkie uses Apple iCloud and CloudKit to sync between your devices. Enable sync in Settings > iCloud. All synced devices must use the same Apple ID.',
       },
       {
         icon: Key,
         title: 'Setting up API keys',
         body:
-          'Go to Settings > API Keys. Enter your OpenAI or Anthropic key. Keys are stored in the macOS Keychain (Secure Enclave) and only accessed at runtime. Talkie never sends your keys to our servers.',
+          'Go to Settings > API Keys. Enter your OpenAI or Anthropic key. Talkie stores the key in the macOS Keychain and reads it when you use the provider. Talkie does not send the key to a Talkie server.',
       },
     ],
   },
   {
-    code: '03',
+    code: '04',
     label: 'ADVANCED',
     articles: [
       {
@@ -92,18 +124,18 @@ const KB_SECTIONS = [
         icon: Workflow,
         title: 'Workflows & automation',
         body:
-          'Workflows let you chain AI actions on your transcriptions — summarize, extract action items, translate, or send to external services. Create workflows in Settings > Workflows or use the built-in templates.',
+          'Workflows let you run AI actions on your transcriptions. You can summarize, extract action items, translate, or send data to external services. Create workflows in Settings > Workflows or use a built-in template.',
       },
       {
         icon: Smartphone,
         title: 'Mobile capture',
         body:
-          'Use Talkie for iOS to capture voice memos on the go. Recordings sync to your Mac via iCloud where they are transcribed locally. The mobile app is a lightweight capture tool — all AI processing happens on your Mac.',
+          'Use Talkie for iPhone to capture voice memos when you are away from your Mac. If you enable iCloud sync, recordings can sync to your Mac for local transcription.',
       },
     ],
   },
   {
-    code: '04',
+    code: '05',
     label: 'TROUBLESHOOTING',
     articles: [
       {
@@ -122,11 +154,15 @@ const KB_SECTIONS = [
         icon: AlertCircle,
         title: 'App will not launch or crashes',
         body:
-          'Try deleting and reinstalling from the App Store. If using the CLI version, run `talkie doctor` to diagnose issues. Check Console.app for crash logs. Talkie requires macOS 14 (Sonoma) or later.',
+          'Download the current signed build again and reinstall it. If you use the command-line tools, run `talkie doctor` to diagnose issues. Check Console.app for crash logs. Talkie requires macOS 14 (Sonoma) or later.',
       },
     ],
   },
 ]
+const KB_ARTICLE_COUNT = KB_SECTIONS.reduce(
+  (total, section) => total + section.articles.length,
+  0,
+)
 
 const GRATICULE = {
   backgroundImage:
@@ -145,9 +181,41 @@ const HEADLINE_PHOSPHOR = {
   textShadow: '0 0 18px var(--trace-glow), 0 0 6px var(--trace-glow)',
 }
 
+const OFFER_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Is the paid Talkie for Mac offer active?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `No. The current Mac build is free to download. A ${TALKIE_MAC_OFFER.trialLabel} and ${TALKIE_MAC_OFFER.displayPrice} USD one-time license are planned.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How will the Talkie for Mac trial work?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${TALKIE_MAC_OFFER.trialStartLabel}. ${TALKIE_MAC_OFFER.trialRequirementsLabel}. ${TALKIE_MAC_OFFER.automaticChargeLabel}.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Are the Talkie iPhone and Apple Watch apps free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `Yes. ${TALKIE_PHONE_APP.name} and the Apple Watch app are free. They do not require a Mac license.`,
+      },
+    },
+  ],
+}
+
 export default function SupportPage() {
   return (
     <>
+      <JsonLd data={OFFER_FAQ_SCHEMA} />
       {/* ========== HERO ========== */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
@@ -169,7 +237,7 @@ export default function SupportPage() {
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
             Browse the knowledge base below. If you can&apos;t find what you need, write us.
-            Most messages get a response within 24 hours.
+            We read every message.
           </p>
 
           {/* Telemetry strip */}
@@ -180,7 +248,7 @@ export default function SupportPage() {
                 className="inline-block h-1.5 w-1.5 rounded-full bg-trace"
                 style={TRACE_GLOW_DOT_SM}
               />
-              <span>RESPONSE · UNDER 24H</span>
+              <span>RESPONSE · EMAIL</span>
             </span>
             <span className="inline-flex items-center gap-2">
               <LifeBuoy className="h-3 w-3 text-trace" aria-hidden />
@@ -188,7 +256,7 @@ export default function SupportPage() {
             </span>
             <span className="inline-flex items-center gap-2">
               <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--trace-dim)' }} />
-              <span>ALL SIGNALS LOCAL</span>
+              <span>APP LIBRARY · LOCAL FIRST</span>
             </span>
           </div>
         </div>
@@ -209,7 +277,7 @@ export default function SupportPage() {
             Common topics.
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Twelve articles across four channels. Each entry stands on its own.
+            {KB_ARTICLE_COUNT} articles across {KB_SECTIONS.length} sections. Each entry stands on its own.
           </p>
 
           <div className="mt-14 space-y-12">
@@ -260,7 +328,7 @@ export default function SupportPage() {
                   <p className="mt-3 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
                     Reach the team at{' '}
                     <span className="font-mono text-ink">hello@usetalkie.com</span>. Include your
-                    macOS version and a short description — most replies land within a day.
+                    macOS version and a short description. We will reply by email.
                   </p>
 
                   <a

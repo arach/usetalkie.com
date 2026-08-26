@@ -1,9 +1,18 @@
 # Talkie
 
 Canonical site: https://usetalkie.com/
-Last updated: 2026-07-21
+Last updated: 2026-08-08
 
 Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It turns speech into dictation, searchable memos, files, drafts, workflow runs, and agent-readable context. Capture, local storage, files, clipboard, and shell workflows start on the user's devices. Outside model providers and webhooks are optional and run only when configured by the user.
+
+## Current commercial status
+
+- The current Mac build is free to download.
+- A paid Mac offer is planned but is not active.
+- The planned offer is a 7-day trial, then $39 USD as a one-time payment.
+- The planned trial starts after the first successful dictation.
+- The iPhone and Apple Watch apps are free.
+- Checkout, license activation, and trial enforcement are not active yet.
 
 ## Primary pages
 
@@ -12,6 +21,8 @@ Talkie is a local-first voice capture app for Mac, iPhone, and Apple Watch. It t
 - Mac app: https://usetalkie.com/mac/
 - Mobile and Watch app: https://usetalkie.com/mobile/
 - Security and privacy: https://usetalkie.com/security/
+- Privacy notice: https://usetalkie.com/privacypolicy.html
+- Support: https://usetalkie.com/support/
 
 ## Comparisons
 

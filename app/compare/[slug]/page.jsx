@@ -35,7 +35,10 @@ export async function generateMetadata({ params }) {
   return {
     title: `${comparison.title} - Talkie`,
     description: comparison.description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      types: { 'text/markdown': `https://usetalkie.com/compare/${slug}.md` },
+    },
     openGraph: {
       title: `${comparison.title} - Talkie`,
       description: comparison.description,

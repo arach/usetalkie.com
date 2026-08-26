@@ -2,12 +2,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Check, Copy, Download } from 'lucide-react'
+import { TALKIE_MAC_OFFER } from '../shared/config/product-links'
 
 /**
  * DownloadBay — single-purpose Mac install footer for /mac, /workflows,
  * /security, /features, /agents, /philosophy.
  *
- *   1. Big primary CTA — "Talkie for Mac" with macOS 26+ subtext that
+ *   1. Big primary CTA — "Talkie for Mac" with current-build subtext that
  *      cross-fades to "Download" on hover. Icon grid-anchored to row 1
  *      so it centers against the headline only.
  *   2. "or" divider — connects the dominant button to the curl alternative.
@@ -51,7 +52,7 @@ export default function DownloadBay({ caption }) {
           doesn't drift toward the visual center of the stacked block. */}
       <Link
         href="/downloads"
-        aria-label="Download Talkie for Mac"
+        aria-label={`Download Talkie for Mac. ${TALKIE_MAC_OFFER.currentBuildLabel}.`}
         className="group/dl inline-grid grid-cols-[auto_auto] grid-rows-[auto_auto] items-center gap-x-4 gap-y-1 rounded-md px-10 py-5"
         style={{
           background: 'var(--panel-bg)',
@@ -80,14 +81,14 @@ export default function DownloadBay({ caption }) {
           className="col-span-2 col-start-1 row-start-2 text-center text-[10px] uppercase tracking-[0.26em] transition-opacity duration-200 group-hover/dl:opacity-0"
           style={{ color: 'var(--panel-ink-faint)' }}
         >
-          macOS 26+ · iOS 26+
+          {TALKIE_MAC_OFFER.currentBuildLabel} · macOS 14+
         </span>
         <span
           aria-hidden
           className="pointer-events-none col-span-2 col-start-1 row-start-2 text-center text-[10px] uppercase tracking-[0.26em] opacity-0 transition-opacity duration-200 group-hover/dl:opacity-100"
           style={{ color: 'var(--panel-trace)' }}
         >
-          Download
+          Download current build
         </span>
       </Link>
 

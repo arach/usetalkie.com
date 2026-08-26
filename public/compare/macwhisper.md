@@ -1,0 +1,65 @@
+# Talkie: A Local-First MacWhisper Alternative With a CLI
+
+Looking for a MacWhisper alternative? Talkie offers on-device voice dictation for Mac, iPhone, and Apple Watch — with a CLI that turns your captures into structured data for scripts and AI agents.
+
+- Canonical page: https://usetalkie.com/compare/macwhisper/
+- Author: Arach Tchoupani
+- Published: 2026-07-21
+
+Here's a comparison where my usual pitch falls flat: MacWhisper is Mac-native and transcribes on-device, exactly like Talkie, so the "local vs cloud" line is off the table. Good — it means we get to compare on what actually differs. I build Talkie; Jordi Bruin builds MacWhisper, and it's a genuinely great app.
+
+**Short version:** MacWhisper is a broad transcription workbench for audio/video files, meetings, subtitles, model choice, and system-wide dictation. Talkie spans Mac, iPhone, and Apple Watch, keeps a structured capture library, and ships CLI and SDK surfaces for scripts and agents. If your job is transcribing media, MacWhisper wins. If your job is preserving spoken input as data for your own tools, Talkie is built for that.
+
+## What MacWhisper does well
+
+MacWhisper, by Jordi Bruin / Good Snooze, has earned its reputation. A few things it genuinely does better than most:
+
+- **File and media transcription.** Drop in an audio or video file and MacWhisper handles it — batch queues, watch folders, subtitle export (.srt, .vtt), speaker diarization on Pro, even pulling transcripts from YouTube URLs. This is its home turf.
+- **Model choice.** You pick the Whisper model — Tiny, Base, Small, Medium, Large v2/v3 — and trade speed for accuracy as you like. Pro adds Parakeet and WhisperKit variants. If you care about tuning the engine, MacWhisper hands you the dials.
+- **On-device by default.** All transcription runs locally with Metal/GPU acceleration, so sensitive recordings never leave your machine.
+- **A mature desktop product.** MacWhisper has a free tier and a paid Pro edition, with a long, frequently updated feature list and licensing options for larger deployments.
+- **Export and format range.** PDF, DOCX, Markdown, CSV, HTML — MacWhisper is built to get transcripts *out* into other documents.
+
+That's a real feature set, and for a lot of people it's the right tool. Talkie is not trying to replace it on those fronts.
+
+## Where Talkie is different
+
+Talkie starts from a different premise. It's not a file-transcription workstation; it's a dictation layer for your whole Apple setup, and a data layer underneath it.
+
+**A CLI and a structured local layer.** Talkie ships a command-line tool, `@talkie/cli`, that exposes captures as structured data any script, pipeline, or agent can consume.
+
+```
+bun add -g @talkie/cli
+```
+
+That turns dictation from a one-shot "text into a box" action into a queryable, searchable local knowledge base. Because the data sits in a plain local database rather than locked inside an app, you can grep it, feed it into a nightly script, or wire it into whatever tooling you already run. MacWhisper produces transcripts; Talkie produces *data you can build on*.
+
+**Dictate straight into your agents.** This is the differentiator. Because the CLI exposes captures as structured data, you can dictate directly into agentic CLI tools like Claude Code — Talkie becomes a remote control for your agents. Talk through a task, and the words land where your agent can act on them, hands-free.
+
+**Give agents visual context.** Talkie can pair your instruction with a full screenshot, selected screen region, or camera capture, so the agent can see the subject of your request as well as hear it.
+
+**Cross-device capture.** Talkie runs on macOS, iPhone, and Apple Watch, with optional iCloud sync. Catch a thought on your wrist mid-walk and continue from your Mac later. MacWhisper now also reaches iPhone and iPad, but its deepest workflow remains the Mac transcription workbench; Talkie treats Apple-device capture continuity as part of the core shape.
+
+**Local-first transcription.** Talkie offers local Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iOS.
+
+## Side by side
+
+See the sourced comparison matrix on the canonical HTML page.
+
+## Which one should you pick?
+
+Be honest with yourself about the job.
+
+If you regularly transcribe *media* — hour-long interviews, podcast episodes, recorded meetings, video you need subtitles for — pick **MacWhisper**. Model selection, batch processing, diarization, and rich export are exactly what that work needs, and Talkie simply doesn't do file transcription. Paying once for a tool that nails your core task is a good trade.
+
+If your dictation is about *capturing your own voice* throughout the day — notes, ideas, prompts, quick commands — and you want those captures to become structured, searchable data that scripts and agents can use, pick **Talkie**. The CLI, the local database, the dictate-into-Claude-Code workflow, and capture across Mac, iPhone, and Watch are the point.
+
+Plenty of people will happily run both: MacWhisper for the recordings, Talkie for the everyday capture and the agent workflows.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading:
+
+- [Dictate into Claude Code with Talkie](/workflows/dictate-to-claude/)
+- [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
+- [The best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

@@ -2,8 +2,9 @@
 
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import Image from 'next/image'
 import Link from 'next/link'
-import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Play, Terminal, Check, Copy, Bot, FileText, Maximize2, X } from 'lucide-react'
+import { Download, QrCode, Watch, Smartphone, Laptop, ArrowRight, Terminal, Check, Copy, Bot, FileText, Maximize2, X } from 'lucide-react'
 import { TALKIE_PHONE_APP } from '../../shared/config/product-links'
 import { playSpotlightTick, playSurfaceTick } from '../../lib/sfx'
 
@@ -50,16 +51,16 @@ const DEVICES = [
     label: 'Computer',
     Icon: Laptop,
     taglines: [
-      'Voice a rough draft. Watch it tighten.',
+      'Speak into any text field. Keep working.',
       'Speak any thought. Search it tomorrow.',
     ],
     useCases: [
       {
-        action: 'Dictate a rough draft',
-        outcome: 'The revised draft is ready',
+        action: 'Dictate into any text field',
+        outcome: 'The note is ready',
         transcription:
-          'okay the intro is doing too much, lemme lead with the conflict instead, see if it lands',
-        artifact: '89 words · 3 edits',
+          'Talkie lets me speak directly into any text field. I press one shortcut, say the thought, and the words land at the cursor.',
+        artifact: '23 words · inserted once',
       },
       {
         action: 'Record the meeting',
@@ -80,18 +81,25 @@ const DEVICES = [
       kind: 'dmg',
       eyebrow: 'INSTALL · MAC',
       title: 'Download Talkie for Mac',
-      meta: '12 mb',
+      meta: 'signed dmg',
       href: '/downloads',
       Icon: Download,
+      specs: [
+        { label: 'Requires', value: 'macOS 14+' },
+        { label: 'Processor', value: 'Apple Silicon' },
+        { label: 'Package', value: 'Signed DMG' },
+      ],
     },
     screenshot: {
       src: '/screenshots/mac-home.png',
       alt: 'Talkie for Mac home view',
       caption: 'Library, search, compose',
+      width: 1738,
+      height: 1105,
     },
     waveformBias: 0,
     inputSpec: {
-      platform: 'macOS 13+',
+      platform: 'macOS 14+',
       release:  'v0.4.2 (142)',
       channel:  'VOICE.IN',
       status:   'ARMED',
@@ -99,7 +107,7 @@ const DEVICES = [
     features: [
       'Global hotkey dictation',
       'Per-app context aware',
-      'On-device whisper',
+      'On-device transcription',
     ],
   },
   {
@@ -112,7 +120,7 @@ const DEVICES = [
     ],
     useCases: [
       {
-        action: 'Record a research question',
+        action: 'Ask a research question',
         outcome: 'The research brief is queued',
         transcription:
           'why are we seeing churn spike in week three of trial, dig the cohort, check the onboarding redesign',
@@ -142,9 +150,11 @@ const DEVICES = [
       Icon: QrCode,
     },
     screenshot: {
-      src: '/screenshots/iphone-16-pro-max-2.png',
-      alt: 'Talkie Phone memo detail with waveform, transcript, attachments, and quick actions',
-      caption: 'Memo detail and actions',
+      src: '/screenshots/talkie-phone-home-2026-08.webp',
+      alt: 'Talkie Phone home screen with record, compose, scan, search, and Ask Talkie actions',
+      caption: 'Record, compose, scan, search, or ask',
+      width: 900,
+      height: 1840,
     },
     waveformBias: 1,
     inputSpec: {
@@ -202,6 +212,8 @@ const DEVICES = [
       src: '/screenshots/apple-watch-link.png',
       alt: 'Talkie ready to record on Apple Watch',
       caption: 'Tap-to-capture on wrist',
+      width: 416,
+      height: 496,
     },
     waveformBias: 2,
     inputSpec: {
@@ -259,6 +271,8 @@ const DEVICES = [
       src: '/screenshots/talkie-agent-dashboard.png',
       alt: 'Talkie Agent dashboard showing voice activity, captures, workflows, and connected consoles',
       caption: 'Local agent dashboard',
+      width: 1787,
+      height: 1454,
     },
     waveformBias: 3,
     inputSpec: {
@@ -278,16 +292,16 @@ const DEVICES = [
 const SCENARIO_DETAILS = {
   mac: [
     {
-      title: 'A draft is open.',
-      body: 'The cursor is in the draft. The next sentence is clear, but typing would interrupt the work.',
+      title: 'A note is open.',
+      body: 'The cursor is in the note. The next sentence is clear, but typing would interrupt the thought.',
       constraint: 'Typing would interrupt the work.',
-      need: 'Add the next sentence in the open draft.',
-      moment: 'Talkie enters the speech in the open draft.',
-      outputLabel: 'Revised draft',
-      destination: 'Active app',
-      outputState: 'Complete',
-      outputBody: 'Talkie keeps the original text. Then the cleanup workflow creates a shorter draft for review.',
-      payload: ['"workflow": "cleanup_draft"', '"status": "complete"', '"cuts": 3'],
+      need: 'Add the next sentence without changing tools.',
+      moment: 'A global shortcut puts the speech at the active cursor.',
+      outputLabel: 'Dictated note',
+      destination: 'Active text field',
+      outputState: 'Inserted',
+      outputBody: 'Talkie puts the transcript at the active cursor. The note stays in the app that is already open.',
+      payload: ['"input": "global_shortcut"', '"status": "inserted"', '"destination": "active_cursor"'],
     },
     {
       title: 'The meeting has ended.',
@@ -316,11 +330,11 @@ const SCENARIO_DETAILS = {
   ],
   iphone: [
     {
-      title: 'A research question needs attention away from the desk.',
-      body: 'The important details are clear. A polished research prompt is not ready.',
-      constraint: 'A polished prompt is not ready.',
-      need: 'Save the full research question.',
-      moment: 'Talkie records the research question.',
+      title: 'A research question comes up away from the desk.',
+      body: 'The question is clear. The sources and evidence are on the Mac.',
+      constraint: 'The sources and evidence are on the Mac.',
+      need: 'Send the full question to the research queue.',
+      moment: 'Talkie sends the research question from the phone.',
       outputLabel: 'Research brief',
       destination: 'Research queue',
       outputState: 'Queued',
@@ -574,7 +588,7 @@ function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle
           so the card sits visually grounded under the typography.
           Sizing matches donor v1 verbatim (clamp 2.8rem → 5.6rem,
           tracking -0.025em, leading 0.92). */}
-      <h1
+      <h2
         className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-center gap-x-[0.28em] gap-y-1 font-display text-[clamp(1.6rem,7vw,2rem)] font-normal leading-[1.05] tracking-[-0.02em] text-ink md:gap-y-2 md:text-[clamp(2.35rem,5.5vw,3.75rem)] md:leading-[0.98] md:tracking-[-0.025em] xl:text-[clamp(2.8rem,9vw,5.6rem)] xl:leading-[0.92]"
         aria-label={`Talk to your ${device.label}`}
       >
@@ -585,7 +599,12 @@ function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle
           onClick={onCycle}
           onPause={onPause}
         />
-      </h1>
+      </h2>
+
+      <p className="mx-auto mt-5 max-w-3xl text-balance text-[14px] leading-relaxed text-ink-muted md:mt-7 md:text-[16px]">
+        Talkie is a local-first voice dictation app for Mac users who want
+        searchable captures, workflows, and voice input for agents.
+      </p>
 
       {/* Use-case roller — three rows visible (prev / current / next),
           same donor-shape three-column grid. The active row drives the
@@ -619,7 +638,7 @@ function ScenarioStage({ device, deviceIdx, useCase, useCaseIdx, onJump, panelSt
 
   return (
     <section
-      className="home-instrument-light relative mt-7 overflow-hidden rounded-md font-mono sm:mt-8"
+      className="home-instrument-light relative mt-7 overflow-hidden rounded-md font-mono sm:mt-8 xl:-mx-12 2xl:-mx-20"
       style={panelStyle}
       onMouseEnter={() => onPause(true)}
       onMouseLeave={() => onPause(false)}
@@ -641,7 +660,7 @@ function ScenarioStage({ device, deviceIdx, useCase, useCaseIdx, onJump, panelSt
         <span className="hidden sm:block" aria-hidden />
       </div>
 
-      <div className="grid gap-px bg-[var(--panel-edge-dim)] min-[700px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] min-[700px]:grid-rows-[minmax(0,1fr)_auto_auto] xl:grid-cols-[minmax(0,0.86fr)_minmax(0,1.5fr)_minmax(0,0.94fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
+      <div className="grid gap-px bg-[var(--panel-edge-dim)] min-[700px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] min-[700px]:grid-rows-[minmax(0,1fr)_auto_auto] xl:grid-cols-[minmax(0,0.76fr)_minmax(0,1.8fr)_minmax(0,0.84fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
         <ScenarioNarrative detail={detail} useCase={useCase} />
         <ScenarioMoment device={device} detail={detail} useCase={useCase} />
         <ScenarioOutcome detail={detail} useCase={useCase} />
@@ -718,8 +737,8 @@ function ScenarioMoment({ device, detail, useCase }) {
       <div className="flex flex-col bg-[var(--panel-bg-alt)] p-4 sm:p-5 lg:p-6">
         <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Action</p>
 
-        <div className="mt-4 flex min-h-[280px] flex-1 items-center justify-center overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-4 sm:min-h-[320px] lg:min-h-0">
-          <ProductMoment device={device} detail={detail} useCase={useCase} />
+        <div className="mt-8 flex min-h-[280px] flex-1 items-center justify-center overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-4 sm:min-h-[320px] lg:min-h-0">
+          <ProductMoment device={device} />
         </div>
 
         <p className="mt-3 text-center text-[9px] uppercase tracking-[0.18em] text-[var(--panel-ink-muted)]">
@@ -738,102 +757,33 @@ function ScenarioMoment({ device, detail, useCase }) {
             {ctaChildren}
           </Link>
         )}
+        {Install.specs && (
+          <dl className="mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] bg-[var(--panel-edge-dim)]">
+            {Install.specs.map((spec) => (
+              <div key={spec.label} className="min-w-0 bg-[var(--panel-bg)] px-2.5 py-2.5">
+                <dt className="text-[7px] uppercase tracking-[0.16em] text-[var(--panel-ink-faint)]">
+                  {spec.label}
+                </dt>
+                <dd className="mt-1 text-[9px] leading-snug text-[var(--panel-ink-dim)]">
+                  {spec.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
     </div>
   )
 }
 
-function ProductMoment({ device, detail, useCase }) {
-  if (device.key === 'watch') {
-    return (
-      <div className="relative flex aspect-[5/6] h-[250px] max-h-full flex-col overflow-hidden rounded-[2.25rem] border border-white/15 bg-[#050505] px-5 py-6 text-center text-white shadow-[0_18px_32px_-22px_rgba(0,0,0,0.9)]">
-        <div className="flex items-center justify-between text-[9px] uppercase tracking-[0.2em] text-white/50">
-          <span>Talkie</span>
-          <span>10:14</span>
-        </div>
-        <div className="my-auto">
-          <p className="text-[10px] uppercase tracking-[0.24em] text-[#ff5b60]">● Recording</p>
-          <p className="mt-4 text-4xl font-light tabular-nums">0:05</p>
-          <p className="mx-auto mt-4 max-w-[13rem] text-[10px] leading-relaxed text-white/65">
-            {useCase.action}
-          </p>
-        </div>
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[5px] border-[#ff4b52] bg-[#3a0b0e] shadow-[0_8px_18px_-10px_rgba(255,75,82,0.9)]">
-          <span className="h-5 w-5 rounded-md bg-[#ff4b52] motion-safe:animate-pulse" />
-        </div>
-      </div>
-    )
-  }
-
-  if (device.key === 'iphone') {
-    return (
-      <div className="relative flex h-[280px] w-[158px] max-w-full flex-col overflow-hidden rounded-[2rem] border border-white/15 bg-[#080808] p-4 text-white shadow-[0_18px_32px_-22px_rgba(0,0,0,0.9)]">
-        <div className="mx-auto h-3 w-14 rounded-full bg-black" />
-        <div className="mt-5 text-center">
-          <p className="text-[8px] uppercase tracking-[0.22em] text-white/45">Talkie · capture</p>
-          <p className="mt-5 text-[10px] font-medium leading-relaxed">{useCase.action}</p>
-        </div>
-        <div className="my-auto space-y-2">
-          <span className="block h-1 rounded-full bg-white/15" />
-          <span className="block h-1 w-4/5 rounded-full bg-white/15" />
-          <span className="block h-1 w-2/3 rounded-full bg-white/15" />
-        </div>
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#ff6e73]">
-          <span className="h-3.5 w-3.5 rounded-sm bg-white" />
-        </div>
-      </div>
-    )
-  }
-
-  if (device.key === 'agents') {
-    return (
-      <div className="w-full max-w-lg px-3">
-        <div className="overflow-hidden rounded-[0.8rem] border-[5px] border-[#202220] bg-[#0b0c0b] text-white shadow-[0_20px_34px_-22px_rgba(0,0,0,0.85)]">
-          <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 text-[8px] uppercase tracking-[0.2em] text-white/45">
-            <span>Talkie agent</span>
-            <span className="text-emerald-400">Ready</span>
-          </div>
-          <div className="p-5">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">Input</p>
-            <p className="mt-3 text-[12px] leading-relaxed text-white/80">{useCase.transcription}</p>
-            <div className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4 text-[10px] text-emerald-300">
-              <Play className="h-3.5 w-3.5" aria-hidden />
-              {useCase.outcome}
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto h-8 w-16 border-x-[7px] border-[#262826] bg-[#303230]" aria-hidden />
-        <div className="mx-auto h-2.5 w-32 rounded-t-full bg-[#262826] shadow-[0_8px_12px_-8px_rgba(0,0,0,0.7)]" aria-hidden />
-      </div>
-    )
-  }
-
+function ProductMoment({ device }) {
   return (
-    <div className="w-full max-w-xl px-2 text-[#151515]">
-      <div className="rounded-t-[1rem] border-[5px] border-[#252625] bg-[#252625] p-1.5 shadow-[0_22px_34px_-22px_rgba(0,0,0,0.72)]">
-        <div className="overflow-hidden rounded-[0.55rem] bg-[#f4f4f2]">
-          <div className="flex items-center gap-2 border-b border-black/10 px-4 py-2.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#ff625d]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#f2c14e]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#44c267]" />
-            <span className="ml-auto text-[8px] uppercase tracking-[0.18em] text-black/40">Dictation active</span>
-          </div>
-          <div className="p-5 sm:p-6">
-            <p className="text-[9px] uppercase tracking-[0.2em] text-black/40">Current draft</p>
-            <p className="mt-4 font-sans text-[15px] leading-relaxed text-black/80">
-              {useCase.transcription}
-              <span className="ml-1 inline-block h-4 w-px translate-y-0.5 bg-emerald-500 motion-safe:animate-pulse" />
-            </p>
-            <div className="mt-6 flex items-center justify-between border-t border-black/10 pt-3 text-[9px] uppercase tracking-[0.16em] text-black/45">
-              <span>Talkie is listening</span>
-              <span>⌘ ⇧ D</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="relative mx-auto h-4 w-[106%] -translate-x-[3%] rounded-b-[0.75rem] border border-black/15 bg-[#d7d8d6] shadow-[0_12px_18px_-14px_rgba(0,0,0,0.65)]" aria-hidden>
-        <span className="absolute left-1/2 top-0 h-1.5 w-20 -translate-x-1/2 rounded-b-md bg-[#b8bab7]" />
-      </div>
+    <div className="relative flex h-full w-full items-center justify-center">
+      <div
+        aria-hidden
+        className="absolute inset-x-[12%] bottom-0 h-1/3 rounded-full bg-[var(--panel-trace)] opacity-[0.06] blur-2xl"
+      />
+      <DeviceScreenshotFrame device={device} mode="action" />
     </div>
   )
 }
@@ -2231,10 +2181,13 @@ function SourceBay({ device, useCase, expanded, onExpandedChange }) {
 function DeviceScreenshotFrame({ device, mode = 'bay' }) {
   const spotlight = mode === 'spotlight'
   const compact = mode === 'compact'
+  const action = mode === 'action'
 
   if (device.key === 'mac') {
     const widthClass = spotlight
       ? 'w-[min(86vw,880px)]'
+      : action
+        ? 'w-[min(100%,440px)]'
       : compact
         ? 'w-[140px] sm:w-[160px]'
         : 'w-[min(100%,272px)]'
@@ -2242,10 +2195,13 @@ function DeviceScreenshotFrame({ device, mode = 'bay' }) {
     return (
       <div className={`relative z-10 flex flex-col items-center ${widthClass}`}>
         <div className="w-full overflow-hidden rounded-[5px] border-[4px] border-[#393a38] bg-[#111210] shadow-[0_12px_28px_-16px_rgba(0,0,0,0.8)]">
-          <img
+          <Image
             src={device.screenshot.src}
             alt={device.screenshot.alt}
-            loading={spotlight ? 'eager' : 'lazy'}
+            width={device.screenshot.width}
+            height={device.screenshot.height}
+            priority={action}
+            sizes={spotlight ? '86vw' : action ? '(min-width: 1280px) 440px, 60vw' : '272px'}
             className="block h-auto w-full object-contain"
           />
           <div className="relative h-2.5 border-t border-white/5 bg-gradient-to-b from-[#31322f] to-[#20211f]">
@@ -2259,17 +2215,20 @@ function DeviceScreenshotFrame({ device, mode = 'bay' }) {
   }
 
   if (device.key === 'watch') {
-    const height = spotlight ? 'min(64vh, 590px)' : compact ? '104px' : '158px'
+    const height = spotlight ? 'min(64vh, 590px)' : action ? 'min(280px, 100%)' : compact ? '104px' : '158px'
     return (
       <div
         className="relative z-10 flex items-center justify-center"
         style={{ height, aspectRatio: '416 / 496' }}
       >
         <div className="relative h-full w-full rounded-[24%] border-[5px] border-[#454641] bg-[#0a0b09] p-[3px] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.9),inset_0_0_0_1px_rgba(255,255,255,0.14)]">
-          <img
+          <Image
             src={device.screenshot.src}
             alt={device.screenshot.alt}
-            loading={spotlight ? 'eager' : 'lazy'}
+            width={device.screenshot.width}
+            height={device.screenshot.height}
+            priority={action}
+            sizes={spotlight ? '64vh' : action ? '235px' : '158px'}
             className="h-full w-full rounded-[20%] object-cover"
           />
           <span className="absolute -right-[10px] top-[27%] h-[15%] w-[7px] rounded-r-md border border-l-0 border-white/15 bg-[#343532]" />
@@ -2281,15 +2240,22 @@ function DeviceScreenshotFrame({ device, mode = 'bay' }) {
 
   const imageClass = spotlight
     ? 'max-h-[76vh] max-w-full'
+    : action
+      ? device.key === 'iphone'
+        ? 'h-[280px] max-h-full w-auto max-w-full'
+        : 'max-h-[270px] w-full max-w-[460px]'
     : compact
       ? 'h-full max-h-[104px] max-w-[15rem]'
       : 'h-[196px] w-[272px] max-w-[calc(100%_-_1.5rem)]'
 
   return (
-    <img
+    <Image
       src={device.screenshot.src}
       alt={device.screenshot.alt}
-      loading={spotlight ? 'eager' : 'lazy'}
+      width={device.screenshot.width}
+      height={device.screenshot.height}
+      priority={action}
+      sizes={spotlight ? '76vw' : action ? '(min-width: 1280px) 460px, 60vw' : '272px'}
       className={`relative z-10 rounded-sm object-contain ${imageClass}`}
       style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.22))' }}
     />

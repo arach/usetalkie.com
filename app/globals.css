@@ -468,6 +468,7 @@ html.dark[data-theme="modern"] {
 html[data-theme="modern"] .font-display {
   font-weight: 400;
   letter-spacing: -0.015em;
+  line-height: 1.1;
 }
 
 /* Baked Modern accent preset. Its weight follows the surrounding display
@@ -1531,6 +1532,15 @@ html[data-theme="modern"]:not(.dark) .home-section-art--technical {
 
 html[data-theme="modern"]:not(.dark) .home-page-art > .bg-canvas {
   background-color: color-mix(in oklab, var(--canvas) 95%, transparent);
+}
+
+/* Keep the opening film on the same architectural sheet as the sections
+ * below it. A lighter paper veil and slight optical defocus let the page-level
+ * columns continue behind the dark player without turning them into content. */
+html[data-theme="modern"]:not(.dark) .home-page-art > .home-demo-film-stage {
+  background-color: color-mix(in oklab, var(--canvas) 56%, transparent);
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
 }
 
 html[data-theme="modern"]:not(.dark) .home-page-art > .home-hero-art {

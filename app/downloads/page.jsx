@@ -1,14 +1,17 @@
 import DownloadAllPage from '../../components/DownloadAllPage'
 import MainShell from '../../components/MainShell'
 
-const PAGE_TITLE = 'Download Talkie — Free Voice Dictation App for Mac & iPhone'
+const PAGE_TITLE = 'Download Talkie for Mac, iPhone, and Apple Watch'
 const PAGE_DESCRIPTION =
-  'Download Talkie free for Mac and iPhone. On-device speech-to-text with iCloud sync across Mac, iPhone, and Apple Watch. Install the app, use the CLI, or scan the QR code for iOS.'
+  'Download the current free Mac build or get the free iPhone and Apple Watch apps. A 7-day trial and $39 one-time Mac license are planned.'
 
 export const metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: 'https://usetalkie.com/downloads/' },
+  alternates: {
+    canonical: 'https://usetalkie.com/downloads/',
+    types: { 'text/markdown': 'https://usetalkie.com/downloads.md' },
+  },
   openGraph: {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,

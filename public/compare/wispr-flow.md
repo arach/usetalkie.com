@@ -1,0 +1,58 @@
+# Wispr Flow Alternative: Talkie, a Local-First Mac Dictation App
+
+An honest Wispr Flow alternative for Mac and iPhone: Talkie is on-device, local-first dictation with a CLI that turns your voice into structured data for scripts and AI agents.
+
+- Canonical page: https://usetalkie.com/compare/wispr-flow/
+- Author: Arach Tchoupani
+- Published: 2026-07-21
+
+Wispr Flow is the app I get compared to most on polish, and it earns that — it's slick. I build Talkie, which makes almost the opposite set of bets, so instead of talking mine up I'll lay out the real split. We both turn speech into text you can drop into any app; we differ on processing, personalization, platform reach, and what happens to your words afterward.
+
+**Short version:** If you need Windows or Android and want the most polished cloud-formatted dictation available, pick Wispr Flow. If you're on Apple hardware and want on-device dictation whose transcripts become local, scriptable data you can pipe into your agents, pick Talkie.
+
+## What Wispr Flow does well
+
+Wispr Flow is a genuinely strong product, and it's fair to say so up front. A few things it does better than most:
+
+- **Cross-platform reach.** It runs on macOS, Windows, iPhone, and Android, with settings and your custom dictionary synced across all of them. If your day spans a Windows laptop and an Android phone, Talkie simply can't follow you there.
+- **AI auto-editing and formatting.** This is Wispr Flow's headline strength. It cleans up filler words, fixes typos, and reshapes rambling speech into tidy, formatted text as you go. The polish is real and it's the reason a lot of people love it.
+- **Speed and flow.** It's built around fast, seamless dictation — the marketing claim is roughly 220 words per minute — and in practice it feels quick and low-friction across the 50-plus apps it supports.
+- **Personal dictionary, snippets, and 100+ languages.** It learns your jargon over time, lets you save reusable voice snippets, and handles multilingual dictation with automatic language detection.
+
+That formatting-and-speed combination is Wispr Flow's core pitch, and it delivers on it.
+
+## Where Talkie is different
+
+Talkie makes different trade-offs on purpose.
+
+**Local-first and programmable.** Talkie keeps captures on your Apple devices, then makes them available to scripts, workflows, and agents through its CLI. Wispr Flow is designed around a polished cloud experience; Talkie is designed to be adapted to your own setup.
+
+**Processing is the hard boundary.** Talkie offers local Parakeet and Whisper paths on Mac and Apple Speech or Parakeet paths on iOS. Wispr Flow states that transcription always happens in its cloud. Privacy Mode controls training use and Private Cloud Sync controls storage; neither turns transcription into an offline process. That cloud path helps power Flow's polish, while Talkie's core recognition can run without it.
+
+**Your voice becomes data.** Talkie keeps captures in a structured local library. That local record is the foundation for a different kind of developer workflow: a CLI that can query and route captures. Install it once:
+
+```
+bun add -g @talkie/cli
+```
+
+`@talkie/cli` reads the local database directly and exposes your captures as structured data that any script, pipeline, or agent can consume. Your dictations and voice memos aren't just pasted into a text field and forgotten — they become searchable, structured local knowledge you can query.
+
+**A remote control for your agents.** This is the real differentiator. Because captures are structured and local, you can dictate straight into agentic CLI tools like Claude Code. Talk through what you want, and Talkie becomes a remote control for your agents instead of just another dictation box. Wispr Flow is excellent at getting formatted text into an app; Talkie is built to get your intent into a pipeline.
+
+**Visual context for agents.** Add a full screenshot, selected screen region, or camera capture to a spoken instruction. Your agent gets the screen or subject you're talking about, not only your description of it.
+
+**Cross-device — within the Apple world.** Talkie syncs across Mac, iPhone, and Apple Watch over iCloud. But be clear-eyed here: Talkie is Apple-only. No Windows, no Android, no web. If your hardware isn't all Apple, Wispr Flow's broader platform support is the honest advantage.
+
+## Side by side
+
+See the sourced comparison matrix on the canonical HTML page.
+
+## Which one should you pick?
+
+**Choose Wispr Flow if** you work across Windows or Android, you want the most polished AI formatting and auto-editing on the market, you rely on a custom dictionary or reusable snippets, or you dictate in many languages and want that handled seamlessly. It's the better tool for cross-platform, formatting-first dictation — full stop.
+
+**Choose Talkie if** you're on Apple hardware, want core transcription to happen on-device, and — most of all — want your voice to become structured local data you can script against and route into your agents.
+
+[Download Talkie for Mac and iPhone →](/downloads/)
+
+Related reading: [Dictate straight into Claude Code](/workflows/dictate-to-claude/), [why Talkie has a CLI](/ideas/why-talkie-has-a-cli/), and our roundup of the [best dictation apps for Mac](/compare/best-dictation-apps-for-mac/).
