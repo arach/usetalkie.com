@@ -52,7 +52,7 @@ export default function PromptShowcase({ title, prompt, annotations = [], result
               className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.22em] text-ink-faint hover:text-amber transition-colors duration-200 w-full"
             >
               <Lightbulb className="w-3 h-3" />
-              <span>Why this prompt works — {annotations.length} key techniques</span>
+              <span>Why this prompt works: {annotations.length} key techniques</span>
               {expanded ? <ChevronUp className="w-3 h-3 ml-auto" /> : <ChevronDown className="w-3 h-3 ml-auto" />}
             </button>
 

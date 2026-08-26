@@ -7,13 +7,13 @@ tags: ["comparison", "dictation", "otter", "transcription", "privacy"]
 
 Most people who find Talkie coming from Otter arrive for one of two reasons: they hit the meeting-minute cap, or they got uneasy about their voice living on someone else's servers. I build Talkie, and I'll be upfront that these two aren't really the same product — so this is as much about picking the right category as picking a winner.
 
-**Short version:** Otter.ai is a cloud meeting-notes service — it records calls, transcribes them, and writes summaries your team can share. Talkie is local-first voice dictation and capture for Mac and iPhone that runs entirely on-device. If your job is team meetings, Otter is the better fit. If your job is private dictation and personal knowledge capture that feeds your own tools, that's Talkie. This post is honest about the difference.
+**Short version:** Otter.ai is a cloud meeting-notes service — it records calls, transcribes them, and writes summaries your team can share. Talkie is personal dictation and capture for Apple devices, with local core recognition and a structured capture layer for your own tools. If your job is team meetings, Otter is the better fit. If your job is personal capture that feeds scripts and agents, that's Talkie.
 
 ## What Otter.ai does well
 
 Otter is built for meetings, and it's good at them. It joins Zoom, Google Meet, and Microsoft Teams calls automatically, transcribes them live, and identifies speakers by name. After the call it generates summaries with action items, so nobody has to be the designated note-taker.
 
-The collaboration story is real: shared channels, editable transcripts with speaker tags, real-time annotation, and exports to PDF, DOCX, SRT, and more. It integrates with Salesforce, HubSpot, Zapier, and Dropbox, which matters if meeting notes need to land in a CRM or a workflow automatically. Pricing is subscription-based — a free Basic tier capped at 300 monthly transcription minutes, then Pro at around $8.33/user/month annually, Business at roughly $19.99/user/month, and custom Enterprise plans with SSO and admin controls.
+The collaboration story is real: shared transcripts, speaker-aware meeting records, summaries, action items, exports, and team knowledge. Otter also connects meeting work to conferencing and business tools. Those are not decorative integrations; they are the product's main route from a call into a team's operating system.
 
 All of this runs in the cloud. Your audio is uploaded, processed on Otter's servers, and stored in your account. For a team that wants shared, searchable meeting records, that's a feature. For a person who wants to talk to their computer privately, it's the whole problem.
 
@@ -21,7 +21,7 @@ All of this runs in the cloud. Your audio is uploaded, processed on Otter's serv
 
 Talkie isn't a meeting-notes tool, and it doesn't try to be. It's a dictation-first app for people who'd rather speak than type, built on a few deliberate choices.
 
-**It's local-first and on-device.** Transcription happens on your hardware — Apple Speech on iPhone, and Parakeet v3, a local ASR model, on Mac. Your captures live in a local SQLite database on your Mac. There's no account and no API key for core use, and your voice never leaves your devices to get transcribed. iCloud syncs captures across Mac, iPhone, and Apple Watch, but the processing itself stays local.
+**Core transcription is on-device; sync is a separate boundary.** Talkie can use local Parakeet and Whisper models on Mac and Apple Speech or Parakeet paths on iPhone. Captures enter a structured local library. If you enable iCloud sync, CloudKit carries that data across Mac, iPhone, and Apple Watch; optional AI workflows can also use providers you configure. That is still meaningfully different from a cloud meeting service, but it is more precise than saying every Talkie feature is device-only.
 
 **It's built for your setup.** Talkie is Apple-only — macOS, iOS, and watchOS — and its local data layer and CLI let you adapt captures to your own scripts, workflows, and agents.
 
@@ -39,25 +39,15 @@ The `@talkie/cli` package exposes your captures as structured data — something
 
 ## Side by side
 
-| | Talkie | Otter.ai |
-| --- | --- | --- |
-| Pricing | See current plans | Free tier (300 min/mo), then $8.33–$19.99+/user/mo |
-| Processing | On-device (Apple Speech / Parakeet v3) | Cloud |
-| Primary job | Dictation + personal capture | Meeting notes |
-| Storage | Local SQLite on your Mac | Cloud account |
-| CLI for scripts & agents | Yes (`@talkie/cli`) | No |
-| Dictate into AI agents | Yes (e.g. Claude Code) | No |
-| Live meeting transcription | No | Yes |
-| Team collaboration / sharing | No | Yes |
-| Integrations (Zoom, CRM, Zapier) | No | Yes |
+<EvidenceComparison competitor="otter" />
 
 The bottom rows aren't hedging — they're the honest picture. Otter is stronger anywhere the work is a meeting, a team, or an integration into another cloud system. Talkie doesn't compete there.
 
 ## Which one should you pick?
 
-Pick Otter.ai if your problem is meetings. If you need calls transcribed live, summarized with action items, and shared with colleagues who annotate and export them — and you're comfortable with cloud processing and a subscription — Otter is the right tool. It's genuinely good at that job, and Talkie won't replace it.
+Pick Otter.ai if your problem is meetings. If you need calls transcribed live, summarized with action items, and shared with colleagues who annotate and export them — and you're comfortable with a cloud meeting workspace — Otter is the right tool. Talkie will not replace it.
 
-Pick Talkie if your problem is you, talking. If you want to dictate into any app, capture thoughts and notes that stay private and searchable on your own devices, and pipe your voice into scripts and AI agents — all without a subscription or a server round-trip — that's what Talkie is built for. It's for the privacy-conscious person who wants dictation and capture that feed their tools, not a meeting archive their team can browse.
+Pick Talkie if your problem is you, talking. If you want to dictate into any app, keep thoughts and notes in a searchable local library, and pipe those captures into scripts and AI agents, that's what Talkie is built for. Core recognition does not require a server round-trip; enabled sync and optional providers have their own explicit boundaries.
 
 They're different jobs. If you do both, there's nothing stopping you from running Otter for calls and Talkie for everything else you'd rather say than type.
 
@@ -67,4 +57,4 @@ Related reading:
 
 - [Dictate into Claude Code](/workflows/dictate-to-claude/)
 - [Why Talkie has a CLI](/ideas/why-talkie-has-a-cli/)
-- [Best dictation apps for Mac](/ideas/best-dictation-apps-for-mac/)
+- [Best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

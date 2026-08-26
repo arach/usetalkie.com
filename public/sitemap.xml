@@ -277,13 +277,19 @@
     <priority>0.76</priority>
   </url>
   <url>
+    <loc>https://usetalkie.com/compare/</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.76</priority>
+  </url>
+  <url>
     <loc>https://usetalkie.com/ideas/apple-foundation-models/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/best-dictation-apps-for-mac/</loc>
+    <loc>https://usetalkie.com/compare/best-dictation-apps-for-mac/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.72</priority>
@@ -355,61 +361,61 @@
     <priority>0.72</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-aiko/</loc>
+    <loc>https://usetalkie.com/compare/aiko/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-apple-dictation/</loc>
+    <loc>https://usetalkie.com/compare/apple-dictation/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-aqua-voice/</loc>
+    <loc>https://usetalkie.com/compare/aqua-voice/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-dictaflow/</loc>
+    <loc>https://usetalkie.com/compare/dictaflow/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-dragon/</loc>
+    <loc>https://usetalkie.com/compare/dragon/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-macwhisper/</loc>
+    <loc>https://usetalkie.com/compare/macwhisper/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-otter/</loc>
+    <loc>https://usetalkie.com/compare/otter/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-superwhisper/</loc>
+    <loc>https://usetalkie.com/compare/superwhisper/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-talon/</loc>
+    <loc>https://usetalkie.com/compare/talon/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://usetalkie.com/ideas/talkie-vs-wispr-flow/</loc>
+    <loc>https://usetalkie.com/compare/wispr-flow/</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

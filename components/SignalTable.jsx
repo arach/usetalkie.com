@@ -87,7 +87,7 @@ const BREATH_RELEASE_TO_TRANSCRIBING_MS = 280
 // Transcribe duration is computed dynamically from audio.duration:
 //   clamp(audio.duration * 60, 350, 600)
 // Brisk by design — the surrounding choreography (keypress cue, tick
-// sound, TRIG dot, dock icon lift, window-opening bezier-bounce,
+// sound, TRIG dot, dock icon lift, window-opening ease-out reveal,
 // wave-bar overlay, traffic-light dots) carries the "something is
 // happening" story in parallel, so the transcribe beat itself can be
 // a flicker of confidence rather than a wait. Earlier 900-1600ms
@@ -680,13 +680,7 @@ export default function SignalTable({ catalog }) {
       : inActiveCapture
       ? `${isPlaying ? 'PLAYING' : 'STANDBY'} · ${activeCapture?.eyebrow ?? 'CH-01 / VOICE.IN'}`
       : 'STANDBY · CH-01 / VOICE.IN'
-  const screenMaxHeight = Math.round(voiceProgress * 420)
-  const screenPadding = screenVisible ? '1rem' : 0
-  const previewMaxHeight = Math.round(desktopProgress * 500)
-  const tableShellProgress = Math.min(1, tableProgress / 0.24)
   const tableSlotProgress = Math.max(0, Math.min(1, (tableProgress - 0.24) / 0.76))
-  const tableRowsMaxHeight = Math.round(tableSlotProgress * 72)
-  const tableMaxHeight = Math.round(tableShellProgress * 72 + tableRowsMaxHeight)
   const examplesVisible = examplesRevealed && tableProgress >= 1
 
   return (
@@ -750,10 +744,10 @@ export default function SignalTable({ catalog }) {
                 type="button"
                 onClick={() => playIndex(0)}
                 disabled={rolloutStage === 1}
-                className="inline-flex items-center gap-2 truncate text-left transition-colors hover:text-ink-muted disabled:cursor-default disabled:hover:text-ink-faint"
+                className="inline-flex min-h-11 items-center gap-2 truncate text-left transition-colors hover:text-ink-muted disabled:cursor-default disabled:hover:text-ink-faint focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
                 aria-label="Play a real Talkie recording"
               >
-                <Play className="h-3 w-3" />
+                <Play className="h-3.5 w-3.5" />
                 <span className="truncate">{railPrompt}</span>
               </button>
             ) : (
@@ -763,32 +757,25 @@ export default function SignalTable({ catalog }) {
           <span className="hidden sm:inline">16kHz · 24-BIT · MONO</span>
         </div>
 
-        {/* Trace area — clickable, with a hover invitation that says
-            "this is gonna be cool" when not playing. Clicking anywhere
-            in the trace toggles play/pause for the active row. */}
+        {/* Trace area — single interactive owner (play/pause). Progressive
+            open uses grid-row + clip (not max-height bounce) so the
+            instrument still expands with rollout progress. */}
         <div
-          role="button"
-          tabIndex={0}
-          onClick={() => togglePlay(activeIndex)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              togglePlay(activeIndex)
-            }
-          }}
-          aria-label={isPlaying ? `Pause ${activeCapture?.eyebrow ?? ''}` : `Play ${activeCapture?.eyebrow ?? ''}`}
-          className={`group relative cursor-pointer overflow-hidden bg-canvas-alt transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none focus-visible:ring-1 focus-visible:ring-trace ${
-            screenVisible
-              ? 'opacity-100'
-              : 'opacity-0 pointer-events-none'
+          className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            screenVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           style={{
-            maxHeight: `${screenMaxHeight}px`,
-            padding: screenPadding,
-            // Inset phosphor border on hover — appears like the screen
-            // is "warming up" when you approach it.
-            transition:
-              'max-height 700ms cubic-bezier(0.22,1,0.36,1), padding 700ms cubic-bezier(0.22,1,0.36,1), opacity 500ms ease-out, box-shadow 320ms ease-out',
+            gridTemplateRows: `${Math.max(0.001, voiceProgress)}fr`,
+          }}
+        >
+        <div className="min-h-0 overflow-hidden">
+        <button
+          type="button"
+          onClick={() => togglePlay(activeIndex)}
+          aria-label={isPlaying ? `Pause ${activeCapture?.eyebrow ?? ''}` : `Play ${activeCapture?.eyebrow ?? ''}`}
+          className="group relative block w-full cursor-pointer overflow-hidden bg-canvas-alt p-4 text-left transition-[box-shadow] duration-320 ease-out focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+          style={{
+            minHeight: `${Math.max(120, Math.round(voiceProgress * 280))}px`,
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.boxShadow = isPlaying
@@ -875,6 +862,8 @@ export default function SignalTable({ catalog }) {
               variant={keypressCue.kind}
             />
           )}
+        </button>
+        </div>
         </div>
 
         {/* Status bar — mirrors the top header for visual balance.
@@ -882,9 +871,11 @@ export default function SignalTable({ catalog }) {
             after first engagement) · channel/eyebrow label (right).
             Only the phosphor dot + the play/pause icon signal state;
             the rest stays calm so consecutive captures don't strobe. */}
-        <div className={`grid grid-cols-3 items-center gap-3 overflow-hidden border-t border-edge-faint px-4 text-[9px] uppercase tracking-[0.24em] text-ink-subtle transition-all duration-500 ${
-          screenVisible ? 'max-h-10 py-2 opacity-100' : 'max-h-0 py-0 opacity-0'
-        }`}>
+        <div
+          className={`grid grid-cols-3 items-center gap-3 overflow-hidden border-t border-edge-faint px-4 text-[9px] uppercase tracking-[0.24em] text-ink-subtle transition-[opacity,transform] duration-500 ease-out ${
+            screenVisible ? 'py-1 opacity-100' : 'pointer-events-none h-0 py-0 opacity-0'
+          }`}
+        >
           <span className="flex items-center gap-2 justify-self-start">
             <span
               aria-hidden
@@ -902,7 +893,7 @@ export default function SignalTable({ catalog }) {
                 type="button"
                 onClick={() => togglePlay(activeIndex)}
                 aria-label={isPlaying ? 'Pause' : 'Play'}
-                className="group inline-flex h-5 w-5 items-center justify-center rounded-full border border-edge-dim text-ink-muted transition-all duration-150 hover:border-trace hover:text-trace"
+                className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-edge-dim text-ink-muted transition-all duration-150 hover:border-trace hover:text-trace focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
                 style={{
                   background: isPlaying
                     ? 'color-mix(in oklab, var(--trace) 8%, transparent)'
@@ -910,9 +901,9 @@ export default function SignalTable({ catalog }) {
                 }}
               >
                 {isPlaying ? (
-                  <Pause className="h-2.5 w-2.5 fill-current" />
+                  <Pause className="h-3.5 w-3.5 fill-current" />
                 ) : (
-                  <Play className="h-2.5 w-2.5 fill-current" style={{ marginLeft: 0.5 }} />
+                  <Play className="h-3.5 w-3.5 fill-current" style={{ marginLeft: 0.5 }} />
                 )}
               </button>
             )}
@@ -927,39 +918,40 @@ export default function SignalTable({ catalog }) {
           live capture (play bar) → simulated paste (here) → historical
           record of past captures (table chassis). */}
       <div
-        className={`overflow-hidden transition-all delay-150 duration-900 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          previewVisible
-            ? 'translate-y-0 opacity-100'
-            : 'max-h-0 -translate-y-2 opacity-0'
-        }`}
-        style={{ maxHeight: previewVisible ? `${previewMaxHeight}px` : 0 }}
+        className="grid overflow-hidden transition-[grid-template-rows,opacity,transform] delay-150 duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{
+          gridTemplateRows: previewVisible ? '1fr' : '0fr',
+          opacity: previewVisible ? 1 : 0,
+          transform: previewVisible ? 'translateY(0)' : 'translateY(-6px)',
+        }}
       >
-        <PasteMock
-          capture={activeCapture}
-          phase={captionPhase}
-          keypressCue={keypressCue}
-          revealProgress={desktopProgress}
-        />
+        <div className="min-h-0 overflow-hidden">
+          <PasteMock
+            capture={activeCapture}
+            phase={captionPhase}
+            keypressCue={keypressCue}
+            revealProgress={desktopProgress}
+          />
+        </div>
       </div>
 
       {/* Table — second instrument; same chassis treatment as the
           trace card so they read as a matched pair sitting on the
           workbench. Token re-scoping mirrors the trace card. */}
       <div
-        className={`overflow-hidden transition-all delay-300 duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          tableVisible
-            ? 'translate-y-0 opacity-100'
-            : 'max-h-0 -translate-y-3 opacity-0'
-        }`}
-        style={{ maxHeight: tableVisible ? `${tableMaxHeight}px` : 0 }}
+        className="grid overflow-hidden transition-[grid-template-rows,opacity,transform] delay-300 duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{
+          gridTemplateRows: tableVisible ? '1fr' : '0fr',
+          opacity: tableVisible ? 1 : 0,
+          transform: tableVisible ? 'translateY(0)' : 'translateY(-8px)',
+        }}
       >
+        <div className="min-h-0 overflow-hidden">
         <div
           ref={tableRef}
-          tabIndex={0}
-          role="listbox"
+          role="region"
           aria-label="Talkie capture catalog"
-          aria-activedescendant={`signal-row-${activeIndex}`}
-          className="relative overflow-hidden rounded-md focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
+          className="relative overflow-hidden rounded-md"
           style={{
             background: 'var(--panel-bg)',
             color: 'var(--panel-ink)',
@@ -996,29 +988,19 @@ export default function SignalTable({ catalog }) {
           </div>
 
           <div
-            className="overflow-hidden"
+            className="grid overflow-hidden transition-[grid-template-rows,opacity,transform] duration-600 ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{
-              maxHeight: `${tableRowsMaxHeight}px`,
-              transition: 'max-height 760ms cubic-bezier(0.16,1.22,0.32,1)',
+              gridTemplateRows: tableSlotProgress > 0.02 ? '1fr' : '0fr',
+              opacity: Math.max(0, Math.min(1, tableSlotProgress / 0.54)),
+              transform: `translateY(${Math.round((1 - Math.max(0, Math.min(1, tableSlotProgress / 0.54))) * -6)}px)`,
             }}
           >
+            <div className="min-h-0 overflow-hidden">
             {[{ capture: activeCapture, index: activeIndex }].map(({ capture, index }) => {
-              const rowReveal = Math.max(0, Math.min(1, tableSlotProgress / 0.54))
               return (
                 <div
                   key={capture.slug}
                   id={`signal-row-${index}`}
-                  role="option"
-                  aria-selected={index === activeIndex}
-                  className="overflow-hidden"
-                  style={{
-                    maxHeight: `${Math.round(rowReveal * 72)}px`,
-                    opacity: rowReveal,
-                    transform: `translateY(${Math.round((1 - rowReveal) * -6)}px) scale(${0.98 + rowReveal * 0.02})`,
-                    transformOrigin: 'top center',
-                    transition:
-                      'max-height 680ms cubic-bezier(0.16,1.22,0.32,1), opacity 260ms ease-out, transform 640ms cubic-bezier(0.16,1.22,0.32,1)',
-                  }}
                 >
                   <SignalTableRow
                     capture={capture}
@@ -1035,12 +1017,14 @@ export default function SignalTable({ catalog }) {
                 </div>
               )
             })}
+            </div>
           </div>
 
           <div className="flex items-center justify-between gap-3 border-t border-edge-faint bg-canvas px-4 py-2.5 text-[9px] uppercase tracking-[0.22em] text-ink-faint">
             <span className="shrink-0">LANDED · BUFFER PREVIEW</span>
             <span className="min-w-0 truncate">{activeCapture?.output ?? 'READY'}</span>
           </div>
+        </div>
         </div>
       </div>
 
@@ -1085,7 +1069,7 @@ function CaptureExamplesRail({ catalog, activeIndex, isPlaying, seenCaptureSlugs
         <button
           type="button"
           onClick={() => onSelect(nextIndex)}
-          className="text-ink-subtle transition-colors hover:text-ink-muted"
+          className="inline-flex min-h-11 items-center text-ink-subtle transition-colors hover:text-ink-muted focus:outline-none focus-visible:ring-1 focus-visible:ring-trace"
         >
           Next · {catalog[nextIndex]?.eyebrow ?? 'Capture'}
         </button>
@@ -1102,7 +1086,7 @@ function CaptureExamplesRail({ catalog, activeIndex, isPlaying, seenCaptureSlugs
               key={capture.slug}
               type="button"
               onClick={() => onSelect(index)}
-              className={`group flex min-w-[11rem] items-center gap-2 rounded-sm border px-2.5 py-2 text-left transition-all ${
+              className={`group flex min-h-11 min-w-[11rem] items-center gap-2 rounded-sm border px-2.5 py-2 text-left transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-trace ${
                 seen
                   ? 'border-edge bg-canvas text-ink shadow-[0_8px_24px_-24px_rgba(0,0,0,0.35)]'
                   : 'border-edge-dim bg-canvas-alt text-ink-muted opacity-70 hover:border-edge hover:bg-canvas hover:opacity-100'

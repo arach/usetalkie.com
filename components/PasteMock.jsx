@@ -68,7 +68,7 @@ const PASTE_MOCK_CSS = `
   transform-origin: bottom;
 }
 .paste-mock-talkie-overlay {
-  animation: paste-mock-overlay-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: paste-mock-overlay-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .paste-mock-signal-particle {
   animation: paste-mock-particle 1.5s ease-in-out infinite;
@@ -170,6 +170,10 @@ function formatTime(d) {
 }
 
 function useClock() {
+  // The server and the first client render must agree. A live Date here can
+  // cross a minute boundary between SSR and hydration, which makes React
+  // discard this otherwise-static marketing mock. Update to local time only
+  // after the component has hydrated.
   const [time, setTime] = useState('9:41 AM')
   useEffect(() => {
     const tick = () => setTime(formatTime(new Date()))
@@ -299,7 +303,7 @@ export default function PasteMock({ capture, phase, keypressCue, revealProgress 
                 : 'translateY(-10px) scale(0.96)',
               transition: 'opacity 0.55s, transform 0.65s',
               transitionTimingFunction: visible
-                ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                ? 'cubic-bezier(0.22, 1, 0.36, 1)'
                 : 'cubic-bezier(0.4, 0, 1, 1)',
             }}
           >
@@ -358,7 +362,7 @@ export default function PasteMock({ capture, phase, keypressCue, revealProgress 
                       color: app.color,
                       border: app.border ?? 'none',
                       transform: isActive ? 'translateY(-2px) scale(1.12)' : 'translateY(0) scale(1)',
-                      transition: 'transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                      transition: 'transform 0.32s cubic-bezier(0.22, 1, 0.36, 1)',
                       boxShadow: '0 1.5px 4px rgba(0,0,0,0.18)',
                     }}
                   >
@@ -555,9 +559,9 @@ function IssueMock({ capture }) {
 function NoteMock({ capture }) {
   const isJournal = /^JOURNAL/i.test(capture.eyebrow || '')
   const isMeeting = /^MEETING/i.test(capture.eyebrow || '')
-  const dateLabel = isJournal
-    ? 'Today · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    : null
+  // This is illustrative UI, not user data. Keep render output deterministic
+  // across server locales, time zones, and hydration boundaries.
+  const dateLabel = isJournal ? 'Today' : null
   return (
     <div className="font-sans text-[12px]">
       <div className="mb-1 flex items-baseline justify-between">

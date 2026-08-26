@@ -43,7 +43,13 @@ function getStatusBadge(status) {
   return null
 }
 
-export default function IdeasPage({ ideas }) {
+export default function IdeasPage({
+  ideas,
+  basePath = '/ideas',
+  eyebrow = '· IDEAS · SIGNAL LOG',
+  title = 'Ideas in progress.',
+  description = 'Concepts and thinking on voice, computing, and the tools we build. Some are RFCs, some are half-formed sketches, all are in flight.',
+}) {
   return (
     <>
       {/* ========== HERO ========== */}
@@ -55,16 +61,15 @@ export default function IdeasPage({ ideas }) {
             className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
             style={TRACE_GLOW_SOFT}
           >
-            · IDEAS · SIGNAL LOG
+            {eyebrow}
           </p>
 
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
-            Ideas in progress.
+            {title}
           </h1>
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Concepts and thinking on voice, computing, and the tools we build. Some are RFCs, some are
-            half-formed sketches, all are in flight.
+            {description}
           </p>
 
           <div className="mt-8 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
@@ -91,7 +96,7 @@ export default function IdeasPage({ ideas }) {
             <ul className="space-y-4">
               {ideas.map((idea) => (
                 <li key={idea.slug}>
-                  <IdeaRow idea={idea} />
+                  <IdeaRow idea={idea} basePath={basePath} />
                 </li>
               ))}
             </ul>
@@ -104,14 +109,14 @@ export default function IdeasPage({ ideas }) {
 
 /* ── Sub-components ─────────────────────────────────────────────────── */
 
-function IdeaRow({ idea }) {
+function IdeaRow({ idea, basePath }) {
   const entryBadge = getEntryBadge(idea.entryType)
   const statusBadge = getStatusBadge(idea.status)
   const tags = idea.tags || []
 
   return (
     <Link
-      href={`/ideas/${idea.slug}`}
+      href={`${basePath}/${idea.slug}`}
       className="group relative block overflow-hidden rounded-md border border-edge-dim bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE_FINE} />
