@@ -272,7 +272,7 @@ function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
           type="button"
           onClick={openPhoneGallery}
           aria-label="Open the Talkie for iPhone tour"
-          className="group absolute -bottom-[7%] right-[-2%] z-20 w-[31%] min-w-[150px] max-w-[246px] transition-transform duration-500 ease-out hover:-translate-y-2 hover:rotate-[1deg] sm:right-0 md:right-[1%]"
+          className="group absolute -bottom-[9%] right-[-3%] z-20 w-[37%] min-w-[180px] max-w-[300px] transition-transform duration-500 ease-out hover:-translate-y-2 hover:rotate-[1deg] sm:right-[-1%] md:right-0"
         >
           <img
             src="/screenshots/talkie-phone-3d-light.png"
