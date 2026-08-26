@@ -170,7 +170,7 @@ function formatTime(d) {
 }
 
 function useClock() {
-  const [time, setTime] = useState(() => formatTime(new Date()))
+  const [time, setTime] = useState('9:41 AM')
   useEffect(() => {
     const tick = () => setTime(formatTime(new Date()))
     tick()

@@ -29,11 +29,78 @@ html { scroll-behavior: smooth; }
    * needs to react to the theme. */
   --brand-wordmark-ink: var(--brand-canvas);
   --brand-wordmark-idle: var(--brand-tape-tan);
+
+  /* Clean-home editorial system. These tokens are consumed only below the
+   * "Every fast path, one system" break; the hero keeps its existing paint. */
+  --ed-paper: #fbfaf7;
+  --ed-paper-alt: #f4f1ea;
+  --ed-ink-slab: #0e0d0a;
+  --ed-ink: #17150f;
+  --ed-ink-2: #4a443a;
+  --ed-ink-3: #7a6e5c;
+  --ed-accent: #b4650f;
+  --ed-accent-soft: rgba(180, 101, 15, 0.10);
+  --ed-accent-line: rgba(180, 101, 15, 0.30);
+  --ed-line: rgba(23, 21, 15, 0.10);
+  --ed-line-soft: rgba(23, 21, 15, 0.06);
+  --ed-shadow-lift: 0 18px 44px -26px rgba(23, 21, 15, 0.24);
 }
 
 html.dark {
   --brand-wordmark-ink: var(--brand-studio-cream);
   --brand-wordmark-idle: var(--brand-tape-tan);
+
+  --ed-paper: #0f0e0c;
+  --ed-paper-alt: #15130f;
+  --ed-ink-slab: #080705;
+  --ed-ink: #f4efe6;
+  --ed-ink-2: #b8b2a4;
+  --ed-ink-3: #7a6e5c;
+  --ed-accent: #e68a3c;
+  --ed-accent-soft: rgba(230, 138, 60, 0.12);
+  --ed-accent-line: rgba(230, 138, 60, 0.28);
+  --ed-line: rgba(244, 239, 230, 0.10);
+  --ed-line-soft: rgba(244, 239, 230, 0.06);
+  --ed-shadow-lift: 0 18px 44px -26px rgba(0, 0, 0, 0.60);
+}
+
+/* The live capture instrument keeps the interaction and motion from the
+ * main product site, but speaks in clean-home's warm one-accent palette. */
+.clean-home-signal {
+  --canvas: var(--ed-paper);
+  --canvas-alt: var(--ed-paper-alt);
+  --surface: color-mix(in oklab, var(--ed-paper-alt) 86%, var(--ed-ink));
+  --trace: var(--ed-accent);
+  --trace-glow: color-mix(in oklab, var(--ed-accent) 48%, transparent);
+  --trace-dim: color-mix(in oklab, var(--ed-accent) 20%, transparent);
+  --trace-faint: color-mix(in oklab, var(--ed-accent) 8%, transparent);
+  --ink: var(--ed-ink);
+  --ink-dim: var(--ed-ink);
+  --ink-muted: var(--ed-ink-2);
+  --ink-faint: var(--ed-ink-3);
+  --ink-subtle: var(--ed-ink-3);
+  --edge: var(--ed-accent-line);
+  --edge-dim: var(--ed-line);
+  --edge-faint: var(--ed-line-soft);
+  --edge-subtle: var(--ed-line-soft);
+
+  --panel-bg: #17140f;
+  --panel-bg-alt: #1e1a14;
+  --panel-bg-deep: #0e0c09;
+  --panel-edge: rgba(230, 138, 60, 0.25);
+  --panel-edge-dim: rgba(230, 138, 60, 0.16);
+  --panel-edge-faint: rgba(230, 138, 60, 0.09);
+  --panel-edge-subtle: rgba(230, 138, 60, 0.06);
+  --panel-ink: #f4efe6;
+  --panel-ink-dim: #d8d2c6;
+  --panel-ink-muted: #b8b2a4;
+  --panel-ink-faint: #80786a;
+  --panel-ink-subtle: #6e675b;
+  --panel-trace: #e68a3c;
+  --panel-trace-glow: rgba(230, 138, 60, 0.48);
+  --panel-trace-dim: rgba(230, 138, 60, 0.18);
+  --panel-trace-faint: rgba(230, 138, 60, 0.08);
+  --panel-scanline: rgba(230, 138, 60, 0.04);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

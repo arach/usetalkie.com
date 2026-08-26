@@ -73,136 +73,96 @@ export default function PricingSection() {
   }
 
   return (
-    <section id="pricing" className="py-24 bg-white dark:bg-[#0a0f0d] relative">
-      <div className="absolute inset-0 bg-tactical-grid dark:bg-tactical-grid-dark bg-[size:40px_40px] opacity-50 pointer-events-none" />
+    <section id="pricing" className="border-b border-[var(--ed-line)] bg-[var(--ed-paper)] py-24 md:py-32">
+      <div className="mx-auto grid max-w-6xl gap-14 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-24">
+        <div>
+          <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[var(--ed-accent)]">Get Talkie</p>
+          <h2 className="mt-5 max-w-xl font-display text-[clamp(2.7rem,4.8vw,4.2rem)] font-normal leading-[0.96] tracking-[-0.035em] text-[var(--ed-ink)]">
+            Keep the system close.
+          </h2>
+          <p className="mt-6 max-w-xl text-[17px] leading-[1.68] text-[var(--ed-ink-2)]">
+            Start with Talkie on your Mac. Add iPhone and Apple Watch whenever you want the shortest path from a passing thought to usable text.
+          </p>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-6">
-        <div className="bg-white/80 dark:bg-[#0d1210]/80 backdrop-blur-md border border-stone-200/70 dark:border-emerald-900/20 p-8 md:p-12 rounded-lg shadow-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <ul className="mt-10 grid border-t border-[var(--ed-line)] sm:grid-cols-2">
+            {[
+              'Mac app + mobile companions',
+              'Searchable memos + dictations',
+              'Encrypted iCloud sync',
+              'Compose, workflows, and CLI',
+            ].map((item, index) => (
+              <li key={item} className={`flex items-center gap-3 border-b border-[var(--ed-line)] py-4 text-[14px] text-[var(--ed-ink-2)] ${index % 2 === 0 ? 'sm:border-r sm:pr-5' : 'sm:pl-5'}`}>
+                <Check className="h-4 w-4 shrink-0 text-[var(--ed-accent)]" />
+                {item}
+              </li>
+            ))}
+          </ul>
 
-            {/* Left: Value Prop */}
-            <div className="group/value">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse transition-transform group-hover/value:scale-150"></div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Get Talkie</span>
-              </div>
-              <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4 tracking-tight uppercase transition-transform origin-left group-hover/value:scale-[1.02]">
-                Keep the system <br/> close.
-              </h2>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-                Talkie is designed to stay on your side: capture on Mac today, add iPhone and Apple Watch when you want the fastest path from passing thought to usable text.
-              </p>
-
-              <ul className="space-y-3 mb-6">
-                {[
-                  "Mac app + iPhone + Watch companion",
-                  "Searchable memos + dictations",
-                  "Encrypted iCloud sync",
-                  "Compose, workflows, and CLI access"
-                ].map((item, i) => (
-                  <li key={i} className="group/item flex items-center gap-3 text-xs font-mono text-zinc-700 dark:text-zinc-300 cursor-default transition-colors hover:text-zinc-900 dark:hover:text-white">
-                    <Check className="w-3 h-3 text-zinc-400 transition-all group-hover/item:text-emerald-500 group-hover/item:scale-110" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-500/20 rounded">
-                <p className="text-xs text-zinc-900 dark:text-white font-semibold mb-1">
-                  What the email gets you
-                </p>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  A download link, iPhone/TestFlight details, and occasional product updates when something meaningful ships. No drip campaign.
-                </p>
-              </div>
-            </div>
-
-            {/* Right: Pricing Card */}
-            <div className="bg-stone-50 dark:bg-[#081210] border border-stone-200/70 dark:border-emerald-900/20 p-6 rounded-lg relative group/card transition-all hover:border-emerald-500/30">
-              {/* Corner Accents */}
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-900 dark:border-white transition-all group-hover/card:w-4 group-hover/card:h-4 group-hover/card:border-emerald-500" />
-              <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-900 dark:border-white transition-all group-hover/card:w-4 group-hover/card:h-4 group-hover/card:border-emerald-500" />
-              <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-zinc-900 dark:border-white transition-all group-hover/card:w-4 group-hover/card:h-4 group-hover/card:border-emerald-500" />
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-zinc-900 dark:border-white transition-all group-hover/card:w-4 group-hover/card:h-4 group-hover/card:border-emerald-500" />
-
-              <div className="text-center mb-6">
-                <p className="text-[10px] font-mono uppercase text-zinc-400 mb-2">Mac + iPhone + Watch</p>
-                <p className="text-2xl font-bold text-zinc-900 dark:text-white uppercase tracking-tight mb-3">Stay in touch</p>
-
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Enter your email and we&apos;ll send the current setup details.
-                </p>
-              </div>
-
-              {!isSubmitted ? (
-                <form onSubmit={handleEmailSubmit} className="space-y-3">
-                  <p className="text-[10px] font-mono uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 inline-block px-2 py-1 rounded w-full text-center tracking-wider">
-                    Send the Link
-                  </p>
-                  <input
-                    type="email"
-                    required
-                    placeholder="enter@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm font-mono text-center text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
-                  />
-                  <div className="relative">
-                    <select
-                      value={useCase}
-                      onChange={(e) => setUseCase(e.target.value)}
-                      className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm font-mono text-center text-zinc-900 dark:text-white appearance-none focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors cursor-pointer"
-                    >
-                      {USE_CASES.map(({ value, label }) => (
-                        <option key={value} value={value} className="text-left">
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
-                  </div>
-                  {/* Honeypot - hidden from users */}
-                  <input type="text" tabIndex="-1" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} className="absolute -left-[9999px]" aria-hidden="true" />
-                  <button
-                    type="submit"
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white py-3 text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50"
-                    disabled={status === 'sending'}
-                  >
-                    {status === 'sending' ? 'Sending...' : 'Send Download Link'}
-                  </button>
-                  {errorMsg && (
-                    <p className="text-[10px] text-center text-red-500 mt-1">{errorMsg}</p>
-                  )}
-                  <p className="text-[10px] text-center text-zinc-400 mt-2">
-                    We only email when there is something worth shipping.
-                  </p>
-                </form>
-              ) : (
-                <div className="text-center py-6 animate-in fade-in zoom-in duration-300">
-                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <p className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wide">Link sent.</p>
-                  <div className="mt-4 space-y-3">
-                    <a
-                      href="/dl?ref=pricing"
-                      className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 dark:bg-emerald-500 text-white py-3 text-xs font-bold uppercase tracking-widest transition-colors hover:bg-emerald-700 dark:hover:bg-emerald-400 rounded"
-                    >
-                      Download Talkie for Mac
-                    </a>
-                    <a
-                      href="https://app.usetalkie.com/testflight"
-                      className="w-full inline-flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors hover:border-zinc-400 dark:hover:border-zinc-500"
-                    >
-                      Get iPhone TestFlight
-                    </a>
-                  </div>
-                  <p className="text-[10px] text-zinc-400 mt-3">Check your email for setup instructions, or download now.</p>
-                </div>
-              )}
-            </div>
-
+          <div className="mt-8 border-l-2 border-[var(--ed-accent-line)] pl-5">
+            <p className="text-[13px] font-semibold text-[var(--ed-ink)]">One useful email, not a funnel.</p>
+            <p className="mt-1 text-[14px] leading-relaxed text-[var(--ed-ink-2)]">We send the current setup details and write again only when something meaningful ships.</p>
           </div>
+        </div>
+
+        <div className="rounded-[20px] border border-[var(--ed-line)] bg-[var(--ed-paper-alt)] p-6 shadow-[var(--ed-shadow-lift)] md:p-9">
+          <div className="border-b border-[var(--ed-line)] pb-6">
+            <p className="text-[10px] font-mono font-medium uppercase tracking-[0.18em] text-[var(--ed-ink-3)]">Mac · iPhone · Watch</p>
+            <h3 className="mt-3 text-[21px] font-semibold tracking-[-0.02em] text-[var(--ed-ink)]">Send me the current setup</h3>
+            <p className="mt-2 text-[14px] leading-relaxed text-[var(--ed-ink-2)]">A download link, mobile details, and the shortest way to get started.</p>
+          </div>
+
+          {!isSubmitted ? (
+            <form onSubmit={handleEmailSubmit} className="mt-6 space-y-4">
+              <label className="block">
+                <span className="mb-2 block text-[10px] font-mono font-medium uppercase tracking-[0.18em] text-[var(--ed-ink-3)]">Email</span>
+                <input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-12 w-full rounded-[10px] border border-[var(--ed-line)] bg-[var(--ed-paper)] px-4 text-[15px] text-[var(--ed-ink)] placeholder:text-[var(--ed-ink-3)] focus:border-[var(--ed-accent-line)] focus:outline-none"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-[10px] font-mono font-medium uppercase tracking-[0.18em] text-[var(--ed-ink-3)]">What brings you here?</span>
+                <div className="relative">
+                  <select
+                    value={useCase}
+                    onChange={(e) => setUseCase(e.target.value)}
+                    className="h-12 w-full appearance-none rounded-[10px] border border-[var(--ed-line)] bg-[var(--ed-paper)] px-4 pr-11 text-[15px] text-[var(--ed-ink)] focus:border-[var(--ed-accent-line)] focus:outline-none"
+                  >
+                    {USE_CASES.map(({ value, label }) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ed-ink-3)]" />
+                </div>
+              </label>
+              <input type="text" tabIndex="-1" autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} className="absolute -left-[9999px]" aria-hidden="true" />
+              <button
+                type="submit"
+                className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-[var(--ed-ink)] px-6 text-[13px] font-semibold tracking-[0.01em] text-[var(--ed-paper)] transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+                disabled={status === 'sending'}
+              >
+                {status === 'sending' ? 'Sending…' : 'Send download link'}
+              </button>
+              {errorMsg && <p className="text-center text-[11px] text-red-500">{errorMsg}</p>}
+              <p className="text-center text-[11px] text-[var(--ed-ink-3)]">No drip campaign. Unsubscribe any time.</p>
+            </form>
+          ) : (
+            <div className="py-10 text-center animate-in fade-in zoom-in duration-300">
+              <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-[12px] bg-[var(--ed-accent-soft)]">
+                <Check className="h-5 w-5 text-[var(--ed-accent)]" />
+              </div>
+              <p className="mt-4 text-[17px] font-semibold text-[var(--ed-ink)]">Link sent.</p>
+              <p className="mt-2 text-[14px] text-[var(--ed-ink-2)]">Check your inbox for setup details.</p>
+              <div className="mt-6 flex flex-col gap-3">
+                <a href="/dl?ref=pricing" className="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--ed-ink)] px-5 text-[13px] font-semibold text-[var(--ed-paper)]">Download Talkie for Mac</a>
+                <a href="https://app.usetalkie.com/testflight" className="inline-flex h-11 items-center justify-center rounded-xl border border-[var(--ed-line)] px-5 text-[13px] font-semibold text-[var(--ed-ink)]">Get iPhone TestFlight</a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

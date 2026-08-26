@@ -27,7 +27,9 @@ import {
 } from 'lucide-react'
 import Container from './Container'
 import PricingSection from './PricingSection'
+import SignalTable from './SignalTable'
 import ThemeToggle from './ThemeToggle'
+import capturesCatalog from '../content/captures.json'
 import { trackScrollDepth, captureUTMParams } from '../lib/analytics'
 import { MAC_GALLERY, IPHONE_GALLERY } from '../lib/tour'
 import { TALKIE_PHONE_APP } from '../shared/config/product-links'
@@ -43,7 +45,7 @@ const NAV_LINKS = [
 ]
 
 const USE_CASES = {
-  Mac: [
+  Computer: [
     { action: 'Voice a rough draft', outcome: 'Your cleanup rule runs automatically' },
     { action: 'Record the meeting', outcome: 'Your summary format, every time' },
     { action: 'Describe the bug while it\'s fresh', outcome: 'GitHub issue filed, not forgotten' },
@@ -58,6 +60,11 @@ const USE_CASES = {
     { action: 'Capture without breaking stride', outcome: "It's waiting on your Mac" },
     { action: 'The 3am idea', outcome: 'Still there in the morning' },
   ],
+  Agents: [
+    { action: 'Talk through the problem', outcome: 'Your agent gets the full context' },
+    { action: 'Send the thought to your Mac', outcome: 'The work continues at your desk' },
+    { action: 'Ask for the next step', outcome: 'The result comes back to you' },
+  ],
 }
 
 /* Generic device categories rather than Apple brand names — the
@@ -68,6 +75,12 @@ const HERO_STORIES = [
   { surface: 'Phone' },
   { surface: 'Watch' },
   { surface: 'Agents' },
+]
+
+const WORK_STORIES = [
+  { surface: 'Mac', useCaseKey: 'Computer' },
+  { surface: 'Phone', useCaseKey: 'Phone' },
+  { surface: 'Watch', useCaseKey: 'Watch' },
 ]
 
 const CAPTURE_MODES = [
@@ -157,29 +170,129 @@ const CONTEXT_TIMELINE = [
 const OWNERSHIP_CARDS = [
   {
     icon: HardDrive,
-    title: 'Local-first library',
-    body: 'Your recordings and transcripts live on your devices instead of disappearing into a database we control.',
-  },
-  {
-    icon: Cloud,
-    title: 'Sync through your iCloud',
-    body: 'When devices stay in step, the sync path runs through Apple\'s infrastructure and your Apple ID.',
+    title: 'Private dictation stays local',
+    body: 'Everyday dictation can be transcribed on-device. The recording and transcript stay in your library, on your devices.',
   },
   {
     icon: Cpu,
-    title: 'Models on your terms',
-    body: 'Use on-device models, bring your own provider, or keep workflows fully offline when privacy matters more than convenience.',
+    title: 'Meetings can stay straightforward',
+    body: 'Record a meeting and use regular transcription when you do not need speaker labels. No diarization, no cloud diarization step.',
+  },
+  {
+    icon: Cloud,
+    title: 'Diarization uses the cloud',
+    body: 'When you ask Talkie to separate speakers, the meeting audio is sent to a cloud transcription provider. Talkie tells you before that happens, and Max users can use their own provider keys.',
   },
 ]
 
 const OWNERSHIP_PILLS = [
-  'On-device transcription',
+  'On-device dictation',
+  'Local meeting transcription',
+  'Cloud diarization disclosed',
   'Encrypted iCloud sync',
-  'Searchable memos + dictations',
-  'No vendor lock-in',
 ]
 
-export default function LandingPage() {
+function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
+  return (
+    <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
+      <div className="relative z-10 max-w-xl text-center lg:text-left">
+        <p className="text-[11px] font-mono font-bold uppercase tracking-[0.24em] text-amber-700 dark:text-amber-300">
+          From voice to useful work
+        </p>
+        <h1 className="mt-5 font-display text-[clamp(3.2rem,4.9vw,4.9rem)] font-normal leading-[0.88] tracking-[-0.05em] text-zinc-950 dark:text-white">
+          <span className="block lg:whitespace-nowrap">An assistant</span>
+          <span className="block lg:whitespace-nowrap">that moves your</span>
+          <span className="block lg:whitespace-nowrap">ideas forward.</span>
+        </h1>
+        <p className="mx-auto mt-8 max-w-lg text-lg leading-relaxed text-zinc-600 dark:text-zinc-300 md:text-xl lg:mx-0">
+          Capture a thought on your phone. Turn it into a draft, task, or workflow on your Mac.
+        </p>
+        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
+          <Link
+            href="/download"
+            prefetch={false}
+            className="inline-flex h-12 items-center gap-2 rounded-xl bg-zinc-950 px-6 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-transform hover:scale-[1.02] dark:bg-white dark:text-black"
+          >
+            <Download className="h-4 w-4" />
+            Download for Mac
+          </Link>
+          <Link
+            href={TALKIE_PHONE_APP.appStoreUrl}
+            className="inline-flex h-12 items-center gap-2 rounded-xl border border-zinc-300 bg-white/70 px-6 text-[11px] font-bold uppercase tracking-[0.18em] text-zinc-800 transition-colors hover:bg-white dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            <Smartphone className="h-4 w-4" />
+            iPhone app
+          </Link>
+        </div>
+        <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500">
+          Free build · macOS 26+ · Apple silicon
+        </p>
+      </div>
+
+      <div className="relative mx-auto w-full max-w-[66rem] px-1 pb-10 sm:px-6 md:pb-16 lg:px-0">
+        <div className="pointer-events-none absolute inset-x-[5%] bottom-[4%] h-[62%] rounded-full bg-amber-500/[0.07] blur-[96px] dark:bg-white/[0.06]" />
+
+        <button
+          type="button"
+          onClick={openMacGallery}
+          aria-label="Open the Talkie for Mac tour"
+          className="group relative mx-auto block w-[92%] -translate-x-[2%] text-left sm:w-[88%] md:w-[88%]"
+        >
+          <div className="rounded-t-[18px] border border-zinc-300 bg-gradient-to-b from-zinc-100 to-zinc-300 p-[5px] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.34)] transition-transform duration-300 group-hover:-translate-y-1 dark:border-zinc-600 dark:from-zinc-700 dark:to-zinc-900 md:rounded-t-[26px] md:p-[7px]">
+            <div className="relative overflow-hidden rounded-t-[12px] border border-black/80 bg-black md:rounded-t-[18px]">
+              <span className="absolute left-1/2 top-[5px] z-10 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-zinc-700 ring-1 ring-black md:top-[7px]" />
+              <img
+                src="/screenshots/mac-home.png"
+                alt="Talkie open on a MacBook"
+                className="block h-auto w-full contrast-[1.12] saturate-[1.04]"
+                loading="eager"
+              />
+            </div>
+          </div>
+          <div className="relative h-4 rounded-b-[40%] border-x border-b border-zinc-300 bg-gradient-to-b from-zinc-100 to-zinc-300 shadow-[0_12px_18px_-12px_rgba(15,23,42,0.5)] dark:border-zinc-600 dark:from-zinc-600 dark:to-zinc-800 md:h-6">
+            <span className="absolute left-1/2 top-0 h-[3px] w-[18%] -translate-x-1/2 rounded-b-md bg-zinc-400/70 dark:bg-zinc-500" />
+          </div>
+          <div className="mx-auto h-1.5 w-[94%] rounded-b-full bg-zinc-400/60 blur-[0.2px] dark:bg-black/80" />
+        </button>
+
+        <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[172px] rounded-2xl border border-zinc-200/80 bg-white/85 p-3 text-left shadow-[0_20px_45px_-28px_rgba(15,23,42,0.24)] backdrop-blur-md dark:border-zinc-700/80 dark:bg-zinc-900/90 sm:block md:left-[3%] md:w-[184px]">
+          <div className="flex items-center gap-2 text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+            Captured on iPhone
+          </div>
+          <p className="mt-2.5 text-[13px] leading-snug text-zinc-800 dark:text-zinc-100">
+            Turn the meeting notes into tomorrow’s action list.
+          </p>
+          <p className="mt-3 text-[10px] font-mono text-zinc-500 dark:text-zinc-400">
+            Ready on your Mac
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={openPhoneGallery}
+          aria-label="Open the Talkie for iPhone tour"
+          className="group absolute -bottom-[7%] right-[-2%] z-20 w-[31%] min-w-[150px] max-w-[246px] transition-transform duration-500 ease-out hover:-translate-y-2 hover:rotate-[1deg] sm:right-0 md:right-[1%]"
+        >
+          <img
+            src="/screenshots/talkie-phone-3d-light.png"
+            alt="Talkie open on a dimensional iPhone"
+            className="block h-auto w-full drop-shadow-[0_34px_28px_rgba(15,23,42,0.22)] dark:hidden"
+            loading="eager"
+          />
+          <img
+            src="/screenshots/talkie-phone-3d-dark.png"
+            alt="Talkie open on a dimensional iPhone"
+            className="hidden h-auto w-full drop-shadow-[0_36px_30px_rgba(0,0,0,0.56)] dark:block"
+            loading="eager"
+          />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default function LandingPage({ simplifiedHero = false }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [gallery, setGallery] = useState(null)
@@ -193,7 +306,9 @@ export default function LandingPage() {
   const [heroEntered, setHeroEntered] = useState(false)
   const audioRef = useRef(null)
   const scrollMilestones = useRef(new Set())
-  const currentHeroStory = HERO_STORIES[heroSurfaceIndex]
+  const heroStories = simplifiedHero ? WORK_STORIES : HERO_STORIES
+  const currentHeroStory = heroStories[heroSurfaceIndex % heroStories.length]
+  const currentUseCases = USE_CASES[currentHeroStory.useCaseKey ?? currentHeroStory.surface]
 
   const jumpToSurface = (targetIndex) => {
     if (targetIndex === heroSurfaceIndex || flipPhase !== 'idle') return
@@ -248,7 +363,7 @@ export default function LandingPage() {
 
       // At ~140ms the card is edge-on (-90°) — invisible — swap content then start flip-in
       t1 = window.setTimeout(() => {
-        setHeroSurfaceIndex((current) => (current + 1) % HERO_STORIES.length)
+        setHeroSurfaceIndex((current) => (current + 1) % heroStories.length)
         setFlipPhase('in')
         setUseCaseVisible(true)
       }, 150)
@@ -262,7 +377,7 @@ export default function LandingPage() {
       window.clearTimeout(t1)
       window.clearTimeout(t2)
     }
-  }, [heroPaused])
+  }, [heroPaused, heroStories.length])
 
   useEffect(() => {
     if (!gallery) return
@@ -395,6 +510,7 @@ export default function LandingPage() {
               <ThemeToggle floating={false} />
               <Link
                 href="/download"
+                prefetch={false}
                 className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-4 text-[10px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
               >
                 <Download className="h-3.5 w-3.5" />
@@ -445,6 +561,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/download"
+                prefetch={false}
                 onClick={() => setMobileMenuOpen(false)}
                 className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-white dark:bg-white dark:text-black"
               >
@@ -458,17 +575,26 @@ export default function LandingPage() {
 
       <main id="main">
         <section
-          className="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-stone-100 via-stone-50 to-white pt-24 pb-20 dark:border-zinc-800/70 dark:from-[#111519] dark:via-[#0d1115] dark:to-[#090c10] md:pt-32 md:pb-24"
+          className={simplifiedHero
+            ? 'relative overflow-hidden border-b border-stone-200/55 bg-[#fbfbf9] pt-28 pb-24 dark:border-zinc-800/70 dark:bg-[#0c1013] md:pt-40 md:pb-32'
+            : 'relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-stone-100 via-stone-50 to-white pt-24 pb-20 dark:border-zinc-800/70 dark:from-[#111519] dark:via-[#0d1115] dark:to-[#090c10] md:pt-32 md:pb-24'}
           onMouseEnter={() => setHeroPaused(true)}
           onMouseLeave={() => setHeroPaused(false)}
         >
-          <div className="absolute inset-0 bg-grid-fade opacity-45 pointer-events-none" />
+          <div className={`absolute inset-0 bg-grid-fade pointer-events-none ${simplifiedHero ? 'opacity-[0.12] dark:opacity-20' : 'opacity-45'}`} />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.12),transparent_62%)] opacity-0 dark:opacity-100" />
 
           <Container className="relative z-10">
-            <div className={`mx-auto max-w-4xl text-center transition-[opacity,transform] duration-700 ease-out ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+            {simplifiedHero && (
+              <SimpleProductHero
+                openMacGallery={() => setGallery({ images: MAC_GALLERY, index: 0 })}
+                openPhoneGallery={() => setGallery({ images: IPHONE_GALLERY, index: 0 })}
+              />
+            )}
+
+            <div className={`${simplifiedHero ? 'mx-auto mt-28 max-w-4xl border-t border-zinc-200/70 pt-16 dark:border-zinc-800/80 md:mt-36 md:pt-20' : 'mx-auto max-w-4xl'} text-center transition-[opacity,transform] duration-700 ease-out ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
               <div className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white/90 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] shadow-[0_12px_40px_rgba(2,6,23,0.06)] dark:border-white/10 dark:bg-zinc-900/70">
-                {[{ label: 'Computer', idx: 0 }, { label: 'Phone', idx: 1 }, { label: 'Watch', idx: 2 }, { label: 'Agents', idx: 3 }].map(({ label, idx }, i, arr) => (
+                {heroStories.map(({ surface: label }, idx, arr) => (
                   <React.Fragment key={label}>
                     <button
                       onClick={() => jumpToSurface(idx)}
@@ -476,7 +602,7 @@ export default function LandingPage() {
                     >
                       {label}
                     </button>
-                    {i < arr.length - 1 && (
+                    {idx < arr.length - 1 && (
                       <span className="text-zinc-300 dark:text-zinc-600">,</span>
                     )}
                   </React.Fragment>
@@ -484,14 +610,16 @@ export default function LandingPage() {
               </div>
 
               <h1
-                className="mt-8 flex items-end justify-center gap-x-[0.28em] font-display text-[clamp(2.8rem,9vw,5.6rem)] font-normal tracking-[-0.025em] leading-[0.92] text-zinc-950 dark:text-white"
-                aria-label={`Talk to your ${currentHeroStory.surface}`}
+                className={`${simplifiedHero ? 'flex-wrap gap-y-3 text-[clamp(1.85rem,4.2vw,3.2rem)]' : 'text-[clamp(2.8rem,9vw,5.6rem)]'} mt-8 flex items-end justify-center gap-x-[0.28em] font-display font-normal tracking-[-0.025em] leading-[0.92] text-zinc-950 dark:text-white`}
+                aria-label={simplifiedHero
+                  ? `Talkie works with you on your ${currentHeroStory.surface}`
+                  : `Talk to your ${currentHeroStory.surface}`}
               >
-                <span className="shrink-0">Talk to your</span>
+                <span className="shrink-0">{simplifiedHero ? 'Talkie works with you on your' : 'Talk to your'}</span>
                 <span className="shrink-0" style={{ perspective: '600px' }}>
                   <span
-                    onClick={() => jumpToSurface((heroSurfaceIndex + 1) % HERO_STORIES.length)}
-                    className="relative mb-[-0.18em] inline-flex min-w-[3.8em] cursor-pointer items-center justify-center overflow-hidden rounded-[0.18em] border border-zinc-700/50 bg-zinc-900 px-[0.28em] py-[0.18em] font-display text-[1em] font-semibold tracking-[-0.01em] text-zinc-50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_40px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-zinc-800"
+                    onClick={() => jumpToSurface((heroSurfaceIndex + 1) % heroStories.length)}
+                    className="relative mb-[-0.18em] inline-flex min-w-[3.8em] cursor-pointer items-center justify-center overflow-hidden rounded-[0.18em] border border-black/20 bg-[#191917] px-[0.28em] py-[0.18em] font-display text-[1em] font-semibold tracking-[-0.01em] text-[#f4f2ec] shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_18px_40px_rgba(15,15,14,0.2)] dark:border-white/12 dark:bg-[#171716] dark:text-[#f1efe9] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_20px_44px_rgba(0,0,0,0.38)]"
                     style={{
                       animation:
                         flipPhase === 'out' ? 'flap-out 140ms ease-in forwards' :
@@ -502,7 +630,7 @@ export default function LandingPage() {
                     <span className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-black/10 dark:bg-white/10" />
                     <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),transparent)]" />
                     <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.18))]" />
-                    <span data-hero-accent className="relative inline-block w-full text-center">
+                    <span className="relative inline-block w-full text-center">
                       {currentHeroStory.surface}
                     </span>
                   </span>
@@ -510,7 +638,7 @@ export default function LandingPage() {
               </h1>
 
               <div className="mx-auto mt-9 grid w-full max-w-[38rem] grid-cols-[1fr_2.5rem_1fr] items-center gap-y-3" aria-live="polite">
-                {USE_CASES[currentHeroStory.surface].map((item, i) => (
+                {currentUseCases.map((item, i) => (
                   <React.Fragment key={item.action}>
                     <span
                       className={`text-right text-sm text-zinc-500 dark:text-zinc-400 transition-all duration-300 ${useCaseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
@@ -531,7 +659,7 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              <div className="mx-auto mt-10 w-full max-w-[30rem]">
+              {!simplifiedHero && <div className="mx-auto mt-10 w-full max-w-[30rem]">
                 <div className="relative rounded-2xl border border-zinc-200/60 bg-white/70 shadow-[0_20px_60px_-20px_rgba(15,23,42,0.14)] backdrop-blur-sm dark:border-zinc-800/60 dark:bg-zinc-900/40 dark:shadow-[0_24px_70px_-20px_rgba(0,0,0,0.55)]">
                   <span className="absolute -top-2 left-5 bg-stone-50 px-2 text-[9px] font-mono font-bold uppercase tracking-[0.24em] text-zinc-500 dark:bg-[#0d1115] dark:text-zinc-400">
                     Install
@@ -540,6 +668,7 @@ export default function LandingPage() {
                   <div className="grid grid-cols-2 gap-2 p-2">
                     <Link
                       href="/download"
+                      prefetch={false}
                       className="group flex h-[7.25rem] flex-col items-center justify-center gap-2 rounded-xl px-4 py-4 text-center transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"
                     >
                       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-900 text-white transition-transform group-hover:scale-105 dark:bg-white dark:text-black">
@@ -593,11 +722,11 @@ export default function LandingPage() {
                     </code>
                   </div>
                 </div>
-              </div>
+              </div>}
 
             </div>
 
-            <div className={`relative mx-auto mt-16 max-w-5xl transition-[opacity,transform] duration-700 ease-out delay-200 ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            {!simplifiedHero && <div className={`relative mx-auto mt-16 max-w-5xl transition-[opacity,transform] duration-700 ease-out delay-200 ${heroEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               <div className="absolute inset-x-8 top-5 hidden h-full rounded-[32px] bg-black/5 blur-3xl md:block dark:bg-white/10 dark:opacity-90" />
               <div className="absolute inset-x-14 top-10 hidden h-[78%] rounded-[36px] bg-white/[0.08] blur-[90px] md:block dark:opacity-100" />
 
@@ -682,48 +811,50 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div>}
           </Container>
         </section>
 
-        <section id="capture" className="border-b border-stone-200/70 bg-white py-20 dark:border-zinc-800/70 dark:bg-[#0a0f0d] md:py-24">
+        <section id="capture" className="border-b border-[var(--ed-line)] bg-[var(--ed-paper-alt)] py-24 md:py-32">
           <Container>
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-emerald-600 dark:text-zinc-300">
-                Every fast path, one system
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
-                One voice path. More than one use.
-              </h2>
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                Talkie can start as a quick note, a dictated paragraph, a search query, or the start of a workflow. The point is not voice for its own sake. The point is moving work forward.
+            <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:gap-16">
+              <div>
+                <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[var(--ed-accent)]">
+                  Every fast path, one system
+                </p>
+                <h2 className="mt-5 max-w-2xl font-display text-[clamp(2.8rem,4.7vw,4rem)] font-normal leading-[0.94] tracking-[-0.035em] text-[var(--ed-ink)]">
+                  <span className="block">One voice path.</span>
+                  <span className="block lg:whitespace-nowrap">More than one use.</span>
+                </h2>
+              </div>
+              <p className="max-w-2xl text-[17px] leading-[1.68] text-[var(--ed-ink-2)] lg:pb-1">
+                A quick note, a dictated paragraph, a search, or the start of a workflow. Voice is simply the shortest distance between the thought and useful work.
               </p>
             </div>
 
-            <div className="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {CAPTURE_MODES.map(({ body, eyebrow, href, icon: Icon, title }) => (
+            <div className="mt-16 grid border-t border-[var(--ed-line)] md:grid-cols-2">
+              {CAPTURE_MODES.map(({ body, eyebrow, href, icon: Icon, title }, index) => (
                 <Link
                   key={title}
                   href={href}
-                  className="group rounded-[24px] border border-zinc-200/70 bg-stone-50/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/60 hover:bg-white hover:shadow-[0_24px_60px_rgba(16,185,129,0.12)] dark:border-zinc-800/70 dark:bg-zinc-950/55 dark:hover:border-zinc-700 dark:hover:bg-zinc-950/80 dark:hover:shadow-[0_24px_60px_rgba(255,255,255,0.04)]"
+                  className={`group grid grid-cols-[auto_1fr] gap-5 border-b border-[var(--ed-line)] py-8 transition-colors hover:bg-[var(--ed-accent-soft)] md:px-8 ${index % 2 === 0 ? 'md:border-r' : ''}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 transition-colors group-hover:bg-emerald-500/15 dark:bg-white/5 dark:text-zinc-100 dark:group-hover:bg-white/10">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400">
-                      {eyebrow}
-                    </p>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[var(--ed-accent-soft)] text-[var(--ed-accent)] transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105">
+                    <Icon className="h-[18px] w-[18px]" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">
-                    {title}
-                  </h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {body}
-                  </p>
-                  <div className="mt-5 inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500 transition-colors group-hover:text-emerald-600 dark:group-hover:text-white">
-                    Explore
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  <div>
+                    <div className="flex items-center justify-between gap-4">
+                      <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--ed-ink-3)]">
+                        {String(index + 1).padStart(2, '0')} · {eyebrow}
+                      </p>
+                      <ArrowRight className="h-4 w-4 text-[var(--ed-ink-3)] transition-transform group-hover:translate-x-1 group-hover:text-[var(--ed-accent)]" />
+                    </div>
+                    <h3 className="mt-4 text-[17px] font-semibold leading-[1.35] tracking-[-0.01em] text-[var(--ed-ink)]">
+                      {title}
+                    </h3>
+                    <p className="mt-2 max-w-md text-[15px] leading-[1.65] text-[var(--ed-ink-2)]">
+                      {body}
+                    </p>
                   </div>
                 </Link>
               ))}
@@ -731,37 +862,48 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        <section id="context" className="border-b border-stone-200/70 bg-stone-50 py-20 dark:border-zinc-800/70 dark:bg-[#0d1012] md:py-24">
+        <section aria-label="Talkie live capture examples" className="clean-home-signal border-b border-[var(--ed-line)] bg-[var(--ed-paper)] py-20 md:py-24">
           <Container>
-            <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white/75 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-600 dark:border-zinc-800/70 dark:bg-zinc-950/50 dark:text-zinc-300">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-500 dark:text-zinc-200" />
-                  Context that survives the moment
-                </div>
+            <div className="flex flex-col gap-3 border-b border-[var(--ed-line)] pb-6 sm:flex-row sm:items-end sm:justify-between">
+              <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[var(--ed-accent)]">
+                Live capture
+              </p>
+              <p className="text-[14px] text-[var(--ed-ink-2)]">
+                Choose a thought. Press play. Watch it land.
+              </p>
+            </div>
+            <div className="mt-8">
+              <SignalTable catalog={capturesCatalog} />
+            </div>
+          </Container>
+        </section>
 
-                <h2 className="mt-6 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
+        <section id="context" className="border-b border-[var(--ed-line)] bg-[var(--ed-paper)] py-24 md:py-32">
+          <Container>
+            <div className="grid gap-16 lg:grid-cols-[0.86fr_1.14fr] lg:gap-24">
+              <div>
+                <p className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[var(--ed-accent)]">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Context that survives the moment
+                </p>
+                <h2 className="mt-5 font-display text-[clamp(2.55rem,4.4vw,3.8rem)] font-normal leading-[0.98] tracking-[-0.03em] text-[var(--ed-ink)]">
                   Voice notes are easy to save. Harder to use.
                 </h2>
-
-                <p className="mt-5 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  Talkie keeps enough of the moment intact that coming back later feels less like archaeology and more like picking work back up.
+                <p className="mt-6 max-w-xl text-[17px] leading-[1.68] text-[var(--ed-ink-2)]">
+                  Talkie keeps the moment intact, so returning later feels less like archaeology and more like picking the work back up.
                 </p>
 
-                <div className="mt-8 space-y-5">
+                <div className="mt-12 border-t border-[var(--ed-line)]">
                   {FLOW_STEPS.map((step) => (
-                    <div
-                      key={step.id}
-                      className="flex gap-4 rounded-[24px] border border-zinc-200/70 bg-white/80 p-5 dark:border-zinc-800/70 dark:bg-zinc-950/55"
-                    >
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-emerald-600 dark:bg-white/5 dark:text-zinc-100">
+                    <div key={step.id} className="grid grid-cols-[2.5rem_1fr] gap-4 border-b border-[var(--ed-line)] py-6">
+                      <span className="pt-0.5 font-mono text-[11px] font-medium tracking-[0.16em] text-[var(--ed-accent)]">
                         {step.id}
-                      </div>
+                      </span>
                       <div>
-                        <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
+                        <h3 className="text-[17px] font-semibold leading-[1.35] tracking-[-0.01em] text-[var(--ed-ink)]">
                           {step.title}
                         </h3>
-                        <p className="mt-2 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+                        <p className="mt-2 text-[15px] leading-[1.65] text-[var(--ed-ink-2)]">
                           {step.body}
                         </p>
                       </div>
@@ -769,78 +911,54 @@ export default function LandingPage() {
                   ))}
                 </div>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link
-                    href="/mobile"
-                    className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/85 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-700 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-950/55 dark:text-zinc-300 dark:hover:text-white"
-                  >
-                    iPhone capture
-                    <ArrowRight className="h-3.5 w-3.5" />
+                <div className="mt-8 flex flex-wrap gap-5">
+                  <Link href="/mobile" className="inline-flex items-center gap-2 text-[13px] font-semibold tracking-[0.01em] text-[var(--ed-ink)] transition-colors hover:text-[var(--ed-accent)]">
+                    iPhone capture <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
-                  <Link
-                    href="/mac"
-                    className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/85 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-700 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-950/55 dark:text-zinc-300 dark:hover:text-white"
-                  >
-                    Mac workflow
-                    <ArrowRight className="h-3.5 w-3.5" />
+                  <Link href="/mac" className="inline-flex items-center gap-2 text-[13px] font-semibold tracking-[0.01em] text-[var(--ed-ink)] transition-colors hover:text-[var(--ed-accent)]">
+                    Mac workflow <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>
 
-              <div className="rounded-[30px] border border-zinc-200/70 bg-white/88 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.08)] dark:border-zinc-800/70 dark:bg-zinc-950/62">
-                <div className="flex items-center justify-between border-b border-zinc-200/70 pb-4 dark:border-zinc-800/70">
+              <div className="self-start rounded-[20px] border border-[var(--ed-line)] bg-[var(--ed-paper-alt)] p-5 shadow-[var(--ed-shadow-lift)] md:p-8">
+                <div className="flex items-start justify-between gap-6 pb-6">
                   <div>
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500">Recent captures</p>
-                    <p className="mt-1 text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">The idea keeps its surroundings.</p>
+                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--ed-ink-3)]">Recent captures</p>
+                    <p className="mt-2 text-[17px] font-semibold tracking-[-0.01em] text-[var(--ed-ink)]">The idea keeps its surroundings.</p>
                   </div>
-                  <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-600 dark:bg-white/5 dark:text-zinc-200">
-                    Search-ready
+                  <div className="flex items-center gap-2 text-[10px] font-mono font-medium uppercase tracking-[0.18em] text-[var(--ed-ink-3)]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-signal-green)]" />
+                    Search ready
                   </div>
                 </div>
 
-                <div className="mt-5 space-y-3">
+                <div className="border-t border-[var(--ed-line)]">
                   {CONTEXT_TIMELINE.map((item) => (
-                    <div
-                      key={`${item.source}-${item.time}`}
-                      className="rounded-[24px] border border-zinc-200/70 bg-stone-50/80 p-4 dark:border-zinc-800/70 dark:bg-zinc-900/45"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-900 text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-white dark:bg-white dark:text-black">
-                            {item.source.slice(0, 2)}
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-zinc-950 dark:text-white">{item.source}</p>
-                            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500">{item.label}</p>
-                          </div>
-                        </div>
-                        <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-400">
-                          {item.time}
-                        </p>
+                    <div key={`${item.source}-${item.time}`} className="grid grid-cols-[auto_1fr_auto] gap-4 border-b border-[var(--ed-line)] py-5">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[var(--ed-ink)] text-[9px] font-mono font-bold uppercase tracking-[0.12em] text-[var(--ed-paper)]">
+                        {item.source.slice(0, 2)}
                       </div>
-                      <p className="mt-3 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-                        {item.note}
-                      </p>
+                      <div>
+                        <div className="flex flex-wrap items-baseline gap-x-2">
+                          <p className="text-[14px] font-semibold text-[var(--ed-ink)]">{item.source}</p>
+                          <p className="text-[9px] font-mono font-medium uppercase tracking-[0.16em] text-[var(--ed-ink-3)]">{item.label}</p>
+                        </div>
+                        <p className="mt-2 text-[15px] leading-[1.6] text-[var(--ed-ink-2)]">{item.note}</p>
+                      </div>
+                      <p className="pt-1 text-[10px] font-mono text-[var(--ed-ink-3)]">{item.time}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-5 grid gap-3 md:grid-cols-2">
-                  <div className="rounded-[22px] border border-zinc-200/70 bg-zinc-950 p-4 text-white dark:border-zinc-800">
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-emerald-400 dark:text-zinc-300">
-                      CLI example
-                    </p>
-                    <code className="mt-3 block text-sm leading-relaxed text-zinc-200">
-                      talkie search "pricing page" --app Figma
-                    </code>
+                <div className="mt-6 grid gap-4 md:grid-cols-[1.05fr_0.95fr]">
+                  <div className="rounded-[16px] bg-[var(--ed-ink-slab)] p-5 text-[#f4efe6]">
+                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-[#e68a3c]">CLI example</p>
+                    <code className="mt-3 block text-[13px] leading-relaxed text-[#b8b2a4]">talkie search "pricing page" --app Figma</code>
                   </div>
-                  <div className="rounded-[22px] border border-zinc-200/70 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/55">
-                    <p className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500">
-                      Next step
-                    </p>
-                    <p className="mt-3 text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-                      Turn the memo into a summary, export, or task list once you are back at your desk.
-                    </p>
+                  <div className="border-l border-[var(--ed-line)] px-1 py-2 md:pl-5">
+                    <p className="text-[10px] font-mono font-medium uppercase tracking-[0.18em] text-[var(--ed-ink-3)]">Then use it</p>
+                    <p className="mt-3 text-[14px] leading-[1.6] text-[var(--ed-ink-2)]">Turn the memo into a summary, export, or task list back at your desk.</p>
                   </div>
                 </div>
               </div>
@@ -848,48 +966,41 @@ export default function LandingPage() {
           </Container>
         </section>
 
-        <section id="ownership" className="relative overflow-hidden border-b border-zinc-800/70 bg-[#0a0d11] py-20 md:py-24">
-          <div className="absolute inset-0 bg-tactical-grid-dark opacity-20 pointer-events-none" />
-          <div className="absolute inset-x-0 top-0 h-[460px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_65%)] pointer-events-none" />
-
-          <Container className="relative z-10">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-200">
-                <Lock className="h-3.5 w-3.5" />
-                Private by architecture
+        <section id="ownership" className="bg-[var(--ed-ink-slab)] py-24 text-[#f4efe6] md:py-32">
+          <Container>
+            <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
+              <div>
+                <p className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[#e68a3c]">
+                  <Lock className="h-3.5 w-3.5" />
+                  A clear processing boundary
+                </p>
+                <h2 className="mt-5 max-w-xl font-display text-[clamp(2.7rem,4.8vw,4.2rem)] font-normal leading-[0.96] tracking-[-0.035em]">
+                  Dictation stays local. Diarization uses the cloud.
+                </h2>
+                <p className="mt-6 max-w-xl text-[17px] leading-[1.68] text-[#b8b2a4]">
+                  Talkie keeps the boundary simple and visible. Private dictation can stay entirely on-device. Meetings only leave your device when you choose cloud diarization to separate speakers.
+                </p>
               </div>
 
-              <h2 className="mt-6 text-4xl font-bold tracking-[-0.05em] text-white md:text-5xl">
-                Your voice stays on your side.
-              </h2>
-
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-300">
-                Your library lives on your devices. Sync runs through your iCloud. On-device transcription is available. External providers are opt-in and use your keys.
-              </p>
-            </div>
-
-            <div className="mt-12 grid gap-4 md:grid-cols-3">
-              {OWNERSHIP_CARDS.map(({ body, icon: Icon, title }) => (
-                <div
-                  key={title}
-                  className="rounded-[26px] border border-zinc-800/70 bg-white/[0.03] p-6 backdrop-blur-sm"
-                >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 text-zinc-100">
-                    <Icon className="h-5 w-5" />
+              <div className="border-t border-white/10">
+                {OWNERSHIP_CARDS.map(({ body, icon: Icon, title }) => (
+                  <div key={title} className="grid grid-cols-[2.75rem_1fr] gap-5 border-b border-white/10 py-7">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-white/[0.06] text-[#e68a3c]">
+                      <Icon className="h-[18px] w-[18px]" />
+                    </div>
+                    <div>
+                      <h3 className="text-[17px] font-semibold leading-[1.35] tracking-[-0.01em]">{title}</h3>
+                      <p className="mt-2 text-[15px] leading-[1.65] text-[#b8b2a4]">{body}</p>
+                    </div>
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold tracking-tight text-white">{title}</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-zinc-300">{body}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-16 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6">
               {OWNERSHIP_PILLS.map((item) => (
-                <div
-                  key={item}
-                  className="inline-flex items-center gap-2 rounded-full border border-zinc-800/70 bg-black/20 px-4 py-2 text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-200"
-                >
-                  <ShieldCheck className="h-3.5 w-3.5 text-zinc-300" />
+                <div key={item} className="inline-flex items-center gap-2 text-[13px] font-medium text-[#b8b2a4]">
+                  <ShieldCheck className="h-4 w-4 text-[#e68a3c]" />
                   {item}
                 </div>
               ))}
@@ -899,23 +1010,18 @@ export default function LandingPage() {
 
         <PricingSection />
 
-        <section id="get" className="border-b border-stone-200/70 bg-white py-20 dark:border-zinc-800/70 dark:bg-[#0a0f0d] md:py-24">
+        <section id="get" className="border-b border-[var(--ed-line)] bg-[var(--ed-paper-alt)] py-24 md:py-32">
           <Container>
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">
-                Ready when you are
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-[-0.05em] text-zinc-950 dark:text-white md:text-5xl">
-                Start with your Mac.
-              </h2>
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                iPhone and Watch help you catch the thought. Mac is where Talkie earns its keep.
-              </p>
-
-              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="grid items-center gap-14 lg:grid-cols-[1fr_auto] lg:gap-24">
+              <div className="max-w-2xl">
+                <p className="text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-[var(--ed-accent)]">Ready when you are</p>
+                <h2 className="mt-5 font-display text-[clamp(2.8rem,5vw,4.4rem)] font-normal leading-[0.96] tracking-[-0.035em] text-[var(--ed-ink)]">Start with your Mac.</h2>
+                <p className="mt-6 max-w-xl text-[17px] leading-[1.68] text-[var(--ed-ink-2)]">iPhone and Watch catch the thought. Your Mac is where Talkie turns it into something useful.</p>
+                <div className="mt-9 flex flex-col items-start gap-3 sm:flex-row">
                 <Link
                   href="/download"
-                  className="inline-flex h-12 items-center gap-2 rounded-full bg-zinc-900 px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-all hover:scale-[1.02] hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                  prefetch={false}
+                    className="inline-flex h-12 items-center gap-2 rounded-xl bg-[var(--ed-ink)] px-6 text-[13px] font-semibold tracking-[0.01em] text-[var(--ed-paper)] transition-transform hover:-translate-y-0.5"
                 >
                   <Download className="h-4 w-4" />
                   Download for Mac
@@ -924,23 +1030,25 @@ export default function LandingPage() {
                   href={TALKIE_PHONE_APP.appStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-12 items-center gap-2 rounded-full border border-zinc-200 bg-white px-6 text-[11px] font-bold uppercase tracking-[0.22em] text-zinc-700 transition-colors hover:text-zinc-950 dark:border-zinc-800 dark:bg-zinc-950/55 dark:text-zinc-300 dark:hover:text-white"
+                    className="inline-flex h-12 items-center gap-2 rounded-xl border border-[var(--ed-line)] bg-[var(--ed-paper)] px-6 text-[13px] font-semibold tracking-[0.01em] text-[var(--ed-ink)] transition-colors hover:border-[var(--ed-accent-line)] hover:text-[var(--ed-accent)]"
                 >
                   <Smartphone className="h-4 w-4" />
                   iPhone &amp; iPad
                 </a>
               </div>
+              </div>
 
-              <div className="mt-8 flex flex-col items-center gap-3">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
-                  Scan for mobile
-                </p>
-                <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="flex items-center gap-5 rounded-[20px] border border-[var(--ed-line)] bg-[var(--ed-paper)] p-5 shadow-[var(--ed-shadow-lift)]">
+                <div className="rounded-[12px] bg-white p-3">
                   <img
                     src="/qr-app-store.svg"
                     alt="QR code to download Talkie on the App Store"
-                    className="h-44 w-44"
+                    className="h-28 w-28"
                   />
+                </div>
+                <div className="max-w-[9rem]">
+                  <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--ed-ink-3)]">On your phone</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--ed-ink-2)]">Scan to open Talkie in the App Store.</p>
                 </div>
               </div>
             </div>
@@ -948,29 +1056,29 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="bg-stone-100 py-12 dark:bg-[#081210]">
+      <footer className="bg-[var(--ed-paper-alt)] py-12">
         <Container className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="flex items-center gap-2">
               <img src="/talkie-icon.png" alt="Talkie" className="h-5 w-5 rounded" />
-              <span className="text-sm font-bold uppercase tracking-[0.24em] text-zinc-900 dark:text-white">Talkie</span>
+              <span className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--ed-ink)]">Talkie</span>
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Talk to your Mac. A mic is all you need.
+            <p className="mt-3 text-sm leading-relaxed text-[var(--ed-ink-2)]">
+              An assistant that moves your ideas forward.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
-            <Link href="/docs" className="transition-colors hover:text-zinc-900 dark:hover:text-white">Docs</Link>
-            <Link href="/mac" className="transition-colors hover:text-zinc-900 dark:hover:text-white">Mac</Link>
-            <Link href="/mobile" className="transition-colors hover:text-zinc-900 dark:hover:text-white">Mobile</Link>
-            <Link href="/security" className="transition-colors hover:text-zinc-900 dark:hover:text-white">Security</Link>
-            <Link href="/about" className="transition-colors hover:text-zinc-900 dark:hover:text-white">About</Link>
-            <a href="mailto:hello@usetalkie.com" className="transition-colors hover:text-zinc-900 dark:hover:text-white">Email</a>
-            <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-zinc-900 dark:hover:text-white">@usetalkieapp</a>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 text-[13px] font-medium text-[var(--ed-ink-2)]">
+            <Link href="/docs" className="transition-colors hover:text-[var(--ed-accent)]">Docs</Link>
+            <Link href="/mac" className="transition-colors hover:text-[var(--ed-accent)]">Mac</Link>
+            <Link href="/mobile" className="transition-colors hover:text-[var(--ed-accent)]">Mobile</Link>
+            <Link href="/security" className="transition-colors hover:text-[var(--ed-accent)]">Security</Link>
+            <Link href="/about" className="transition-colors hover:text-[var(--ed-accent)]">About</Link>
+            <a href="mailto:hello@usetalkie.com" className="transition-colors hover:text-[var(--ed-accent)]">Email</a>
+            <a href="https://x.com/usetalkieapp" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[var(--ed-accent)]">@usetalkieapp</a>
           </div>
 
-          <p className="text-[10px] font-mono uppercase tracking-[0.18em] text-zinc-400">
+          <p className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--ed-ink-3)]">
             (C) {new Date().getFullYear()} Talkie Systems Inc.
           </p>
         </Container>
