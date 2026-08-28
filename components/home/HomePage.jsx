@@ -15,7 +15,9 @@ import SignalTable from '../SignalTable'
 import InstallCard from '../InstallCard'
 import capturesCatalog from '../../content/captures.json'
 import DemoFilmHero from './DemoFilmHero'
+import MobileDisclosure from './MobileDisclosure'
 import PanoramicHero from './PanoramicHero'
+import RemoteHero from './RemoteHero'
 import SectionArt from './SectionArt'
 
 /**
@@ -168,14 +170,26 @@ export default function HomePage() {
         <span className="home-page-artwork__right" />
       </div>
 
-      {/* ========== HERO — REAL PRODUCT FILM ========== */}
-      <DemoFilmHero />
+      {/* ========== HERO — PRODUCT PROMISE + REAL DEVICE RELATIONSHIP ========== */}
+      <RemoteHero />
 
       {/* ========== PRODUCT MODEL — PANORAMIC INSTRUMENT ========== */}
-      <section className="home-hero-art relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
+      <section id="product-model" className="home-hero-art relative scroll-mt-16 overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <div aria-hidden className="home-hero-graticule pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 xl:py-16">
+        <div className="relative mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14 xl:py-16">
+          <div className="mb-8 md:hidden">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-amber">
+              · PRODUCT MODEL ·
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-normal leading-[1.04] tracking-[-0.02em] text-ink">
+              Capture context. Send it to an agent.
+            </h2>
+            <p className="mt-4 text-[14px] leading-relaxed text-ink-muted">
+              Each surface shows the same Situation, Action, and Result.
+            </p>
+          </div>
+
           {/* The product proposition and scenario system explain the film
               after the visitor has seen Talkie work. */}
           <PanoramicHero />
@@ -187,7 +201,7 @@ export default function HomePage() {
           {/* Brand callback — desktop only here. On mobile, the same
               line is hoisted to a mid-page divider section between
               Recovery Flow and Ownership for thematic punctuation. */}
-          <p className="mt-10 hidden text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-14 md:block">
+          <p className="mt-8 hidden text-center font-display text-[clamp(1rem,1.5vw,1.25rem)] italic leading-relaxed text-ink-dim md:mt-12 md:block">
             <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
             A remote control for your agents.
             <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
@@ -195,27 +209,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ========== REAL PRODUCT FILM — SUPPORTING PROOF ========== */}
+      <DemoFilmHero />
+
       {/* ========== CAPTURES · SIGNAL TABLE ========== */}
       <section
         id="capture"
-        className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
+        className="relative scroll-mt-16 overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
         <span id="dictation-capture" aria-hidden className="absolute -top-20" />
         <SectionArt slice="31%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-20">
           <div className="max-w-4xl">
             <p
-              className="text-[10px] uppercase tracking-[0.26em]"
+              className="text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
               · DICTATION CAPTURE · LIVE EXAMPLES
             </p>
-            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               How do I dictate into any Mac app?
             </h2>
-            <div className="mt-4 flex max-w-3xl flex-col gap-4 text-[15px] leading-relaxed text-ink-muted sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+            <div className="mt-4 flex max-w-3xl flex-col gap-4 text-[15px] leading-relaxed text-ink-muted md:flex-row md:items-end md:justify-between md:gap-8">
               <p className="max-w-2xl">
                 Set the hotkey once, then speak into any app. This staged capture
                 shows the same global shortcut in a note, a temporary chat, and
@@ -224,7 +241,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/workflows"
-                className="group inline-flex min-h-11 shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors hover:text-ink"
+                className="group inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.18em] transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas sm:tracking-[0.22em]"
                 style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
               >
                 See workflows
@@ -233,29 +250,31 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-10">
-            <SignalTable catalog={capturesCatalog} />
-          </div>
+          <MobileDisclosure summary="OPEN THE LIVE CAPTURE" className="mt-8 md:mt-10">
+            <div className="border-t border-edge-faint p-2 group-open:block md:block md:border-0 md:p-0">
+              <SignalTable catalog={capturesCatalog} />
+            </div>
+          </MobileDisclosure>
         </div>
       </section>
 
       {/* ========== CAPTURE MODES ========== */}
       <section
         id="modes"
-        className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono"
+        className="relative scroll-mt-16 overflow-hidden border-t border-edge-faint bg-canvas font-mono"
       >
         <SectionArt variant="technical" tone="canvas" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
-              className="text-[10px] uppercase tracking-[0.26em]"
+              className="text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
               · CAPTURE MODES
             </p>
-            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               What can Talkie do with a voice capture?
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
@@ -263,48 +282,33 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-            {CAPTURE_MODES.slice(0, 3).map((m, i) => (
-              <CaptureModeCard key={m.title} mode={m} index={i} />
-            ))}
-            <div className="hidden md:contents">
-              {CAPTURE_MODES.slice(3).map((m, i) => (
-                <CaptureModeCard key={m.title} mode={m} index={i + 3} />
+          <MobileDisclosure summary="SHOW CAPTURE MODES" className="mt-8 md:mt-14">
+            <div className="grid grid-cols-1 gap-4 border-t border-edge-faint p-3 group-open:grid md:grid md:grid-cols-2 md:gap-5 md:border-0 md:p-0 lg:grid-cols-3">
+              {CAPTURE_MODES.map((m, i) => (
+                <CaptureModeCard key={m.title} mode={m} index={i} />
               ))}
             </div>
-          </div>
-
-          {/* Mobile-only escape hatch — last 3 modes (Recovery / Workflows /
-              CLI) are hidden above to keep the section from sprawling on
-              iPhone; this points to the full tour. */}
-          <div className="mt-6 md:hidden">
-            <Link
-              href="/tour"
-              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-colors hover:border-edge hover:text-ink"
-            >
-              MORE MODES <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+          </MobileDisclosure>
         </div>
       </section>
 
       {/* ========== RECOVERY FLOW ========== */}
       <section
         id="context"
-        className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
+        className="relative scroll-mt-16 overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
         <SectionArt slice="56%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
-              className="text-[10px] uppercase tracking-[0.26em]"
+              className="text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
               · COMING BACK LATER
             </p>
-            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               How can I find a voice note later?
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
@@ -312,45 +316,33 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14 space-y-0">
-            {FLOW_STEPS.map((step) => (
-              <FlowStep key={step.id} step={step} />
-            ))}
-          </div>
+          <MobileDisclosure summary="SHOW THE RECOVERY FLOW" className="mt-8 md:mt-14">
+            <div className="border-t border-edge-faint px-4 group-open:block md:block md:border-0 md:px-0">
+              {FLOW_STEPS.map((step) => (
+                <FlowStep key={step.id} step={step} />
+              ))}
+            </div>
+          </MobileDisclosure>
         </div>
-      </section>
-
-      {/* ========== BRAND CALLBACK · MOBILE DIVIDER ==========
-          Mid-page poetic break on phone only. Desktop keeps the
-          callback inline at the end of the hero section per the
-          original composition; on mobile we hoist it down here so
-          it works as a chapter divider between operational
-          (Recovery Flow) and trust (Ownership) themes. */}
-      <section className="border-y border-edge-faint bg-canvas py-14 md:hidden">
-        <p className="mx-auto max-w-md px-4 text-center font-display text-2xl italic leading-snug text-ink-dim">
-          <span aria-hidden className="mr-3 inline-block align-middle text-ink-faint not-italic">·</span>
-          A remote control for your agents.
-          <span aria-hidden className="ml-3 inline-block align-middle text-ink-faint not-italic">·</span>
-        </p>
       </section>
 
       {/* ========== OWNERSHIP / ARCHITECTURE ========== */}
       <section
         id="ownership"
-        className="relative overflow-hidden border-t border-edge-faint bg-canvas font-mono"
+        className="relative scroll-mt-16 overflow-hidden border-t border-edge-faint bg-canvas font-mono"
       >
         <SectionArt variant="technical" tone="canvas" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-24">
           <div className="max-w-3xl">
             <p
-              className="text-[10px] uppercase tracking-[0.26em]"
+              className="text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.26em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
               · OWNERSHIP
             </p>
-            <h2 className="mt-3 font-display text-4xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
               Where does Talkie store voice data?
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
@@ -358,72 +350,76 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-            {OWNERSHIP_CARDS.map((card) => (
-              <OwnershipCard key={card.title} card={card} />
-            ))}
-          </div>
+          <MobileDisclosure summary="SHOW DATA OWNERSHIP" className="mt-8 md:mt-12">
+            <div className="border-t border-edge-faint p-3 group-open:block md:block md:border-0 md:p-0">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+                {OWNERSHIP_CARDS.map((card) => (
+                  <OwnershipCard key={card.title} card={card} />
+                ))}
+              </div>
 
-          <Link
-            href="/security"
-            className="group mt-10 block overflow-hidden rounded-md border border-edge-dim bg-surface transition-all hover:-translate-y-0.5 hover:border-edge"
-          >
-            <div className="flex items-center justify-between border-b border-edge-faint px-4 py-3 font-mono text-[9px] uppercase tracking-[0.24em] text-ink-faint">
-              <span>· Security architecture</span>
-              <span
-                className="transition-colors group-hover:text-ink"
-                style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
+              <Link
+                href="/security"
+                className="group mt-6 block overflow-hidden rounded-md border border-edge-dim bg-surface transition-all hover:-translate-y-0.5 hover:border-edge focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas md:mt-10"
               >
-                Security →
-              </span>
-            </div>
-            <div className="relative overflow-hidden p-5 md:p-6">
-              <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE_FINE} />
-              <div className="relative grid grid-cols-1 gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
-                <SecurityNode label="Your devices" detail="local library" />
-                <SecurityArrow />
-                <SecurityNode label="Your iCloud" detail="private sync" />
-                <SecurityArrow />
-                <SecurityNode label="External models" detail="opt-in · your keys" muted />
+                <div className="flex min-h-11 items-center justify-between border-b border-edge-faint px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint md:text-[9px] md:tracking-[0.24em]">
+                  <span>· Security architecture</span>
+                  <span
+                    className="transition-colors group-hover:text-ink"
+                    style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
+                  >
+                    Security →
+                  </span>
+                </div>
+                <div className="relative overflow-hidden p-5 md:p-6">
+                  <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={GRATICULE_FINE} />
+                  <div className="relative grid grid-cols-1 gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
+                    <SecurityNode label="Your devices" detail="local library" />
+                    <SecurityArrow />
+                    <SecurityNode label="Your iCloud" detail="private sync" />
+                    <SecurityArrow />
+                    <SecurityNode label="External models" detail="opt-in · your keys" muted />
+                  </div>
+                </div>
+              </Link>
+
+              <div className="mt-6 md:mt-10">
+                <Link
+                  href="/security"
+                  className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.18em] transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas md:tracking-[0.24em]"
+                  style={{
+                    color: 'var(--amber)',
+                    ...AMBER_TINT,
+                    ...AMBER_GLOW_SOFT,
+                  }}
+                >
+                  READ HOW IT&apos;S WIRED <span aria-hidden>→</span>
+                </Link>
               </div>
             </div>
-          </Link>
-
-          <div className="mt-10">
-            <Link
-              href="/security"
-              className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
-              style={{
-                color: 'var(--amber)',
-                ...AMBER_TINT,
-                ...AMBER_GLOW_SOFT,
-              }}
-            >
-              READ HOW IT&apos;S WIRED <span aria-hidden>→</span>
-            </Link>
-          </div>
+          </MobileDisclosure>
         </div>
       </section>
 
       {/* ========== DOWNLOADS ========== */}
       <section
         id="downloads"
-        className="relative overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
+        className="relative scroll-mt-16 overflow-hidden border-t border-edge-faint bg-canvas-alt font-mono"
       >
         <span id="get" aria-hidden className="absolute -top-20" />
         <SectionArt slice="81%" />
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-40" style={GRATICULE} />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(30rem,1fr)] lg:items-center lg:gap-16">
-            <div className="max-w-xl">
+        <div className="relative mx-auto max-w-6xl px-4 py-12 md:px-6 md:py-24">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-12 xl:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)] xl:gap-16">
+            <div className="min-w-0 max-w-xl">
               <p
-                className="text-[10px] uppercase tracking-[0.26em]"
+                className="text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.26em]"
                 style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
               >
                 · DOWNLOADS
               </p>
-              <h2 className="mt-3 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
+              <h2 className="mt-3 font-display text-3xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
                 How much does Talkie cost?
               </h2>
               <p className="mt-5 max-w-[65ch] text-[15px] leading-relaxed text-ink-muted">
@@ -434,7 +430,7 @@ export default function HomePage() {
               <div className="mt-9 border-y border-edge-dim">
                 <DownloadStoryRow
                   label="MAC · WORK SURFACE"
-                  detail="Use the signed DMG or a package manager. Requires macOS 14 or later."
+                  detail="Use the signed DMG or a package manager. Requires macOS 26 or later on Apple silicon."
                 />
                 <DownloadStoryRow
                   label="iPHONE + WATCH · CAPTURE SURFACES"
@@ -446,14 +442,14 @@ export default function HomePage() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   href="/mac"
-                  className="inline-flex min-h-11 items-center rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] transition-all hover:-translate-y-0.5"
+                  className="inline-flex min-h-11 items-center whitespace-nowrap rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.18em] transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas sm:tracking-[0.24em]"
                   style={{ color: 'var(--amber)', ...AMBER_TINT, ...AMBER_GLOW_SOFT }}
                 >
                   EXPLORE MAC <span aria-hidden className="ml-2">→</span>
                 </Link>
                 <Link
                   href="/mobile"
-                  className="inline-flex min-h-11 items-center rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink-muted transition-all hover:-translate-y-0.5 hover:border-edge hover:text-ink"
+                  className="inline-flex min-h-11 items-center whitespace-nowrap rounded-sm border border-edge-dim px-4 py-2.5 text-[10px] uppercase tracking-[0.18em] text-ink-muted transition-all hover:-translate-y-0.5 hover:border-edge hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas sm:tracking-[0.24em]"
                 >
                   EXPLORE MOBILE <span aria-hidden className="ml-2">→</span>
                 </Link>
@@ -466,12 +462,12 @@ export default function HomePage() {
           </div>
 
           <div className="mt-10 flex flex-col gap-3 border-t border-edge-faint pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-ink-faint">
+            <p className="text-[10px] uppercase tracking-[0.16em] text-ink-faint sm:tracking-[0.2em]">
               CURRENT DOWNLOADS · MAC · iPHONE · APPLE WATCH · CLI
             </p>
             <Link
               href="/downloads"
-              className="text-[10px] uppercase tracking-[0.24em] transition-colors hover:text-ink"
+              className="inline-flex min-h-11 items-center whitespace-nowrap text-[10px] uppercase tracking-[0.18em] transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas sm:tracking-[0.24em]"
               style={{ color: 'var(--amber)', ...AMBER_GLOW_SOFT }}
             >
               VIEW THE FULL DOWNLOAD GUIDE <span aria-hidden>→</span>
@@ -489,8 +485,8 @@ export default function HomePage() {
 
 function DownloadStoryRow({ label, detail, divided = false }) {
   return (
-    <div className={`grid gap-2 py-4 sm:grid-cols-[13rem_1fr] sm:items-start ${divided ? 'border-t border-edge-faint' : ''}`}>
-      <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">{label}</p>
+    <div className={`grid gap-2 py-4 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:items-start ${divided ? 'border-t border-edge-faint' : ''}`}>
+      <p className="text-[9px] uppercase tracking-[0.18em] text-ink-subtle sm:tracking-[0.22em]">{label}</p>
       <p className="text-[12px] leading-relaxed text-ink-muted">{detail}</p>
     </div>
   )
@@ -502,7 +498,7 @@ function CaptureModeCard({ mode, index }) {
   return (
     <Link
       href={mode.href}
-      className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all hover:-translate-y-0.5"
+      className="group relative overflow-hidden rounded-md border border-edge-dim bg-surface p-5 transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-4 focus-visible:ring-offset-canvas"
       style={{ '--hover-border': 'var(--amber)' }}
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-50" style={GRATICULE_FINE} />

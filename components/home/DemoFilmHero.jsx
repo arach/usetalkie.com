@@ -1,6 +1,7 @@
 "use client"
 
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { PLAY_PRODUCT_DEMO_EVENT } from '../../shared/events/product-demo'
 
 const DEMO_VIDEO_URL =
   'https://kyuduglcwb3yapbw.public.blob.vercel-storage.com/website/videos/talkie-cross-app-demo-2026-08-13-22786010.mp4'
@@ -82,31 +83,51 @@ export default function DemoFilmHero() {
   const [currentTime, setCurrentTime] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
   const [isStarting, setIsStarting] = useState(false)
+  const [playbackError, setPlaybackError] = useState(false)
   const videoRef = useRef(null)
   const interaction = useMemo(() => getInteractionState(currentTime), [currentTime])
   const keycast = useMemo(() => getKeycastState(currentTime), [currentTime])
 
-  const startPlayback = async () => {
+  const startPlayback = useCallback(async () => {
     if (!videoRef.current || isStarting) return
 
+    setPlaybackError(false)
     setIsStarting(true)
     try {
       await videoRef.current.play()
     } catch {
       setIsStarting(false)
+      setPlaybackError(true)
     }
-  }
+  }, [isStarting])
+
+  useEffect(() => {
+    const handlePlayRequest = () => {
+      const section = document.getElementById('product-demo')
+      section?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+        block: 'start',
+      })
+      startPlayback()
+    }
+
+    window.addEventListener(PLAY_PRODUCT_DEMO_EVENT, handlePlayRequest)
+    return () => window.removeEventListener(PLAY_PRODUCT_DEMO_EVENT, handlePlayRequest)
+  }, [startPlayback])
 
   return (
     <section
+      id="product-demo"
       aria-labelledby="demo-film-title"
-      className="home-demo-film-stage relative overflow-hidden border-b border-edge-faint bg-canvas font-mono"
+      className="home-demo-film-stage relative scroll-mt-14 overflow-hidden border-b border-edge-faint bg-canvas font-mono"
     >
-      <h1 id="demo-film-title" className="sr-only">
+      <h2 id="demo-film-title" className="sr-only">
         Talkie dictation across Cursor, ChatGPT, Ghostty, and Talkie
-      </h1>
+      </h2>
 
-      <div className="mx-auto max-w-[1600px] sm:px-4 sm:py-4 lg:px-6 lg:py-6">
+      <div className="mx-auto max-w-6xl px-4 py-4 lg:px-6 lg:py-6">
         <figure className="overflow-hidden bg-[#050504] sm:rounded-md sm:border sm:border-white/10 sm:shadow-[0_24px_72px_-44px_rgba(0,0,0,0.58)]">
           <div className="relative aspect-video bg-black">
             <video
@@ -121,6 +142,12 @@ export default function DemoFilmHero() {
               onPlaying={() => {
                 setHasStarted(true)
                 setIsStarting(false)
+                setPlaybackError(false)
+              }}
+              onError={() => {
+                setHasStarted(false)
+                setIsStarting(false)
+                setPlaybackError(true)
               }}
               onLoadedMetadata={(event) => setCurrentTime(event.currentTarget.currentTime)}
               onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
@@ -138,11 +165,25 @@ export default function DemoFilmHero() {
               <button
                 type="button"
                 onClick={startPlayback}
-                aria-label={isStarting ? 'Loading Talkie demo' : 'Play Talkie demo'}
+                aria-label={
+                  playbackError
+                    ? 'Retry the Talkie demo'
+                    : isStarting
+                      ? 'Loading Talkie demo'
+                      : 'Play Talkie demo'
+                }
                 className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center focus:outline-none focus-visible:shadow-[inset_0_0_0_2px_var(--amber)]"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-sm border border-white/25 bg-[#0e0d0a]/90 text-[#f4efe6] shadow-[0_12px_28px_-12px_rgba(0,0,0,0.8)] transition-colors duration-200 hover:border-[#e68a3c] hover:text-[#e68a3c]">
-                  {isStarting ? (
+                <span
+                  aria-live="polite"
+                  className={`flex min-h-12 items-center justify-center rounded-sm border border-white/25 bg-[#0e0d0a]/90 text-[#f4efe6] shadow-[0_12px_28px_-12px_rgba(0,0,0,0.8)] transition-colors duration-200 hover:border-[#e68a3c] hover:text-[#e68a3c] ${playbackError ? 'gap-2 px-4 text-[10px] uppercase tracking-[0.16em]' : 'h-12 w-12'}`}
+                >
+                  {playbackError ? (
+                    <>
+                      <span>Video did not load.</span>
+                      <span className="text-[#eaa469]">Retry</span>
+                    </>
+                  ) : isStarting ? (
                     <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/30 border-t-current" />
                   ) : (
                     <svg
@@ -203,8 +244,8 @@ export default function DemoFilmHero() {
               </span>
             </span>
 
-            <span className="order-2 flex min-h-9 items-center border-white/10 bg-[#18150f] px-3 text-[#eaa469] sm:order-3 sm:min-h-0 sm:border-l sm:px-4">
-              1:31 · Original speed
+            <span className="order-2 flex min-h-9 items-center border-white/10 bg-[#18150f] px-3 text-[10px] text-[#eaa469] sm:order-3 sm:min-h-0 sm:border-l sm:px-4 sm:text-[9px]">
+              Full demo · Original speed
             </span>
           </figcaption>
         </figure>

@@ -97,7 +97,7 @@ export default function SiteShell({ children }) {
 
       <main>{children}</main>
 
-      <footer className="relative mt-16 border-t border-edge-faint bg-canvas-alt font-mono">
+      <footer className="relative mt-10 border-t border-edge-faint bg-canvas-alt font-mono md:mt-16">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-40"
@@ -108,9 +108,9 @@ export default function SiteShell({ children }) {
           }}
         />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+        <div className="relative mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-20">
           {/* Wordmark + tagline + primary CTA */}
-          <div className="flex flex-col gap-8 border-b border-edge-subtle pb-10 md:flex-row md:items-end md:justify-between md:gap-12">
+          <div className="flex flex-col gap-8 border-b border-edge-subtle pb-8 md:flex-row md:items-end md:justify-between md:gap-12 md:pb-10">
             <div className="max-w-sm">
               <Wordmark size={48} state="listening" pulse />
               <p className="mt-5 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
@@ -123,7 +123,7 @@ export default function SiteShell({ children }) {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="hidden flex-wrap items-center gap-3 sm:flex">
               <Link
                 href="/downloads"
                 className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-edge px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink transition-all hover:-translate-y-px"
@@ -140,47 +140,64 @@ export default function SiteShell({ children }) {
             </div>
           </div>
 
-          {/* Link columns */}
-          <div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-4">
+          {/* Mobile keeps the footer compact. Each group opens on demand. */}
+          <div className="mt-6 divide-y divide-edge-faint border-y border-edge-faint sm:hidden">
+            {FOOTER_SECTIONS.map((section) => (
+              <details key={section.label} className="group">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between py-3 text-[10px] uppercase tracking-[0.22em] text-ink-subtle marker:content-none">
+                  <span>· {section.label}</span>
+                  <span aria-hidden className="text-base transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <FooterLinkList links={section.links} />
+              </details>
+            ))}
+          </div>
+
+          {/* Desktop keeps the complete link index visible. */}
+          <div className="mt-10 hidden gap-8 sm:grid sm:grid-cols-4">
             {FOOTER_SECTIONS.map((section) => (
               <div key={section.label}>
                 <p className="text-[9px] uppercase tracking-[0.26em] text-ink-subtle">· {section.label}</p>
-                <ul className="mt-3 space-y-0.5">
-                  {section.links.map((link) =>
-                    link.external ? (
-                      <li key={link.label}>
-                        <a
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex min-h-11 items-center gap-1.5 py-2 text-[11px] tracking-[0.08em] text-ink-dim transition-colors hover:text-trace sm:min-h-0 sm:py-0"
-                        >
-                          <span>{link.label}</span>
-                          <span className="text-ink-subtle">↗</span>
-                        </a>
-                      </li>
-                    ) : (
-                      <li key={link.label}>
-                        <Link
-                          href={link.href}
-                          className="inline-flex min-h-11 items-center py-2 text-[11px] tracking-[0.08em] text-ink-dim transition-colors hover:text-trace sm:min-h-0 sm:py-0"
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    )
-                  )}
-                </ul>
+                <FooterLinkList links={section.links} compact />
               </div>
             ))}
           </div>
 
           {/* Bottom metadata row */}
-          <div className="mt-12 border-t border-edge-subtle pt-6 text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+          <div className="mt-8 border-t border-edge-subtle pt-5 text-[10px] uppercase tracking-[0.18em] text-ink-subtle md:mt-12 md:pt-6 md:text-[9px] md:tracking-[0.22em]">
             <span>(C) {new Date().getFullYear()} TALKIE</span>
           </div>
         </div>
       </footer>
     </>
+  )
+}
+
+function FooterLinkList({ links, compact = false }) {
+  return (
+    <ul className={compact ? 'mt-3 space-y-0.5' : 'pb-3'}>
+      {links.map((link) => (
+        <li key={link.label}>
+          {link.external ? (
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center gap-1.5 text-[11px] tracking-[0.08em] text-ink-dim transition-colors hover:text-trace ${compact ? 'min-h-0 py-0' : 'min-h-11 py-2'}`}
+            >
+              <span>{link.label}</span>
+              <span className="text-ink-subtle">↗</span>
+            </a>
+          ) : (
+            <Link
+              href={link.href}
+              className={`inline-flex items-center text-[11px] tracking-[0.08em] text-ink-dim transition-colors hover:text-trace ${compact ? 'min-h-0 py-0' : 'min-h-11 py-2'}`}
+            >
+              {link.label}
+            </Link>
+          )}
+        </li>
+      ))}
+    </ul>
   )
 }

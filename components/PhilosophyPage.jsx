@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Mic, Lock, Layers } from 'lucide-react'
 import { NarrateTrigger } from './narrator'
 import { supportingLine, TAGLINE_PHILOSOPHY } from '../content/tagline'
 import DownloadBay from './DownloadBay'
@@ -16,33 +15,6 @@ import DownloadBay from './DownloadBay'
  *
  * Sections: HERO · OBSERVATIONS · PRINCIPLES · PULL QUOTE · FOOTER TIE-BACK.
  */
-
-const PRINCIPLES = [
-  {
-    n: '01',
-    eyebrow: 'MINIMALISM',
-    icon: Layers,
-    headline: 'Tools should stay out of the way.',
-    body: 'Small on purpose. No inboxes, no dashboards, no proprietary workflow. Just a quiet path from what you say to what you build.',
-    tag: 'SIGNAL · CLEAR',
-  },
-  {
-    n: '02',
-    eyebrow: 'OWNERSHIP',
-    icon: Lock,
-    headline: 'Own your voice, own your workflow.',
-    body: 'Your recordings and transcripts are yours. Not a training set, not a product. They live on your devices and leave only when you send them somewhere.',
-    tag: 'LOCAL · PRIVATE',
-  },
-  {
-    n: '03',
-    eyebrow: 'AGENCY',
-    icon: Mic,
-    headline: 'Wire up your own tools.',
-    body: 'Lego, basically. Snap together what you need. Your data. Your tools. Your rules.',
-    tag: 'YOUR TERMS',
-  },
-]
 
 // Reused inline style fragments — declared once so the JSX stays readable.
 const GRATICULE = {
@@ -77,16 +49,17 @@ export default function PhilosophyPage() {
           </p>
 
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
-            Your best ideas don&apos;t wait<br />
+            Your agents needed<br />
             <span className="italic text-trace" style={HEADLINE_PHOSPHOR}>
-              for you to sit down.
+              a remote control.
             </span>
           </h1>
 
           <p className="philo-lede mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Ideas show up on a walk, between meetings, in the middle of something unrelated.
-            They arrive fast and unpolished, and if you can&apos;t catch one right then, it&apos;s
-            usually gone by the time you sit down.
+            The original insight behind Talkie was not about dictation. It was about directing
+            agents when the Mac was out of reach. A helpful agent waits inside an app. A remote
+            control lets you send the instruction, carry the context, and follow the result from
+            wherever the work starts.
           </p>
 
           <HeroWaveform />
@@ -111,23 +84,61 @@ export default function PhilosophyPage() {
           <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
             <ObservationCard
               code="001"
-              label="DEVICES"
-              heading="iPhone + Mac."
-              body="Your iPhone is the perfect capture device — always on you, always ready. Your Mac is where raw ideas become real output."
+              label="ORIGIN"
+              heading="The problem was not dictation."
+              body="Agents could do useful work, but directing them still meant returning to the Mac, opening the right tool, and moving the context by hand."
             />
             <ObservationCard
               code="002"
-              label="SILOS"
-              heading="Apps, clouds & AI disconnect."
-              body="Voice Memos trap ideas. AI clouds absorb them. Your thoughts end up scattered across systems you don't control."
+              label="CONTEXT"
+              heading="The instruction was not enough."
+              body="Remote use exposed the next problem. An agent needs the app, file, screen, history, and destination that give the instruction meaning."
             />
             <ObservationCard
               code="003"
-              label="MISSING LINK"
-              heading="Nothing connects the two."
-              body="What's missing is a private, direct path from your voice to your tools."
+              label="THROUGHPUT"
+              heading="Speed only helps when context survives."
+              body="Talkie keeps intent and context together so an agent can act without another round of explanation."
               highlight
             />
+          </div>
+        </div>
+      </section>
+
+      {/* ========== EVOLUTION ========== */}
+      <section className="relative border-t border-edge-faint bg-canvas">
+        <div aria-hidden className="pointer-events-none absolute inset-0 opacity-35" style={GRATICULE} />
+
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:px-6 md:py-24">
+          <div className="flex items-center gap-3">
+            <span aria-hidden className="block h-px w-10" style={{ background: 'var(--trace-dim)' }} />
+            <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
+              EVOLUTION
+            </p>
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+            <h2 className="max-w-[13ch] font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
+              From remote control to a context layer.
+            </h2>
+
+            <div className="space-y-6 text-[15px] leading-relaxed text-ink-muted">
+              <p>
+                The first version needed to do one thing: let a person direct an agent without
+                returning to the Mac. That made voice useful, but it also exposed a larger
+                requirement. Fast instructions fail when the surrounding context is missing.
+              </p>
+              <p>
+                Over time, the relevant context kept expanding. It could be the active app,
+                selected text, a screenshot, a file, a recording, a project, the device in hand,
+                or the agent already doing the work.
+              </p>
+              <p className="text-ink">
+                That is why Talkie grew beyond dictation and device sync. Capture, search,
+                workflows, remote access, and agent handoff are parts of one system. The goal is
+                high-throughput, contextual communication with agents.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -147,14 +158,10 @@ export default function PhilosophyPage() {
             Three things we care about.
           </h2>
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Pick any one to read first; the others follow.
+            They read in order: the signal, the store, the system.
           </p>
 
-          <div className="mt-14 space-y-0">
-            {PRINCIPLES.map((p) => (
-              <PrincipleStack key={p.n} principle={p} />
-            ))}
-          </div>
+          <PrinciplesSignalPath />
         </div>
       </section>
 
@@ -294,46 +301,195 @@ function ObservationCard({ code, label, heading, body, highlight = false }) {
   )
 }
 
-function PrincipleStack({ principle: p }) {
-  const Icon = p.icon
+function PrinciplesSignalPath() {
   return (
-    <div className="group relative border-t border-edge-subtle py-14 transition-colors duration-200 hover:border-edge md:py-16">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-16">
-        <div className="flex flex-col gap-3">
-          <div className="font-display text-[56px] font-normal leading-none tracking-[-0.04em] text-trace opacity-80 transition-opacity duration-200 group-hover:opacity-100">
-            {p.n}
-          </div>
+    <div className="relative mt-16">
+      <svg
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible text-trace lg:block"
+        viewBox="0 0 1120 980"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M112 118 C112 250 126 300 238 323 C350 346 465 345 506 414"
+          fill="none"
+          stroke="currentColor"
+          strokeOpacity="0.72"
+          strokeWidth="1.4"
+        />
+        <path
+          d="M548 617 C580 677 585 700 520 742 C488 763 482 795 542 830"
+          fill="none"
+          stroke="currentColor"
+          strokeOpacity="0.72"
+          strokeWidth="1.4"
+        />
+        <circle cx="112" cy="118" r="4" fill="currentColor" />
+        <circle cx="506" cy="414" r="4" fill="currentColor" />
+        <circle cx="548" cy="617" r="4" fill="currentColor" />
+        <circle cx="542" cy="830" r="4" fill="currentColor" />
+      </svg>
 
-          <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace" style={TRACE_GLOW_SOFT}>
-            · {p.eyebrow}
-          </p>
+      <div className="absolute bottom-2 left-[15px] top-2 w-px bg-trace/45 lg:hidden" aria-hidden />
 
-          <div
-            className="mt-2 inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge transition-all duration-200 group-hover:scale-110 group-hover:border-amber/60"
-            style={{ background: 'color-mix(in oklab, var(--trace) 5%, transparent)' }}
-          >
-            <Icon
-              className="h-4 w-4 text-trace transition-transform duration-200"
-              aria-hidden
-            />
-          </div>
+      <div className="relative grid min-h-[270px] grid-cols-1 gap-8 pb-16 pl-12 lg:min-h-[310px] lg:grid-cols-[190px_360px_1fr] lg:gap-8 lg:pb-0 lg:pl-0">
+        <div className="relative flex items-start gap-5 lg:pt-10">
+          <span
+            aria-hidden
+            className="absolute -left-[37px] top-1.5 h-3 w-3 rounded-full border-2 border-canvas bg-trace shadow-[0_0_0_6px_color-mix(in_oklab,var(--trace)_12%,transparent)] lg:hidden"
+          />
+          <SignalSource />
         </div>
 
-        <div className="flex flex-col justify-center">
-          <h3 className="font-display text-3xl font-normal leading-snug tracking-[-0.02em] text-ink md:text-4xl">
-            {p.headline}
-          </h3>
-          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{p.body}</p>
+        <PrincipleCopy
+          label="DELIVERY"
+          headline="Send the instruction, keep your place."
+          body="Talkie carries your instruction and the context that gives it meaning to wherever the work runs, then brings the result back. You never relocate into another app to get something done."
+          tag="SIGNAL · CLEAR"
+        />
+      </div>
 
-          <div
-            className="mt-6 inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace"
-            style={TRACE_GLOW_SOFT}
-          >
-            <span aria-hidden className="inline-block h-px w-8 transition-all duration-200 group-hover:w-12" style={{ background: 'var(--trace-dim)' }} />
-            <span>{p.tag}</span>
-          </div>
+      <div className="relative grid min-h-[350px] grid-cols-1 gap-10 pb-16 pl-12 lg:min-h-[350px] lg:grid-cols-[420px_210px_1fr] lg:items-center lg:gap-10 lg:pb-0 lg:pl-0">
+        <div className="hidden lg:block" />
+        <div className="relative">
+          <span
+            aria-hidden
+            className="absolute -left-[37px] top-1.5 h-3 w-3 rounded-full border-2 border-canvas bg-trace shadow-[0_0_0_6px_color-mix(in_oklab,var(--trace)_12%,transparent)] lg:hidden"
+          />
+          <LocalStore />
+        </div>
+
+        <PrincipleCopy
+          label="OWNERSHIP"
+          headline="Own your voice, own your workflow."
+          body="Your recordings and transcripts are yours. Not a training set, not a product. They live on your devices and leave only when you send them somewhere."
+          tag="LOCAL · PRIVATE"
+        />
+      </div>
+
+      <div className="relative grid min-h-[340px] grid-cols-1 gap-10 pl-12 lg:grid-cols-[390px_1fr] lg:items-center lg:gap-16 lg:pl-24">
+        <div className="relative">
+          <span
+            aria-hidden
+            className="absolute -left-[37px] top-1.5 h-3 w-3 rounded-full border-2 border-canvas bg-trace shadow-[0_0_0_6px_color-mix(in_oklab,var(--trace)_12%,transparent)] lg:hidden"
+          />
+          <PrincipleCopy
+            label="COMPOSITION"
+            headline="Compose your own system."
+            body="Talkie uses small, composable parts. You and your agents connect tools, context, and workflows into the system the work requires."
+            tag="COMPOSABLE"
+          />
+        </div>
+
+        <WorkflowDiagram />
+      </div>
+    </div>
+  )
+}
+
+function PrincipleCopy({ label, headline, body, tag }) {
+  return (
+    <div className="group max-w-xl self-center">
+      <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
+        · {label}
+      </p>
+      <h3 className="mt-3 max-w-[16ch] font-display text-3xl font-normal leading-[1.08] tracking-[-0.02em] text-ink md:text-4xl">
+        {headline}
+      </h3>
+      <p className="mt-4 max-w-[60ch] text-[14px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+        {body}
+      </p>
+      <div className="mt-5 inline-flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
+        <span aria-hidden className="h-px w-8 bg-trace/35 transition-all duration-300 group-hover:w-12" />
+        <span>{tag}</span>
+      </div>
+    </div>
+  )
+}
+
+function SignalSource() {
+  const bars = [10, 21, 13, 27, 17, 34, 25, 12]
+  return (
+    <div className="w-[150px] text-trace">
+      <p className="font-mono text-[9px] uppercase tracking-[0.24em]">· SOURCE</p>
+      <div className="mt-5 flex items-center gap-4">
+        <div className="flex h-10 items-center gap-[3px]" aria-hidden>
+          {bars.map((height, index) => (
+            <span key={index} className="w-px bg-current opacity-70" style={{ height }} />
+          ))}
+        </div>
+        <div className="relative flex h-12 w-12 items-center justify-center rounded-full border border-trace/25" aria-hidden>
+          <span className="absolute inset-[7px] rounded-full border border-trace/20" />
+          <span className="h-2.5 w-2.5 rounded-full bg-trace shadow-[0_0_0_6px_color-mix(in_oklab,var(--trace)_14%,transparent)]" />
         </div>
       </div>
+    </div>
+  )
+}
+
+function LocalStore() {
+  const rows = ['RECORDINGS', 'TRANSCRIPTS', 'CONTEXT', 'RULES']
+  return (
+    <div className="mx-auto w-full max-w-[190px] rounded-[88px] border border-trace/45 p-1 text-trace shadow-[0_14px_35px_-28px_var(--trace)]">
+      <div className="overflow-hidden rounded-[82px] border border-trace/25 bg-canvas/90 py-5 text-center">
+        <p className="font-mono text-[9px] uppercase tracking-[0.24em]">LOCAL</p>
+        <div className="mx-auto mt-4 flex h-[70px] w-[70px] items-center justify-center rounded-full border border-dashed border-trace/30" aria-hidden>
+          <div className="flex items-center gap-[3px]">
+            {[18, 30, 42, 28, 16].map((height, index) => (
+              <span key={index} className="w-[2px] bg-current" style={{ height }} />
+            ))}
+          </div>
+        </div>
+        <div className="mt-4 divide-y divide-trace/15 border-y border-trace/15">
+          {rows.map((row) => (
+            <div key={row} className="py-2 font-mono text-[8px] uppercase tracking-[0.2em]">
+              {row}
+            </div>
+          ))}
+        </div>
+        <span className="mx-auto mt-4 block h-1.5 w-1.5 rounded-full bg-trace" aria-hidden />
+      </div>
+    </div>
+  )
+}
+
+function WorkflowDiagram() {
+  const nodes = [
+    { label: 'AGENT\nORCHESTRATOR', className: 'left-1/2 top-0 -translate-x-1/2' },
+    { label: 'KNOWLEDGE\nBASES', className: 'right-0 top-[64px]' },
+    { label: 'RESULTS\nDELIVERY', className: 'right-0 bottom-[58px]' },
+    { label: 'RULES &\nPOLICIES', className: 'bottom-0 right-[23%]' },
+    { label: 'TOOLS &\nAPIS', className: 'bottom-0 left-[23%]' },
+    { label: 'VOICE\nINPUT', className: 'left-0 bottom-[58px]' },
+  ]
+
+  return (
+    <div className="relative mx-auto h-[300px] w-full max-w-[520px] text-trace">
+      <svg aria-hidden className="absolute inset-0 h-full w-full" viewBox="0 0 520 300" preserveAspectRatio="none">
+        <path d="M260 144 L260 43 M285 144 L426 90 M286 160 L444 215 M274 174 L354 269 M246 174 L165 269 M235 160 L78 215" fill="none" stroke="currentColor" strokeDasharray="3 4" strokeOpacity="0.35" />
+        <path d="M78 215 H235 M286 215 H500" fill="none" stroke="currentColor" strokeOpacity="0.7" />
+        <circle cx="260" cy="144" r="5" fill="currentColor" />
+        <circle cx="235" cy="215" r="4" fill="currentColor" />
+        <circle cx="286" cy="215" r="4" fill="currentColor" />
+      </svg>
+
+      <div className="absolute left-1/2 top-1/2 flex h-[68px] w-[120px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-trace/40 bg-canvas text-center shadow-[0_0_0_5px_color-mix(in_oklab,var(--trace)_8%,transparent)] sm:h-[76px] sm:w-[150px]">
+        <span className="font-mono text-[8px] uppercase leading-relaxed tracking-[0.14em] sm:text-[9px] sm:tracking-[0.18em]">WORKFLOW<br />DESIGNER</span>
+      </div>
+
+      {nodes.map((node) => (
+        <div
+          key={node.label}
+          className={`absolute flex h-[48px] w-[82px] items-center justify-center rounded-lg border border-edge bg-canvas px-1 text-center font-mono text-[7px] uppercase leading-relaxed tracking-[0.08em] text-ink-muted sm:h-[54px] sm:w-[112px] sm:px-2 sm:text-[8px] sm:tracking-[0.14em] ${node.className}`}
+        >
+          {node.label.split('\n').map((line, index) => (
+            <span key={line}>
+              {index > 0 && <br />}
+              {line}
+            </span>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }
