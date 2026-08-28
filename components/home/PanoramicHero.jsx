@@ -42,13 +42,11 @@ const PACKAGE_MANAGERS = [
  * canvas hosts amber accents (eyebrow above the chassis) per the brief.
  */
 
-/* Generic device-category labels (Mac → Computer, iPhone → Phone)
- * for brand-agnostic rolodex framing. Per-product pages keep the
- * Apple-specific naming where install / OS-version copy demands it. */
+/* Use the same product-surface names across the homepage. */
 const DEVICES = [
   {
     key: 'mac',
-    label: 'Computer',
+    label: 'Mac',
     Icon: Laptop,
     taglines: [
       'Speak into any text field. Keep working.',
@@ -85,7 +83,7 @@ const DEVICES = [
       href: '/downloads',
       Icon: Download,
       specs: [
-        { label: 'Requires', value: 'macOS 14+' },
+        { label: 'Requires', value: 'macOS 26+' },
         { label: 'Processor', value: 'Apple Silicon' },
         { label: 'Package', value: 'Signed DMG' },
       ],
@@ -99,7 +97,7 @@ const DEVICES = [
     },
     waveformBias: 0,
     inputSpec: {
-      platform: 'macOS 14+',
+      platform: 'macOS 26+',
       release:  'v0.4.2 (142)',
       channel:  'VOICE.IN',
       status:   'ARMED',
@@ -582,7 +580,7 @@ export default function PanoramicHero() {
 
 function CinematicHero({ device, flipPhase, useCaseIdx, onSelectUseCase, onCycle, onPause }) {
   return (
-    <section className="relative pb-3 pt-1 text-center md:pb-6 md:pt-8 xl:pb-8 xl:pt-14">
+    <section className="relative hidden pb-3 pt-1 text-center md:block md:pb-5 md:pt-6 lg:pb-6 lg:pt-7 xl:pb-8 xl:pt-12">
       {/* Donor-shape headline: "Talk to your" inline with the Rolodex
           flip card, sized 1em relative to the H1 and baseline-nudged
           so the card sits visually grounded under the typography.
@@ -638,7 +636,7 @@ function ScenarioStage({ device, deviceIdx, useCase, useCaseIdx, onJump, panelSt
 
   return (
     <section
-      className="home-instrument-light relative mt-7 overflow-hidden rounded-md font-mono sm:mt-8 xl:-mx-12 2xl:-mx-20"
+      className="home-instrument-light relative mt-2 w-full min-w-0 max-w-full overflow-hidden rounded-md font-mono md:mt-8 xl:-mx-12 2xl:-mx-20"
       style={panelStyle}
       onMouseEnter={() => onPause(true)}
       onMouseLeave={() => onPause(false)}
@@ -647,20 +645,20 @@ function ScenarioStage({ device, deviceIdx, useCase, useCaseIdx, onJump, panelSt
     >
       <CornerFasteners />
 
-      <div className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-[var(--panel-edge-dim)] px-3 py-2 text-[8px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)] sm:grid-cols-[1fr_auto_1fr] sm:px-4 sm:text-[9px] sm:tracking-[0.24em]">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 border-b border-[var(--panel-edge-dim)] px-2 py-2 text-[10px] uppercase tracking-[0.16em] text-[var(--panel-ink-faint)] min-[400px]:grid-cols-[minmax(0,1fr)_auto] min-[400px]:gap-3 min-[400px]:px-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:px-4 sm:text-[9px] sm:tracking-[0.24em]">
         <span className="flex min-w-0 items-center gap-2">
           <span
             aria-hidden
             className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--panel-trace)]"
             style={{ boxShadow: '0 0 6px var(--panel-trace)' }}
           />
-          <span className="truncate text-[var(--panel-trace)]">Talkie</span>
+          <span className="hidden truncate text-[var(--panel-trace)] min-[400px]:inline">Talkie</span>
         </span>
         <CompactDeviceSelector deviceIdx={deviceIdx} onJump={onJump} />
         <span className="hidden sm:block" aria-hidden />
       </div>
 
-      <div className="grid gap-px bg-[var(--panel-edge-dim)] min-[700px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] min-[700px]:grid-rows-[minmax(0,1fr)_auto_auto] xl:grid-cols-[minmax(0,0.76fr)_minmax(0,1.8fr)_minmax(0,0.84fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
+      <div className="grid min-w-0 gap-px bg-[var(--panel-edge-dim)] min-[700px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] min-[700px]:grid-rows-[minmax(0,1fr)_auto_auto] xl:grid-cols-[minmax(0,0.76fr)_minmax(0,1.8fr)_minmax(0,0.84fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
         <ScenarioNarrative detail={detail} useCase={useCase} />
         <ScenarioMoment device={device} detail={detail} useCase={useCase} />
         <ScenarioOutcome detail={detail} useCase={useCase} />
@@ -677,17 +675,17 @@ function ScenarioNarrative({ detail, useCase }) {
   ]
 
   return (
-    <aside className="grid min-h-[330px] grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-start-1 min-[700px]:row-span-2 min-[700px]:row-start-1 min-[700px]:min-h-[430px] min-[700px]:grid-rows-subgrid">
-      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
-        <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Situation</p>
+    <aside className="grid grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-start-1 min-[700px]:row-span-2 min-[700px]:row-start-1 min-[700px]:min-h-[430px] min-[700px]:grid-rows-subgrid">
+      <div className="bg-[var(--panel-bg)] p-4 sm:p-6 lg:p-7">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--panel-trace)] sm:text-[9px] sm:tracking-[0.22em]">Situation</p>
 
-        <dl className="mt-8 border-y border-[var(--panel-edge-dim)]">
+        <dl className="mt-5 border-y border-[var(--panel-edge-dim)] sm:mt-8">
           {sceneFacts.map((fact) => (
             <div
               key={fact.label}
-              className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-[var(--panel-edge-dim)] py-3.5 last:border-b-0"
+              className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-[var(--panel-edge-dim)] py-2.5 last:border-b-0 sm:py-3.5"
             >
-              <dt className="pt-1 text-[7px] uppercase tracking-[0.2em] text-[var(--panel-ink-faint)]">
+              <dt className="pt-1 text-[9px] uppercase tracking-[0.16em] text-[var(--panel-ink-faint)] sm:text-[8px] sm:tracking-[0.2em]">
                 {fact.label}
               </dt>
               <dd className={fact.lead
@@ -701,7 +699,7 @@ function ScenarioNarrative({ detail, useCase }) {
         </dl>
       </div>
 
-      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
+      <div className="bg-[var(--panel-bg)] p-4 sm:p-6 lg:p-7">
         <ScenarioFooterHeader label="Input" meta="Voice" />
         <p className="text-[11px] italic leading-relaxed text-[var(--panel-ink-dim)]">
           “{useCase.transcription}”
@@ -735,13 +733,13 @@ function ScenarioMoment({ device, detail, useCase }) {
   return (
     <div className="grid grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-start-2 min-[700px]:row-span-2 min-[700px]:row-start-1 min-[700px]:min-h-[430px] min-[700px]:grid-rows-subgrid">
       <div className="flex flex-col bg-[var(--panel-bg-alt)] p-4 sm:p-5 lg:p-6">
-        <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Action</p>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--panel-trace)] sm:text-[9px] sm:tracking-[0.22em]">Action</p>
 
-        <div className="mt-8 flex min-h-[280px] flex-1 items-center justify-center overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-4 sm:min-h-[320px] lg:min-h-0">
+        <div className="mt-6 flex min-h-[220px] flex-1 items-center justify-center overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] p-3 sm:mt-8 sm:min-h-[280px] sm:p-4 lg:min-h-0">
           <ProductMoment device={device} />
         </div>
 
-        <p className="mt-3 text-center text-[9px] uppercase tracking-[0.18em] text-[var(--panel-ink-muted)]">
+        <p className="mt-3 text-center text-[10px] uppercase tracking-[0.16em] text-[var(--panel-ink-muted)] sm:text-[9px] sm:tracking-[0.18em]">
           {detail.moment}
         </p>
       </div>
@@ -758,7 +756,7 @@ function ScenarioMoment({ device, detail, useCase }) {
           </Link>
         )}
         {Install.specs && (
-          <dl className="mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] bg-[var(--panel-edge-dim)]">
+          <dl className="mt-3 hidden grid-cols-3 gap-px overflow-hidden rounded-sm border border-[var(--panel-edge-dim)] bg-[var(--panel-edge-dim)] md:grid">
             {Install.specs.map((spec) => (
               <div key={spec.label} className="min-w-0 bg-[var(--panel-bg)] px-2.5 py-2.5">
                 <dt className="text-[7px] uppercase tracking-[0.16em] text-[var(--panel-ink-faint)]">
@@ -792,12 +790,12 @@ function ScenarioOutcome({ detail, useCase }) {
   const outputFile = `${detail.outputLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}.md`
 
   return (
-    <aside className="grid min-h-[330px] grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-span-2 min-[700px]:col-start-1 min-[700px]:row-start-3 min-[700px]:min-h-0 min-[700px]:grid-cols-[minmax(0,1.4fr)_minmax(15rem,0.6fr)] min-[700px]:grid-rows-1 xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:row-start-1 xl:min-h-[430px] xl:grid-cols-1 xl:grid-rows-subgrid">
-      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
-        <p className="text-[9px] uppercase tracking-[0.22em] text-[var(--panel-trace)]">Result</p>
+    <aside className="grid grid-rows-[minmax(0,1fr)_auto] gap-px bg-[var(--panel-edge-dim)] min-[700px]:col-span-2 min-[700px]:col-start-1 min-[700px]:row-start-3 min-[700px]:min-h-0 min-[700px]:grid-cols-[minmax(0,1.4fr)_minmax(15rem,0.6fr)] min-[700px]:grid-rows-1 xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:row-start-1 xl:min-h-[430px] xl:grid-cols-1 xl:grid-rows-subgrid">
+      <div className="bg-[var(--panel-bg)] p-4 sm:p-6 lg:p-7">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--panel-trace)] sm:text-[9px] sm:tracking-[0.22em]">Result</p>
 
-        <article className="mt-8 overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] shadow-[0_12px_24px_-24px_rgba(0,0,0,0.45)]" aria-label={`${detail.outputLabel} Markdown output`}>
-          <div className="flex items-center justify-between gap-3 border-b border-[var(--panel-edge-dim)] bg-[var(--panel-bg-alt)] px-3 py-2.5 text-[8px]">
+        <article className="mt-5 overflow-hidden rounded-md border border-[var(--panel-edge-dim)] bg-[var(--panel-bg)] shadow-[0_12px_24px_-24px_rgba(0,0,0,0.45)] sm:mt-8" aria-label={`${detail.outputLabel} Markdown output`}>
+          <div className="flex items-center justify-between gap-3 border-b border-[var(--panel-edge-dim)] bg-[var(--panel-bg-alt)] px-3 py-2.5 text-[10px] sm:text-[8px]">
             <span className="flex min-w-0 items-center gap-2 text-[var(--panel-ink-muted)]">
               <FileText className="h-3 w-3 shrink-0 text-[var(--panel-trace)]" aria-hidden />
               <span className="truncate">{outputFile}</span>
@@ -819,7 +817,7 @@ function ScenarioOutcome({ detail, useCase }) {
               {detail.outputBody}
             </p>
 
-            <div className="mt-5 overflow-hidden border-y border-[var(--panel-edge-dim)] text-[9px]">
+            <div className="mt-5 overflow-hidden border-y border-[var(--panel-edge-dim)] text-[10px] sm:text-[9px]">
               <div className="grid grid-cols-[4.75rem_minmax(0,1fr)] gap-3 border-b border-[var(--panel-edge-dim)] bg-[var(--panel-bg-alt)] px-2 py-2 uppercase tracking-[0.16em] text-[var(--panel-ink-faint)]">
                 <span>Field</span>
                 <span>Value</span>
@@ -837,11 +835,22 @@ function ScenarioOutcome({ detail, useCase }) {
         </article>
       </div>
 
-      <div className="bg-[var(--panel-bg)] p-5 sm:p-6 lg:p-7">
-        <ScenarioFooterHeader label="Output" meta="JSON" />
-        <pre className="overflow-x-auto text-[9px] leading-relaxed text-[var(--panel-ink-muted)]" aria-label="Example structured result">
-          {'{\n  '}{detail.payload.join(',\n  ')}{'\n}'}
-        </pre>
+      <div className="bg-[var(--panel-bg)] p-4 sm:p-6 lg:p-7">
+        <details className="group md:hidden">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[10px] uppercase tracking-[0.16em] text-[var(--panel-ink-faint)] marker:content-none">
+            <span>Structured output</span>
+            <span aria-hidden className="text-sm transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <pre className="overflow-x-auto border-t border-[var(--panel-edge-dim)] pt-3 text-[10px] leading-relaxed text-[var(--panel-ink-muted)]" aria-label="Example structured result">
+            {'{\n  '}{detail.payload.join(',\n  ')}{'\n}'}
+          </pre>
+        </details>
+        <div className="hidden md:block">
+          <ScenarioFooterHeader label="Output" meta="JSON" />
+          <pre className="overflow-x-auto text-[9px] leading-relaxed text-[var(--panel-ink-muted)]" aria-label="Example structured result">
+            {'{\n  '}{detail.payload.join(',\n  ')}{'\n}'}
+          </pre>
+        </div>
       </div>
     </aside>
   )
@@ -849,7 +858,7 @@ function ScenarioOutcome({ detail, useCase }) {
 
 function ScenarioFooterHeader({ label, meta }) {
   return (
-    <div className="mb-3 flex h-3 items-center justify-between gap-3 text-[8px] uppercase leading-none tracking-[0.22em] text-[var(--panel-ink-faint)]">
+    <div className="mb-3 flex min-h-3 items-center justify-between gap-3 text-[10px] uppercase leading-none tracking-[0.16em] text-[var(--panel-ink-faint)] sm:text-[8px] sm:tracking-[0.22em]">
       <span>{label}</span>
       <span>{meta}</span>
     </div>
@@ -1012,7 +1021,7 @@ function CompactDeviceSelector({ deviceIdx, onJump }) {
     <div
       role="tablist"
       aria-label="Surface"
-      className="inline-flex items-center justify-center gap-0.5 justify-self-center rounded-sm border border-[var(--panel-edge-dim)] px-1 py-px"
+      className="inline-flex max-w-full items-center justify-center gap-0.5 justify-self-end rounded-sm border border-[var(--panel-edge-dim)] px-1 py-px min-[400px]:justify-self-center"
       style={{ background: 'rgba(255,255,255,0.02)' }}
     >
       {DEVICES.map((device, index) => {
@@ -1026,7 +1035,7 @@ function CompactDeviceSelector({ deviceIdx, onJump }) {
             aria-label={`Show ${device.label}`}
             aria-selected={active}
             onClick={() => onJump(index)}
-            className="flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-sm px-2 text-[8px] uppercase tracking-[0.18em] transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--panel-trace)] min-[700px]:h-11 min-[700px]:min-w-11 min-[700px]:px-3 min-[700px]:tracking-[0.16em] xl:h-9 xl:min-w-9 xl:px-2.5 xl:text-[9px] xl:tracking-[0.22em]"
+            className="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-sm px-1.5 text-[10px] uppercase tracking-[0.12em] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--panel-trace)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-bg)] min-[700px]:px-3 min-[700px]:tracking-[0.16em]"
             style={{
               background: active
                 ? 'color-mix(in oklab, var(--panel-trace) 12%, transparent)'
@@ -1036,7 +1045,7 @@ function CompactDeviceSelector({ deviceIdx, onJump }) {
             }}
           >
             <Icon className="h-3.5 w-3.5 shrink-0" />
-            <span className="hidden min-w-0 truncate min-[700px]:inline">{device.label}</span>
+            <span className={active ? 'min-w-0 truncate' : 'sr-only'}>{device.label}</span>
           </button>
         )
       })}
@@ -1093,8 +1102,8 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
 
   return (
     <div
-      className="mx-auto mt-6 flex w-full max-w-[40rem] flex-col items-stretch px-4 md:mt-8"
-      aria-live="polite"
+      className="mx-auto mt-5 flex w-full max-w-[40rem] flex-col items-stretch px-4 md:mt-6 xl:mt-8"
+      aria-live="off"
     >
       {rows.map(({ offset, i }) => {
         const isActive = offset === 0
@@ -1105,7 +1114,7 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
             type="button"
             onClick={() => !isActive && onSelect(i)}
             aria-current={isActive ? 'true' : undefined}
-            className={`grid min-h-11 grid-cols-[1fr_1rem_1fr] items-center rounded-sm px-2 py-2 text-[12px] leading-snug transition-colors md:grid-cols-[1fr_2.5rem_1fr] md:py-1.5 md:text-[15px] md:leading-relaxed ${
+            className={`grid min-h-11 grid-cols-[1fr_1rem_1fr] items-center rounded-sm px-2 py-2 text-[12px] leading-snug transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2 focus-visible:ring-offset-canvas md:grid-cols-[1fr_2.5rem_1fr] md:py-1.5 md:text-[15px] md:leading-relaxed ${
               isActive
                 ? 'text-ink'
                 : 'text-ink-muted hover:bg-surface/60 hover:text-ink-dim'
@@ -1130,7 +1139,7 @@ function HeroUseCaseRoller({ useCases, idx, onSelect }) {
 }
 
 // Rolodex-style flip card — warm beige paper card sized at 1em so it
-// sits inline INSIDE the H1, baseline-nudged with mb-[-0.18em] like the
+// sits inline inside the heading, baseline-nudged with mb-[-0.18em] like the
 // donor's keyboard-key. Sizing rules mirror donor v1 verbatim
 // (min-w-[3.8em], rounded-[0.18em], px-[0.28em], py-[0.18em]); only
 // the surface palette changed from chromey black to warm Rolodex paper.
@@ -1145,7 +1154,7 @@ function RolodexFlipCard({ label, flipPhase, onClick, onPause }) {
         onFocus={() => onPause(true)}
         onBlur={() => onPause(false)}
         aria-label={`Cycle device — currently ${label}. Click to advance.`}
-        className="relative -mb-[0.10em] inline-flex min-h-11 w-[5em] min-w-11 cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-semibold leading-[1] tracking-[-0.01em] focus:outline-none focus-visible:ring-1 focus-visible:ring-trace md:min-h-[1.15em] md:min-w-[2.75rem]"
+        className="relative -mb-[0.10em] inline-flex min-h-11 w-[5em] min-w-11 cursor-pointer select-none items-center justify-center overflow-hidden rounded-[0.18em] border px-[0.28em] pt-[0.05em] pb-[0.14em] font-display text-[1em] font-semibold leading-[1] tracking-[-0.01em] focus:outline-none focus-visible:ring-2 focus-visible:ring-trace focus-visible:ring-offset-2 md:min-h-[max(2.75rem,1.15em)] md:min-w-[2.75rem]"
         style={{
           color: 'var(--rolodex-ink)',
           background: 'var(--rolodex-bg)',
@@ -2101,7 +2110,7 @@ function SourceBay({ device, useCase, expanded, onExpandedChange }) {
           <button
             type="button"
             onClick={() => onExpandedChange(true)}
-            className="absolute right-1.5 top-1.5 z-20 inline-flex h-7 w-7 items-center justify-center rounded-sm border border-[var(--panel-edge)] bg-[var(--panel-bg)]/90 text-[var(--panel-trace)] shadow-sm backdrop-blur transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-ink)]"
+            className="absolute right-1.5 top-1.5 z-20 inline-flex h-11 w-11 items-center justify-center rounded-sm border border-[var(--panel-edge)] bg-[var(--panel-bg)]/90 text-[var(--panel-trace)] shadow-sm backdrop-blur transition-colors hover:border-[var(--panel-trace)] hover:text-[var(--panel-ink)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--panel-trace)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--panel-bg)]"
             aria-label={`Expand ${device.label} source screen`}
           >
             <Maximize2 className="h-3 w-3" />
@@ -2156,7 +2165,7 @@ function SourceBay({ device, useCase, expanded, onExpandedChange }) {
               <button
                 type="button"
                 onClick={() => onExpandedChange(false)}
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-white/15 bg-white/5 text-white/65 transition-colors hover:border-[var(--trace)] hover:text-[var(--trace)]"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm border border-white/15 bg-white/5 text-white/65 transition-colors hover:border-[var(--trace)] hover:text-[var(--trace)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--trace)] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 aria-label="Close output spotlight"
               >
                 <X className="h-4 w-4" />

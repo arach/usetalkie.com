@@ -3,7 +3,7 @@ import MainShell from '../../components/MainShell'
 
 export const metadata = {
   title: 'Philosophy — Talkie',
-  description: 'Your best ideas don\'t wait for you to sit down. Read our philosophy on local-first voice capture and AI workflows.',
+  description: 'Talkie began as a remote control for agents. Voice, local context, and Apple devices make remote use practical.',
   alternates: { canonical: 'https://usetalkie.com/philosophy/' },
 }
 

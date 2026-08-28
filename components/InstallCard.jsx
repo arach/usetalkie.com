@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Download, Terminal, Check, Copy, Maximize2, X } from 'lucide-react'
-import { TALKIE_MAC_OFFER, TALKIE_PHONE_APP } from '../shared/config/product-links'
+import { TALKIE_PHONE_APP } from '../shared/config/product-links'
 
 /**
  * InstallCard — patch-bay-styled install panel.
@@ -45,6 +46,8 @@ export default function InstallCard() {
   const [pmIndex, setPmIndex] = useState(0)
   const [copied, setCopied] = useState(false)
   const [qrExpanded, setQrExpanded] = useState(false)
+  const qrTriggerRef = useRef(null)
+  const qrCloseRef = useRef(null)
 
   /* QR lightbox keyboard + body-scroll handling — Escape closes,
    * body scroll locks while the modal is up. */
@@ -54,9 +57,11 @@ export default function InstallCard() {
     window.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    queueMicrotask(() => qrCloseRef.current?.focus())
     return () => {
       window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
+      queueMicrotask(() => qrTriggerRef.current?.focus())
     }
   }, [qrExpanded])
   const current = PACKAGE_MANAGERS[pmIndex]
@@ -150,12 +155,6 @@ export default function InstallCard() {
             <span className="mt-1 text-[13px]" style={{ color: 'var(--panel-ink)' }}>
               Download .dmg
             </span>
-            <span
-              className="mt-1 text-[10px] uppercase tracking-[0.18em]"
-              style={{ color: 'var(--panel-ink-faint)' }}
-            >
-              {TALKIE_MAC_OFFER.currentBuildLabel}
-            </span>
           </span>
         </Link>
 
@@ -172,6 +171,7 @@ export default function InstallCard() {
           onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--panel-bg-alt)' }}
         >
           <button
+            ref={qrTriggerRef}
             type="button"
             onClick={() => setQrExpanded(true)}
             aria-label="Expand QR code to scan with phone"
@@ -216,38 +216,49 @@ export default function InstallCard() {
         </div>
       </div>
 
-      {/* QR lightbox — backdrop click + Escape close. Big QR (288px)
-       * lands well within phone-camera reading range from arm's length. */}
-      {qrExpanded && (
+      {/* QR lightbox — portaled to document.body so overflow-hidden on
+       * this chassis and the sticky site shell cannot clip or cover it.
+       * Backdrop click + Escape still close. Big QR (288px) lands within
+       * phone-camera reading range from arm's length. */}
+      {qrExpanded && createPortal(
         <div
           role="dialog"
           aria-modal="true"
           aria-label="QR code expanded for scanning"
           onClick={() => setQrExpanded(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-md sm:p-6"
         >
           <button
+            ref={qrCloseRef}
             type="button"
-            onClick={() => setQrExpanded(false)}
+            onClick={(e) => {
+              e.stopPropagation()
+              setQrExpanded(false)
+            }}
             aria-label="Close expanded QR code"
-            className="absolute right-6 top-6 inline-flex h-9 w-9 items-center justify-center rounded-sm border border-edge bg-canvas-overlay text-ink-muted transition-all hover:border-trace hover:text-trace"
+            className="absolute inline-flex h-11 w-11 items-center justify-center rounded-sm border border-edge bg-canvas-overlay text-ink-muted transition-all hover:border-trace hover:text-trace"
+            style={{
+              top: 'max(1.5rem, env(safe-area-inset-top, 0px))',
+              right: 'max(1.5rem, env(safe-area-inset-right, 0px))',
+            }}
           >
             <X className="h-4 w-4" />
           </button>
           <div
             onClick={(e) => e.stopPropagation()}
-            className="rounded-md bg-white p-8 shadow-2xl"
+            className="rounded-md bg-white p-4 shadow-2xl sm:p-8"
           >
             <img
               src="/qr-app-store.svg"
               alt="QR code for Talkie on the App Store"
-              className="block h-72 w-72"
+              className="block aspect-square h-auto w-[min(18rem,calc(100vw-4rem))]"
             />
             <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.26em] text-zinc-700">
               Scan with phone · opens App Store
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* CLI rail */}
@@ -285,7 +296,7 @@ export default function InstallCard() {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setPmIndex(i)}
-                  className="px-2.5 py-1.5 transition-colors"
+                  className="inline-flex min-h-11 min-w-11 items-center justify-center px-2.5 py-1.5 transition-colors sm:min-h-0 sm:min-w-0"
                   style={{
                     color: active ? 'var(--panel-trace)' : 'var(--panel-ink-faint)',
                     borderLeft: i > 0 ? '1px solid var(--panel-edge-faint)' : undefined,
@@ -333,7 +344,7 @@ export default function InstallCard() {
           <button
             type="button"
             onClick={onCopy}
-            className="inline-flex items-center gap-1.5 rounded-sm px-3 py-2 text-[9px] uppercase tracking-[0.22em] transition-colors"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-sm px-3 py-2 text-[9px] uppercase tracking-[0.22em] transition-colors sm:min-h-0"
             style={{
               border: '1px solid var(--panel-edge)',
               color: 'var(--panel-ink-muted)',

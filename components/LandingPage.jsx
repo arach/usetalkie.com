@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -16,6 +17,7 @@ import {
   Lock,
   Menu,
   Mic,
+  Play,
   Search,
   ShieldCheck,
   Smartphone,
@@ -192,12 +194,17 @@ const OWNERSHIP_PILLS = [
   'Encrypted iCloud sync',
 ]
 
+const DICTATION_LOOP_SRC = '/videos/talkie-editor-dictation.mp4'
+
 /* A tiny retro CRT monitor that autorolls the silent dictation loop.
  * Progress and timecode are driven through refs on timeupdate so the
- * 4Hz tick never re-renders the hero. */
+ * 4Hz tick never re-renders the hero. Click expands the same clip
+ * into an uncropped 16:9 player. */
 function RetroLoopMonitor() {
   const progressRef = useRef(null)
   const timeRef = useRef(null)
+  const previewRef = useRef(null)
+  const [expanded, setExpanded] = useState(false)
 
   const handleTimeUpdate = (e) => {
     const v = e.currentTarget
@@ -211,67 +218,155 @@ function RetroLoopMonitor() {
     }
   }
 
+  useEffect(() => {
+    const preview = previewRef.current
+    if (!preview) return
+    if (expanded) {
+      preview.pause()
+      return
+    }
+    preview.play().catch(() => {})
+  }, [expanded])
+
+  useEffect(() => {
+    if (!expanded) return
+    const onKey = (event) => {
+      if (event.key === 'Escape') setExpanded(false)
+    }
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [expanded])
+
   return (
-    <div>
-      <div className="rounded-[14px] border border-zinc-400/60 bg-gradient-to-b from-[#edeae2] to-[#d3cfc3] p-2 shadow-[0_22px_45px_-26px_rgba(15,23,42,0.45),inset_0_1px_0_rgba(255,255,255,0.7)] dark:border-zinc-600 dark:from-zinc-600 dark:to-zinc-800 dark:shadow-[0_22px_45px_-24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)]">
-        <div className="relative overflow-hidden rounded-[8px] border border-black/70 bg-[#131412] p-[3px] shadow-[inset_0_2px_5px_rgba(0,0,0,0.65)]">
-          <div className="relative overflow-hidden rounded-[5px]">
-            <video
-              src="/videos/talkie-editor-dictation.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              onTimeUpdate={handleTimeUpdate}
-              aria-label="Talkie dictation demo: speech becomes text at the cursor"
-              className="block aspect-[16/7] w-full object-cover object-top"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-[0.13]"
-              style={{
-                backgroundImage:
-                  'repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)',
-              }}
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  'radial-gradient(130% 95% at 50% 42%, transparent 58%, rgba(0,0,0,0.22) 100%), linear-gradient(112deg, rgba(255,255,255,0.2) 0%, transparent 26%)',
-              }}
-            />
-            <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/40">
-              <div ref={progressRef} className="h-full w-0 bg-amber-500/90" />
+    <>
+      <button
+        type="button"
+        onClick={() => setExpanded(true)}
+        aria-label="Play full dictation demo"
+        className="group block w-full cursor-pointer text-left"
+      >
+        <div className="rounded-[14px] border border-zinc-400/60 bg-gradient-to-b from-[#edeae2] to-[#d3cfc3] p-2 shadow-[0_22px_45px_-26px_rgba(15,23,42,0.45),inset_0_1px_0_rgba(255,255,255,0.7)] dark:border-zinc-600 dark:from-zinc-600 dark:to-zinc-800 dark:shadow-[0_22px_45px_-24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.12)]">
+          <div className="relative overflow-hidden rounded-[8px] border border-black/70 bg-[#131412] p-[3px] shadow-[inset_0_2px_5px_rgba(0,0,0,0.65)]">
+            <div className="relative overflow-hidden rounded-[5px]">
+              <video
+                ref={previewRef}
+                src={DICTATION_LOOP_SRC}
+                autoPlay
+                muted
+                loop
+                playsInline
+                onTimeUpdate={handleTimeUpdate}
+                className="pointer-events-none block aspect-[16/7] w-full object-cover object-top"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-[0.13]"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)',
+                }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    'radial-gradient(130% 95% at 50% 42%, transparent 58%, rgba(0,0,0,0.22) 100%), linear-gradient(112deg, rgba(255,255,255,0.2) 0%, transparent 26%)',
+                }}
+              />
+              <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/40">
+                <div ref={progressRef} className="h-full w-0 bg-amber-500/90" />
+              </div>
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-200 group-hover:bg-black/25 group-focus-visible:bg-black/25"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white opacity-0 shadow-[0_8px_18px_-10px_rgba(0,0,0,0.7)] transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-1.5 flex items-center justify-between px-1">
-          <div className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.85)]" />
-            <span className="font-mono text-[8px] font-bold uppercase tracking-[0.22em] text-zinc-600 dark:text-zinc-300">
-              Dictation
+          <div className="mt-1.5 flex items-center justify-between px-1">
+            <div className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.85)]" />
+              <span className="font-mono text-[8px] font-bold uppercase tracking-[0.22em] text-zinc-600 dark:text-zinc-300">
+                Dictation
+              </span>
+            </div>
+            <div
+              aria-hidden
+              className="h-2 w-10 opacity-50 dark:opacity-40 dark:invert"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(90deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 4px)',
+              }}
+            />
+            <span ref={timeRef} className="font-mono text-[8px] tabular-nums text-zinc-600 dark:text-zinc-300">
+              0:00
             </span>
           </div>
-          <div
-            aria-hidden
-            className="h-2 w-10 opacity-50 dark:opacity-40 dark:invert"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(90deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 4px)',
-            }}
-          />
-          <span ref={timeRef} className="font-mono text-[8px] tabular-nums text-zinc-600 dark:text-zinc-300">
-            0:00
-          </span>
         </div>
-      </div>
-      <div className="mx-auto h-2 w-14 rounded-b-[6px] bg-gradient-to-b from-[#cfcabd] to-[#b6b1a3] shadow-[0_8px_12px_-8px_rgba(15,23,42,0.5)] dark:from-zinc-700 dark:to-zinc-800" />
-      <p className="mt-2.5 inline-block rounded-md bg-white/75 px-2 py-1 text-[11.5px] leading-snug text-zinc-800 backdrop-blur-sm dark:bg-zinc-900/80 dark:text-zinc-100">
-        Say the thought — the words land at the cursor.
-      </p>
-    </div>
+        <div className="mx-auto h-2 w-14 rounded-b-[6px] bg-gradient-to-b from-[#cfcabd] to-[#b6b1a3] shadow-[0_8px_12px_-8px_rgba(15,23,42,0.5)] dark:from-zinc-700 dark:to-zinc-800" />
+        <p className="mt-2.5 inline-block rounded-md bg-white/75 px-2 py-1 text-[11.5px] leading-snug text-zinc-800 backdrop-blur-sm dark:bg-zinc-900/80 dark:text-zinc-100">
+          Say the thought — the words land at the cursor.
+        </p>
+      </button>
+
+      {expanded && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Talkie dictation demo"
+          onClick={() => setExpanded(false)}
+        >
+          <div className="absolute inset-0 bg-black/[0.88] backdrop-blur-md" />
+
+          <div
+            className="relative z-10 w-full max-w-5xl overflow-hidden rounded-xl border border-white/15 bg-[#0b0c0b]/95 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3 md:px-5">
+              <div className="min-w-0">
+                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.26em] text-amber-400">
+                  Dictation
+                </p>
+                <p className="mt-1 truncate text-[12px] text-white/70">
+                  Say the thought — the words land at the cursor.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setExpanded(false)}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-white/35 hover:text-white"
+                aria-label="Close dictation demo"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <video
+              src={DICTATION_LOOP_SRC}
+              autoPlay
+              controls
+              playsInline
+              className="block aspect-video w-full bg-black"
+            />
+
+            <p className="border-t border-white/10 px-4 py-2.5 text-center font-mono text-[8px] uppercase tracking-[0.24em] text-white/35">
+              Esc · click outside to close
+            </p>
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   )
 }
 
@@ -312,24 +407,24 @@ function SimpleProductHero({ openMacGallery, openPhoneGallery }) {
         </p>
       </div>
 
-      <div className="relative mx-auto w-full max-w-[66rem] px-1 pb-10 sm:px-6 md:pb-16 lg:px-0">
+      <div className="relative mx-auto w-full max-w-[66rem] px-1 pb-16 sm:px-6 md:pb-24 lg:px-0">
         <div className="pointer-events-none absolute inset-x-[5%] bottom-[4%] h-[62%] rounded-full bg-amber-500/[0.07] blur-[96px] dark:bg-white/[0.06]" />
 
         <button
           type="button"
           onClick={openMacGallery}
           aria-label="Open the Talkie for Mac tour"
-          className="group relative mx-auto block w-[92%] -translate-x-[2%] text-left sm:w-[88%] md:w-[88%]"
+          className="relative mx-auto block w-[92%] -translate-x-[2%] text-left sm:w-[88%] md:w-[88%]"
         >
           <img
             src="/screenshots/mac-home-3d.png"
             alt="Talkie open on a dimensional Mac display"
-            className="block h-auto w-full rounded-2xl ring-1 ring-zinc-900/5 transition-transform duration-300 group-hover:-translate-y-1 dark:ring-white/10"
+            className="block h-auto w-full rounded-2xl ring-1 ring-zinc-900/5 dark:ring-white/10"
             loading="eager"
           />
         </button>
 
-        <div className="absolute bottom-[5%] left-[2%] z-10 hidden w-[236px] text-left sm:block md:left-[3%] md:w-[264px]">
+        <div className="absolute -bottom-2 left-0 z-10 hidden w-[236px] text-left sm:block md:-bottom-6 md:left-[-2%] md:w-[264px]">
           <RetroLoopMonitor />
         </div>
 
