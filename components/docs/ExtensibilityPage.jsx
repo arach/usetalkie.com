@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Webhook, Workflow, Plug, GitBranch, Box, FolderTree } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import CodeBlock from './CodeBlock'
 
 const sections = [
   { id: 'integration-points', title: 'Integration Points', level: 2 },
@@ -14,19 +15,6 @@ const sections = [
   { id: 'integrations', title: 'Third-Party Integrations', level: 2 },
   { id: 'navigation', title: 'Continue Reading', level: 2 },
 ]
-
-const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
-    {title && (
-      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
-        <span className="text-xs font-mono text-ink-muted">{title}</span>
-      </div>
-    )}
-    <pre className="p-4 bg-panel-bg overflow-x-auto">
-      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
-    </pre>
-  </div>
-)
 
 const IntegrationCard = ({ icon: Icon, name, description, color }) => (
   <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
@@ -45,6 +33,7 @@ const IntegrationCard = ({ icon: Icon, name, description, color }) => (
 export default function ExtensibilityPage() {
   return (
     <DocsLayout
+      slug="extensibility"
       title="Extensibility"
       description="Build on top of Talkie. Create custom workflows, integrate with external services, and extend functionality through hooks and webhooks."
       badge="Developers"

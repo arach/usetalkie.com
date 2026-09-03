@@ -43,9 +43,13 @@ const PROSE_CLASSES = [
   '[&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-1.5',
   '[&_li]:text-ink-muted',
   '[&_:not(pre)>code]:rounded [&_:not(pre)>code]:border [&_:not(pre)>code]:border-edge-faint',
-  '[&_:not(pre)>code]:bg-surface [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-px',
+  '[&_:not(pre)>code]:bg-surface [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5',
   '[&_:not(pre)>code]:text-[0.92em] [&_:not(pre)>code]:text-ink',
   '[&_:not(pre)>code]:font-mono',
+  '[&_pre]:my-5 [&_pre]:overflow-x-auto [&_pre]:rounded-sm [&_pre]:border [&_pre]:border-panel-edge',
+  '[&_pre]:bg-panel-bg [&_pre]:p-4 [&_pre]:font-mono [&_pre]:text-[12.5px]',
+  '[&_pre]:leading-relaxed [&_pre]:text-panel-ink-dim',
+  '[&_pre_code]:border-0 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit',
   '[&_blockquote]:my-6 [&_blockquote]:border-l [&_blockquote]:border-trace/50',
   '[&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-ink',
   '[&_hr]:my-10 [&_hr]:border-edge-faint',
@@ -169,7 +173,14 @@ function PrevNext({ slug }) {
   )
 }
 
-export default function DocsLayout({ slug, title, description, toc, children }) {
+export default function DocsLayout({ slug, title, description, toc, sections, children }) {
+  const resolvedToc =
+    toc ??
+    (sections || []).map((item) => ({
+      id: item.id,
+      label: item.label ?? item.title,
+      level: item.level ?? 2,
+    }))
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)_200px]">
@@ -214,7 +225,7 @@ export default function DocsLayout({ slug, title, description, toc, children }) 
         </article>
 
         {/* Right rail TOC */}
-        <TocRail toc={toc} />
+        <TocRail toc={resolvedToc} />
       </div>
     </div>
   )

@@ -125,13 +125,15 @@ const IDEA_PROSE_CSS = `
 .idea-prose blockquote p::before,
 .idea-prose blockquote p::after { content: none; }
 
-/* Code block chrome — wrap <pre> in a gutter band that reads as instrument-screen */
+/* Code block chrome — panel chassis tokens, not screen-ink.
+ * screen-* stays cream on purpose (CRT). Modern panel-bg is paper, so
+ * cream type on that surface fails contrast. panel-ink tracks the bay. */
 .idea-prose pre {
   background: var(--panel-bg);
   border: 1px solid var(--panel-edge-dim);
   border-radius: 6px;
   padding: 1rem 1.1rem;
-  color: var(--screen-ink);
+  color: var(--panel-ink-dim);
   font-size: 0.84em;
   line-height: 1.65;
   position: relative;
@@ -153,7 +155,7 @@ const IDEA_PROSE_CSS = `
   background: transparent !important;
   border: 0 !important;
   padding: 0 !important;
-  color: var(--screen-ink) !important;
+  color: var(--panel-ink-dim) !important;
   font-size: 1em !important;
 }
 

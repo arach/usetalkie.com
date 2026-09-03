@@ -49,6 +49,7 @@ const InfoBox = ({ type = 'info', children }) => {
 export default function TailscalePage() {
   return (
     <DocsLayout
+      slug="tailscale"
       title="Tailscale Configuration"
       description="Tailscale creates a secure, private network between your devices. It's how your iPhone finds and connects to your Mac without any port forwarding or cloud relay."
       badge="Network Setup"
@@ -136,7 +137,7 @@ export default function TailscalePage() {
               href="https://apps.apple.com/app/tailscale/id1475387142"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-panel-bg dark:bg-canvas-alt text-screen-ink dark:text-ink text-sm font-medium hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-panel-bg text-panel-ink text-sm font-medium hover:opacity-90 transition-opacity"
             >
               Mac App Store <ExternalLink className="w-3 h-3" />
             </a>
@@ -152,7 +153,7 @@ export default function TailscalePage() {
             href="https://apps.apple.com/app/tailscale/id1470499037"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 mt-3 rounded-lg bg-panel-bg dark:bg-canvas-alt text-screen-ink dark:text-ink text-sm font-medium hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 px-4 py-2 mt-3 rounded-lg bg-panel-bg text-panel-ink text-sm font-medium hover:opacity-90 transition-opacity"
           >
             iOS App Store <ExternalLink className="w-3 h-3" />
           </a>

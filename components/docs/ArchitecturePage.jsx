@@ -11,8 +11,8 @@ const sections = [
   { id: 'components', title: 'Components', level: 2 },
   { id: 'talkie', title: 'Talkie', level: 3 },
   { id: 'talkieagent', title: 'TalkieAgent', level: 3 },
-  { id: 'talkieengine', title: 'TalkieEngine', level: 3 },
   { id: 'talkieserver', title: 'TalkieServer', level: 3 },
+  { id: 'engine-runtime', title: 'TalkieEngineCore', level: 3 },
   { id: 'xpc', title: 'XPC Communication', level: 2 },
   { id: 'lifecycle', title: 'Process Lifecycle', level: 2 },
   { id: 'navigation', title: 'Continue Reading', level: 2 },
@@ -43,8 +43,9 @@ const ComponentCard = ({ id, icon: Icon, name, subtitle, responsibilities, color
 export default function ArchitecturePage() {
   return (
     <DocsLayout
+      slug="architecture"
       title="Architecture"
-      description="How Talkie's multi-process architecture fits together. Each component does one job, which keeps the system easy to reason about."
+      description="How Talkie's processes fit together. Each one does one job, which keeps capture, UI, and the iPhone bridge easy to reason about."
       badge="Technical"
       badgeColor="amber"
       sections={sections}
@@ -52,13 +53,13 @@ export default function ArchitecturePage() {
       {/* System Overview */}
       <h2 id="system-overview">System Overview</h2>
       <p>
-        Talkie splits its work across multiple processes. This isn't complexity for complexity's sake. It means a crash in one component doesn't take down the rest, each process gets only the permissions it needs, and pieces can ship independently.
+        Talkie splits work across a few processes so a crash in transcription does not take down the UI, microphone permission stays with the helper that records, and capture can keep running after you close the main window.
       </p>
 
-      <ArcDiagram data={architectureDiagram} className="my-8" />
+      <ArcDiagram data={architectureDiagram} className="my-8" interactive={false} />
 
       <p>
-        The main Talkie app is the orchestrator: it manages the UI, workflows, and data. The helper processes (TalkieAgent, TalkieEngine, TalkieServer) handle specific tasks that benefit from isolation.
+        Talkie is the orchestrator: UI, workflows, and data. TalkieAgent is the always-on companion: mic, keyboard, and the local transcription runtime. TalkieServer is a Bun HTTP process that TalkieAgent supervises for the iPhone. There is no standalone TalkieEngine app.
       </p>
 
       {/* Components */}
@@ -86,49 +87,49 @@ export default function ArchitecturePage() {
           id="talkieagent"
           icon={Mic}
           name="TalkieAgent"
-          subtitle="Always-On Voice Recorder (Swift)"
+          subtitle="Always-on capture + engine host (Swift)"
           responsibilities={[
-            "Microphone capture and audio processing",
-            "Live dictation with real-time feedback",
-            "Keyboard simulation for text insertion",
-            "Hotkey handling and interstitial UI",
+            "Microphone capture and live dictation",
+            "Keyboard insertion and global hotkeys",
+            "In-process transcription via TalkieEngineCore",
+            "Supervises TalkieServer when the iPhone bridge is on",
           ]}
           color="bg-emerald-100 dark:bg-amber/20 text-amber"
-        />
-
-        <ComponentCard
-          id="talkieengine"
-          icon={Cpu}
-          name="TalkieEngine"
-          subtitle="Transcription Engine (Swift)"
-          responsibilities={[
-            "Local Whisper model management",
-            "Audio-to-text transcription",
-            "Model downloading and caching",
-            "GPU acceleration via Metal (when available)",
-          ]}
-          color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
         />
 
         <ComponentCard
           id="talkieserver"
           icon={Server}
           name="TalkieServer"
-          subtitle="iOS Bridge (TypeScript/Bun)"
+          subtitle="iOS bridge (TypeScript/Bun)"
           responsibilities={[
-            "HTTP API for iOS app communication",
+            "HTTP API for the iPhone app",
             "Device pairing and authentication",
-            "Voice recording sync from iPhone/Apple Watch",
-            "Tailscale network integration",
+            "Voice recording ingest from iPhone and Apple Watch",
+            "Tailscale or loopback transport, never a Talkie cloud",
           ]}
           color="bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400"
+        />
+
+        <ComponentCard
+          id="engine-runtime"
+          icon={Cpu}
+          name="TalkieEngineCore"
+          subtitle="Embedded runtime (not a process)"
+          responsibilities={[
+            "Whisper and Parakeet transcription inside TalkieAgent",
+            "Model download, cache, and Metal acceleration",
+            "Caller-specified priority for live vs batch work",
+            "Optional WebSocket bridge only when remote engine access is on",
+          ]}
+          color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
         />
       </div>
 
       {/* XPC Communication */}
       <h2 id="xpc">XPC Communication</h2>
       <p>
-        XPC (Cross-Process Communication) is Apple's secure mechanism for processes to talk to each other. Talkie uses XPC to communicate with TalkieAgent and TalkieEngine.
+        XPC is Apple's process-to-process channel. Talkie uses it to talk to TalkieAgent (capture, dictation, bridge control) and TalkieSync (CloudKit memos). Transcription stays inside TalkieAgent.
       </p>
 
       <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
@@ -137,30 +138,30 @@ export default function ArchitecturePage() {
           <span className="font-bold text-ink">Why XPC?</span>
         </div>
         <ul className="text-sm text-ink-muted space-y-1">
-          <li>• <strong>Security</strong> — Each process runs with minimal permissions</li>
-          <li>• <strong>Crash isolation</strong> — A helper crash doesn't take down the main app</li>
-          <li>• <strong>Lifecycle management</strong> — macOS handles process start/stop</li>
-          <li>• <strong>Type safety</strong> — Protocol-based communication with compile-time checks</li>
+          <li>• <strong>Security</strong> — Each process runs with only the permissions it needs</li>
+          <li>• <strong>Crash isolation</strong> — An Agent crash does not take down the main app</li>
+          <li>• <strong>Lifecycle</strong> — launchd starts and restarts TalkieAgent independently of the UI</li>
+          <li>• <strong>Type safety</strong> — Protocol-based messages with compile-time checks</li>
         </ul>
       </div>
 
       <p>
-        When you start a dictation, Talkie sends an XPC message to TalkieAgent. TalkieAgent captures audio, sends it to TalkieEngine for transcription, and simulates keyboard input with the results—all without the main app needing microphone or accessibility permissions.
+        When you start a dictation, TalkieAgent captures audio, transcribes it in-process with TalkieEngineCore, and inserts the text. The main app never needs microphone or accessibility permission for that path. Talkie hears about the new dictation over XPC (with a polling fallback if the connection drops).
       </p>
 
       {/* Process Lifecycle */}
       <h2 id="lifecycle">Process Lifecycle</h2>
       <p>
-        Helper processes are managed by launchd, macOS's service manager. This means:
+        launchd owns the helper processes. The important split:
       </p>
       <ul>
-        <li><strong>On-demand start</strong> — Helpers launch when needed, not at login</li>
-        <li><strong>Automatic restart</strong> — If a helper crashes, launchd restarts it</li>
-        <li><strong>Resource efficiency</strong> — Idle helpers use minimal resources</li>
-        <li><strong>Clean shutdown</strong> — Helpers terminate when Talkie quits</li>
+        <li><strong>TalkieAgent is always-on</strong> — KeepAlive, independent of the main window</li>
+        <li><strong>TalkieServer follows Agent</strong> — starts and stops with the companion, not with Talkie.app</li>
+        <li><strong>TalkieSync attaches to Talkie</strong> — CloudKit bridge for memos</li>
+        <li><strong>Automatic restart</strong> — If Agent crashes, launchd brings it back</li>
       </ul>
       <p>
-        You can see the helper processes in Activity Monitor: look for TalkieAgent, TalkieEngine, and TalkieServer (when iPhone sync is enabled).
+        In Activity Monitor you should see Talkie and TalkieAgent. TalkieServer appears when the iPhone bridge is on. You should not see a standalone TalkieEngine process.
       </p>
 
       {/* Navigation */}

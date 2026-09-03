@@ -7,7 +7,7 @@
  * — meaning the same markup paints both modes when html.dark flips.
  *
  * Layout is three columns:
- *   col-1: Talkie -> TalkieAgent -> TalkieEngine     (signal stack)
+ *   col-1: Talkie -> TalkieAgent                      (UI + always-on capture/engine)
  *   col-2: TalkieServer (top)   + iCloud (bottom)    (bridge + sync hub)
  *   col-3: iPhone -> Watch                            (mobile capture)
  *
@@ -23,18 +23,16 @@ const NODE_H = { l: 80, m: 64, s: 42 }
 
 const NODES = {
   talkie:       { x: 24,  y: 16,  size: 'l' },
-  talkieAgent:  { x: 51,  y: 124, size: 'm' },
-  talkieEngine: { x: 51,  y: 218, size: 'm' },
+  talkieAgent:  { x: 51,  y: 160, size: 'm' },
   talkieServer: { x: 285, y: 16,  size: 'm' },
-  iCloud:       { x: 285, y: 218, size: 'm' },
+  iCloud:       { x: 285, y: 160, size: 'm' },
   iPhone:       { x: 522, y: 16,  size: 'm' },
   watch:        { x: 547, y: 124, size: 's' },
 }
 
 const NODE_DATA = {
   talkie:       { name: 'Talkie',       sub: 'Swift / SwiftUI', desc: 'UI · Workflows · Data · Orchestration' },
-  talkieAgent:  { name: 'TalkieAgent',  sub: 'Swift',           desc: 'Ears & Hands' },
-  talkieEngine: { name: 'TalkieEngine', sub: 'Swift',           desc: 'Local Brain' },
+  talkieAgent:  { name: 'TalkieAgent',  sub: 'Swift',           desc: 'Capture + local engine' },
   talkieServer: { name: 'TalkieServer', sub: 'TypeScript',      desc: 'iPhone Bridge' },
   iCloud:       { name: 'iCloud',       sub: 'CloudKit',        desc: 'Memo Sync' },
   iPhone:       { name: 'iPhone',       sub: 'iOS',             desc: 'Voice Capture' },
@@ -59,7 +57,6 @@ function anchor(id, side) {
 // Each connector has a kind that maps to stroke style + label.
 const CONNECTORS = [
   { from: 'talkie',       to: 'talkieAgent',  fromSide: 'bottom', toSide: 'top',    kind: 'xpc'    },
-  { from: 'talkieAgent',  to: 'talkieEngine', fromSide: 'bottom', toSide: 'top',    kind: 'audio'  },
   { from: 'talkie',       to: 'talkieServer', fromSide: 'right',  toSide: 'left',   kind: 'http'   },
   { from: 'talkieServer', to: 'iPhone',       fromSide: 'right',  toSide: 'left',   kind: 'tail'   },
   { from: 'iPhone',       to: 'watch',        fromSide: 'bottom', toSide: 'top',    kind: 'peer'   },
@@ -233,9 +230,9 @@ export default function ArchitectureDiagram() {
 /**
  * Compact overview-page diagram.
  *
- * Smaller hub-and-spoke that shows Talkie as orchestrator with three
- * helper processes and the protocol used to reach each one. Pure SVG so
- * it stays a server component and follows v2 tokens.
+ * Hub-and-spoke: Talkie as orchestrator, TalkieAgent over XPC
+ * (capture + in-process engine), TalkieServer over HTTP (iPhone).
+ * Pure SVG so it stays a server component and follows v2 tokens.
  */
 export function SimpleArchitectureDiagram() {
   return (
@@ -246,7 +243,7 @@ export function SimpleArchitectureDiagram() {
           width="100%"
           height="240"
           preserveAspectRatio="xMidYMid meet"
-          aria-label="Talkie orchestrator with three helper processes"
+          aria-label="Talkie orchestrator with TalkieAgent and TalkieServer"
           role="img"
         >
           <defs>
@@ -260,27 +257,24 @@ export function SimpleArchitectureDiagram() {
           <rect x="0" y="0" width="520" height="240" fill="url(#osc-graticule-small)" opacity="0.35" />
 
           {/* Talkie at top center */}
-          <rect x="195" y="20" width="130" height="56" rx="6" fill="var(--canvas)" stroke="var(--edge)" />
+          <rect x="180" y="20" width="160" height="56" rx="6" fill="var(--canvas)" stroke="var(--edge)" />
           <text x="260" y="44" textAnchor="middle" fill="var(--ink)" fontFamily="var(--font-display), Georgia, serif" fontSize="16" fontWeight="500">Talkie</text>
           <text x="260" y="60" textAnchor="middle" fill="var(--ink-faint)" fontFamily="var(--font-mono), ui-monospace, monospace" fontSize="9.5" style={{ letterSpacing: '0.18em' }}>ORCHESTRATOR</text>
 
-          {/* Three helper boxes */}
           {[
-            { x: 30,  name: 'TalkieAgent',  sub: 'EARS & HANDS', proto: 'XPC' },
-            { x: 195, name: 'TalkieEngine', sub: 'LOCAL BRAIN',  proto: 'XPC' },
-            { x: 360, name: 'TalkieServer', sub: 'iOS BRIDGE',   proto: 'HTTP' },
+            { x: 50,  name: 'TalkieAgent',  sub: 'CAPTURE + ENGINE', proto: 'XPC' },
+            { x: 310, name: 'TalkieServer', sub: 'iOS BRIDGE',       proto: 'HTTP' },
           ].map((helper) => (
             <g key={helper.name}>
-              {/* connector from Talkie bottom to helper top */}
               <path
-                d={`M 260 84 L ${helper.x + 65} 156`}
+                d={`M 260 84 L ${helper.x + 80} 156`}
                 fill="none"
                 stroke="var(--trace)"
                 strokeWidth="1.4"
                 markerEnd="url(#osc-arrow-trace-sm)"
               />
               <text
-                x={(260 + helper.x + 65) / 2}
+                x={(260 + helper.x + 80) / 2}
                 y={120}
                 textAnchor="middle"
                 fill="var(--trace)"
@@ -291,9 +285,9 @@ export function SimpleArchitectureDiagram() {
                 {helper.proto}
               </text>
 
-              <rect x={helper.x} y="160" width="130" height="56" rx="6" fill="var(--canvas)" stroke="var(--edge)" />
-              <text x={helper.x + 65} y="184" textAnchor="middle" fill="var(--ink)" fontFamily="var(--font-display), Georgia, serif" fontSize="14" fontWeight="500">{helper.name}</text>
-              <text x={helper.x + 65} y="200" textAnchor="middle" fill="var(--ink-faint)" fontFamily="var(--font-mono), ui-monospace, monospace" fontSize="9" style={{ letterSpacing: '0.16em' }}>{helper.sub}</text>
+              <rect x={helper.x} y="160" width="160" height="56" rx="6" fill="var(--canvas)" stroke="var(--edge)" />
+              <text x={helper.x + 80} y="184" textAnchor="middle" fill="var(--ink)" fontFamily="var(--font-display), Georgia, serif" fontSize="14" fontWeight="500">{helper.name}</text>
+              <text x={helper.x + 80} y="200" textAnchor="middle" fill="var(--ink-faint)" fontFamily="var(--font-mono), ui-monospace, monospace" fontSize="9" style={{ letterSpacing: '0.16em' }}>{helper.sub}</text>
             </g>
           ))}
         </svg>

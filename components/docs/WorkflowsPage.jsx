@@ -68,6 +68,7 @@ const ProviderRow = ({ name, budget, balanced, capable, context }) => (
 export default function WorkflowsPage() {
   return (
     <DocsLayout
+      slug="workflows"
       title="Workflows"
       description="21 step types, 6 LLM providers, and a template system that turns a recording into drafts, tasks, and files. All of it runs locally on your Mac."
       badge="Automation"

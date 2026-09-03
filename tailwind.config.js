@@ -48,6 +48,7 @@ export default {
         'panel-ink':          'var(--panel-ink)',
         'panel-ink-dim':      'var(--panel-ink-dim)',
         'panel-ink-muted':    'var(--panel-ink-muted)',
+        'panel-trace':        'var(--panel-trace)',
 
         // Screen — scope CRT bezel surfaces. Always near-black across
         // themes; light ink stays readable on dark in all modes.
