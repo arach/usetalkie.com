@@ -114,19 +114,45 @@ function StatRow({ icon: Icon, label, value }) {
 export default function DownloadAllPage() {
   return (
     <>
-      {/* HERO */}
+      {/* HERO WITH VISUAL */}
       <section className="relative overflow-hidden border-b border-edge-faint bg-canvas font-mono">
         <Graticule />
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
-          <ChannelEyebrow>· INSTALL / ALL CHANNELS</ChannelEyebrow>
-          <h1 className="mt-4 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
-            Pick a device.<br />
-            <span className="italic text-ink-muted">Same library.</span>
-          </h1>
-          <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
-            Download the current Mac build for free. The iPhone and Apple Watch apps are also free.
-            The planned paid Mac offer is shown below.
-          </p>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <ChannelEyebrow>· INSTALL / ALL CHANNELS · v2.5.43</ChannelEyebrow>
+              <h1 className="mt-4 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
+                Pick a device.<br />
+                <span className="italic text-ink-muted">Same acoustic library.</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
+                Download the current Mac build for free with on-device Parakeet v3 speech-to-text. The iPhone and Apple Watch apps are also free.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] text-ink-subtle">
+                <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">BUILD 49</span>
+                <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">UNIVERSAL BINARY</span>
+                <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">APPLE NOTARIZED</span>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-md border border-edge-dim bg-surface p-2 shadow-soft">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-sm bg-canvas-alt">
+                <img
+                  src="/images/braun/02-mac-poster.jpg"
+                  alt="Talkie on MacBook in matte cream Braun finish"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-sm border border-white/10 bg-black/85 px-3 py-2 text-white backdrop-blur-md">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-amber-400">PARAKEET-TDT-V3</span>
+                    <span className="font-mono text-[9px] text-zinc-300">· 0.6s ON-DEVICE</span>
+                  </div>
+                  <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-zinc-400">100% OFFLINE</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -283,6 +309,45 @@ export default function DownloadAllPage() {
               label="DATA"
               value="Local-first · Your iCloud"
             />
+          </div>
+
+          {/* TECHNICAL SPEC SHEET */}
+          <div className="mt-12 rounded-md border border-edge bg-surface p-6 font-mono md:p-8">
+            <div className="flex items-center justify-between border-b border-edge-dim pb-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.26em] text-trace">· SYSTEM SPECIFICATION SHEET</p>
+                <h2 className="mt-1 font-display text-2xl font-normal text-ink">Technical Specifications (v2.5.43)</h2>
+              </div>
+              <span className="hidden sm:inline-block rounded-sm border border-edge-dim bg-canvas-alt px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-ink-subtle">
+                BUILD 49 · NOTARIZED
+              </span>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+              <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
+                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">SYSTEM / HOST</p>
+                <p className="text-[11px] font-semibold text-ink">macOS 14.0+ (Sonoma, Sequoia)</p>
+                <p className="text-[10px] leading-relaxed text-ink-muted">Apple Silicon (M1-M4) &amp; Intel x86_64 Universal Binary</p>
+              </div>
+
+              <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
+                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">ON-DEVICE ASR</p>
+                <p className="text-[11px] font-semibold text-ink">FluidAudio Parakeet TDT v3</p>
+                <p className="text-[10px] leading-relaxed text-ink-muted">~0.6s latency · 100% offline · CoreML Neural Engine</p>
+              </div>
+
+              <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
+                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">REASONING CATALOG</p>
+                <p className="text-[11px] font-semibold text-ink">Gemini 3.8 Flash (Default)</p>
+                <p className="text-[10px] leading-relaxed text-ink-muted">DeepSeek V4 · GLM-5 · Grok 4 · Llama 4 Scout · Claude</p>
+              </div>
+
+              <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
+                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">INTEGRITY &amp; IPC</p>
+                <p className="text-[11px] font-semibold text-ink">Developer ID Signed + Notarized</p>
+                <p className="text-[10px] leading-relaxed text-ink-muted">Mach XPC (to.talkie.agent.xpc.dev) · SHA-256 verified</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -20,36 +20,65 @@ const GRATICULE = {
 }
 const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
 
-function DocCard({ slug, title, description, href }) {
+function DocCard({ slug, title, description, href, sections }) {
   return (
-    <Link
-      href={href}
+    <div
       className="group relative flex h-full flex-col justify-between rounded-sm border border-edge-faint bg-canvas p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
     >
       <div>
-        <p
-          className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 group-hover:text-amber"
+        <Link
+          href={href}
+          className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle transition-colors duration-200 hover:text-amber"
         >
           /docs/{slug}
-        </p>
-        <h3 className="mt-3 font-display text-xl font-normal leading-tight tracking-[-0.01em] text-ink">
-          {title}
-        </h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">{description}</p>
+        </Link>
+        <Link href={href} className="block mt-2">
+          <h3 className="font-display text-xl font-normal leading-tight tracking-[-0.01em] text-ink transition-colors duration-150 group-hover:text-amber">
+            {title}
+          </h3>
+          <p className="mt-2 text-[13px] leading-relaxed text-ink-muted transition-colors duration-200 group-hover:text-ink-dim">
+            {description}
+          </p>
+        </Link>
+
+        {sections && sections.length > 0 && (
+          <div className="mt-4 pt-3 border-t border-edge-faint/60">
+            <p className="font-mono text-[8.5px] uppercase tracking-[0.22em] text-ink-subtle mb-2">
+              SECTIONS
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {sections.map((sec) => (
+                <Link
+                  key={sec.id}
+                  href={`${href}#${sec.id}`}
+                  className="inline-flex items-center rounded-xs border border-edge-faint bg-canvas-alt/70 px-1.5 py-0.5 font-mono text-[10.5px] text-ink-muted transition-all duration-150 hover:border-amber/60 hover:bg-canvas-alt hover:text-amber hover:shadow-[0_0_8px_-2px_var(--trace-glow)]"
+                >
+                  <span className="text-amber/70 mr-0.5 font-sans">#</span>
+                  {sec.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="mt-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
-        <span
-          aria-hidden
-          className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
-          style={{ boxShadow: '0 0 4px var(--trace)' }}
-        />
-        <span>Read guide</span>
-        <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-          →
-        </span>
+      <div className="mt-5 flex items-center justify-between border-t border-edge-faint pt-3">
+        <Link
+          href={href}
+          className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-trace transition-colors duration-150 hover:text-amber"
+        >
+          <span
+            aria-hidden
+            className="inline-block h-1 w-1 rounded-full bg-trace transition-transform duration-200 group-hover:scale-150"
+            style={{ boxShadow: '0 0 4px var(--trace)' }}
+          />
+          <span>Read guide</span>
+          <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+            →
+          </span>
+        </Link>
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -113,6 +142,7 @@ export default function DocsIndexPage() {
                         title={item.title}
                         description={item.description}
                         href={item.href}
+                        sections={item.sections}
                       />
                     ))}
                   </div>

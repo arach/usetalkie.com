@@ -1,40 +1,28 @@
+"use client"
+
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { DOCS_NAV, siblingDocs } from './DOCS_NAV'
 
 /**
  * DocsLayout — wrapper for every /docs/{slug} page.
  *
- * Pure server component. Owns three structural elements that
- * otherwise drift across docs: the sidebar (from DOCS_NAV), the page
- * header (breadcrumb + title + description), and the prev/next
- * footer (via siblingDocs). Page bodies render as children inside a
- * prose-styled article.
- *
- * Visual language matches DocsIndexPage and DocsNotice — phosphor
- * tokens, font-mono uppercase eyebrows, no donor-borrowed accent
- * fills. The active sidebar item picks up a trace-tinted border and
- * left-edge glow so the user always knows where they are.
- *
- * Props:
- *   slug        — current page slug, used to mark active nav + look
- *                 up prev/next siblings
- *   title       — page title (h1)
- *   description — sub-heading, single sentence
- *   toc         — optional [{ id, label, level }] for right-rail
- *                 in-page navigation. Hidden if not provided. Levels
- *                 2 and 3 are styled distinctly.
- *   children    — page body
+ * Owns structural documentation elements:
+ * - Left sidebar (with doc sections and active highlighting)
+ * - Page header (breadcrumb, title, description, and mobile section jumps)
+ * - Heading deeplinking (clickable hover '#' anchors, copy URL to clipboard, toast notification)
+ * - Right-rail Table of Contents with live scrollspy
+ * - Prev/next footer navigation
  */
 
 const PROSE_CLASSES = [
-  // Body text + headings — match the trace + ink token vocabulary the
-  // rest of the v2 surface uses. Using arbitrary-variant selectors so
-  // we don't pull in @tailwindcss/typography on the static export.
   'text-[15px] leading-relaxed text-ink-muted',
   '[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-normal [&_h2]:tracking-[-0.01em] [&_h2]:text-ink',
   '[&_h2]:scroll-mt-24',
   '[&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-normal [&_h3]:text-ink',
   '[&_h3]:scroll-mt-24',
+  '[&_[id]]:scroll-mt-24',
+  '[&_.doc-anchor-link]:!no-underline [&_.doc-anchor-link]:text-ink-subtle hover:[&_.doc-anchor-link]:text-amber',
   '[&_p]:my-4',
   '[&_strong]:font-medium [&_strong]:text-ink',
   '[&_em]:italic [&_em]:text-ink',
@@ -57,7 +45,24 @@ const PROSE_CLASSES = [
 
 const TRACE_GLOW_SOFT = { textShadow: '0 0 4px var(--trace-glow)' }
 
-function SidebarSection({ section, activeSlug }) {
+function ToastHUD({ message }) {
+  if (!message) return null
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-sm border border-amber/70 bg-panel-bg/95 px-3.5 py-2 font-mono text-[11.5px] text-panel-ink shadow-xl shadow-black/50 backdrop-blur-md transition-all duration-200"
+    >
+      <span
+        className="inline-block h-1.5 w-1.5 rounded-full bg-amber"
+        style={{ boxShadow: '0 0 6px var(--trace-glow)' }}
+      />
+      <span>{message}</span>
+    </div>
+  )
+}
+
+function SidebarSection({ section, activeSlug, activeSectionId }) {
   return (
     <div className="space-y-1.5">
       <p
@@ -78,7 +83,7 @@ function SidebarSection({ section, activeSlug }) {
                   aria-current={active ? 'page' : undefined}
                   className={`group relative block rounded-sm px-3 py-1.5 text-[13px] transition-all duration-200 ${
                     active
-                      ? 'bg-canvas-alt text-ink'
+                      ? 'bg-canvas-alt text-ink font-medium'
                       : 'text-ink-muted hover:translate-x-0.5 hover:bg-canvas-alt hover:text-amber'
                   }`}
                   style={
@@ -92,6 +97,33 @@ function SidebarSection({ section, activeSlug }) {
                 >
                   {item.title}
                 </Link>
+
+                {/* Sub-sections when this doc is active */}
+                {active && item.sections && item.sections.length > 0 && (
+                  <ul className="my-1.5 ml-3 space-y-0.5 border-l border-edge-faint pl-2">
+                    {item.sections.map((sec) => {
+                      const isSecActive = activeSectionId === sec.id
+                      return (
+                        <li key={sec.id}>
+                          <a
+                            href={`#${sec.id}`}
+                            className={`group/sec flex items-center justify-between py-1 text-[11.5px] transition-colors ${
+                              isSecActive
+                                ? 'font-medium text-amber'
+                                : 'text-ink-subtle hover:text-amber'
+                            }`}
+                            style={isSecActive ? TRACE_GLOW_SOFT : undefined}
+                          >
+                            <span className="truncate">
+                              <span className="mr-1 font-mono text-[10px] text-amber/60">#</span>
+                              {sec.title}
+                            </span>
+                          </a>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
               </li>
             )
           })}
@@ -100,7 +132,7 @@ function SidebarSection({ section, activeSlug }) {
   )
 }
 
-function TocRail({ toc }) {
+function TocRail({ toc, activeId, onCopySection }) {
   if (!toc || toc.length === 0) return null
   return (
     <nav
@@ -114,16 +146,41 @@ function TocRail({ toc }) {
         On this page
       </p>
       <ul className="mt-3 space-y-1.5 border-l border-edge-faint">
-        {toc.map((item) => (
-          <li key={item.id} className={item.level === 3 ? 'pl-6' : 'pl-3'}>
-            <a
-              href={`#${item.id}`}
-              className="block py-0.5 text-[12.5px] text-ink-muted transition-all duration-200 hover:translate-x-0.5 hover:text-amber"
+        {toc.map((item) => {
+          const isActive = activeId === item.id
+          return (
+            <li
+              key={item.id}
+              className={`group flex items-center justify-between transition-all duration-150 ${
+                item.level === 3 ? 'pl-6' : 'pl-3'
+              } ${isActive ? '-ml-px border-l-2 border-amber' : ''}`}
             >
-              {item.label}
-            </a>
-          </li>
-        ))}
+              <a
+                href={`#${item.id}`}
+                className={`block py-0.5 text-[12.5px] transition-all duration-200 ${
+                  isActive
+                    ? 'font-medium text-amber'
+                    : 'text-ink-muted hover:translate-x-0.5 hover:text-amber'
+                }`}
+                style={isActive ? TRACE_GLOW_SOFT : undefined}
+              >
+                {item.label}
+              </a>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  onCopySection(item.id)
+                }}
+                className="mr-1 text-[11px] font-mono text-ink-subtle opacity-0 transition-opacity group-hover:opacity-100 hover:text-amber"
+                title="Copy link to section"
+                aria-label={`Copy link to section ${item.label}`}
+              >
+                #
+              </button>
+            </li>
+          )
+        })}
       </ul>
     </nav>
   )
@@ -174,6 +231,11 @@ function PrevNext({ slug }) {
 }
 
 export default function DocsLayout({ slug, title, description, toc, sections, children }) {
+  const articleRef = useRef(null)
+  const [activeId, setActiveId] = useState('')
+  const [toastMessage, setToastMessage] = useState(null)
+  const toastTimerRef = useRef(null)
+
   const resolvedToc =
     toc ??
     (sections || []).map((item) => ({
@@ -181,6 +243,125 @@ export default function DocsLayout({ slug, title, description, toc, sections, ch
       label: item.label ?? item.title,
       level: item.level ?? 2,
     }))
+
+  const showToast = (msg) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    setToastMessage(msg)
+    toastTimerRef.current = setTimeout(() => {
+      setToastMessage(null)
+    }, 2200)
+  }
+
+  const copySectionLink = (id) => {
+    if (typeof window === 'undefined') return
+    const url = `${window.location.origin}${window.location.pathname}#${id}`
+    window.history.pushState(null, '', `#${id}`)
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+    setActiveId(id)
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        showToast(`Copied section link #${id}`)
+      }).catch(() => {
+        showToast(`Jumped to #${id}`)
+      })
+    }
+  }
+
+  // Handle initial hash on mount or slug change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const hash = window.location.hash.replace('#', '')
+    if (hash) {
+      setActiveId(hash)
+      const timer = setTimeout(() => {
+        const el = document.getElementById(hash)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 150)
+      return () => clearTimeout(timer)
+    }
+  }, [slug])
+
+  // Attach clickable hover anchors to all headings with IDs
+  useEffect(() => {
+    if (!articleRef.current) return
+    const headings = articleRef.current.querySelectorAll('h2[id], h3[id]')
+    const cleanupFns = []
+
+    headings.forEach((heading) => {
+      const id = heading.id
+      if (!id) return
+      if (heading.querySelector('.doc-anchor-link')) return
+
+      heading.classList.add('group', 'relative')
+
+      const anchor = document.createElement('a')
+      anchor.className =
+        'doc-anchor-link ml-2 inline-flex items-center select-none font-mono text-[0.8em] font-normal text-ink-subtle opacity-0 transition-opacity duration-150 group-hover:opacity-100 hover:!text-amber focus:opacity-100'
+      anchor.href = `#${id}`
+      anchor.setAttribute('aria-label', `Permalink to ${heading.textContent?.trim() || id}`)
+      anchor.title = 'Copy link to section'
+      anchor.innerHTML = '<span class="text-amber">#</span>'
+
+      const handleClick = (e) => {
+        e.preventDefault()
+        copySectionLink(id)
+      }
+
+      anchor.addEventListener('click', handleClick)
+      heading.appendChild(anchor)
+
+      cleanupFns.push(() => {
+        anchor.removeEventListener('click', handleClick)
+        anchor.remove()
+      })
+    })
+
+    return () => {
+      cleanupFns.forEach((fn) => fn())
+    }
+  }, [slug, children])
+
+  // Track active section on scroll
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const headings = articleRef.current?.querySelectorAll('h2[id], h3[id]')
+    if (!headings || headings.length === 0) return
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const headerOffset = 120
+      let currentId = ''
+
+      for (let i = 0; i < headings.length; i++) {
+        const top = headings[i].getBoundingClientRect().top + scrollY
+        if (top - headerOffset <= scrollY) {
+          currentId = headings[i].id
+        } else {
+          break
+        }
+      }
+
+      if (currentId) {
+        setActiveId(currentId)
+      } else if (headings[0]) {
+        setActiveId(headings[0].id)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [slug, children])
+
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)_200px]">
@@ -195,13 +376,18 @@ export default function DocsLayout({ slug, title, description, toc, sections, ch
               <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-x-0.5">←</span> Docs index
             </Link>
             {DOCS_NAV.map((section) => (
-              <SidebarSection key={section.label} section={section} activeSlug={slug} />
+              <SidebarSection
+                key={section.label}
+                section={section}
+                activeSlug={slug}
+                activeSectionId={activeId}
+              />
             ))}
           </div>
         </aside>
 
         {/* Body */}
-        <article className="min-w-0">
+        <article ref={articleRef} className="min-w-0">
           <header className="mb-8 border-b border-edge-faint pb-6">
             <p
               className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
@@ -217,6 +403,31 @@ export default function DocsLayout({ slug, title, description, toc, sections, ch
                 {description}
               </p>
             )}
+
+            {/* Quick in-page section jumps on mobile */}
+            {resolvedToc.length > 0 && (
+              <div className="mt-5 flex flex-wrap gap-1.5 lg:hidden">
+                <span className="self-center mr-1 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
+                  Jump to:
+                </span>
+                {resolvedToc
+                  .filter((s) => s.level === 2)
+                  .map((s) => (
+                    <a
+                      key={s.id}
+                      href={`#${s.id}`}
+                      className={`inline-flex items-center rounded-xs border px-2 py-0.5 font-mono text-[10.5px] transition-colors ${
+                        activeId === s.id
+                          ? 'border-amber/60 bg-canvas-alt text-amber'
+                          : 'border-edge-faint bg-surface/60 text-ink-muted hover:border-amber/50 hover:text-amber'
+                      }`}
+                    >
+                      <span className="mr-0.5 text-amber/70">#</span>
+                      {s.label}
+                    </a>
+                  ))}
+              </div>
+            )}
           </header>
 
           <div className={PROSE_CLASSES}>{children}</div>
@@ -225,8 +436,14 @@ export default function DocsLayout({ slug, title, description, toc, sections, ch
         </article>
 
         {/* Right rail TOC */}
-        <TocRail toc={resolvedToc} />
+        <TocRail
+          toc={resolvedToc}
+          activeId={activeId}
+          onCopySection={copySectionLink}
+        />
       </div>
+
+      <ToastHUD message={toastMessage} />
     </div>
   )
 }
