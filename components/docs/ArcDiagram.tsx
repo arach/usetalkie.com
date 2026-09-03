@@ -68,15 +68,21 @@ const NODE_SIZES: Record<NodeSize, { width: number; height: number }> = {
   s: { width: 90, height: 40 },
 }
 
-const COLORS: Record<DiagramColor, { border: string; bg: string; icon: string; stroke: string }> = {
-  violet:  { border: 'border-violet-400/50',  bg: 'bg-violet-500/10',  icon: 'text-violet-400',  stroke: '#a78bfa' },
-  emerald: { border: 'border-emerald-400/50', bg: 'bg-emerald-500/10', icon: 'text-emerald-400', stroke: '#34d399' },
-  blue:    { border: 'border-blue-400/50',    bg: 'bg-blue-500/10',    icon: 'text-blue-400',    stroke: '#60a5fa' },
-  amber:   { border: 'border-amber-400/50',   bg: 'bg-amber-500/10',   icon: 'text-amber-400',   stroke: '#fbbf24' },
-  sky:     { border: 'border-sky-400/50',     bg: 'bg-sky-500/10',     icon: 'text-sky-400',     stroke: '#38bdf8' },
-  zinc:    { border: 'border-zinc-600',       bg: 'bg-zinc-800/50',    icon: 'text-zinc-400',    stroke: '#71717a' },
-  rose:    { border: 'border-rose-400/50',    bg: 'bg-rose-500/10',    icon: 'text-rose-400',    stroke: '#fb7185' },
-  orange:  { border: 'border-orange-400/50',  bg: 'bg-orange-500/10',  icon: 'text-orange-400',  stroke: '#fb923c' },
+const COLORS: Record<DiagramColor, { stroke: string; faint: boolean }> = {
+  violet:  { stroke: 'var(--trace)',     faint: false },
+  emerald: { stroke: 'var(--trace)',     faint: false },
+  blue:    { stroke: 'var(--trace)',     faint: false },
+  amber:   { stroke: 'var(--trace)',     faint: false },
+  orange:  { stroke: 'var(--trace)',     faint: false },
+  rose:    { stroke: 'var(--trace)',     faint: false },
+  sky:     { stroke: 'var(--ink-faint)', faint: true },
+  zinc:    { stroke: 'var(--ink-faint)', faint: true },
+}
+
+const GRATICULE = {
+  backgroundImage:
+    'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
+  backgroundSize: '24px 24px',
 }
 
 // ============================================
@@ -90,7 +96,6 @@ interface NodeProps {
 
 function Node({ node, data }: NodeProps) {
   const size = NODE_SIZES[node.size]
-  const color = COLORS[data.color] || COLORS.zinc
   const Icon = (LucideIcons as Record<string, LucideIcon>)[data.icon] || LucideIcons.Box
 
   const isLarge = node.size === 'l'
@@ -99,33 +104,35 @@ function Node({ node, data }: NodeProps) {
   return (
     <div
       className={`
-        absolute rounded-xl border-2 ${color.border} ${color.bg}
-        ${isLarge ? 'px-5 py-3' : isSmall ? 'px-3 py-2' : 'px-4 py-2.5'}
-        bg-zinc-900/90 backdrop-blur-sm
+        absolute rounded-sm border border-edge bg-canvas
+        ${isLarge ? 'px-4 py-3' : isSmall ? 'px-2.5 py-1.5' : 'px-3 py-2'}
       `}
-      style={{ left: node.x, top: node.y, width: size.width }}
+      style={{ left: node.x, top: node.y, width: size.width, height: size.height }}
     >
-      <div className="flex items-center gap-3">
-        <div className={`
-          flex-shrink-0 rounded-lg border border-zinc-700 bg-zinc-900
-          ${isLarge ? 'w-10 h-10' : isSmall ? 'w-6 h-6' : 'w-8 h-8'}
-          flex items-center justify-center
-        `}>
-          <Icon className={`${isLarge ? 'w-5 h-5' : isSmall ? 'w-3 h-3' : 'w-4 h-4'} ${color.icon}`} />
+      <div className="flex items-center gap-2.5">
+        <div
+          className={`
+            flex flex-shrink-0 items-center justify-center rounded-[2px] border border-trace/70
+            ${isLarge ? 'h-8 w-8' : isSmall ? 'h-5 w-5' : 'h-6 w-6'}
+          `}
+        >
+          <Icon className={`${isLarge ? 'h-4 w-4' : isSmall ? 'h-3 w-3' : 'h-3.5 w-3.5'} text-trace`} />
         </div>
         <div className="min-w-0">
-          <div className={`font-semibold text-white ${isLarge ? 'text-sm' : isSmall ? 'text-[10px]' : 'text-xs'}`}>
+          <div className={`font-display font-normal text-ink ${isLarge ? 'text-[15px]' : isSmall ? 'text-[11px]' : 'text-[13px]'}`}>
             {data.name}
           </div>
           {data.subtitle && (
-            <div className={`font-mono text-zinc-500 ${isSmall ? 'text-[8px]' : 'text-[10px]'}`}>
+            <div
+              className={`font-mono text-ink-faint ${isSmall ? 'text-[8px] tracking-[0.08em]' : 'text-[9px] tracking-[0.10em]'}`}
+            >
               {data.subtitle}
             </div>
           )}
         </div>
       </div>
       {data.description && !isSmall && (
-        <div className={`mt-1.5 text-zinc-400 ${isLarge ? 'text-[11px]' : 'text-[10px]'}`}>
+        <div className={`mt-1.5 text-ink-muted ${isLarge ? 'text-[11px]' : 'text-[10px]'}`}>
           {data.description}
         </div>
       )}
@@ -168,10 +175,12 @@ function ConnectorPath({ connector, connectorIndex, nodes, styles }: ConnectorPr
   const toNode = nodes[connector.to]
   if (!fromNode || !toNode) return null
 
-  const style = styles[connector.style] || { color: 'zinc', strokeWidth: 2 }
+  const style = styles[connector.style] || { color: 'zinc' as DiagramColor, strokeWidth: 1.4 }
   const from = getAnchorPoint(fromNode, connector.fromAnchor)
   const to = getAnchorPoint(toNode, connector.toAnchor)
-  const color = COLORS[style.color]?.stroke || COLORS.zinc.stroke
+  const colorMeta = COLORS[style.color] || COLORS.zinc
+  const color = colorMeta.stroke
+  const dashed = style.dashed || colorMeta.faint
   const gradientId = `connector-gradient-${connectorIndex}`
 
   // Calculate path
@@ -234,10 +243,10 @@ function ConnectorPath({ connector, connectorIndex, nodes, styles }: ConnectorPr
           y2={to.y}
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0%" stopColor={color} stopOpacity={0.3} />
-          <stop offset="15%" stopColor={color} stopOpacity={1} />
-          <stop offset="85%" stopColor={color} stopOpacity={1} />
-          <stop offset="100%" stopColor={color} stopOpacity={0.5} />
+          <stop offset="0%" stopColor={color} stopOpacity={0.2} />
+          <stop offset="12%" stopColor={color} stopOpacity={1} />
+          <stop offset="88%" stopColor={color} stopOpacity={1} />
+          <stop offset="100%" stopColor={color} stopOpacity={0.35} />
         </linearGradient>
       </defs>
 
@@ -246,8 +255,8 @@ function ConnectorPath({ connector, connectorIndex, nodes, styles }: ConnectorPr
         d={path}
         fill="none"
         stroke={`url(#${gradientId})`}
-        strokeWidth={style.strokeWidth}
-        strokeDasharray={style.dashed ? '6 3' : undefined}
+        strokeWidth={style.strokeWidth ?? 1.4}
+        strokeDasharray={dashed ? '5 3' : undefined}
       />
 
       {/* Arrow head - triangle at end point */}
@@ -265,8 +274,13 @@ function ConnectorPath({ connector, connectorIndex, nodes, styles }: ConnectorPr
           y={labelPos.y + labelOffset.y}
           textAnchor={textAnchor}
           fill={color}
-          className="text-[10px] font-mono"
-          style={{ fontFamily: 'ui-monospace, monospace' }}
+          className="font-mono text-[9.5px] uppercase tracking-[0.08em]"
+          style={{
+            fontFamily: 'var(--font-mono), ui-monospace, monospace',
+            paintOrder: 'stroke fill',
+            stroke: 'var(--canvas)',
+            strokeWidth: 4,
+          }}
         >
           {style.label}
         </text>
@@ -292,18 +306,18 @@ function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }: ZoomControlsProps)
   const { ZoomIn, ZoomOut } = LucideIcons
 
   return (
-    <div className="absolute bottom-3 right-3 flex items-center bg-zinc-900/90 backdrop-blur-sm rounded-md border border-zinc-700 z-10">
+    <div className="flex items-center bg-canvas">
       <button
         onClick={onZoomOut}
         disabled={zoom <= ZOOM_LEVELS[0]}
-        className="p-1 hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-l-md"
+        className="rounded-l-sm p-1 text-ink-faint transition-colors hover:bg-canvas-alt hover:text-ink disabled:cursor-not-allowed disabled:opacity-30"
         title="Zoom out"
       >
-        <ZoomOut className="w-3 h-3 text-zinc-400" />
+        <ZoomOut className="h-3 w-3" />
       </button>
       <button
         onClick={onReset}
-        className="px-1.5 py-1 text-[9px] font-mono text-zinc-400 hover:bg-zinc-700 transition-colors min-w-[36px] border-x border-zinc-700"
+        className="min-w-[36px] border-x border-edge px-1.5 py-1 font-mono text-[9px] text-ink-faint transition-colors hover:bg-canvas-alt hover:text-ink"
         title="Reset zoom"
       >
         {Math.round(zoom * 100)}%
@@ -311,10 +325,10 @@ function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }: ZoomControlsProps)
       <button
         onClick={onZoomIn}
         disabled={zoom >= ZOOM_LEVELS[ZOOM_LEVELS.length - 1]}
-        className="p-1 hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-r-md"
+        className="rounded-r-sm p-1 text-ink-faint transition-colors hover:bg-canvas-alt hover:text-ink disabled:cursor-not-allowed disabled:opacity-30"
         title="Zoom in"
       >
-        <ZoomIn className="w-3 h-3 text-zinc-400" />
+        <ZoomIn className="h-3 w-3" />
       </button>
     </div>
   )
@@ -387,7 +401,7 @@ export default function ArcDiagram({ data, className = '', interactive = true }:
 
   return (
     <div
-      className={`rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden relative ${className}`}
+      className={`overflow-x-auto rounded-sm border border-edge bg-canvas ${className}`}
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -395,6 +409,13 @@ export default function ArcDiagram({ data, className = '', interactive = true }:
       onMouseLeave={handleMouseUp}
       style={{ cursor: interactive ? (isPanning ? 'grabbing' : 'grab') : 'default' }}
     >
+      <div className="relative overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-2 border border-edge-faint" />
+        <span aria-hidden className="pointer-events-none absolute left-2 top-2 z-10 h-2.5 w-2.5 border-l border-t border-trace/60" />
+        <span aria-hidden className="pointer-events-none absolute right-2 top-2 z-10 h-2.5 w-2.5 border-r border-t border-trace/60" />
+        <span aria-hidden className="pointer-events-none absolute bottom-2 left-2 z-10 h-2.5 w-2.5 border-b border-l border-trace/60" />
+        <span aria-hidden className="pointer-events-none absolute bottom-2 right-2 z-10 h-2.5 w-2.5 border-b border-r border-trace/60" />
+
       <div
         className="relative transition-transform duration-150 ease-out"
         style={{
@@ -405,16 +426,15 @@ export default function ArcDiagram({ data, className = '', interactive = true }:
           transformOrigin: 'top left',
         }}
       >
-        {/* Grid background - extends beyond content for pan */}
         <div
-          className="absolute opacity-[0.08]"
+          aria-hidden
+          className="absolute opacity-40"
           style={{
             top: -2000,
             left: -2000,
             width: layout.width + 4000,
             height: layout.height + 4000,
-            backgroundImage: 'radial-gradient(circle, #71717a 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
+            ...GRATICULE,
           }}
         />
 
@@ -439,25 +459,34 @@ export default function ArcDiagram({ data, className = '', interactive = true }:
           <Node key={nodeId} node={node} data={nodeData[nodeId]} />
         ))}
       </div>
+      </div>
 
-      {/* Viewer chrome - fixed position regardless of zoom/pan */}
-
-      {/* Diagram ID - bottom left */}
-      {id && (
-        <div className="absolute bottom-3 left-3 font-mono text-[9px] text-zinc-600 tracking-wider z-10">
-          {id}
+      <div className="flex items-stretch border-t border-edge bg-canvas">
+        <div className="flex min-w-0 flex-1 items-baseline gap-3 px-3 py-2">
+          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-trace">
+            {id || 'SYS.ARCH'}
+          </span>
+          <span className="truncate font-mono text-[9px] uppercase tracking-[0.16em] text-ink-faint">
+            macOS process topology
+          </span>
         </div>
-      )}
-
-      {/* Zoom controls - bottom right */}
-      {interactive && (
-        <ZoomControls
-          zoom={zoom}
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
-          onReset={handleReset}
-        />
-      )}
+        <div className="hidden items-center border-l border-edge px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-ink-subtle sm:flex">
+          Scale 1:1
+        </div>
+        <div className="flex items-center border-l border-edge px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-ink-subtle">
+          Sheet 1/1
+        </div>
+        {interactive && (
+          <div className="relative border-l border-edge">
+            <ZoomControls
+              zoom={zoom}
+              onZoomIn={handleZoomIn}
+              onZoomOut={handleZoomOut}
+              onReset={handleReset}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

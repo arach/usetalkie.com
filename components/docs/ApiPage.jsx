@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Terminal } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import CodeBlock from './CodeBlock'
 import ComingSoonBanner from './ComingSoonBanner'
 
 const sections = [
@@ -15,19 +16,6 @@ const sections = [
   { id: 'shortcuts', title: 'Shortcuts', level: 2 },
   { id: 'navigation', title: 'Continue Reading', level: 2 },
 ]
-
-const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
-    {title && (
-      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
-        <span className="text-xs font-mono text-ink-muted">{title}</span>
-      </div>
-    )}
-    <pre className="p-4 bg-panel-bg overflow-x-auto">
-      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
-    </pre>
-  </div>
-)
 
 const EndpointCard = ({ method, path, description, response }) => {
   const methodColors = {
@@ -43,11 +31,11 @@ const EndpointCard = ({ method, path, description, response }) => {
         <span className={`px-2 py-0.5 text-xs font-bold rounded ${methodColors[method]}`}>
           {method}
         </span>
-        <code className="text-sm font-mono text-ink-dim dark:text-screen-ink-dim">{path}</code>
+        <code className="text-sm font-mono text-ink">{path}</code>
       </div>
       <p className="text-sm text-ink-muted mb-2">{description}</p>
       {response && (
-        <pre className="mt-2 p-2 bg-surface dark:bg-panel-bg-alt rounded text-xs font-mono text-ink-muted overflow-x-auto">
+        <pre className="mt-2 p-2 rounded border border-panel-edge bg-panel-bg text-xs font-mono text-panel-ink-dim overflow-x-auto">
           {response}
         </pre>
       )}
@@ -58,6 +46,7 @@ const EndpointCard = ({ method, path, description, response }) => {
 export default function ApiPage() {
   return (
     <DocsLayout
+      slug="api"
       title="API Reference"
       description="Integration points for developers. HTTP endpoints, URL schemes, and programmatic access to Talkie."
       badge="Reference"

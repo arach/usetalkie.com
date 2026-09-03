@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowRight, Package, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import CodeBlock from './CodeBlock'
 import ComingSoonBanner from './ComingSoonBanner'
 
 const sections = [
@@ -14,19 +15,6 @@ const sections = [
   { id: 'troubleshooting', title: 'Troubleshooting', level: 2 },
   { id: 'next-steps', title: 'Next Steps', level: 2 },
 ]
-
-const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
-    {title && (
-      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
-        <span className="text-xs font-mono text-ink-muted">{title}</span>
-      </div>
-    )}
-    <pre className="p-4 bg-panel-bg overflow-x-auto">
-      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
-    </pre>
-  </div>
-)
 
 const Step = ({ number, title, children }) => (
   <div className="flex gap-4 md:gap-6 not-prose">
@@ -58,6 +46,7 @@ const InfoBox = ({ type = 'info', children }) => {
 export default function BridgeSetupPage() {
   return (
     <DocsLayout
+      slug="bridge-setup"
       title="TalkieServer Setup"
       description="TalkieServer is a small local service that lets your Mac and iPhone talk to each other. It runs on your Mac and handles secure pairing and data sync."
       badge="Setup Guide"
@@ -121,15 +110,15 @@ export default function BridgeSetupPage() {
           </thead>
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
             <tr className="bg-canvas-alt">
-              <td className="px-4 py-3 font-mono text-ink-dim dark:text-screen-ink-dim">elysia</td>
+              <td className="px-4 py-3 font-mono text-ink">elysia</td>
               <td className="px-4 py-3 text-ink-muted">Fast HTTP server framework</td>
             </tr>
             <tr className="bg-canvas-alt">
-              <td className="px-4 py-3 font-mono text-ink-dim dark:text-screen-ink-dim">@elysiajs/cors</td>
+              <td className="px-4 py-3 font-mono text-ink">@elysiajs/cors</td>
               <td className="px-4 py-3 text-ink-muted">Cross-origin request handling</td>
             </tr>
             <tr className="bg-canvas-alt">
-              <td className="px-4 py-3 font-mono text-ink-dim dark:text-screen-ink-dim">tweetnacl</td>
+              <td className="px-4 py-3 font-mono text-ink">tweetnacl</td>
               <td className="px-4 py-3 text-ink-muted">Cryptographic operations for secure pairing</td>
             </tr>
           </tbody>

@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, FolderOpen, Download, Database, Lock } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import CodeBlock from './CodeBlock'
 
 const sections = [
   { id: 'philosophy', title: 'Data Philosophy', level: 2 },
@@ -14,19 +15,6 @@ const sections = [
   { id: 'sync', title: 'Sync Architecture', level: 2 },
   { id: 'navigation', title: 'Continue Reading', level: 2 },
 ]
-
-const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
-    {title && (
-      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
-        <span className="text-xs font-mono text-ink-muted">{title}</span>
-      </div>
-    )}
-    <pre className="p-4 bg-panel-bg overflow-x-auto">
-      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
-    </pre>
-  </div>
-)
 
 const ModelCard = ({ name, description, fields }) => (
   <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
@@ -48,6 +36,7 @@ const ModelCard = ({ name, description, fields }) => (
 export default function DataPage() {
   return (
     <DocsLayout
+      slug="data"
       title="Your Data"
       description="How Talkie stores your data locally. It sits in readable formats on your disk, and you can export it anytime."
       badge="Data Layer"

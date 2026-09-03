@@ -27,7 +27,7 @@ export const DOCS_NAV = [
       {
         slug: 'architecture',
         title: 'Architecture',
-        description: 'Multi-process design — Talkie, Agent, Engine, Server.',
+        description: 'Multi-process design — Talkie, Agent, and the iOS bridge.',
         href: '/docs/architecture',
       },
       {

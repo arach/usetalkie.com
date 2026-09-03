@@ -372,7 +372,7 @@ const docsPages = [
   {
     slug: 'docs-architecture',
     title: 'Architecture',
-    subtitle: 'How Talkie, TalkieLive, TalkieEngine, and TalkieServer work together',
+    subtitle: 'How Talkie, TalkieAgent, and TalkieServer work together',
     tag: 'Deep Dive',
   },
   {

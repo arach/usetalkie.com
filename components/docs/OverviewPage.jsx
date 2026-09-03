@@ -28,6 +28,7 @@ const FeatureCard = ({ icon: Icon, title, description, color }) => (
 export default function OverviewPage() {
   return (
     <DocsLayout
+      slug="overview"
       title="Overview"
       description="Talkie lets you talk to your Mac instead of typing. It runs locally and syncs across your devices without a Talkie cloud."
       badge="Introduction"
@@ -151,38 +152,41 @@ export default function OverviewPage() {
       {/* Multi-Process Architecture */}
       <h2 id="multi-process">Multi-Process Architecture</h2>
       <p>
-        Unlike most apps that run as a single process, Talkie splits responsibilities across
-        several smaller ones.
+        Talkie is two macOS apps plus a local HTTP bridge. Capture and transcription live in
+        TalkieAgent so the main window can quit without taking the mic down with it.
       </p>
 
       <SimpleArchitectureDiagram />
 
       <p>
-        <strong>Why multiple processes?</strong>
+        <strong>Why split the work?</strong>
       </p>
       <ul>
-        <li><strong>Fault isolation</strong> — If one component crashes, others keep running</li>
-        <li><strong>Security boundaries</strong> — Each process has only the permissions it needs</li>
-        <li><strong>Resource management</strong> — Heavy transcription work doesn't block the UI</li>
-        <li><strong>Independent updates</strong> — Components can evolve separately</li>
+        <li><strong>Fault isolation</strong> — A crash in transcription does not take down the UI</li>
+        <li><strong>Permission boundaries</strong> — Microphone, accessibility, and screen capture stay with TalkieAgent</li>
+        <li><strong>Always-on capture</strong> — TalkieAgent stays running when Talkie is closed</li>
+        <li><strong>Local engine</strong> — Whisper and Parakeet run in-process inside TalkieAgent, not as a third app</li>
       </ul>
 
       {/* Communication */}
       <h2 id="communication">How Components Communicate</h2>
       <p>
-        The processes talk to each other using two main methods, each chosen for specific reasons.
+        Native macOS pieces talk over XPC. The iPhone talks to a local HTTP process that
+        TalkieAgent supervises.
       </p>
 
       <h3 id="xpc">XPC (Inter-Process Communication)</h3>
       <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-2">
           <Network className="w-5 h-5 text-blue-500" />
-          <span className="font-bold text-ink">Talkie ↔ TalkieAgent ↔ TalkieEngine</span>
+          <span className="font-bold text-ink">Talkie ↔ TalkieAgent</span>
         </div>
         <p className="text-sm text-ink-muted">
-          XPC is Apple's secure inter-process communication mechanism. It provides automatic
-          process lifecycle management, type-safe messaging, and sandboxing support.
-          All native macOS components use XPC.
+          XPC is Apple's process-to-process channel: typed messages, sandboxing, and
+          launchd lifecycle. Talkie uses it to talk to TalkieAgent for capture control,
+          dictation events, and the local HTTP bridge. CloudKit memo sync uses a second
+          XPC connection to TalkieSync. Local transcription does not cross a third process.
+          TalkieEngineCore runs inside TalkieAgent.
         </p>
       </div>
 
@@ -193,9 +197,9 @@ export default function OverviewPage() {
           <span className="font-bold text-ink">TalkieServer ↔ iPhone</span>
         </div>
         <p className="text-sm text-ink-muted">
-          TalkieServer exposes HTTP endpoints that the iPhone app connects to.
-          All traffic flows over Tailscale's encrypted WireGuard tunnel.
-          Your devices sync directly, with no cloud in the middle.
+          TalkieAgent supervises TalkieServer, a local Bun process. The iPhone app talks to
+          that process over HTTP. Traffic stays on your devices: Tailscale by default, or
+          loopback for local-only development.
         </p>
       </div>
 

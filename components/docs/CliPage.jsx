@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Terminal, Search, BarChart3, Workflow, Mic, Cpu, HardDrive, Download, Bot } from 'lucide-react'
 import DocsLayout from './DocsLayout'
+import CodeBlock from './CodeBlock'
 
 const sections = [
   { id: 'install', title: 'Installation', level: 2 },
@@ -19,19 +20,6 @@ const sections = [
   { id: 'navigation', title: 'Continue Reading', level: 2 },
 ]
 
-const CodeBlock = ({ children, title }) => (
-  <div className="rounded-lg border border-screen-edge overflow-hidden my-4 not-prose">
-    {title && (
-      <div className="px-4 py-2 bg-panel-bg-alt border-b border-screen-edge-dim">
-        <span className="text-xs font-mono text-ink-muted">{title}</span>
-      </div>
-    )}
-    <pre className="p-4 bg-panel-bg overflow-x-auto">
-      <code className="text-sm font-mono text-screen-ink-dim">{children}</code>
-    </pre>
-  </div>
-)
-
 const CommandCard = ({ id, icon: Icon, name, description, examples, flags }) => (
   <div id={id} className="scroll-mt-20 p-5 rounded-lg border border-edge bg-canvas-alt not-prose">
     <div className="flex items-center gap-3 mb-3">
@@ -47,7 +35,7 @@ const CommandCard = ({ id, icon: Icon, name, description, examples, flags }) => 
       {examples.map((ex, i) => (
         <div key={i} className="flex items-start gap-2 text-xs font-mono">
           <span className="text-amber select-none shrink-0">$</span>
-          <span className="text-screen-ink-dim">{ex}</span>
+          <span className="text-ink-dim">{ex}</span>
         </div>
       ))}
     </div>
@@ -66,6 +54,7 @@ const CommandCard = ({ id, icon: Icon, name, description, examples, flags }) => 
 export default function CliPage() {
   return (
     <DocsLayout
+      slug="cli"
       title="Talkie CLI"
       description="Access your voice memos, dictations, and workflows from the command line. Designed for agents and power users who want programmatic access to their voice data."
       badge="Power Users"
@@ -112,13 +101,13 @@ curl -fsSL go.usetalkie.com/install | bash`}
       <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="text-xs font-mono text-ink-faint mb-2">Global flags (all commands)</div>
         <div className="flex flex-wrap gap-3 text-xs font-mono">
-          <span className="text-screen-ink-dim"><span className="text-amber">--json</span> Force JSON output</span>
+          <span className="text-ink-dim"><span className="text-amber">--json</span> Force JSON output</span>
           <span className="text-ink-faint">|</span>
-          <span className="text-screen-ink-dim"><span className="text-amber">--pretty</span> Force table output</span>
+          <span className="text-ink-dim"><span className="text-amber">--pretty</span> Force table output</span>
           <span className="text-ink-faint">|</span>
-          <span className="text-screen-ink-dim"><span className="text-amber">--since</span> Filter by date (7d, 24h, 2025-02-01)</span>
+          <span className="text-ink-dim"><span className="text-amber">--since</span> Filter by date (7d, 24h, 2025-02-01)</span>
           <span className="text-ink-faint">|</span>
-          <span className="text-screen-ink-dim"><span className="text-amber">--limit</span> Max results</span>
+          <span className="text-ink-dim"><span className="text-amber">--limit</span> Max results</span>
         </div>
       </div>
 

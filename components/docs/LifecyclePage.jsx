@@ -58,7 +58,7 @@ const Step = ({ number, label, detail, hookPoint }) => (
     </div>
     <div className="flex-1">
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">{label}</span>
+        <span className="text-sm font-medium text-ink">{label}</span>
         {hookPoint && (
           <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider rounded bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-500/30">
             Hook
@@ -87,6 +87,7 @@ const HookPoint = ({ name, description, when }) => (
 export default function LifecyclePage() {
   return (
     <DocsLayout
+      slug="lifecycle"
       title="Lifecycle"
       description="What happens between speaking and the result. Every recording moves through distinct phases, each with extension points where you can plug in custom logic."
       badge="Deep Dive"
@@ -148,14 +149,14 @@ export default function LifecyclePage() {
         <Phase
           icon={Brain}
           name="Transcription"
-          description="Audio is sent to TalkieEngine for local Whisper transcription. The audio file is saved permanently first—your recording is never lost."
+          description="TalkieAgent transcribes the audio in-process with TalkieEngineCore (Whisper or Parakeet). The audio file is saved permanently first, so the recording is never lost."
           timing="~300-800ms"
           color="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400"
         >
           <div id="phase-transcribe" className="space-y-0">
             <Step number="5" label="Hotkey released" detail="Stop capture, transition to transcribing" />
             <Step number="6" label="Audio saved" detail="Copied to permanent storage before processing" />
-            <Step number="7" label="Transcription request" detail="Sent to TalkieEngine via XPC" hookPoint />
+            <Step number="7" label="Transcription request" detail="TalkieEngineCore runs inside TalkieAgent" hookPoint />
             <Step number="8" label="Text returned" detail="Whisper model returns transcript" hookPoint />
           </div>
           <HookPoint
@@ -226,43 +227,43 @@ export default function LifecyclePage() {
               <Mic className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             </div>
             <div>
-              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Record</span>
+              <span className="text-sm font-medium text-ink">Record</span>
               <span className="text-xs text-ink-faint block">Audio captured via AVAudioRecorder</span>
             </div>
           </div>
           <div className="flex justify-center">
-            <ArrowDown className="w-4 h-4 text-screen-ink-dim" />
+            <ArrowDown className="w-4 h-4 text-ink-faint" />
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
               <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Transcribe</span>
-              <span className="text-xs text-ink-faint block">Sent to TalkieEngine via EngineClient</span>
+              <span className="text-sm font-medium text-ink">Transcribe</span>
+              <span className="text-xs text-ink-faint block">Talkie asks TalkieAgent over XPC; Agent transcribes in-process</span>
             </div>
           </div>
           <div className="flex justify-center">
-            <ArrowDown className="w-4 h-4 text-screen-ink-dim" />
+            <ArrowDown className="w-4 h-4 text-ink-faint" />
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-amber/20 flex items-center justify-center">
               <Database className="w-4 h-4 text-amber" />
             </div>
             <div>
-              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Save as Memo</span>
+              <span className="text-sm font-medium text-ink">Save as Memo</span>
               <span className="text-xs text-ink-faint block">Stored in GRDB with audio file reference</span>
             </div>
           </div>
           <div className="flex justify-center">
-            <ArrowDown className="w-4 h-4 text-screen-ink-dim" />
+            <ArrowDown className="w-4 h-4 text-ink-faint" />
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center">
               <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
-              <span className="text-sm font-medium text-ink-dim dark:text-screen-ink-dim">Trigger Workflows</span>
+              <span className="text-sm font-medium text-ink">Trigger Workflows</span>
               <span className="text-xs text-ink-faint block">Auto-run workflows execute in order</span>
             </div>
           </div>
