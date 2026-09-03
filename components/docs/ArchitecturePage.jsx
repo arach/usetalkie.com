@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft, Monitor, Mic, Cpu, Server, MessageSquare } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Monitor, Mic, Cpu, Server } from 'lucide-react'
 import DocsLayout from './DocsLayout'
 import ArcDiagram from './ArcDiagram'
 import architectureDiagram from './diagrams/architecture.diagram'
@@ -13,6 +13,9 @@ const sections = [
   { id: 'talkieagent', title: 'TalkieAgent', level: 3 },
   { id: 'talkieserver', title: 'TalkieServer', level: 3 },
   { id: 'engine-runtime', title: 'TalkieEngineCore', level: 3 },
+  { id: 'models', title: 'Models', level: 2 },
+  { id: 'speech-to-text', title: 'Speech-to-text', level: 3 },
+  { id: 'language-models', title: 'Language models', level: 3 },
   { id: 'xpc', title: 'XPC Communication', level: 2 },
   { id: 'lifecycle', title: 'Process Lifecycle', level: 2 },
   { id: 'navigation', title: 'Continue Reading', level: 2 },
@@ -126,24 +129,132 @@ export default function ArchitecturePage() {
         />
       </div>
 
+      <h2 id="models">Models</h2>
+      <p>
+        Talkie keeps two catalogs. Speech-to-text engines turn recorded audio into text. Language models rewrite, summarize, and run workflows. They are not interchangeable. The Compose header picker is a language-model picker. Live dictation does not use it.
+      </p>
+
+      <h3 id="speech-to-text">Speech-to-text</h3>
+      <p>
+        Live dictation on Mac uses Parakeet v3 (FluidAudio) inside TalkieAgent. That path is on-device. The hotkey does not offer a model menu.
+      </p>
+      <p>
+        Retranscribe, on a saved recording, offers a short menu. Apple Speech is a capture fallback, not the Mac hotkey engine. The engine can install other Whisper sizes; those sizes are not on the retranscribe menu.
+      </p>
+
+      <div className="my-6 overflow-x-auto not-prose">
+        <table className="w-full text-sm border border-edge rounded-lg overflow-hidden">
+          <thead className="bg-surface dark:bg-panel-bg-alt">
+            <tr>
+              <th className="px-4 py-3 text-left font-medium text-ink">Surface</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Engine</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Id</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Notes</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-edge">
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Live dictation</td>
+              <td className="px-4 py-3 text-ink-muted whitespace-nowrap">Parakeet v3</td>
+              <td className="px-4 py-3 font-mono text-[13px] text-ink whitespace-nowrap">parakeet:v3</td>
+              <td className="px-4 py-3 text-ink-muted">On-device. Locked for the Mac hotkey path.</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Retranscribe</td>
+              <td className="px-4 py-3 text-ink-muted whitespace-nowrap">Parakeet v3</td>
+              <td className="px-4 py-3 font-mono text-[13px] text-ink whitespace-nowrap">parakeet:v3</td>
+              <td className="px-4 py-3 text-ink-muted">25 languages, fast. Default on the menu.</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Retranscribe</td>
+              <td className="px-4 py-3 text-ink-muted whitespace-nowrap">Parakeet v2</td>
+              <td className="px-4 py-3 font-mono text-[13px] text-ink whitespace-nowrap">parakeet:v2</td>
+              <td className="px-4 py-3 text-ink-muted">English, most accurate Parakeet.</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Retranscribe</td>
+              <td className="px-4 py-3 text-ink-muted whitespace-nowrap">Whisper Small</td>
+              <td className="px-4 py-3 font-mono text-[13px] text-ink whitespace-nowrap">whisper:openai_whisper-small</td>
+              <td className="px-4 py-3 text-ink-muted">On-device WhisperKit. Balanced.</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Retranscribe</td>
+              <td className="px-4 py-3 text-ink-muted whitespace-nowrap">Whisper Large V3</td>
+              <td className="px-4 py-3 font-mono text-[13px] text-ink whitespace-nowrap">whisper:distil-whisper_distil-large-v3</td>
+              <td className="px-4 py-3 text-ink-muted">On-device. Best quality on the menu.</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">iPhone fallback</td>
+              <td className="px-4 py-3 text-ink-muted whitespace-nowrap">Apple Speech</td>
+              <td className="px-4 py-3 font-mono text-[13px] text-ink whitespace-nowrap">apple_speech</td>
+              <td className="px-4 py-3 text-ink-muted">Used when Parakeet is not ready. Not the Mac hotkey engine.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Whisper Tiny and Base remain installable in the engine inventory. They are not on the retranscribe menu. Parakeet 110M and Parakeet JA are also installable; they are not on that menu either.
+      </p>
+
+      <h3 id="language-models">Language models</h3>
+      <p>
+        Compose, workflows, and other rewrite actions read the catalog in <code>LLMConfig.json</code>, plus Apple Intelligence when Foundation Models is available on the Mac. Cloud providers need an API key in Settings. The Compose header currently opens a nested macOS menu of these models, grouped by provider.
+      </p>
+
+      <div className="my-6 overflow-x-auto not-prose">
+        <table className="w-full text-sm border border-edge rounded-lg overflow-hidden">
+          <thead className="bg-surface dark:bg-panel-bg-alt">
+            <tr>
+              <th className="px-4 py-3 text-left font-medium text-ink">Provider</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Recommended models</th>
+              <th className="px-4 py-3 text-left font-medium text-ink">Default</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-edge">
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Apple Intelligence</td>
+              <td className="px-4 py-3 text-ink-muted">Apple Intelligence (On-Device)</td>
+              <td className="px-4 py-3 text-ink-muted">When Foundation Models is available</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">OpenAI</td>
+              <td className="px-4 py-3 text-ink-muted">GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna</td>
+              <td className="px-4 py-3 text-ink-muted">GPT-5.6 Sol</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Anthropic</td>
+              <td className="px-4 py-3 text-ink-muted">Claude Sonnet 5, Claude Opus 5, Claude Fable 5.1, Claude Haiku 4.5</td>
+              <td className="px-4 py-3 text-ink-muted">Claude Sonnet 5</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Google Gemini</td>
+              <td className="px-4 py-3 text-ink-muted">Gemini 2.5 Flash, Gemini 2.5 Flash Lite, Gemini 2.5 Pro</td>
+              <td className="px-4 py-3 text-ink-muted">Gemini 2.5 Flash</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">Groq</td>
+              <td className="px-4 py-3 text-ink-muted">Llama 3.3 70B, Llama 3.1 8B Instant</td>
+              <td className="px-4 py-3 text-ink-muted">Llama 3.1 8B Instant</td>
+            </tr>
+            <tr className="bg-canvas-alt">
+              <td className="px-4 py-3 text-ink font-medium">OpenRouter</td>
+              <td className="px-4 py-3 text-ink-muted">Dynamic model discovery (OpenAI, Anthropic, Gemini, DeepSeek, etc.)</td>
+              <td className="px-4 py-3 text-ink-muted">Configurable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Talkie also supports OpenRouter dynamic fetching and custom AI gateways for agents, as well as borrowing models through TalkieServer when the iPhone bridge is active.
+      </p>
+
       {/* XPC Communication */}
       <h2 id="xpc">XPC Communication</h2>
       <p>
         XPC is Apple's process-to-process channel. Talkie uses it to talk to TalkieAgent (capture, dictation, bridge control) and TalkieSync (CloudKit memos). Transcription stays inside TalkieAgent.
       </p>
-
-      <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
-        <div className="flex items-center gap-3 mb-3">
-          <MessageSquare className="w-5 h-5 text-blue-500" />
-          <span className="font-bold text-ink">Why XPC?</span>
-        </div>
-        <ul className="text-sm text-ink-muted space-y-1">
-          <li>• <strong>Security</strong> — Each process runs with only the permissions it needs</li>
-          <li>• <strong>Crash isolation</strong> — An Agent crash does not take down the main app</li>
-          <li>• <strong>Lifecycle</strong> — launchd starts and restarts TalkieAgent independently of the UI</li>
-          <li>• <strong>Type safety</strong> — Protocol-based messages with compile-time checks</li>
-        </ul>
-      </div>
 
       <p>
         When you start a dictation, TalkieAgent captures audio, transcribes it in-process with TalkieEngineCore, and inserts the text. The main app never needs microphone or accessibility permission for that path. Talkie hears about the new dictation over XPC (with a polling fallback if the connection drops).
