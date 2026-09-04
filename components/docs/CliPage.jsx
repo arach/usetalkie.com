@@ -27,7 +27,7 @@ const CommandCard = ({ id, icon: Icon, name, description, examples, flags }) => 
         <Icon className="w-4 h-4 text-amber" />
       </div>
       <div>
-        <h4 className="font-bold font-mono text-ink">talkie {name}</h4>
+        <h3 className="font-bold font-mono text-ink">talkie {name}</h3>
         <p className="text-xs text-ink-faint">{description}</p>
       </div>
     </div>

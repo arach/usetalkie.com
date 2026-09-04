@@ -28,7 +28,7 @@ const ComponentCard = ({ id, icon: Icon, name, subtitle, responsibilities, color
         <Icon className="w-6 h-6" />
       </div>
       <div className="flex-1">
-        <h4 className="text-lg font-bold text-ink">{name}</h4>
+        <h3 className="text-lg font-bold text-ink">{name}</h3>
         <p className="text-sm text-ink-faint mb-3">{subtitle}</p>
         <ul className="space-y-1">
           {responsibilities.map((item, i) => (

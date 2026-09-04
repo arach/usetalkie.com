@@ -83,6 +83,7 @@ export const WORKFLOWS = [
     outcome: 'NOTE FILED',
     headline: { lead: 'Messy memo,', accent: 'filed as Markdown' },
     subhead: 'Record the raw thought and save the useful version to your vault.',
+    metaDescription: 'Record a messy thought in Talkie, distill it, and save a titled Markdown note into your Obsidian vault.',
     when:
       'An idea shows up and you do not want to open anything. Talk it through, tangents and all. Talkie distills it to a clean note and writes it into @Notes with a title and date already set.',
     steps: [
@@ -109,6 +110,7 @@ export const WORKFLOWS = [
     outcome: 'BOTH DRAFTS KEPT',
     headline: { lead: 'Same take,', accent: 'tighter second pass' },
     subhead: 'Keep the raw recording and build a cleaner version beside it.',
+    metaDescription: 'Keep the raw Talkie memo and write a tighter pass beside it in Compose, then compare the two with a diff.',
     when:
       'The first take has the right idea buried in extra words. You want the tighter version without losing the original phrasing. Talkie Compose holds both, so you can compare and pull the best lines across.',
     steps: [
@@ -163,6 +165,7 @@ export const WORKFLOWS = [
     prereq: 'Requires CLI access',
     headline: { lead: 'Say the bug,', accent: 'open the issue' },
     subhead: 'Describe a bug out loud and turn it into a filed GitHub issue.',
+    metaDescription: 'Describe a bug out loud in Talkie and turn it into a titled GitHub issue with a structured body.',
     when:
       'You hit a bug and the details are sharp right now. Talk through what broke and what you expected. Talkie shapes a title and body, then runs the command that opens the issue.',
     steps: [

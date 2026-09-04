@@ -129,9 +129,9 @@ export default function DocsIndexPage() {
                       CH·{channel}
                     </span>
                     <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--edge-faint)' }} />
-                    <span className="text-[10px] uppercase tracking-[0.28em] text-ink-dim">
+                    <h2 className="text-[10px] font-normal uppercase tracking-[0.28em] text-ink-dim">
                       {group.label}
-                    </span>
+                    </h2>
                   </div>
 
                   <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

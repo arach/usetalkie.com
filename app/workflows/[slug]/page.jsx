@@ -14,14 +14,15 @@ export async function generateMetadata({ params }) {
   const workflow = getWorkflow(slug)
   if (!workflow) return { title: 'Workflow — Talkie' }
   const title = `${workflow.name} — Talkie Workflows`
+  const description = workflow.metaDescription || workflow.subhead
   const url = `https://usetalkie.com/workflows/${workflow.slug}/`
   return {
     title,
-    description: workflow.subhead,
+    description,
     alternates: { canonical: url },
     openGraph: {
       title,
-      description: workflow.subhead,
+      description,
       url,
       siteName: 'Talkie',
       type: 'article',
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }) {
     twitter: {
       card: 'summary_large_image',
       title,
-      description: workflow.subhead,
+      description,
     },
   }
 }

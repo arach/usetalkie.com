@@ -35,7 +35,7 @@ const Phase = ({ icon: Icon, name, description, timing, color, children, isLast 
       {/* Content */}
       <div className="flex-1 pb-8">
         <div className="flex items-center gap-3 mb-1">
-          <h4 className="text-lg font-display font-semibold text-ink">{name}</h4>
+          <h3 className="text-lg font-display font-semibold text-ink">{name}</h3>
           {timing && (
             <span className="flex items-center gap-1 text-xs font-mono text-ink-muted">
               <Clock className="w-3 h-3" />
@@ -102,14 +102,14 @@ export default function LifecyclePage() {
 
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">
         <div className="p-4 rounded-lg border border-emerald-200 dark:border-amber/30 bg-emerald-50/50 dark:bg-amber/5">
-          <h4 className="font-bold text-emerald-700 dark:text-amber mb-2">Dictation</h4>
+          <h3 className="font-bold text-emerald-700 dark:text-amber mb-2">Dictation</h3>
           <p className="text-sm text-amber dark:text-emerald-300/80">
             Press hotkey, speak, release. Text appears where your cursor is. Fast, in-flow, ephemeral.
           </p>
           <p className="text-xs text-amber/70 mt-2 font-mono">~500ms to paste</p>
         </div>
         <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-500/5">
-          <h4 className="font-bold text-blue-700 dark:text-blue-400 mb-2">Memo</h4>
+          <h3 className="font-bold text-blue-700 dark:text-blue-400 mb-2">Memo</h3>
           <p className="text-sm text-blue-600 dark:text-blue-300/80">
             Deliberate recording that becomes a searchable note. Triggers workflows for processing, summarizing, extracting.
           </p>

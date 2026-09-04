@@ -284,10 +284,10 @@ export function SecurityInfographic() {
                             <Cloud className="h-5 w-5" />
                         </div>
                         <div>
-                            <h4
+                            <h3
                               className={`mb-1 text-xs font-bold uppercase tracking-wider transition-colors ${icloudActive ? 'text-trace' : 'text-ink'}`}
                               style={icloudActive ? { textShadow: '0 0 4px var(--trace-glow)' } : undefined}
-                            >iCloud</h4>
+                            >iCloud</h3>
                             <span className="font-mono text-[10px] text-ink-subtle">Encrypted CloudKit Container</span>
                         </div>
                      </div>
@@ -323,10 +323,10 @@ export function SecurityInfographic() {
                           className={`h-4 w-4 transition-colors ${getIconClass(iphoneActive)}`}
                           style={iphoneActive ? { filter: 'drop-shadow(0 0 3px var(--trace-glow))' } : undefined}
                         />
-                        <h4
+                        <h3
                           className={`text-xs font-bold uppercase tracking-wider transition-colors ${getTextClass(iphoneActive)}`}
                           style={iphoneActive ? { textShadow: '0 0 4px var(--trace-glow)' } : undefined}
-                        >iPhone</h4>
+                        >iPhone</h3>
                      </div>
 
                      {/* Details Block */}
@@ -381,10 +381,10 @@ export function SecurityInfographic() {
                           className={`h-4 w-4 transition-colors ${getIconClass(macActive)}`}
                           style={macActive ? { filter: 'drop-shadow(0 0 3px var(--trace-glow))' } : undefined}
                         />
-                        <h4
+                        <h3
                           className={`text-xs font-bold uppercase tracking-wider transition-colors ${getTextClass(macActive)}`}
                           style={macActive ? { textShadow: '0 0 4px var(--trace-glow)' } : undefined}
-                        >Mac</h4>
+                        >Mac</h3>
                      </div>
 
                      {/* Details Block */}

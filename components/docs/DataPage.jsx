@@ -18,7 +18,7 @@ const sections = [
 
 const ModelCard = ({ name, description, fields }) => (
   <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
-    <h4 className="text-lg font-bold text-ink mb-2">{name}</h4>
+    <h3 className="text-lg font-bold text-ink mb-2">{name}</h3>
     <p className="text-sm text-ink-muted mb-4">{description}</p>
     <div className="space-y-2">
       {fields.map((field, i) => (

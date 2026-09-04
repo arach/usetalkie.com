@@ -1,26 +1,37 @@
-import { getAllTourSlugs, getTourBySlug } from '../../../lib/tour'
+import { getAllTourSlugs, getTourBySlug, tourPlatformLabel, tourSeoTitle } from '../../../lib/tour'
 import TourSlide from '../../../components/TourSlide'
+
+const TOUR_HUB = 'https://usetalkie.com/tour/'
 
 // Required for static export — tells Next.js which slugs to pre-render
 export function generateStaticParams() {
   return getAllTourSlugs().map(slug => ({ slug }))
 }
 
-// Per-slide OG tags — screenshot as social preview image
+// Per-slide OG tags for sharing. Slides are screenshot pages, so they
+// noindex and canonicalize to the /tour/ hub instead of competing as
+// thin standalone results.
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const item = getTourBySlug(slug)
-  if (!item) return { title: 'Tour — Talkie' }
+  if (!item) {
+    return {
+      title: 'Tour — Talkie',
+      robots: { index: false, follow: true },
+      alternates: { canonical: TOUR_HUB },
+    }
+  }
 
-  const platformLabel = item.platform === 'iphone' ? 'iPhone' : item.platform === 'watch' ? 'Apple Watch' : 'Mac'
-  const title = `${item.title} — Talkie Tour`
-  const description = item.caption
+  const platformLabel = tourPlatformLabel(item.platform)
+  const title = tourSeoTitle(item)
+  const description = item.description
   const url = `https://usetalkie.com/tour/${slug}/`
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    robots: { index: false, follow: true },
+    alternates: { canonical: TOUR_HUB },
     openGraph: {
       title,
       description,

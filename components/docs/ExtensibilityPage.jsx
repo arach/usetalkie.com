@@ -23,7 +23,7 @@ const IntegrationCard = ({ icon: Icon, name, description, color }) => (
         <Icon className="w-5 h-5" />
       </div>
       <div className="flex-1">
-        <h4 className="font-bold text-ink mb-1">{name}</h4>
+        <h3 className="font-bold text-ink mb-1">{name}</h3>
         <p className="text-sm text-ink-muted">{description}</p>
       </div>
     </div>
@@ -219,37 +219,37 @@ export default function ExtensibilityPage() {
 
       <div className="grid md:grid-cols-2 gap-3 my-6 not-prose">
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-1">Notion</h4>
+          <h3 className="font-bold text-ink mb-1">Notion</h3>
           <p className="text-sm text-ink-muted">
             Send transcriptions to Notion databases via webhook action
           </p>
         </div>
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-1">Obsidian</h4>
+          <h3 className="font-bold text-ink mb-1">Obsidian</h3>
           <p className="text-sm text-ink-muted">
             Create notes in your vault using the "Save to File" action
           </p>
         </div>
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-1">Slack</h4>
+          <h3 className="font-bold text-ink mb-1">Slack</h3>
           <p className="text-sm text-ink-muted">
             Post summaries to channels via Slack webhooks
           </p>
         </div>
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-1">Raycast</h4>
+          <h3 className="font-bold text-ink mb-1">Raycast</h3>
           <p className="text-sm text-ink-muted">
             Quick access via URL schemes and AppleScript
           </p>
         </div>
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-1">Things / Todoist</h4>
+          <h3 className="font-bold text-ink mb-1">Things / Todoist</h3>
           <p className="text-sm text-ink-muted">
             Create tasks from voice notes via URL schemes or webhooks
           </p>
         </div>
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-1">Zapier / Make / n8n</h4>
+          <h3 className="font-bold text-ink mb-1">Zapier / Make / n8n</h3>
           <p className="text-sm text-ink-muted">
             Connect to 1000+ services via workflow automation platforms
           </p>

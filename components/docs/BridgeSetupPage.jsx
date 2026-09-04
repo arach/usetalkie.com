@@ -22,7 +22,7 @@ const Step = ({ number, title, children }) => (
       <span className="text-sm font-bold text-amber">{number}</span>
     </div>
     <div className="flex-1 pb-6">
-      <h4 className="text-lg font-bold text-ink mb-2">{title}</h4>
+      <h3 className="text-lg font-bold text-ink mb-2">{title}</h3>
       <div className="text-ink-muted space-y-3">{children}</div>
     </div>
   </div>
@@ -72,7 +72,7 @@ export default function BridgeSetupPage() {
       <div className="p-4 rounded-lg border border-edge bg-canvas-alt my-4 not-prose">
         <div className="flex items-center gap-3 mb-2">
           <Package className="w-5 h-5 text-orange-500" />
-          <h4 className="font-bold text-ink">Bun Runtime</h4>
+          <h3 className="font-bold text-ink">Bun Runtime</h3>
         </div>
         <p className="text-sm text-ink-muted mb-3">
           Bun is a fast JavaScript runtime that TalkieServer uses. It's similar to Node.js but significantly faster.
@@ -185,21 +185,21 @@ bun run src/server.ts`}
 
       <div className="space-y-4 my-6 not-prose">
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"Bun not found"</h4>
+          <h3 className="font-bold text-ink mb-2">"Bun not found"</h3>
           <p className="text-sm text-ink-muted">
             Install Bun from <a href="https://bun.sh" className="text-amber hover:underline">bun.sh</a>, then restart Talkie.
           </p>
         </div>
 
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"Cannot find package 'elysia'"</h4>
+          <h3 className="font-bold text-ink mb-2">"Cannot find package 'elysia'"</h3>
           <p className="text-sm text-ink-muted">
             Dependencies are missing. Click "Install Dependencies" in settings, or run <code className="px-1 py-0.5 bg-surface dark:bg-panel-bg-alt rounded font-mono text-xs">bun install</code> manually.
           </p>
         </div>
 
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"Port 8765 already in use"</h4>
+          <h3 className="font-bold text-ink mb-2">"Port 8765 already in use"</h3>
           <p className="text-sm text-ink-muted">
             Another process is using the port. Restart Talkie — it will automatically clean up stray processes.
           </p>

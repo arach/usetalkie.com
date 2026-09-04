@@ -1,10 +1,10 @@
 import HomePage from '../components/home/HomePage'
 import MainShell from '../components/MainShell'
 
-// SEO note: the title pairs the brand line with search vocabulary —
-// "voice dictation for Mac" is what people actually type; "a remote
-// control for your agents" is what makes it Talkie. Keep both halves.
-const HOME_TITLE = 'Talkie - Voice Dictation for Mac and a Remote Control for Your Agents'
+// SEO note: the title pairs search vocabulary ("voice dictation for Mac")
+// with the Talkie-specific claim ("remote for agents"). Keep both halves
+// and stay inside ~50–60 characters so the SERP title does not truncate.
+const HOME_TITLE = 'Talkie - Voice Dictation for Mac, Remote for Agents'
 const HOME_DESCRIPTION =
   'Talkie is a local-first voice dictation app for Mac, iPhone, and Apple Watch. It turns speech into text, searchable captures, workflows, and agent input.'
 

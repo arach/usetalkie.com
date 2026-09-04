@@ -20,7 +20,7 @@ const sections = [
 const FeatureCard = ({ icon: Icon, title, description, color }) => (
   <div className="p-4 rounded-lg border border-edge bg-canvas-alt not-prose">
     <Icon className={`w-6 h-6 ${color} mb-3`} />
-    <h4 className="font-bold text-ink mb-2">{title}</h4>
+    <h3 className="font-bold text-ink mb-2">{title}</h3>
     <p className="text-sm text-ink-muted">{description}</p>
   </div>
 )
@@ -74,7 +74,7 @@ export default function OverviewPage() {
         <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">1</div>
           <div>
-            <h4 className="font-bold text-ink">Everything is a file</h4>
+            <h3 className="font-bold text-ink">Everything is a file</h3>
             <p className="text-sm text-ink-muted mt-1">
               Your data lives in readable formats on disk. SQLite databases, JSON exports, audio files—all accessible and portable.
             </p>
@@ -84,7 +84,7 @@ export default function OverviewPage() {
         <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">2</div>
           <div>
-            <h4 className="font-bold text-ink">Small, focused data stores</h4>
+            <h3 className="font-bold text-ink">Small, focused data stores</h3>
             <p className="text-sm text-ink-muted mt-1">
               Instead of one monolithic database, each component owns its data. Memos in one place, live dictations in another. Clear boundaries, easy to reason about.
             </p>
@@ -94,7 +94,7 @@ export default function OverviewPage() {
         <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">3</div>
           <div>
-            <h4 className="font-bold text-ink">Data stores exposed by default</h4>
+            <h3 className="font-bold text-ink">Data stores exposed by default</h3>
             <p className="text-sm text-ink-muted mt-1">
               We don't hide your data in opaque containers. Browse your recordings, query your databases, export anything. Your data, your access.
             </p>
@@ -104,7 +104,7 @@ export default function OverviewPage() {
         <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">4</div>
           <div>
-            <h4 className="font-bold text-ink">Well-defined lifecycles</h4>
+            <h3 className="font-bold text-ink">Well-defined lifecycles</h3>
             <p className="text-sm text-ink-muted mt-1">
               Every recording flows through clear phases: capture → transcription → routing → storage. Each phase has hooks where you can plug in custom logic.
             </p>
@@ -114,7 +114,7 @@ export default function OverviewPage() {
         <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">5</div>
           <div>
-            <h4 className="font-bold text-ink">Protect the critical path</h4>
+            <h3 className="font-bold text-ink">Protect the critical path</h3>
             <p className="text-sm text-ink-muted mt-1">
               Recording and transcription are sacred. Nothing gets to block them: not sync, not workflows, not UI rendering. The happy path stays fast.
             </p>
@@ -124,7 +124,7 @@ export default function OverviewPage() {
         <div className="flex gap-4 p-4 rounded-lg border border-edge bg-canvas-alt">
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">6</div>
           <div>
-            <h4 className="font-bold text-ink">Smart defaults, full control</h4>
+            <h3 className="font-bold text-ink">Smart defaults, full control</h3>
             <p className="text-sm text-ink-muted mt-1">
               Talkie works out of the box. But when you want to change something (workflows, shortcuts, data locations, export formats), it's all configurable.
             </p>
