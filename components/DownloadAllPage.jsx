@@ -56,7 +56,7 @@ function Graticule({ opacity = 0.3 }) {
 function ChannelEyebrow({ children }) {
   return (
     <p
-      className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
+      className="font-mono text-[10px] uppercase tracking-[0.12em] text-trace"
       style={{ textShadow: '0 0 4px var(--trace-glow)' }}
     >
       {children}
@@ -76,15 +76,15 @@ function ChannelHeader({ icon: Icon, channel, title, meta }) {
           <Icon className="h-4 w-4 transition-transform duration-200" />
         </span>
         <div>
-          <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+          <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
             {channel}
           </p>
-          <p className="mt-0.5 font-mono text-[12px] uppercase tracking-[0.16em] text-ink">
+          <p className="mt-0.5 font-mono text-[12px] uppercase tracking-[0.08em] text-ink">
             {title}
           </p>
         </div>
       </div>
-      <p className="text-right font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
+      <p className="text-right font-mono text-[9px] uppercase tracking-[0.10em] text-ink-faint">
         {meta}
       </p>
     </div>
@@ -102,7 +102,7 @@ function StatRow({ icon: Icon, label, value }) {
         <Icon className="h-3 w-3" />
       </span>
       <div className="min-w-0">
-        <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-ink-subtle">
+        <p className="font-mono text-[9px] uppercase tracking-[0.11em] text-ink-subtle">
           {label}
         </p>
         <p className="mt-0.5 font-mono text-[11px] text-ink">{value}</p>
@@ -121,11 +121,11 @@ export default function DownloadAllPage() {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
             <div>
               <ChannelEyebrow>· INSTALL / ALL CHANNELS · v2.5.43</ChannelEyebrow>
-              <h1 className="mt-4 font-display text-4xl font-normal leading-[1.04] tracking-[-0.02em] text-ink md:text-5xl">
+              <h1 className="mt-4 font-display text-[2.35rem] font-normal leading-[0.98] tracking-[-0.035em] text-ink md:text-[2.65rem]">
                 Pick a device.<br />
-                <span className="italic text-ink-muted">Same acoustic library.</span>
+                <span className="italic text-ink-muted">Same library.</span>
               </h1>
-              <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-ink-muted">
+              <p className="mt-5 max-w-xl text-[13px] leading-snug text-ink-muted">
                 Download the current Mac build for free with on-device Parakeet v3 speech-to-text. The iPhone and Apple Watch apps are also free.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] text-ink-subtle">
@@ -145,10 +145,10 @@ export default function DownloadAllPage() {
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-sm border border-white/10 bg-black/85 px-3 py-2 text-white backdrop-blur-md">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-amber-400">PARAKEET-TDT-V3</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-amber-400">PARAKEET-TDT-V3</span>
                     <span className="font-mono text-[9px] text-zinc-300">· 0.6s ON-DEVICE</span>
                   </div>
-                  <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-zinc-400">100% OFFLINE</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[0.07em] text-zinc-400">100% OFFLINE</span>
                 </div>
               </div>
             </div>
@@ -173,14 +173,14 @@ export default function DownloadAllPage() {
               <div className="space-y-6 p-5 md:p-6">
                 <div className="rounded-sm border border-edge-faint bg-canvas-alt px-4 py-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-trace">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.11em] text-trace">
                       · {TALKIE_MAC_OFFER.currentBuildLabel}
                     </p>
                     <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-ink-faint">
                       PAID OFFER · PLANNED
                     </p>
                   </div>
-                  <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-muted">
+                  <p className="mt-2 font-mono text-[10px] leading-snug text-ink-muted">
                     The planned offer is a {TALKIE_MAC_OFFER.trialLabel}, then{' '}
                     {TALKIE_MAC_OFFER.displayPrice} USD once. The trial and checkout are not active yet.
                   </p>
@@ -190,7 +190,7 @@ export default function DownloadAllPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <Terminal className="h-3.5 w-3.5 text-trace" />
-                    <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                    <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
                       · PRIMARY · PACKAGE MANAGER
                     </p>
                   </div>
@@ -204,13 +204,13 @@ export default function DownloadAllPage() {
 
                 {/* Secondary: DMG */}
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
                     · OR · DIRECT DMG
                   </p>
                   <TrackedAnchor
                     href={DMG_URL}
                     event={{ type: 'download', release: 'latest', source: 'v2_downloads_page' }}
-                    className="group/btn mt-3 inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-edge bg-canvas-alt px-4 py-2.5 text-[10px] uppercase tracking-[0.24em] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-amber"
+                    className="group/btn mt-3 inline-flex w-full items-center justify-center gap-2.5 rounded-sm border border-edge bg-canvas-alt px-4 py-2.5 text-[10px] uppercase tracking-[0.11em] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/60 hover:text-amber"
                   >
                     <Download className="h-3.5 w-3.5 transition-transform duration-200 group-hover/btn:scale-110" />
                     <span>DOWNLOAD DMG</span>
@@ -219,7 +219,7 @@ export default function DownloadAllPage() {
 
                 {/* Tertiary: curl one-liner */}
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
                     · OR · CURL
                   </p>
                   <div className="mt-3">
@@ -229,7 +229,7 @@ export default function DownloadAllPage() {
 
                 {/* CLI-only */}
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
                     · CLI ONLY
                   </p>
                   <div className="mt-3">
@@ -251,7 +251,7 @@ export default function DownloadAllPage() {
               <div className="space-y-6 p-5 md:p-6">
                 {/* Primary: App Store */}
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
                     · PRIMARY · APP STORE
                   </p>
                   <TrackedAnchor
@@ -259,7 +259,7 @@ export default function DownloadAllPage() {
                     event={{ type: 'appStore', source: 'v2_downloads_page' }}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/btn mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3 text-[11px] uppercase tracking-[0.26em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
+                    className="group/btn mt-3 inline-flex w-full items-center justify-center gap-3 rounded-sm border border-trace px-5 py-3 text-[11px] uppercase tracking-[0.12em] text-trace transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_22px_-6px_var(--trace-glow)]"
                   >
                     <Download className="h-4 w-4 transition-transform duration-200 group-hover/btn:scale-110" />
                     <span>OPEN APP STORE</span>
@@ -269,7 +269,7 @@ export default function DownloadAllPage() {
 
                 {/* Or scan */}
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-ink-subtle">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-subtle">
                     · OR · SCAN
                   </p>
                   <QRExpand
@@ -315,8 +315,8 @@ export default function DownloadAllPage() {
           <div className="mt-12 rounded-md border border-edge bg-surface p-6 font-mono md:p-8">
             <div className="flex items-center justify-between border-b border-edge-dim pb-4">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.26em] text-trace">· SYSTEM SPECIFICATION SHEET</p>
-                <h2 className="mt-1 font-display text-2xl font-normal text-ink">Technical Specifications (v2.5.43)</h2>
+                <p className="text-[10px] uppercase tracking-[0.12em] text-trace">· SYSTEM SPECIFICATION SHEET</p>
+                <h2 className="mt-1 font-display text-[1.65rem] leading-[1.02] tracking-[-0.02em] font-normal text-ink">Technical Specifications (v2.5.43)</h2>
               </div>
               <span className="hidden sm:inline-block rounded-sm border border-edge-dim bg-canvas-alt px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-ink-subtle">
                 BUILD 49 · NOTARIZED
@@ -325,25 +325,25 @@ export default function DownloadAllPage() {
 
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
-                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">SYSTEM / HOST</p>
+                <p className="text-[9px] uppercase tracking-[0.10em] text-ink-subtle">SYSTEM / HOST</p>
                 <p className="text-[11px] font-semibold text-ink">macOS 14.0+ (Sonoma, Sequoia)</p>
                 <p className="text-[10px] leading-relaxed text-ink-muted">Apple Silicon (M1-M4) &amp; Intel x86_64 Universal Binary</p>
               </div>
 
               <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
-                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">ON-DEVICE ASR</p>
+                <p className="text-[9px] uppercase tracking-[0.10em] text-ink-subtle">ON-DEVICE ASR</p>
                 <p className="text-[11px] font-semibold text-ink">FluidAudio Parakeet TDT v3</p>
                 <p className="text-[10px] leading-relaxed text-ink-muted">~0.6s latency · 100% offline · CoreML Neural Engine</p>
               </div>
 
               <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
-                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">REASONING CATALOG</p>
+                <p className="text-[9px] uppercase tracking-[0.10em] text-ink-subtle">REASONING CATALOG</p>
                 <p className="text-[11px] font-semibold text-ink">Gemini 3.8 Flash (Default)</p>
                 <p className="text-[10px] leading-relaxed text-ink-muted">DeepSeek V4 · GLM-5 · Grok 4 · Llama 4 Scout · Claude</p>
               </div>
 
               <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
-                <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">INTEGRITY &amp; IPC</p>
+                <p className="text-[9px] uppercase tracking-[0.10em] text-ink-subtle">INTEGRITY &amp; IPC</p>
                 <p className="text-[11px] font-semibold text-ink">Developer ID Signed + Notarized</p>
                 <p className="text-[10px] leading-relaxed text-ink-muted">Mach XPC (to.talkie.agent.xpc.dev) · SHA-256 verified</p>
               </div>

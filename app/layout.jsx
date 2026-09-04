@@ -1,6 +1,6 @@
 import './globals.css'
 import Script from 'next/script'
-import { Space_Grotesk, JetBrains_Mono, Fraunces, Inter, Cormorant_Garamond } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono, Fraunces, Inter, Cormorant_Garamond, Geist_Mono, Geist } from 'next/font/google'
 import localFont from 'next/font/local'
 import DevConsole from '../components/DevConsole'
 import FeedbackWidget from '../shared/components/FeedbackWidget'
@@ -26,6 +26,8 @@ const cormorant = Cormorant_Garamond({
 // --font-sans-classic; theme-scoped CSS rules in globals.css remap
 // --font-sans to point at it when html[data-theme="modern"] is active.
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans-classic', display: 'swap' })
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' })
+const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
 
 // Talkie Medium — the custom wordmark face (JBM-derived, dotless `i`,
 // forward-leaning `t` crossbar). Use ONLY for rendering the "talkie"
@@ -186,7 +188,7 @@ const SITE_SCHEMA = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="modern" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable} ${talkieDisplay.variable} ${talkieSans.variable} ${talkieMono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="modern" className={`${grotesk.variable} ${jetmono.variable} ${fraunces.variable} ${cormorant.variable} ${inter.variable} ${talkie.variable} ${talkieDisplay.variable} ${talkieSans.variable} ${talkieMono.variable} ${geistMono.variable} ${geistSans.variable}`} suppressHydrationWarning>
       <head>
         <JsonLd data={SITE_SCHEMA} />
         {/*
