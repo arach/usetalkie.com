@@ -7,10 +7,10 @@ import { NarratorProvider, NarratorDock } from './narrator'
  * shared chrome (header, footer, narrator) renders consistently across
  * canonical routes.
  */
-export default function MainShell({ children }) {
+export default function MainShell({ children, home = false }) {
   return (
     <NarratorProvider>
-      <div className="min-h-screen bg-canvas text-ink antialiased">
+      <div className={`min-h-screen bg-canvas text-ink antialiased${home ? ' talkie-home-shell' : ''}`}>
         <SiteShell>{children}</SiteShell>
       </div>
       <NarratorDock />

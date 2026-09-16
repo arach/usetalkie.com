@@ -9,7 +9,7 @@ const HOME_DESCRIPTION =
   'Talkie is a local-first voice dictation app for Mac, iPhone, and Apple Watch. It turns speech into text, searchable captures, workflows, and agent input.'
 
 /**
- * Root homepage `/` — renders the panoramic-instrument hero with the
+ * Root homepage `/` — renders the scenic product homepage with the
  * shared site chrome via MainShell. The donor `LandingPage.jsx` is
  * preserved in components/ for reference but no longer mounted at any
  * route.
@@ -48,7 +48,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <MainShell>
+    <MainShell home>
       <HomePage />
     </MainShell>
   )

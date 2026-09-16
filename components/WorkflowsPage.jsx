@@ -74,31 +74,31 @@ const WORKFLOW_ANSWERS = [
 
 const CAPTURE_INPUTS = [
   {
-    label: 'Mac hotkey',
-    detail: 'hold, speak, release',
-    src: '/screenshots/workflow-hotkey-mac-v2.webp',
-    alt: 'Talkie global recording shortcut shown as Mac keycaps',
+    label: 'Mac capture',
+    detail: 'record and review',
+    src: '/screenshots/mac/current/talkie-home-light.webp',
+    alt: 'Talkie on Mac with recent meetings and recordings',
     frame: 'laptop',
   },
   {
     label: 'iPhone capture',
     detail: 'one tap away',
-    src: '/screenshots/workflow-capture-iphone-v2.webp',
+    src: '/screenshots/mobile/iphone-recording-current.webp',
     alt: 'Talkie recording on iPhone with a live waveform and stop control',
     frame: 'phone',
   },
   {
     label: 'Apple Watch',
     detail: 'tap, record, stop',
-    src: '/screenshots/workflow-capture-watch-v2.webp',
-    alt: 'Talkie recording on Apple Watch with a waveform and stop control',
+    src: '/screenshots/mobile/apple-watch-home-current.webp',
+    alt: 'Talkie on Apple Watch with Talk, Ask, and Review controls',
     frame: 'watch',
   },
   {
-    label: 'Workflow',
-    detail: 'voice in, files out',
-    src: '/screenshots/workflow-capture-workflow-v2.webp',
-    alt: 'Talkie workflow actions including email cleanup, insights, and Obsidian',
+    label: 'Voice to document',
+    detail: 'edit and save',
+    src: '/screenshots/mac/current/talkie-editor-light.webp',
+    alt: 'Talkie editor with dictated text, a Markdown preview, and revision history',
     frame: 'laptop',
   },
 ]

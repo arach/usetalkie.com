@@ -1,34 +1,35 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { Maximize2, X } from 'lucide-react'
 
 const FRAME_CLASSES = {
-  laptop: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
-  phone: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
-  watch: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
-  memo: 'mx-auto h-[72px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  laptop: 'mx-auto h-[112px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  phone: 'mx-auto h-[112px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  watch: 'mx-auto h-[112px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
+  memo: 'mx-auto h-[112px] w-full overflow-hidden rounded-sm border border-edge-dim bg-black/5',
 }
 
 const IMAGE_CLASSES = {
-  laptop: 'h-full w-full object-cover',
-  phone: 'h-full w-full object-cover',
-  watch: 'h-full w-full object-cover',
-  memo: 'h-full w-full object-cover',
+  laptop: 'h-full w-full object-contain',
+  phone: 'h-full w-full object-contain',
+  watch: 'h-full w-full object-contain',
+  memo: 'h-full w-full object-contain',
 }
 
 const EXPANDED_FRAME_CLASSES = {
-  laptop: 'aspect-[16/10] w-[min(88vw,980px)]',
-  phone: 'aspect-[16/10] w-[min(88vw,980px)]',
-  watch: 'aspect-[16/10] w-[min(88vw,980px)]',
-  memo: 'aspect-[16/10] w-[min(88vw,980px)]',
+  laptop: 'h-[min(68vh,720px)] w-[min(80vw,980px)]',
+  phone: 'h-[min(68vh,780px)] w-[min(72vw,360px)]',
+  watch: 'h-[min(60vh,496px)] w-[min(72vw,416px)]',
+  memo: 'h-[min(68vh,720px)] w-[min(80vw,980px)]',
 }
 
 const EXPANDED_IMAGE_CLASSES = {
-  laptop: 'h-full w-full object-cover',
-  phone: 'h-full w-full object-cover',
-  watch: 'h-full w-full object-cover',
-  memo: 'h-full w-full object-cover',
+  laptop: 'h-full w-full object-contain',
+  phone: 'h-full w-full object-contain',
+  watch: 'h-full w-full object-contain',
+  memo: 'h-full w-full object-contain',
 }
 
 export default function ExpandableCaptureTile({ input }) {
@@ -53,12 +54,14 @@ export default function ExpandableCaptureTile({ input }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="group/tile flex min-h-[124px] flex-col justify-between rounded-sm border border-edge-dim bg-canvas/35 p-3 text-left transition-colors duration-200 hover:border-[color:var(--choice-accent)] hover:bg-surface hover:shadow-[0_0_18px_-12px_var(--choice-accent-glow)] group-hover/panel:border-[color:var(--choice-accent)] group-hover/panel:bg-surface group-hover/panel:shadow-[0_0_18px_-12px_var(--choice-accent-glow)]"
+        className="group/tile flex min-h-[168px] flex-col justify-between rounded-sm border border-edge-dim bg-canvas/35 p-3 text-left transition-colors duration-200 hover:border-[color:var(--choice-accent)] hover:bg-surface hover:shadow-[0_0_18px_-12px_var(--choice-accent-glow)] group-hover/panel:border-[color:var(--choice-accent)] group-hover/panel:bg-surface group-hover/panel:shadow-[0_0_18px_-12px_var(--choice-accent-glow)]"
         aria-label={`Expand ${input.label} screenshot`}
       >
-        <div className="relative flex h-[72px] items-center justify-center">
-          <div className={`${FRAME_CLASSES[input.frame]} transition-colors duration-200 group-hover/tile:border-[color:var(--choice-accent)] group-hover/tile:shadow-[0_0_16px_-8px_var(--choice-accent-glow)] group-hover/panel:border-[color:var(--choice-accent)] group-hover/panel:shadow-[0_0_16px_-8px_var(--choice-accent-glow)]`}>
-            <img
+        <div className="relative flex h-[112px] items-center justify-center">
+          <div className={`relative ${FRAME_CLASSES[input.frame]} transition-colors duration-200 group-hover/tile:border-[color:var(--choice-accent)] group-hover/tile:shadow-[0_0_16px_-8px_var(--choice-accent-glow)] group-hover/panel:border-[color:var(--choice-accent)] group-hover/panel:shadow-[0_0_16px_-8px_var(--choice-accent-glow)]`}>
+            <Image
+              fill
+              sizes="(max-width: 640px) 80vw, 980px"
               src={input.src}
               alt={input.alt}
               className={`${IMAGE_CLASSES[input.frame]} opacity-100 transition-[filter,opacity] duration-300 group-hover/tile:brightness-110 group-hover/panel:brightness-110`}
@@ -114,8 +117,10 @@ export default function ExpandableCaptureTile({ input }) {
             >
               {input.label}
             </p>
-            <div className={`${EXPANDED_FRAME_CLASSES[input.frame]} overflow-hidden rounded-sm border border-edge-faint bg-black/5`}>
-              <img
+            <div className={`relative ${EXPANDED_FRAME_CLASSES[input.frame]} overflow-hidden rounded-sm border border-edge-faint bg-black/5`}>
+              <Image
+              fill
+              sizes="(max-width: 640px) 80vw, 980px"
                 src={input.src}
                 alt={input.alt}
                 className={EXPANDED_IMAGE_CLASSES[input.frame]}

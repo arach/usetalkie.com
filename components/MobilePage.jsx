@@ -123,8 +123,7 @@ export default function MobilePage() {
             <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center lg:grid-cols-1">
               <div>
                 <p className="font-display text-2xl font-normal tracking-[-0.01em] text-ink">
-                  Point your camera.
-                  <span className="italic text-trace"> Keep the thought.</span>
+                  Get Talkie for iPhone.
                 </p>
                 <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-muted">
                   Scan to open {TALKIE_PHONE_APP.name} directly in the App Store.
