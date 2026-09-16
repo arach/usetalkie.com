@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Film, Images, Laptop, Smartphone, Watch } from 'lucide-react'
 import { getTourItems } from '../lib/tour'
 import DownloadBay from './DownloadBay'
@@ -100,8 +101,8 @@ export default function TourLandingPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
             Watch the demos at the top, then step through every screen
-            below. Each gallery card opens a focused view with audio
-            narration so you can hear what each piece is doing.
+            below. Each gallery card opens a focused view with a description
+            of the screen.
           </p>
         </div>
       </section>
@@ -129,7 +130,7 @@ export default function TourLandingPage() {
             eyebrow="· 03 / GALLERY"
             icon={Images}
             title="Look around."
-            blurb="Click any card for the focused view with audio narration. Press Esc to land back at this gallery."
+            blurb="Click any card to see the full screenshot and its description. Press Esc to land back at this gallery."
           />
 
           {/* Mobile: exclusive platform filter */}
@@ -192,7 +193,7 @@ export default function TourLandingPage() {
             {mobilePlatform === 'watch' && (
               <SubGallery
                 icon={Watch}
-                eyebrow={`WATCH · ${watchItems.length} SCREENS`}
+                eyebrow={`WATCH · ${watchItems.length} ${watchItems.length === 1 ? 'SCREEN' : 'SCREENS'}`}
                 items={watchItems}
                 platform="watch"
                 layout="rail"
@@ -218,7 +219,7 @@ export default function TourLandingPage() {
             />
             <SubGallery
               icon={Watch}
-              eyebrow={`WATCH · ${watchItems.length} SCREENS`}
+              eyebrow={`WATCH · ${watchItems.length} ${watchItems.length === 1 ? 'SCREEN' : 'SCREENS'}`}
               items={watchItems}
               platform="watch"
               layout="grid"
@@ -271,7 +272,7 @@ function SubGallery({ icon: Icon, eyebrow, items, platform, layout = 'grid' }) {
         : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
   const aspectClass =
     platform === 'mac'
-      ? 'aspect-[16/10]'
+      ? 'aspect-[1513/1235]'
       : platform === 'watch'
         ? 'aspect-[5/6]'
         : 'aspect-[9/19]'
@@ -307,12 +308,12 @@ function SubGallery({ icon: Icon, eyebrow, items, platform, layout = 'grid' }) {
             className={`group overflow-hidden rounded-md border border-edge-dim bg-surface transition-all duration-200 motion-reduce:transition-none hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] motion-safe:hover:-translate-y-0.5 ${cardClass}`}
           >
             <div className={`relative overflow-hidden bg-canvas-alt ${aspectClass}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={item.src}
                 alt={`${item.title} — Talkie for ${platformLabel}`}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-300 motion-reduce:transition-none motion-safe:group-hover:scale-[1.02]"
+                fill
+                sizes="(max-width: 639px) 100vw, (max-width: 767px) 50vw, 33vw"
+                className="object-contain"
               />
               <span className="pointer-events-none absolute left-2 top-2 inline-flex items-center rounded-sm border border-edge-dim bg-canvas/80 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-ink-faint backdrop-blur-sm">
                 {String(idx + 1).padStart(2, '0')}

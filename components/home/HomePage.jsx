@@ -12,6 +12,9 @@ const SCENES = [
   { name: 'Home', file: 'home', description: 'Meetings, voice captures, workflows, and connected agents in one place.' },
   { name: 'Library', file: 'library', description: 'Find a capture and recover the context that came with it.' },
   { name: 'Editor', file: 'editor', description: 'Edit notes with a Markdown preview and revision history.' },
+  { name: 'Workflows', file: 'workflows', description: 'Chain capture, models, and actions into routines you can read, edit, and run again.' },
+  { name: 'Terminals', file: 'terminals', description: 'Run Claude, Codex, and shell sessions inside Talkie, with your captures one step away.' },
+  { name: 'Settings', file: 'settings', description: 'Pick models, keys, and providers. Everything stays on your Mac unless you route it elsewhere.' },
 ]
 const CAPABILITIES = [
   ['Dictate into any Mac app.', 'Use a global shortcut to turn speech into text in the app where work is already open.', '/mac'],
@@ -25,8 +28,14 @@ export default function HomePage() {
   return (
     <div className={styles.page}>
       <section className={styles.hero} aria-labelledby="home-lead-title">
-        <Image className={styles.landscape} src="/backgrounds/talkie-listening-pavilion.webp" alt="" fill priority sizes="100vw" />
+        <Image className={styles.landscape} src="/backgrounds/talkie-listening-pavilion-night.webp" alt="" fill priority sizes="100vw" />
         <div className={styles.heroShade} />
+        <Image className={styles.dayLandscape} src="/backgrounds/talkie-listening-pavilion.webp" alt="" fill sizes="100vw" />
+        <div className={styles.dayTrees} aria-hidden="true"><Image className={styles.treeImage} src="/backgrounds/talkie-listening-pavilion.webp" alt="" fill sizes="100vw" /></div>
+        <div className={styles.nightDetails} aria-hidden="true">
+          <span className={styles.starsNear} />
+          <span className={styles.starsFar} />
+        </div>
         <div className={styles.heroInner}>
           <div className={styles.devices} aria-label="Available on Mac, iPhone, and Apple Watch">
             <span><Laptop size={18} /> Mac</span><span><Smartphone size={17} /> iPhone</span><span><Watch size={17} /> Watch</span>
@@ -38,17 +47,19 @@ export default function HomePage() {
             <Link href="#product-demo" className={styles.secondary}><Play size={15} /> Watch Talkie work</Link>
           </div>
           <p className={styles.requirements}>macOS 26+ · Apple silicon · Current free build</p>
-          <figure className={styles.product}>
-            <div className={styles.productTabs} aria-label="Product screenshots">
-              {SCENES.map((item, index) => <button key={item.file} type="button" aria-pressed={index === sceneIndex} onClick={() => setSceneIndex(index)}>{item.name}</button>)}
-              <span>Talkie for Mac</span>
+          <div className={styles.sceneBar}>
+            <div className={styles.sceneTabs} role="group" aria-label="Talkie for Mac screens">
+              {SCENES.map((item, index) => <button key={item.file} type="button" aria-pressed={index === sceneIndex} onClick={(event) => { setSceneIndex(index); event.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' }) }}>{item.name}</button>)}
             </div>
+            <p className={styles.sceneNote} aria-live="polite">{scene.description}</p>
+          </div>
+          <figure className={styles.product}>
             <Image src={`/screenshots/mac/current/talkie-${scene.file}-light.webp`} width={1513} height={1235} alt={`Talkie ${scene.name}. ${scene.description}`} priority={sceneIndex === 0} sizes="(max-width: 768px) 94vw, 1120px" />
           </figure>
         </div>
       </section>
 
-      <div className={styles.productCaption}><span aria-live="polite">{scene.description}</span><Link href="/tour">Explore Talkie <ArrowRight size={15} /></Link></div>
+      <div className={styles.productCaption}><span className={styles.productLabel}>Talkie for Mac · macOS 26+</span><Link href="/tour">Explore Talkie <ArrowRight size={15} /></Link></div>
 
       <section className={styles.intro} id="features">
         <div className={styles.sectionHeading}><h2>Start with your voice.<br />Keep the context.</h2><p>A quick thought, a meeting, or a prompt for an agent. Talkie keeps the capture available for whatever comes next.</p></div>
@@ -70,7 +81,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className={styles.mobileArtwork}>
-            <Image src="/screenshots/talkie-phone-3d-dark.png" width={412} height={760} sizes="(max-width: 767px) 80vw, 400px" alt="Talkie for iPhone showing recent captures on the home screen" />
+            <Image src="/screenshots/talkie-phone-home-2026-08.webp" width={900} height={1840} sizes="(max-width: 767px) 80vw, 400px" alt="Talkie for iPhone showing recent captures on the home screen" />
           </div>
         </div>
       </section>
@@ -81,7 +92,8 @@ export default function HomePage() {
       </section>
 
       <section className={styles.close} id="downloads">
-        <Image className={styles.closeScene} src="/backgrounds/talkie-listening-pavilion.webp" alt="" fill sizes="100vw" />
+        <Image className={styles.closeScene} src="/backgrounds/talkie-listening-pavilion-night.webp" alt="" fill sizes="100vw" />
+        <Image className={styles.closeDayScene} src="/backgrounds/talkie-listening-pavilion.webp" alt="" fill sizes="100vw" />
         <div className={styles.closeShade} />
         <h2>Say it. Let Talkie type it.</h2>
         <p>Download Talkie for Mac and start dictating. The current build is free.</p>

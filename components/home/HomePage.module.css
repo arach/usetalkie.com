@@ -6,7 +6,7 @@
 .hero { position: relative; isolation: isolate; overflow: hidden; background: #5d86bd; color: #fff; }
 .landscape { object-fit: cover; object-position: 92% 50%; z-index: -2; }
 .heroShade { position: absolute; inset: 0; background: linear-gradient(104deg, rgba(13,36,66,.36), rgba(13,36,66,.04) 58%), linear-gradient(180deg, rgba(13,36,66,.26), rgba(13,36,66,.05) 60%, rgba(13,36,66,.14)); z-index: -1; }
-.heroInner { max-width: 1176px; padding: 78px 28px 0; margin: auto; }
+.heroInner { max-width: 1176px; padding: 78px 28px 48px; margin: auto; }
 .devices { display: flex; gap: 10px; margin-bottom: 30px; font-size: 12px; }
 .devices span { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid #ffffff3d; border-radius: 999px; background: #ffffff14; backdrop-filter: blur(8px); }
 .hero h1 { font-family: var(--font-talkie-sans), sans-serif; font-size: clamp(44px, 4.8vw, 68px); font-weight: 500; line-height: 1.07; letter-spacing: -.035em; max-width: 780px; text-wrap: balance; text-shadow: 0 2px 30px rgba(16,41,77,.35); }
@@ -18,15 +18,19 @@
 .secondary { color: #fff; border-color: #ffffff59; background: #ffffff0a; backdrop-filter: blur(10px); }
 .secondary:hover { border-color: #ffffffa6; background: #ffffff1f; }
 .requirements { font-size: 12px; margin-top: 18px; color: #ffffffd9; }
-.product { margin-top: 54px; border-radius: 12px 12px 0 0; overflow: hidden; background: #eaf0f5; box-shadow: 0 0 0 1px #ffffff4d, 0 24px 80px #0f254559; }
+/* Scene selector: the same glass chip vocabulary as .devices, sitting on the artwork above the window rather than as a second toolbar inside it. */
+.sceneBar { display: flex; align-items: center; gap: 22px; margin-top: 54px; }
+.sceneTabs { display: flex; flex-shrink: 0; gap: 2px; padding: 4px; border: 1px solid #ffffff3d; border-radius: 999px; background: #ffffff14; backdrop-filter: blur(8px); }
+.sceneTabs button { min-height: 34px; padding: 7px 16px; border-radius: 999px; font-size: 13px; color: #ffffffd9; white-space: nowrap; transition: background .15s ease, color .15s ease; }
+.sceneTabs button:hover { background: #ffffff1f; color: #fff; }
+.sceneTabs button[aria-pressed=true] { background: #fff; color: #19252d; font-weight: 500; box-shadow: 0 1px 2px rgba(13, 36, 66, .18); }
+/* The caption reads as part of the control, so it follows the chips rather than floating to the far edge over the timber. */
+.sceneNote { margin: 0; min-width: 0; max-width: 44ch; font-size: 13px; line-height: 1.55; color: #f3f8fd; text-shadow: 0 1px 18px rgba(16, 41, 77, .3); }
+.product { margin-top: 18px; border-radius: 12px; overflow: hidden; background: #eaf0f5; box-shadow: 0 0 0 1px #ffffff4d, 0 24px 80px #0f254559; }
 .product img { display: block; width: 100%; height: auto; aspect-ratio: 1513 / 1235; object-fit: contain; object-position: top; }
-.productTabs { display: flex; align-items: center; gap: 4px; padding: 10px 14px; background: #f9fbfc; color: #5b6773; }
-.productTabs button { min-height: 36px; padding: 6px 15px; border-radius: 6px; font-size: 12px; transition: background .15s ease, color .15s ease; }
-.productTabs button[aria-pressed=true] { background: #e4ebf4; color: #243d5c; font-weight: 500; }
-.productTabs button:hover { background: #edf1f6; }
-.productTabs > span { display: inline-flex; align-items: center; gap: 7px; margin-left: auto; font-size: 11px; }
-.productTabs > span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--home-amber); }
 .productCaption { max-width: 1176px; margin: auto; padding: 20px 28px; display: flex; justify-content: space-between; gap: 24px; font-size: 12px; color: var(--home-muted); }
+.productLabel { display: inline-flex; align-items: center; gap: 8px; }
+.productLabel::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--home-amber); }
 .productCaption a, .capabilities a, .ownership a, .mobileMore { display: inline-flex; align-items: center; gap: 10px; }
 .productCaption a { flex-shrink: 0; color: var(--home-ink); }
 .intro { max-width: 1176px; margin: auto; padding: 104px 28px 100px; }
@@ -65,7 +69,7 @@
 .close .actions { justify-content: center; margin-top: 0; }
 .close a:focus-visible { outline-color: #fff; }
 @media (max-width: 767px) {
-  .heroInner { padding: 46px 20px 0; }
+  .heroInner { padding: 46px 20px 28px; }
   .devices { margin-bottom: 24px; gap: 8px; }
   .devices span { padding: 7px 9px; font-size: 11px; }
   .hero h1 { font-size: clamp(40px, 9.8vw, 60px); }
@@ -75,10 +79,14 @@
   .primary, .secondary { padding: 11px 17px; font-size: 12px; }
   .requirements { font-size: 10px; }
   .landscape { object-position: 72% 50%; }
-  .product { margin-top: 38px; }
-  .productTabs { padding: 7px; }
-  .productTabs button { padding: 6px 11px; }
-  .productTabs > span { font-size: 9px; padding-right: 5px; }
+  .sceneBar { flex-direction: column; align-items: stretch; gap: 12px; margin-top: 36px; }
+  /* Six chips don't fit a phone. The row bleeds to the screen edge as loose chips, so the cut-off chip is the scroll cue; the pill container would hide it. */
+  .sceneTabs { gap: 6px; margin-inline: -20px; padding: 2px 20px; border: 0; border-radius: 0; background: transparent; backdrop-filter: none; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; scroll-padding-inline: 20px; }
+  .sceneTabs::-webkit-scrollbar { display: none; }
+  .sceneTabs button { flex: 0 0 auto; scroll-snap-align: start; padding: 6px 13px; font-size: 12px; border: 1px solid #ffffff3d; background: #ffffff14; backdrop-filter: blur(8px); }
+  .sceneTabs button[aria-pressed=true] { border-color: #fff; }
+  .sceneNote { max-width: none; font-size: 12px; }
+  .product { margin-top: 14px; }
   .productCaption { padding: 18px 20px; flex-direction: column; gap: 12px; line-height: 1.6; }
   .intro { padding: 64px 24px; }
   .sectionHeading { grid-template-columns: 1fr; gap: 24px; }
@@ -98,3 +106,23 @@
 :global(.dark) .page { --home-paper: #17212b; --home-ink: #edf3f8; --home-muted: #b7c4d0; --home-amber: #d8ab5e; }
 :global(.dark) .mobileSection { background: #10171e; border-block: 1px solid #2b3945; }
 :global(.dark) .capabilities, :global(.dark) .capabilities article { border-color: #3c4a58; }
+
+/* Ambient scenery follows the site theme; content remains still. */
+.dayLandscape, .treeImage { object-fit: cover; object-position: 92% 50%; }
+.dayLandscape { z-index: -2; }
+.closeDayScene { object-fit: cover; object-position: 12% 62%; z-index: -2; }
+.dayTrees { position: absolute; inset: 0; z-index: -2; pointer-events: none; mask-image: radial-gradient(ellipse 24% 24% at 100% 7%, #000 35%, transparent 100%); }
+.nightDetails { display: none; position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.starsNear, .starsFar { position: absolute; inset: 0 0 auto; height: 430px; opacity: .35; background-repeat: no-repeat; }
+.starsNear { background-image: radial-gradient(circle at 18% 12%, #e6eeff 0 1px, transparent 2px), radial-gradient(circle at 47% 23%, #e6eeff 0 1px, transparent 2px), radial-gradient(circle at 69% 9%, #e6eeff 0 1px, transparent 2px); }
+.starsFar { background-image: radial-gradient(circle at 33% 7%, #d0ddff 0 .8px, transparent 1.8px), radial-gradient(circle at 58% 42%, #d0ddff 0 .8px, transparent 1.8px), radial-gradient(circle at 77% 31%, #d0ddff 0 .8px, transparent 1.8px); }
+:global(.dark) .dayLandscape, :global(.dark) .dayTrees, :global(.dark) .closeDayScene { display: none; }
+:global(.dark) .nightDetails { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .starsNear { animation: nightTwinkle 7s ease-in-out infinite alternate; }
+  .starsFar { animation: nightTwinkle 11s ease-in-out -4s infinite alternate-reverse; }
+  .treeImage { transform-origin: 100% 30%; animation: treeBreeze 8s ease-in-out infinite alternate; }
+}
+@keyframes nightTwinkle { from { opacity: .16; } to { opacity: .65; } }
+@keyframes treeBreeze { from { transform: rotate(-.08deg); } to { transform: rotate(.08deg); } }
+@media (max-width: 767px) { .dayLandscape, .treeImage { object-position: 72% 50%; } }
