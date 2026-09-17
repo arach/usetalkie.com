@@ -122,11 +122,11 @@ export default function DownloadAllPage() {
             <div>
               <ChannelEyebrow>· INSTALL / ALL CHANNELS · v2.5.43</ChannelEyebrow>
               <h1 className="mt-4 font-display text-[2.35rem] font-normal leading-[0.98] tracking-[-0.035em] text-ink md:text-[2.65rem]">
-                Pick a device.<br />
-                <span className="italic text-ink-muted">Same library.</span>
+                Download Talkie.<br />
+                <span className="italic text-ink-muted">Mac, iPhone, and Watch.</span>
               </h1>
               <p className="mt-5 max-w-xl text-[13px] leading-snug text-ink-muted">
-                Download the current Mac build for free with on-device Parakeet v3 speech-to-text. The iPhone and Apple Watch apps are also free.
+                The Mac app is free and turns speech into text on your Mac. The iPhone and Apple Watch apps are free too.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] text-ink-subtle">
                 <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">BUILD 49</span>
