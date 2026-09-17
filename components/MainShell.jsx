@@ -10,7 +10,7 @@ import { NarratorProvider, NarratorDock } from './narrator'
 export default function MainShell({ children, home = false }) {
   return (
     <NarratorProvider>
-      <div className={`min-h-screen bg-canvas text-ink antialiased${home ? ' talkie-home-shell' : ''}`}>
+      <div className={`min-h-screen bg-canvas text-ink antialiased${home ? ' talkie-home-shell home-at-top' : ''}`}>
         <SiteShell>{children}</SiteShell>
       </div>
       <NarratorDock />
