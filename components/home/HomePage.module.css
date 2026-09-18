@@ -10,6 +10,15 @@
 .heroShade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(104deg, rgba(13,36,66,.38), rgba(13,36,66,.04) 58%), linear-gradient(180deg, rgba(13,36,66,.34), rgba(13,36,66,.05) 42%, rgba(13,36,66,.14)); }
 /* The header floats over the sky, so the hero owns the top 62px of the page. */
 .heroInner { max-width: 1176px; padding: 152px 28px 56px; margin: auto; }
+/* The recording bar floats in the band of open sky between the header and the
+   headline. It mirrors heroInner's own box so its left edge lands on the
+   headline's, and it takes no pointer: it is scenery, not a control.
+   --home-header is where the header's content ends; the band runs from there
+   to heroInner's padding-top, and the bar is centred in it. */
+.heroBar { --home-header: 63px; position: absolute; top: var(--home-header); left: 0; right: 0; max-width: 1176px; margin: 0 auto; padding: 16px 28px 0; pointer-events: none; animation: heroBarIn .8s var(--home-ease) .5s both; }
+/* The page settles first, then the bar arrives, the way it does over a desktop. */
+@keyframes heroBarIn { from { opacity: 0; transform: translateY(-10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+
 /* Display voice: Cormorant Garamond Light, sized up to carry the same presence the sans had at 68px. One italic word per heading; the rest of the page stays in the sans. */
 .hero h1 { font-family: var(--font-display-modern), Georgia, serif; font-size: clamp(54px, 6vw, 88px); font-weight: 300; line-height: .98; letter-spacing: -.01em; max-width: 900px; text-wrap: balance; text-shadow: 0 2px 30px rgba(16,41,77,.35); }
 .page h1 em, .page h2 em { font-style: italic; font-weight: 300; }
@@ -122,7 +131,10 @@
 
 /* ---------- Phones ---------- */
 @media (max-width: 767px) {
-  .heroInner { padding: 112px 20px 28px; }
+  /* Open the sky band enough for the recording bar to float clear of
+     both the header and the headline. */
+  .heroInner { padding: 140px 20px 28px; }
+  .heroBar { padding: 14px 20px 0; }
   .hero h1 { font-size: clamp(48px, 12vw, 70px); }
   .heroDescription { font-size: 15px; }
   .desktopBreak { display: none; }
@@ -187,7 +199,7 @@
   .treeImage { transform-origin: 100% 30%; animation: treeBreeze 8s ease-in-out infinite alternate; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rise, .productFrame { animation: none; }
+  .rise, .productFrame, .heroBar { animation: none; }
   .page a svg, .evidence img, .primary svg, .secondary svg { transition: none; }
 }
 @keyframes nightTwinkle { from { opacity: .16; } to { opacity: .65; } }

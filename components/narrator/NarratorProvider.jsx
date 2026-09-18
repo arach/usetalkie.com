@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { playPressTick } from '../../lib/sfx'
 
 /**
  * NarratorProvider — single audio graph for the floating narrator dock.

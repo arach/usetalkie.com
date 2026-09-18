@@ -1,0 +1,43 @@
+/* Talkie's mark. The signal colour is the app's own (ScopeAmber.solid is blue,
+   despite the name), set explicitly rather than read from a page token: the
+   overlay does the same, because a theme colour resolved in this context is
+   the wrong one.
+
+   One glyph, painted by a hard two-stop fill that rises from the baseline with
+   the voice. Drawing it once is what keeps the level edge exactly on the
+   letterform — two stacked copies cannot be trusted to register. */
+
+.mark {
+  --level: 0;
+  --mark-ink: #1a1612;
+  --mark-signal: #2f63d8;
+  display: block;
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  /* Optical balance for the bold glyph's rightward foot, as in the app. */
+  transform: translateX(-0.25px);
+  background-image: linear-gradient(
+    to top,
+    var(--mark-signal) 0,
+    var(--mark-signal) calc(var(--level) * 100%),
+    var(--mark-ink) calc(var(--level) * 100%),
+    var(--mark-ink) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* The mark inverts only when the disc behind it does, so the tone is the
+   consumer's call rather than the page theme's:
+     light — always dark ink, for a disc that stays light in both themes
+     dark  — always light ink, for a disc that stays dark
+     auto  — follows the page theme, for a disc that flips with it */
+.mark[data-tone='dark'],
+:global(html.dark) .mark[data-tone='auto'] {
+  --mark-ink: #f1f5f2;
+  --mark-signal: #78a6ff;
+}

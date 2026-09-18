@@ -5,7 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowDown, ArrowRight, Laptop, Smartphone, Watch, Play } from 'lucide-react'
 import DemoFilmHero from './DemoFilmHero'
+import DemoCursorStage from './DemoCursorStage'
 import HomeHeaderTone from './HomeHeaderTone'
+import HeroDictationCue from './HeroDictationCue'
 import { TALKIE_PHONE_APP } from '../../shared/config/product-links'
 import styles from './HomePage.module.css'
 
@@ -69,6 +71,14 @@ export default function HomePage() {
         <div className={styles.nightDetails} aria-hidden="true">
           <span className={styles.starsNear} />
           <span className={styles.starsFar} />
+        </div>
+
+        {/* Press, listen, type: Talkie's recording bar floating in the open sky
+            above the headline the way it floats over a desktop, with the
+            shortcut that summons it and the line it writes. It sits outside
+            heroInner so the hero's own rise sequence is untouched. */}
+        <div className={styles.heroBar}>
+          <HeroDictationCue />
         </div>
 
         <div className={styles.heroInner}>
@@ -145,11 +155,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className={styles.demoIntro}>
-        <h2>One shortcut.<br />The app <em>already</em> open.</h2>
-        <p>See real dictation in Cursor, ChatGPT, and Ghostty.</p>
-      </section>
-      <DemoFilmHero />
+      {/* The demo block carries the two live flourishes from the app itself:
+          the recording bar under the copy, and the cursor companion that
+          trails the pointer while it is over this block. */}
+      <DemoCursorStage>
+        <section className={styles.demoIntro}>
+          <h2>One shortcut.<br />The app <em>already</em> open.</h2>
+          <p>See real dictation in Cursor, ChatGPT, and Ghostty.</p>
+        </section>
+        <DemoFilmHero />
+      </DemoCursorStage>
 
       <section className={styles.mobileSection}>
         <div className={styles.mobileInner}>

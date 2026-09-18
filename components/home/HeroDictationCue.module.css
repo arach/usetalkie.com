@@ -1,0 +1,256 @@
+/* Talkie waits in the sky as its mark and a line about the shortcut. Nothing
+   moves until you ask: press it and a real capture plays, the bar unfolds out
+   of the mark, and the words arrive on the milliseconds they were spoken.
+
+   The shortcut is written the way a menu writes one — a quiet note about the
+   app, not a keyboard miming its own press. */
+
+.cue {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* ---------- The trigger: the mark, and the line beside it ---------- */
+
+.trigger {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  /* The hero bar sets pointer-events: none so its row never swallows a click
+     meant for the hero. This is the one control inside it. */
+  pointer-events: auto;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid #ffffffb8;
+  outline-offset: 4px;
+}
+
+/* ---------- The mark ---------- */
+
+.badge {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fbf8f2;
+  box-shadow: 0 1px 6px -2px rgba(13, 36, 66, 0.55);
+  /* Reserve the hover lift so nothing in the row shifts. */
+  transform: scale(1);
+  transition: transform 0.28s var(--home-ease, ease-out), box-shadow 0.28s ease-out;
+}
+
+.trigger:hover .badge,
+.trigger:focus-visible .badge {
+  transform: scale(1.1);
+  box-shadow: 0 2px 14px -2px rgba(255, 255, 255, 0.55);
+}
+
+.badgeMark {
+  font-size: 14px;
+}
+
+/* While the mark is out trailing the pointer its slot keeps the row's shape,
+   holding the space it will come back to. */
+.cue[data-detached='true'] .badgeMark {
+  opacity: 0;
+}
+
+.cue[data-detached='true'] .badge {
+  background: #fbf8f229;
+  box-shadow: none;
+}
+
+/* ---------- The hint, and the bar that replaces it ---------- */
+
+/* One reserved slot, so the transcript never moves as the bar unfolds. */
+.stage {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 360px;
+  max-width: 100%;
+  height: 58px;
+}
+
+/* An informational line: the chord, then what it does. No keycaps, no press —
+   it reads as something Talkie is telling you, not a keyboard on stage. */
+.hint {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  transition: opacity 0.22s ease-out;
+}
+
+/* The hint hands the space over to the bar. */
+.cue[data-live='true'] .hint {
+  opacity: 0;
+}
+
+.hintChord {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: #ffffffe0;
+  text-shadow: 0 1px 12px rgba(16, 41, 77, 0.45);
+  transition: color 0.18s ease-out;
+}
+
+.trigger:hover .hintChord,
+.trigger:focus-visible .hintChord {
+  color: #fff;
+}
+
+/* Both labels stack in one cell, so the slot is as wide as the wider of them
+   and the swap on hover costs the row no reflow. */
+.hintLabels {
+  display: grid;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 12px rgba(16, 41, 77, 0.45);
+}
+
+.hintRest,
+.hintHover {
+  grid-area: 1 / 1;
+  transition: opacity 0.18s ease-out;
+}
+
+.hintRest { color: #ffffff9e; }
+.hintHover { color: #fff; opacity: 0; }
+
+.trigger:hover .hintRest,
+.trigger:focus-visible .hintRest { opacity: 0; }
+
+.trigger:hover .hintHover,
+.trigger:focus-visible .hintHover { opacity: 1; }
+
+/* The bar grows out of the mark and folds back into it. Its width animates
+   rather than a clip, so the pill's rounded cap travels with the edge. */
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  opacity: 0;
+  transition:
+    width 0.5s var(--home-ease, ease-out),
+    opacity 0.2s ease-out;
+}
+
+.cue[data-live='true'] .bar {
+  width: 100%;
+  opacity: 1;
+}
+
+/* ---------- The transcript ---------- */
+
+.transcript {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #ffffffd9;
+  text-shadow: 0 1px 12px rgba(16, 41, 77, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* The line slides left to keep the newest word in view, as a dictation field
+   does once the sentence outruns its box. */
+.transcriptText {
+  display: inline-block;
+  transition: transform 0.24s var(--home-ease, ease-out);
+}
+
+/* The caret rides the end of the line only while words are still arriving. */
+.transcriptText[data-typing='true']::after {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background: #fff;
+  animation: cueCaret 0.9s steps(1) infinite;
+}
+
+@keyframes cueCaret {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* ---------- The mark while it is out ---------- */
+
+/* Fixed to the viewport so it can trail the pointer across the whole page, and
+   never taking the pointer itself: every click underneath lands as normal. */
+.companion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fbf8f2;
+  box-shadow: 0 2px 10px -2px rgba(13, 36, 66, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.2s ease-out;
+}
+
+.cue[data-detached='true'] .companion {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------- Narrower skies ---------- */
+
+/* The transcript is the first thing to go when the row runs out of sky. */
+@media (max-width: 899px) {
+  .transcript { display: none; }
+}
+
+@media (max-width: 767px) {
+  .cue, .trigger { gap: 10px; }
+  .badge { width: 22px; height: 22px; }
+  .badgeMark { font-size: 13px; }
+  .stage { height: 48px; }
+  .hint { gap: 6px; }
+  .hintChord { font-size: 12px; }
+  .hintLabels { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge, .hint, .bar, .companion, .transcriptText { transition: none; }
+  .transcriptText[data-typing='true']::after { animation: none; }
+}

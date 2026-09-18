@@ -1,0 +1,100 @@
+/* The recording bar Talkie floats over the desktop while it listens.
+   Proportions follow the real overlay: a wide, shallow pill (about 6:1) with a
+   cancel affordance left, a stop affordance right, and the particle field
+   running the length between them. */
+
+.bar {
+  --bar-height: 58px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(360px, 100%);
+  height: var(--bar-height);
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 13px;
+  /* Clip the canvas to the rounded shape so no square corner shows through. */
+  overflow: hidden;
+  /* Tuned against the hero sky: light enough that the photograph reads through
+     the glass, dark enough to keep the white particles at full contrast. */
+  background: rgba(22, 24, 27, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+}
+
+/* The page sits on warm paper, so the dark pill needs no help to read. On the
+   dark theme the canvas is nearly black: lift the fill and the hairline a
+   little so the bar keeps its edge. */
+:global(html.dark) .bar {
+  background: rgba(40, 43, 48, 0.62);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.field {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+/* Talkie's mark, as the round button that leads the bar. A light disc on the
+   dark glass, so the brand reads first and the level fill is legible in it. */
+.badge {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fbf8f2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.badgeMark {
+  font-size: 15px;
+}
+
+/* An inert likeness of the overlay's stop button. */
+.control {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.stop {
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 767px) {
+  .bar {
+    --bar-height: 48px;
+    gap: 10px;
+    padding: 0 10px;
+    border-radius: 11px;
+  }
+
+  .control {
+    width: 20px;
+    height: 20px;
+  }
+
+  .badge {
+    width: 22px;
+    height: 22px;
+  }
+
+  .badgeMark {
+    font-size: 14px;
+  }
+}

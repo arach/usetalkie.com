@@ -23,7 +23,9 @@ import { useNarrator } from './NarratorProvider'
 export default function NarratorDock() {
   const { clip, isPlaying, captionText, keypressCue, missing, analyserRef, audioRef, play, pause, close } = useNarrator()
 
-  if (!clip) return null
+  // A `bare` clip brings its own player — the homepage hero speaks through the
+  // recording bar in its sky — so the dock stays out of its way.
+  if (!clip || clip.bare) return null
 
   const togglePlay = () => {
     if (missing) return

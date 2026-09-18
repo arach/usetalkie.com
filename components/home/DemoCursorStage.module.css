@@ -1,0 +1,54 @@
+/* The cursor companion: Talkie's listening badge, trailing the pointer inside
+   the demo block only. It never takes the pointer, so the real cursor and every
+   click behave exactly as they did. */
+
+.stage {
+  position: relative;
+}
+
+.badge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fbf8f2;
+  box-shadow:
+    inset 0 0 0 0.5px rgba(26, 22, 18, 0.16),
+    0 4px 12px -4px rgba(26, 22, 18, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  /* Scale from 0.86, as the native badge does when it appears. */
+  scale: 0.86;
+  transition: opacity 0.18s ease-out, scale 0.18s ease-out;
+}
+
+.badge[data-visible='true'] {
+  opacity: 1;
+  scale: 1;
+}
+
+:global(html.dark) .badge {
+  background: #10151b;
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.2),
+    0 4px 12px -4px rgba(0, 0, 0, 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    transition: none;
+  }
+}
+
+/* No hovering pointer to follow on touch: keep the badge out of the tree. */
+@media (hover: none), (pointer: coarse) {
+  .badge {
+    display: none;
+  }
+}
