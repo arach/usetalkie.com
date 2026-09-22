@@ -1,6 +1,6 @@
 # Aiko alternative: when file transcription isn't live dictation
 
-Looking for an Aiko alternative? Aiko transcribes audio files on-device with Whisper. Talkie does live dictation and turns captures into structured, agent-ready data.
+Looking for an Aiko alternative? Aiko transcribes audio files on-device with Whisper. Talkie does live dictation and turns captures into agent-ready data.
 
 - Canonical page: https://usetalkie.com/compare/aiko/
 - Author: Arach Tchoupani

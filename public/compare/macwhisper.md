@@ -1,6 +1,6 @@
 # Talkie: A Local-First MacWhisper Alternative With a CLI
 
-Looking for a MacWhisper alternative? Talkie offers on-device voice dictation for Mac, iPhone, and Apple Watch — with a CLI that turns your captures into structured data for scripts and AI agents.
+Looking for a MacWhisper alternative? Talkie offers on-device voice dictation for Mac, iPhone, and Watch, with a CLI that turns captures into structured data.
 
 - Canonical page: https://usetalkie.com/compare/macwhisper/
 - Author: Arach Tchoupani

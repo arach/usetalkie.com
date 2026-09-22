@@ -1,6 +1,6 @@
 # Best Dictation Apps for Mac in 2026
 
-Honest 2026 roundup of Mac dictation apps. On-device vs cloud, pricing, and which tool fits: Superwhisper, Wispr Flow, MacWhisper, Aqua Voice, and Talkie.
+Honest 2026 roundup of Mac dictation apps. On-device vs cloud, pricing posture, and which tool fits: Superwhisper, Wispr Flow, MacWhisper, Aqua Voice, Talkie.
 
 - Canonical page: https://usetalkie.com/compare/best-dictation-apps-for-mac/
 - Author: Arach Tchoupani
@@ -10,7 +10,11 @@ There are more good dictation apps for Mac than there used to be, and they're no
 
 Full disclosure: I make [Talkie](/downloads/), so I'm not a neutral referee. But a roundup that pretends every rival is bad is useless to you and a little embarrassing to write, so I've tried to be honest about when each of these is the better choice — and there are plenty of cases where something here beats Talkie.
 
-## How to think about the choice
+## What is Talkie in this roundup?
+
+Talkie is a local-first voice dictation app for Mac, with free companion apps for iPhone and Apple Watch. It turns speech into text in the app that is already open, stores searchable captures on your devices, runs private workflows, and exposes structured capture data through a CLI for agents. The current Mac build is free. A 7-day trial and a $39 one-time license for up to two Macs are planned. This page compares that product posture with other Mac voice tools; it does not claim competitor features beyond what each product's own materials describe.
+
+## How should you choose a Mac dictation app?
 
 Three questions sort most of this out:
 
@@ -66,11 +70,15 @@ Prices are as of 2026 and change often — check each app for current numbers.
 
 **[Dragon](/compare/dragon/)** remains the professional command-and-control heavyweight with tuned medical and legal vocabularies — but its consumer Mac product is long gone, so on Mac it's effectively a Windows/enterprise option. Best if you need professional-grade accuracy and control on a supported platform.
 
-## So which should you pick?
+## Which Mac dictation app should you pick?
 
 If you're on Apple hardware and want dictation that's private, local-first, and able to drive your agents, that's what I built [Talkie](/downloads/) for — and you can run it alongside a file transcriber like MacWhisper or a meeting tool like Otter without conflict. If you need Windows, the widest formatting menu, or professional command-and-control, one of the others above is the honest answer.
 
 The real test is your workflow. Pick the two that fit it best and see which one disappears into your day.
+
+### Where Talkie is usually the wrong pick
+
+Talkie is not trying to replace every voice tool on this list. Prefer another app when you need Windows support, a large catalogue of cloud reformatting modes, dedicated meeting-team notes, professional medical or legal vocabularies, or hands-free full computer control. Those jobs are covered more directly by the products listed in each section above.
 
 [Download Talkie for Mac and iPhone →](/downloads/)
 

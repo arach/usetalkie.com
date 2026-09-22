@@ -1,6 +1,6 @@
 # DictaFlow alternative: Talkie for local-first dictation with a CLI
 
-A DictaFlow alternative for people who want dictation that stays on-device and exposes captures as structured data they can pipe into scripts and AI agents.
+A DictaFlow alternative for people who want dictation that stays on-device and exposes captures as structured data for scripts and AI agents.
 
 - Canonical page: https://usetalkie.com/compare/dictaflow/
 - Author: Arach Tchoupani

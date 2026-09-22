@@ -1,6 +1,6 @@
-# The Apple Dictation Alternative for When Built-In Isn't Enough: Talkie
+# Talkie vs Apple Dictation: When Built-In Isn't Enough
 
-An honest Apple Dictation alternative comparison. Both work on-device. Where Talkie differs: structured local storage, a programmable CLI, and dictating into AI agents like Claude Code.
+An honest Apple Dictation alternative comparison. Both work on-device. Talkie adds structured local storage, a programmable CLI, and dictation into AI agents.
 
 - Canonical page: https://usetalkie.com/compare/apple-dictation/
 - Author: Arach Tchoupani

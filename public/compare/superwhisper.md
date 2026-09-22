@@ -1,6 +1,6 @@
 # Talkie vs Superwhisper: A Local-First Alternative for Mac
 
-Looking for a Superwhisper alternative? Talkie runs speech-to-text on-device, syncs across Mac, iPhone, and Apple Watch, and hands your voice to the command line and your AI agents. An honest comparison.
+Looking for a Superwhisper alternative? Talkie runs speech-to-text on-device, syncs across Mac, iPhone, and Watch, and hands voice to the CLI and agents.
 
 - Canonical page: https://usetalkie.com/compare/superwhisper/
 - Author: Arach Tchoupani

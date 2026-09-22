@@ -1,6 +1,6 @@
 # A Private, Local Otter.ai Alternative for Dictation and Capture
 
-Looking for an Otter.ai alternative that keeps your voice on-device? Talkie is local-first dictation and capture for Mac and iPhone, with a programmable path into scripts and agents.
+Looking for an Otter.ai alternative that keeps voice on-device? Talkie is local-first dictation and capture for Mac and iPhone, with a CLI for agents.
 
 - Canonical page: https://usetalkie.com/compare/otter/
 - Author: Arach Tchoupani
