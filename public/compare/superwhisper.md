@@ -1,6 +1,6 @@
-# Talkie vs Superwhisper: A Local-First Alternative for Mac
+# Superwhisper Alternative: Talkie, Local-First Mac Dictation
 
-Looking for a Superwhisper alternative? Talkie runs speech-to-text on-device, syncs across Mac, iPhone, and Watch, and hands voice to the CLI and agents.
+Looking for a Superwhisper alternative on Mac? Honest comparison: Superwhisper’s reformatting modes vs Talkie’s on-device dictation, local library, and CLI for agents.
 
 - Canonical page: https://usetalkie.com/compare/superwhisper/
 - Author: Arach Tchoupani
@@ -52,4 +52,4 @@ You don't have to guess. Try both in your own workflow and see which one disappe
 
 And if the agents angle is what caught your eye, here's [how dictating to Claude Code works](/workflows/dictate-to-claude/), and [why Talkie ships a CLI](/ideas/why-talkie-has-a-cli/) in the first place.
 
-See also: [the best dictation apps for Mac, compared](/compare/best-dictation-apps-for-mac/).
+See also: [Mac dictation guide](/ideas/mac-dictation/), [the best dictation apps for Mac, compared](/compare/best-dictation-apps-for-mac/).

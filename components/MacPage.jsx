@@ -64,6 +64,10 @@ export default function MacPage() {
             <a href="/ideas/dictate-into-cursor/" className="underline decoration-edge underline-offset-2 hover:text-ink">Dictate into Cursor</a>
             {' · '}
             <a href="/compare/best-dictation-apps-for-mac/" className="underline decoration-edge underline-offset-2 hover:text-ink">Best apps for Mac</a>
+            {' · '}
+            <a href="/ideas/voice-remote-for-agents/" className="underline decoration-edge underline-offset-2 hover:text-ink">Voice for agents</a>
+            {' · '}
+            <a href="/ideas/iphone-apple-watch-voice-capture/" className="underline decoration-edge underline-offset-2 hover:text-ink">iPhone & Watch</a>
           </p>
         </div>
       </section>
