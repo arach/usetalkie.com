@@ -1,6 +1,6 @@
 # Aqua Voice Alternative: Talkie, a Local-First Dictation App for Mac
 
-Looking for an Aqua Voice alternative? Talkie is on-device voice dictation for Mac, iPhone, and Apple Watch — with a programmable CLI that pipes your voice into scripts and AI agents.
+Looking for an Aqua Voice alternative? Talkie is on-device voice dictation for Mac, iPhone, and Apple Watch, with a CLI that pipes voice into agents.
 
 - Canonical page: https://usetalkie.com/compare/aqua-voice/
 - Author: Arach Tchoupani

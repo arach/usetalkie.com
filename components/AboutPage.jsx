@@ -69,7 +69,8 @@ export default function AboutPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Talkie is a collection of apps for builders who like to own their tools.
+            Talkie is a local-first voice dictation app for Mac, iPhone, and Apple Watch.
+            It turns speech into text, searchable captures, workflows, and agent input—built by Arach Tchoupani for people who want to own their tools.
           </p>
         </div>
       </section>

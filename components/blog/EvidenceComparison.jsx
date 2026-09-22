@@ -15,7 +15,10 @@ export default function EvidenceComparison({ competitor: competitorSlug }) {
   const { competitor, page, rows, sources } = getEvidenceComparison(competitorSlug)
 
   return (
-    <section id="comparison-matrix" className="evidence-comparison not-prose" aria-label={`Talkie and ${competitor.name} comparison`}>
+    <section id="comparison-matrix" className="evidence-comparison not-prose" aria-labelledby="comparison-matrix-title">
+      <h2 id="comparison-matrix-title" className="sr-only">
+        Talkie and {competitor.name} decision factors
+      </h2>
       <div className="evidence-comparison__picks">
         <article>
           <span>Pick Talkie when</span>

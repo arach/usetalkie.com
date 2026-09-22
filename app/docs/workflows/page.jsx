@@ -2,7 +2,7 @@ import WorkflowsPage from '../../../components/docs/WorkflowsPage'
 
 export const metadata = {
   title: 'Workflows — Talkie Docs',
-  description: 'Learn about Talkie\'s workflow system. Triggers, actions, built-in workflows, and creating custom automations.',
+  description: 'Talkie workflow system docs: triggers, step types, template variables, LLM providers, shell security, and how custom automations run on Mac.',
   alternates: { canonical: 'https://usetalkie.com/docs/workflows/' },
   openGraph: {
     title: 'Workflows — Talkie Docs',

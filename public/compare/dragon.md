@@ -1,6 +1,6 @@
-# Talkie vs Dragon: A Dragon Alternative for Mac That Actually Runs on Your Mac
+# Talkie vs Dragon: A Mac Alternative After Dragon Left
 
-Looking for a Dragon dictation alternative for Mac? Dragon left the consumer Mac market years ago. Talkie is an on-device, Mac-native option that also feeds your agents.
+Looking for a Dragon dictation alternative for Mac? Dragon left the consumer Mac market. Talkie is an on-device, Mac-native option that also feeds your agents.
 
 - Canonical page: https://usetalkie.com/compare/dragon/
 - Author: Arach Tchoupani

@@ -1,16 +1,20 @@
 import MobilePage from '../../components/MobilePage'
 import MainShell from '../../components/MainShell'
 
+const PAGE_TITLE = 'Free Talkie App for iPhone and Apple Watch'
+const PAGE_DESCRIPTION =
+  'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, sync through iCloud, and continue with dictation and workflows on Mac.'
+
 export const metadata = {
-  title: 'Free Talkie App for iPhone and Apple Watch',
-  description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
   alternates: {
     canonical: 'https://usetalkie.com/mobile/',
     types: { 'text/markdown': 'https://usetalkie.com/mobile.md' },
   },
   openGraph: {
-    title: 'Free Talkie App for iPhone and Apple Watch',
-    description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     url: 'https://usetalkie.com/mobile/',
     siteName: 'Talkie',
     images: [
@@ -26,8 +30,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Talkie App for iPhone and Apple Watch',
-    description: 'Talkie for iPhone and Apple Watch is free. Capture a thought away from your desk, then continue on your Mac.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     images: ['/og-image.png'],
   },
 }

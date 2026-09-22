@@ -1,6 +1,6 @@
 # Talon Voice alternative for dictation that drives your agents
 
-Looking for a Talon Voice alternative? Talkie is on-device Mac dictation that turns speech into structured captures you pipe straight into Claude Code and other agents.
+Looking for a Talon Voice alternative? Talkie is on-device Mac dictation that turns speech into structured captures you can pipe into Claude Code and agents.
 
 - Canonical page: https://usetalkie.com/compare/talon/
 - Author: Arach Tchoupani

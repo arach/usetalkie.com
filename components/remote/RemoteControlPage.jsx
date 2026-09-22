@@ -131,6 +131,7 @@ export default function RemoteControlPage() {
       <section className="border-b border-edge-faint">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
           <SectionLabel>THE CONTROL LOOP</SectionLabel>
+          <h2 className="sr-only">The control loop</h2>
           <div className="mt-8 grid gap-px overflow-hidden rounded-md border border-edge-dim md:grid-cols-3" style={{ background: 'var(--edge-subtle)' }}>
             {PILLARS.map((pillar) => (
               <div key={pillar.tag} className="group bg-surface p-6 transition-colors duration-200 hover:bg-canvas-alt md:p-7">

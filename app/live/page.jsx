@@ -1,14 +1,18 @@
 import MacPage from '../../components/MacPage'
 import MainShell from '../../components/MainShell'
 
+// Alias of /mac — keep shareable, but do not compete as a duplicate index entry.
 export const metadata = {
-  title: 'Talkie for Mac - Talk to your Mac',
-  description: 'Capture a thought, shape a draft, search what you said, or kick off a workflow from your Mac. A mic is all you need.',
+  title: 'Talkie Live Dictation for Mac',
+  description:
+    'Talkie for Mac is local-first voice dictation. Speak into any app, keep searchable captures, and run workflows. Current build free; $39 license planned.',
   keywords: ['dictation', 'voice to text', 'macos', 'workflow', 'local', 'privacy', 'productivity'],
+  robots: { index: false, follow: true },
   alternates: { canonical: 'https://usetalkie.com/mac/' },
   openGraph: {
-    title: 'Talkie for Mac - Talk to your Mac',
-    description: 'Capture a thought, shape a draft, search what you said, or kick off a workflow from your Mac. A mic is all you need.',
+    title: 'Talkie Live Dictation for Mac',
+    description:
+      'Talkie for Mac is local-first voice dictation. Speak into any app, keep searchable captures, and run workflows. Current build free; $39 license planned.',
     url: 'https://usetalkie.com/mac/',
     siteName: 'Talkie',
     images: [
@@ -24,8 +28,9 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie for Mac - Talk to your Mac',
-    description: 'Capture a thought, shape a draft, search what you said, or kick off a workflow from your Mac. A mic is all you need.',
+    title: 'Talkie Live Dictation for Mac',
+    description:
+      'Talkie for Mac is local-first voice dictation. Speak into any app, keep searchable captures, and run workflows. Current build free; $39 license planned.',
     images: ['/og-live.png'],
   },
 }

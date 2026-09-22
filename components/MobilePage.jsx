@@ -46,8 +46,8 @@ export default function MobilePage() {
               <span className="italic">it is live.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              iPhone and Apple Watch are the fast path back into Talkie. Phone and
-              Watch catch the thought. Mac is where you actually do something with it.
+              Talkie for iPhone and Apple Watch is free voice capture that syncs into your Mac library.
+              Phone and Watch catch the thought. Mac is where you dictate, search, and run workflows.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">

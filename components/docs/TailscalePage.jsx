@@ -23,7 +23,7 @@ const Step = ({ number, title, children }) => (
       <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{number}</span>
     </div>
     <div className="flex-1 pb-6">
-      <h4 className="text-lg font-bold text-ink mb-2">{title}</h4>
+      <h3 className="text-lg font-bold text-ink mb-2">{title}</h3>
       <div className="text-ink-muted space-y-3">{children}</div>
     </div>
   </div>
@@ -67,7 +67,7 @@ export default function TailscalePage() {
       <div className="grid md:grid-cols-2 gap-4 my-6 not-prose">
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
           <Shield className="w-6 h-6 text-blue-500 mb-3" />
-          <h4 className="font-bold text-ink mb-2">End-to-End Encrypted</h4>
+          <h3 className="font-bold text-ink mb-2">End-to-End Encrypted</h3>
           <p className="text-sm text-ink-muted">
             All traffic between your devices is encrypted. Tailscale can't see your data.
           </p>
@@ -75,7 +75,7 @@ export default function TailscalePage() {
 
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
           <Globe className="w-6 h-6 text-amber mb-3" />
-          <h4 className="font-bold text-ink mb-2">Works Anywhere</h4>
+          <h3 className="font-bold text-ink mb-2">Works Anywhere</h3>
           <p className="text-sm text-ink-muted">
             Connect from any network — home, office, coffee shop, or cellular. No firewall configuration needed.
           </p>
@@ -177,28 +177,28 @@ export default function TailscalePage() {
 
       <div className="space-y-4 my-6 not-prose">
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"Tailscale not running"</h4>
+          <h3 className="font-bold text-ink mb-2">"Tailscale not running"</h3>
           <p className="text-sm text-ink-muted">
             Open the Tailscale app from your menu bar and ensure it shows "Connected". If it says "Disconnected", click to reconnect.
           </p>
         </div>
 
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"No peers found"</h4>
+          <h3 className="font-bold text-ink mb-2">"No peers found"</h3>
           <p className="text-sm text-ink-muted">
             Make sure both devices are signed into the same Tailscale account. Check the Tailscale admin console at <a href="https://login.tailscale.com/admin/machines" className="text-blue-600 dark:text-blue-400 hover:underline">login.tailscale.com/admin</a> to verify.
           </p>
         </div>
 
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"Connection timeout"</h4>
+          <h3 className="font-bold text-ink mb-2">"Connection timeout"</h3>
           <p className="text-sm text-ink-muted">
             Some networks block UDP traffic. Try switching your iPhone to cellular data temporarily. If that works, your WiFi network may have restrictions.
           </p>
         </div>
 
         <div className="p-4 rounded-lg border border-edge bg-canvas-alt">
-          <h4 className="font-bold text-ink mb-2">"Needs login"</h4>
+          <h3 className="font-bold text-ink mb-2">"Needs login"</h3>
           <p className="text-sm text-ink-muted">
             Your Tailscale session has expired. Open Tailscale and re-authenticate. This typically happens after extended periods of inactivity.
           </p>

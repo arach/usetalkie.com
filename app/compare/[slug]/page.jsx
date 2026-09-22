@@ -26,22 +26,33 @@ export function generateStaticParams() {
   return getAllComparisonSlugs().map(slug => ({ slug }))
 }
 
+function comparisonSeoTitle(comparison) {
+  // Prefer an explicit short title when present. Otherwise avoid appending
+  // " - Talkie" when the H1 already ends with Talkie (keeps SERP titles under ~60).
+  if (comparison.seoTitle) return comparison.seoTitle
+  const base = comparison.title.trim()
+  if (/talkie\s*$/i.test(base)) return base
+  return `${base} - Talkie`
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const comparison = getComparisonBySlug(slug)
   const url = `https://usetalkie.com/compare/${slug}/`
   const image = `/og/ideas/${comparison.sourceSlug}.png`
+  const title = comparisonSeoTitle(comparison)
+  const description = comparison.description
 
   return {
-    title: `${comparison.title} - Talkie`,
-    description: comparison.description,
+    title,
+    description,
     alternates: {
       canonical: url,
       types: { 'text/markdown': `https://usetalkie.com/compare/${slug}.md` },
     },
     openGraph: {
-      title: `${comparison.title} - Talkie`,
-      description: comparison.description,
+      title,
+      description,
       url,
       siteName: 'Talkie',
       locale: 'en_US',
@@ -52,8 +63,8 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${comparison.title} - Talkie`,
-      description: comparison.description,
+      title,
+      description,
       images: [image],
     },
   }

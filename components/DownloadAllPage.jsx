@@ -126,7 +126,9 @@ export default function DownloadAllPage() {
                 <span className="italic text-ink-muted">Mac, iPhone, and Watch.</span>
               </h1>
               <p className="mt-5 max-w-xl text-[13px] leading-snug text-ink-muted">
-                The Mac app is free and turns speech into text on your Mac. The iPhone and Apple Watch apps are free too.
+                Talkie is a local-first voice dictation app for Mac, with free companion apps for iPhone and Apple Watch.
+                Download the current free Mac build for dictation, searchable captures, workflows, and CLI access.
+                A 7-day trial and a $39 one-time Mac license for up to two Macs are planned.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] text-ink-subtle">
                 <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">BUILD 49</span>

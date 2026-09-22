@@ -88,7 +88,7 @@ export default function ThankYouPage() {
         <div className="mt-14 w-full">
           <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-ink-subtle">
             <span aria-hidden className="inline-block h-px w-6" style={{ background: 'var(--trace-dim)' }} />
-            <span>· WHAT HAPPENS NEXT</span>
+            <h2 className="font-mono text-[10px] font-normal uppercase tracking-[0.24em] text-ink-subtle">What happens next</h2>
             <span aria-hidden className="block h-px flex-1" style={{ background: 'var(--edge-subtle)' }} />
           </div>
 

@@ -2,7 +2,7 @@ import DataPage from '../../../components/docs/DataPage'
 
 export const metadata = {
   title: 'Data Layer — Talkie Docs',
-  description: 'Documentation for Talkie\'s data layer. GRDB database structure, core models, file storage locations, and export formats.',
+  description: 'Talkie data layer docs: GRDB structure, core models, audio file locations, export formats, and how captures stay searchable on your devices.',
   alternates: { canonical: 'https://usetalkie.com/docs/data/' },
   openGraph: {
     title: 'Data Layer — Talkie Docs',

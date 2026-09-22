@@ -313,6 +313,7 @@ export default function WorkflowsPage() {
               <span className="italic">Drafts, tasks, files out.</span>
             </h1>
             <p className="mt-6 max-w-2xl border-l-2 border-trace pl-5 text-[15px] leading-relaxed text-ink-muted">
+              Talkie workflows turn captured speech into drafts, tasks, files, and follow-up actions on your Mac.
               Start with something you said. Send it to the app, file, command, or model that should handle it.
               Most of the time that means your Mac and your tools. When it does not, you choose the outside service.
             </p>
