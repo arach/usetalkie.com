@@ -29,7 +29,7 @@ Three questions sort most of this out:
 | App | Platforms | On-device? | Price | Best for |
 |---|---|---|---|---|
 | **Talkie** | Mac, iPhone, Watch | Yes | See current plans | Private, programmable dictation that feeds your agents |
-| Superwhisper | Mac, Windows, iOS | Local or cloud | Free local; Pro ~$8.49/mo; lifetime | A deep menu of AI reformatting modes |
+| Superwhisper | Mac, Windows, iOS, Android | Local or cloud | Free local; Pro ~$8.49/mo; lifetime | A deep menu of AI reformatting modes |
 | Wispr Flow | Mac, Windows, iOS, Android | No (cloud) | Free tier; ~$15/mo | Polished cross-platform formatting |
 | Aqua Voice | Mac, Windows, iOS | No (cloud) | Free tier; ~$8/mo | Fast real-time AI formatting |
 | DictaFlow | Windows, Mac, iOS | Local Offline or cloud | $7/mo; $69/year | Cross-platform dictation + enterprise remote desktops |
@@ -46,7 +46,7 @@ Prices are as of 2026 and change often — check each app for current numbers.
 
 **Talkie** is on-device and Apple-only (Mac, iPhone, Apple Watch). What sets it apart is that your captures land in a local database and a CLI exposes them as structured data — so you can dictate straight into agents like Claude Code, not just into text fields. You can also attach a full screenshot, selected screen region, or camera capture, giving an agent the visual context behind the instruction. It's the pick if you want private, programmable dictation that also feeds your tooling. It won't do Windows, big multilingual reformatting, or file transcription.
 
-**[Superwhisper](/compare/superwhisper/)** is a mature, powerful app with an extensive catalogue of AI "modes" (email, message, custom) powered by many models, plus meeting recording and 100+ languages. It runs offline on Apple Silicon or in the cloud. Best if you want a big menu of reformatting styles and don't mind paying.
+**[Superwhisper](/compare/superwhisper/)** is a mature, powerful app with an extensive catalogue of AI "modes" (email, message, custom) powered by many models, plus meeting recording and 100+ languages. It runs on Mac, Windows, iOS, and Android, offline on local Whisper or in the cloud. Best if you want a big menu of reformatting styles and don't mind paying.
 
 **[Wispr Flow](/compare/wispr-flow/)** is the cross-platform polish champion — fast, cloud-based, with excellent auto-editing across Mac, Windows, iPhone, and Android. Best if you work across operating systems and want formatting-first dictation.
 

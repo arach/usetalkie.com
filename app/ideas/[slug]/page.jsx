@@ -77,12 +77,16 @@ export async function generateMetadata({ params }) {
   const idea = getIdeaBySlug(slug)
   const url = `https://usetalkie.com/ideas/${slug}/`
 
+  const pageTitle = idea.seoTitle
+    ? `${idea.seoTitle} - Talkie Ideas`
+    : `${idea.title} - Talkie Ideas`
+
   return {
-    title: `${idea.title} - Talkie Ideas`,
+    title: pageTitle,
     description: idea.description,
     alternates: { canonical: url },
     openGraph: {
-      title: `${idea.title} - Talkie Ideas`,
+      title: pageTitle,
       description: idea.description,
       url,
       siteName: 'Talkie',
@@ -96,7 +100,8 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       // Next.js replaces the layout's `twitter` object wholesale, so
       // title/description must be restated here or cards ship without them.
-      title: `${idea.title} - Talkie Ideas`,
+      title: pageTitle,
+      title: pageTitle,
       description: idea.description,
       images: [`/og/ideas/${slug}.png`],
     },
