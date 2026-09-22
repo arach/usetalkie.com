@@ -2,7 +2,7 @@ import TailscalePage from '../../../components/docs/TailscalePage'
 
 export const metadata = {
   title: 'Tailscale Setup — Talkie Docs',
-  description: 'Configure Tailscale for secure, peer-to-peer networking between your Mac and iPhone. No port forwarding required.',
+  description: 'Configure Tailscale for secure peer-to-peer networking between your Mac and iPhone. No port forwarding. Setup steps and common connection fixes.',
   robots: {
     index: false,
     follow: true,

@@ -1,8 +1,8 @@
 import LifecyclePage from '../../../components/docs/LifecyclePage'
 
 export const metadata = {
-  title: 'Lifecycle - Talkie Docs',
-  description: 'What happens between speaking and the result. Every recording moves through distinct phases, each with extension points.',
+  title: 'Lifecycle — Talkie Docs',
+  description: 'What happens between speaking and the result in Talkie. Follow dictation and memo phases, then use the extension points along each step of the path.',
   alternates: { canonical: 'https://usetalkie.com/docs/lifecycle/' },
   openGraph: {
     title: 'Lifecycle — Talkie Docs',

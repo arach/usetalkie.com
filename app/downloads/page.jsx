@@ -3,7 +3,7 @@ import MainShell from '../../components/MainShell'
 
 const PAGE_TITLE = 'Download Talkie for Mac, iPhone, and Apple Watch'
 const PAGE_DESCRIPTION =
-  'Download the current free Mac build or get the free iPhone and Apple Watch apps. A 7-day trial and $39 one-time Mac license are planned.'
+  'Download the free Talkie Mac build and free iPhone and Watch apps. A 7-day trial and $39 one-time Mac license are planned. Local dictation and workflows.'
 
 export const metadata = {
   title: PAGE_TITLE,

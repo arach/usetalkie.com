@@ -1,17 +1,21 @@
 import MacPage from '../../components/MacPage'
 import MainShell from '../../components/MainShell'
 
+const PAGE_TITLE = 'Talkie for Mac - Local Voice Dictation'
+const PAGE_DESCRIPTION =
+  'Talkie for Mac is local-first voice dictation. Speak into any app, keep searchable captures, and run workflows. Current build free; $39 license planned.'
+
 export const metadata = {
-  title: 'Talkie for Mac - Local Voice Dictation',
-  description: 'Download the current free Mac build. A 7-day trial and a $39 one-time license for up to two Macs are planned.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
   keywords: ['dictation', 'voice to text', 'macos', 'workflow', 'local', 'privacy', 'productivity'],
   alternates: {
     canonical: 'https://usetalkie.com/mac/',
     types: { 'text/markdown': 'https://usetalkie.com/mac.md' },
   },
   openGraph: {
-    title: 'Talkie for Mac - Local Voice Dictation',
-    description: 'Download the current free Mac build. A 7-day trial and a $39 one-time license for up to two Macs are planned.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     url: 'https://usetalkie.com/mac/',
     siteName: 'Talkie',
     images: [
@@ -27,8 +31,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie for Mac - Local Voice Dictation',
-    description: 'Download the current free Mac build. A 7-day trial and a $39 one-time license for up to two Macs are planned.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     images: ['/og-live.png'],
   },
 }

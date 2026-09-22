@@ -1,16 +1,20 @@
 import SecurityPage from '../../components/SecurityPage'
 import MainShell from '../../components/MainShell'
 
+const PAGE_TITLE = 'Security & Privacy - Talkie'
+const PAGE_DESCRIPTION =
+  'Talkie keeps recordings and transcripts in a local library, syncs through your iCloud, and supports on-device models plus optional providers with your keys.'
+
 export const metadata = {
-  title: 'Security & Privacy - Talkie',
-  description: 'Local library, iCloud sync, on-device transcription, and optional external providers with your own keys.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
   alternates: {
     canonical: 'https://usetalkie.com/security/',
     types: { 'text/markdown': 'https://usetalkie.com/security.md' },
   },
   openGraph: {
-    title: 'Security & Privacy - Talkie',
-    description: 'Local library, iCloud sync, on-device transcription, and optional external providers with your own keys.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     url: 'https://usetalkie.com/security/',
     siteName: 'Talkie',
     images: [
@@ -26,8 +30,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Security & Privacy - Talkie',
-    description: 'Local library, iCloud sync, on-device transcription, and optional external providers with your own keys.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     images: ['/og-image.png'],
   },
 }

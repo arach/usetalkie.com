@@ -2,7 +2,7 @@ import BridgeSetupPage from '../../../components/docs/BridgeSetupPage'
 
 export const metadata = {
   title: 'TalkieServer Setup — Talkie Docs',
-  description: 'Install and configure TalkieServer, the local bridge that connects your Mac and iPhone. Learn about Bun runtime and dependencies.',
+  description: 'Install and configure TalkieServer, the local bridge between Mac and iPhone. Covers Bun runtime, dependencies, and common connection issues.',
   alternates: { canonical: 'https://usetalkie.com/docs/bridge-setup/' },
   openGraph: {
     title: 'TalkieServer Setup — Talkie Docs',

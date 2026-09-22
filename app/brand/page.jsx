@@ -4,7 +4,7 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Brand — Talkie',
   description:
-    "Talkie's brand guide for the wordmark, colors, type, voice, and motion.",
+    "Talkie's brand guide covers the wordmark, colors, type, voice, and motion used across Mac, iPhone, Watch, and marketing surfaces on usetalkie.com.",
   alternates: { canonical: 'https://usetalkie.com/brand/' },
 }
 

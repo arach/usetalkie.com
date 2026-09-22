@@ -108,8 +108,9 @@ export default function DocsIndexPage() {
           </h1>
 
           <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-ink-muted">
-            From the philosophy to the wire format. Read top-to-bottom for the full
-            picture, or jump straight to the surface you need.
+            Talkie docs explain the local-first product: dictation, searchable captures, workflows,
+            CLI access for agents, and how Mac, iPhone, and Apple Watch stay in one library.
+            Read top-to-bottom for the full picture, or jump straight to the surface you need.
           </p>
         </div>
       </section>

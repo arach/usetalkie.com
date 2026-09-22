@@ -2,7 +2,7 @@ import ArchitecturePage from '../../../components/docs/ArchitecturePage'
 
 export const metadata = {
   title: 'Architecture — Talkie Docs',
-  description: 'Deep dive into Talkie\'s multi-process architecture. Understand how Talkie, TalkieAgent, and TalkieServer work together.',
+  description: "How Talkie's multi-process architecture works. Talkie, TalkieAgent, and TalkieServer keep capture, UI, and the iPhone bridge easy to reason about.",
   alternates: { canonical: 'https://usetalkie.com/docs/architecture/' },
   openGraph: {
     title: 'Architecture — Talkie Docs',

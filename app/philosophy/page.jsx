@@ -1,10 +1,21 @@
 import PhilosophyPage from '../../components/PhilosophyPage'
 import MainShell from '../../components/MainShell'
 
+const PAGE_TITLE = 'Philosophy — Talkie'
+const PAGE_DESCRIPTION =
+  'Philosophy behind Talkie: local-first voice capture for agents and everyday work. Voice, local context, and Apple devices make remote and desk use practical.'
+
 export const metadata = {
-  title: 'Philosophy — Talkie',
-  description: 'Talkie began as a remote control for agents. Voice, local context, and Apple devices make remote use practical.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
   alternates: { canonical: 'https://usetalkie.com/philosophy/' },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: 'https://usetalkie.com/philosophy/',
+    siteName: 'Talkie',
+    type: 'website',
+  },
 }
 
 export default function Page() {

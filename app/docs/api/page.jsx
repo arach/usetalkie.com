@@ -2,7 +2,7 @@ import ApiPage from '../../../components/docs/ApiPage'
 
 export const metadata = {
   title: 'API Reference — Talkie Docs',
-  description: 'API reference for Talkie. TalkieServer HTTP endpoints, URL schemes, and integration points.',
+  description: 'API reference for TalkieServer HTTP endpoints, URL schemes, AppleScript, and Shortcuts. Integrate Talkie captures and actions with local tools.',
   alternates: { canonical: 'https://usetalkie.com/docs/api/' },
   openGraph: {
     title: 'API Reference — Talkie Docs',

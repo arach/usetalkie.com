@@ -2,7 +2,7 @@ import ExtensibilityPage from '../../../components/docs/ExtensibilityPage'
 
 export const metadata = {
   title: 'Extensibility — Talkie Docs',
-  description: 'Extend Talkie with hooks, webhooks, custom workflows, and integration points. Build your own things on top.',
+  description: 'Extend Talkie with hooks, webhooks, custom workflows, and integration points. Build private automations on top of local captures and dictation.',
   alternates: { canonical: 'https://usetalkie.com/docs/extensibility/' },
   openGraph: {
     title: 'Extensibility — Talkie Docs',

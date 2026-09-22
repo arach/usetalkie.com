@@ -2,13 +2,17 @@ import { getAllIdeas } from '../../lib/ideas'
 import IdeasPage from '../../components/IdeasPage'
 import MainShell from '../../components/MainShell'
 
+const PAGE_TITLE = 'Ideas - Talkie'
+const PAGE_DESCRIPTION =
+  'Essays and notes on voice computing, local models, and the tools built around Talkie. Read about CLI agents, on-device models, and capture workflows.'
+
 export const metadata = {
-  title: 'Ideas - Talkie',
-  description: 'Essays and notes on voice computing, local models, and the tools we build around Talkie.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
   alternates: { canonical: 'https://usetalkie.com/ideas/' },
   openGraph: {
-    title: 'Ideas - Talkie',
-    description: 'Essays and notes on voice computing, local models, and the tools we build around Talkie.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     url: 'https://usetalkie.com/ideas/',
     siteName: 'Talkie',
     locale: 'en_US',

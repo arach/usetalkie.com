@@ -83,7 +83,7 @@ export default function HomePage() {
 
         <div className={styles.heroInner}>
           <h1 id="home-lead-title" className={styles.rise}>Talk to your apps.<br />Work with your <em>agents</em>.</h1>
-          <p className={`${styles.heroDescription} ${styles.rise}`}>Dictate into any Mac app. Capture context on iPhone or Watch.<br className={styles.desktopBreak} /> Send it to an agent and follow the result.</p>
+          <p className={`${styles.heroDescription} ${styles.rise}`}>Talkie is a local-first voice dictation app for Mac, iPhone, and Apple Watch. It turns speech into text, searchable captures, workflows, and agent input.</p>
           <div className={`${styles.actions} ${styles.rise}`}>
             <Link href="/downloads" className={styles.primary}>Download for Mac <ArrowDown size={17} /></Link>
             <Link href="#product-demo" className={styles.secondary}><Play size={15} /> Watch Talkie work</Link>

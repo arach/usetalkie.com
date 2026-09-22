@@ -31,6 +31,7 @@ export const WORKFLOWS = [
     outcome: 'PASTE-READY',
     headline: { lead: 'Speak the prompt,', accent: 'paste it clean' },
     subhead: 'Talk out a rough prompt and get back a tightened version on your clipboard.',
+    metaDescription: 'Dictate a rough prompt in Talkie, clean it with an LLM workflow step, then copy a paste-ready version for Claude or any chat box on your Mac.',
     when:
       'You know what you want to ask, but talking is faster than typing it. Say it loose. Talkie captures the signal and hands back something you can drop straight into any chat box.',
     steps: [
@@ -58,6 +59,7 @@ export const WORKFLOWS = [
     outcome: 'DRAFT IN MAIL',
     headline: { lead: 'Talk the reply,', accent: 'draft it in Mail' },
     subhead: 'Speak your answer in plain words and open a finished draft in Mail.app.',
+    metaDescription: 'Speak an email reply in Talkie, turn the capture into a finished draft, then open it in Mail.app without retyping the message on your Mac desktop.',
     when:
       'The reply is clear in your head, but writing it out is the slow part. Say what you mean. Talkie shapes it into an email body and opens the draft so you review before anything sends.',
     steps: [
@@ -83,7 +85,7 @@ export const WORKFLOWS = [
     outcome: 'NOTE FILED',
     headline: { lead: 'Messy memo,', accent: 'filed as Markdown' },
     subhead: 'Record the raw thought and save the useful version to your vault.',
-    metaDescription: 'Record a messy thought in Talkie, distill it, and save a titled Markdown note into your Obsidian vault.',
+    metaDescription: 'Record a messy thought in Talkie, distill it with a workflow step, and save a titled Markdown note into your Obsidian vault on your Mac desktop.',
     when:
       'An idea shows up and you do not want to open anything. Talk it through, tangents and all. Talkie distills it to a clean note and writes it into @Notes with a title and date already set.',
     steps: [
@@ -110,7 +112,7 @@ export const WORKFLOWS = [
     outcome: 'BOTH DRAFTS KEPT',
     headline: { lead: 'Same take,', accent: 'tighter second pass' },
     subhead: 'Keep the raw recording and build a cleaner version beside it.',
-    metaDescription: 'Keep the raw Talkie memo and write a tighter pass beside it in Compose, then compare the two with a diff.',
+    metaDescription: 'Keep the raw Talkie memo and write a tighter pass beside it in Compose, then compare both versions side by side with a diff on your Mac desktop.',
     when:
       'The first take has the right idea buried in extra words. You want the tighter version without losing the original phrasing. Talkie Compose holds both, so you can compare and pull the best lines across.',
     steps: [
@@ -138,6 +140,7 @@ export const WORKFLOWS = [
     prereq: 'Requires CLI access',
     headline: { lead: 'Catch the spark,', accent: 'pull it later' },
     subhead: 'Capture an idea by voice and hand it to Claude from the terminal when you are ready.',
+    metaDescription: 'Capture an idea by voice in Talkie, keep it in your local library, then hand the structured capture to Claude from the terminal with the CLI.',
     when:
       'The idea lands while you are mid-task and you do not want to break flow. Say it, let it queue. Later, pull it from the CLI and give it to Claude for a real second pass.',
     steps: [
@@ -165,7 +168,7 @@ export const WORKFLOWS = [
     prereq: 'Requires CLI access',
     headline: { lead: 'Say the bug,', accent: 'open the issue' },
     subhead: 'Describe a bug out loud and turn it into a filed GitHub issue.',
-    metaDescription: 'Describe a bug out loud in Talkie and turn it into a titled GitHub issue with a structured body.',
+    metaDescription: 'Describe a bug out loud in Talkie and turn the capture into a titled GitHub issue with a structured body ready to file from your Mac desktop.',
     when:
       'You hit a bug and the details are sharp right now. Talk through what broke and what you expected. Talkie shapes a title and body, then runs the command that opens the issue.',
     steps: [

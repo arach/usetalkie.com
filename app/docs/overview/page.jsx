@@ -2,7 +2,7 @@ import OverviewPage from '../../../components/docs/OverviewPage'
 
 export const metadata = {
   title: 'Overview — Talkie Docs',
-  description: 'Introduction to Talkie\'s philosophy, local-first design, and multi-process architecture. Learn how privacy and performance work together.',
+  description: "Overview of Talkie's philosophy, local-first design, and multi-process architecture. See how privacy, performance, and device capture fit together.",
   alternates: { canonical: 'https://usetalkie.com/docs/overview/' },
   openGraph: {
     title: 'Overview — Talkie Docs',
