@@ -1,0 +1,64 @@
+---
+title: "Local Speech to Text on Mac"
+seoTitle: "Local Speech to Text on Mac"
+description: "What local, on-device, and offline speech to text mean on a Mac — and how Talkie keeps core recognition on your devices when you want private, reusable dictation."
+date: "2026-09-22"
+tags: ["dictation", "mac", "local", "on-device", "privacy", "speech-to-text"]
+---
+
+Local speech to text on a Mac means recognition runs on your computer (or another device you own), so the core transcript does not require a cloud round-trip. People also say **on-device transcription**, **offline dictation**, and **private speech to text**. The words overlap; the privacy and reliability story is what matters.
+
+Talkie is built around that local-first posture for Apple hardware: dictate on Mac, capture on iPhone or Apple Watch, and keep a searchable library you control.
+
+## What does “local speech to text” mean?
+
+In practice it means three related claims:
+
+1. **On-device recognition** — the speech model runs on the Mac (or phone), not on a vendor GPU you do not operate.
+2. **Optional offline use** — once models are present, dictation can work without a network for the recognition step.
+3. **Local retention** — transcripts and audio you keep stay in storage you can inspect (disk, app library, your iCloud account), not only in a remote SaaS inbox.
+
+Apps can mix these. Some run recognition locally but sync transcripts to a cloud account. Others send audio to the cloud and store results locally. Read the processing path, not the marketing adjective.
+
+## How is local dictation different from cloud dictation?
+
+| Concern | Local / on-device | Cloud |
+|---|---|---|
+| Audio path | Stays on device for recognition | Uploaded for recognition |
+| Offline | Often works after models download | Needs network |
+| Formatting polish | Varies by local model and post-processing | Often stronger auto-editing |
+| Cross-platform sync | Usually limited to your ecosystem | Often a product strength |
+| Agent / CLI reuse | Easier when captures are files or a local DB | Depends on export APIs |
+
+Cloud tools such as Wispr Flow state that transcription happens in their cloud; that choice powers polish and reach. Local tools trade some of that polish for a shorter trust boundary. See the even-handed [Talkie vs Wispr Flow](/compare/wispr-flow/) write-up when you are choosing that trade.
+
+## What does Apple provide out of the box?
+
+Apple Dictation can run on-device on modern Apple Silicon Macs for supported languages. It is free and everywhere text input exists. It does not give you a structured, queryable capture library or a first-party CLI for agents. Details: [Talkie vs Apple Dictation](/compare/apple-dictation/).
+
+## How does Talkie keep speech local?
+
+On Mac, Talkie offers selectable local recognition paths (including Parakeet and Whisper options described on the product pages). On iPhone, Apple Speech or Parakeet paths are available depending on configuration. Captures can remain in a local library. iCloud sync is a separate storage choice you control. Optional external models use keys you provide when you opt in — they are not required for core local dictation.
+
+For how layered local transcription can look in practice, see [Three layers of transcription](/ideas/three-layers-of-transcription/).
+
+## When should you insist on local speech to text?
+
+Prefer local recognition when:
+
+- Drafts include private customer, health, or legal detail
+- You work on planes or flaky networks
+- You want captures as **data** for scripts and agents on your machine
+- You do not want a mandatory transcription vendor in the critical path
+
+Prefer cloud (or hybrid) when you need Windows/Android parity, aggressive multilingual cleanup, or a formatting experience that a small local model does not match.
+
+## How do I try local dictation with Talkie?
+
+1. Install from [Downloads](/downloads/).
+2. Choose a local recognition engine in settings.
+3. Dictate into any Mac app with the global hotkey.
+4. Confirm captures appear in the library if you want history beyond the paste.
+5. Keep external model steps off until you explicitly want them.
+
+Related: the [Mac dictation guide](/ideas/mac-dictation/), [Talkie for Mac](/mac/), and [voice memo → Obsidian](/workflows/voice-memo-to-obsidian/) for a local Markdown filing path.

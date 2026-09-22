@@ -1,6 +1,6 @@
 # Wispr Flow Alternative: Talkie, a Local-First Mac Dictation App
 
-An honest Wispr Flow alternative for Mac and iPhone: Talkie is on-device, local-first dictation with a CLI that turns voice into structured data for agents.
+Looking for a Wispr Flow alternative on Mac? Honest comparison: Wispr Flow’s cloud polish vs Talkie’s on-device dictation, local capture library, and CLI for agents.
 
 - Canonical page: https://usetalkie.com/compare/wispr-flow/
 - Author: Arach Tchoupani
@@ -55,4 +55,4 @@ See the sourced comparison matrix on the canonical HTML page.
 
 [Download Talkie for Mac and iPhone →](/downloads/)
 
-Related reading: [Dictate straight into Claude Code](/workflows/dictate-to-claude/), [why Talkie has a CLI](/ideas/why-talkie-has-a-cli/), and our roundup of the [best dictation apps for Mac](/compare/best-dictation-apps-for-mac/).
+Related reading: [Mac dictation guide](/ideas/mac-dictation/), [Dictate straight into Claude Code](/workflows/dictate-to-claude/), [why Talkie has a CLI](/ideas/why-talkie-has-a-cli/), and our roundup of the [best dictation apps for Mac](/compare/best-dictation-apps-for-mac/).

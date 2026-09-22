@@ -55,6 +55,16 @@ export default function MacPage() {
             Shape a draft, search what you said, or start a workflow without leaving the page.
             The current Mac build is free. A 7-day trial and a $39 one-time license for up to two Macs are planned.
           </p>
+          <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-ink-muted">
+            Guides:{' '}
+            <a href="/ideas/mac-dictation/" className="underline decoration-edge underline-offset-2 hover:text-ink">Mac dictation</a>
+            {' · '}
+            <a href="/ideas/local-speech-to-text/" className="underline decoration-edge underline-offset-2 hover:text-ink">Local speech to text</a>
+            {' · '}
+            <a href="/ideas/dictate-into-cursor/" className="underline decoration-edge underline-offset-2 hover:text-ink">Dictate into Cursor</a>
+            {' · '}
+            <a href="/compare/best-dictation-apps-for-mac/" className="underline decoration-edge underline-offset-2 hover:text-ink">Best apps for Mac</a>
+          </p>
         </div>
       </section>
 

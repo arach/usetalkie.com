@@ -1,12 +1,14 @@
 # Best Dictation Apps for Mac in 2026
 
-Honest 2026 roundup of Mac dictation apps. On-device vs cloud, pricing posture, and which tool fits: Superwhisper, Wispr Flow, MacWhisper, Aqua Voice, Talkie.
+Best dictation app for Mac in 2026? Honest roundup of speech to text tools — on-device vs cloud, pricing posture, and which fits: Superwhisper, Wispr Flow, MacWhisper, Talkie.
 
 - Canonical page: https://usetalkie.com/compare/best-dictation-apps-for-mac/
 - Author: Arach Tchoupani
 - Published: 2026-07-21
 
 There are more good dictation apps for Mac than there used to be, and they're not really competing for the same job. Some are built for typing by voice into any app. Some transcribe recordings after the fact. One runs your whole computer hands-free. Picking well means matching the tool to what you actually do, not to a feature checklist.
+
+For a category primer first, read the [Mac dictation and speech to text guide](/ideas/mac-dictation/).
 
 Full disclosure: I make [Talkie](/downloads/), so I'm not a neutral referee. But a roundup that pretends every rival is bad is useless to you and a little embarrassing to write, so I've tried to be honest about when each of these is the better choice — and there are plenty of cases where something here beats Talkie.
 
