@@ -1,0 +1,51 @@
+---
+title: "How to Dictate into Cursor on Mac"
+seoTitle: "Dictate into Cursor on Mac"
+description: "Dictate into Cursor on a Mac with system-wide voice dictation. Talkie pastes at the cursor so prompts, comments, and commit messages stay in the editor you already use."
+date: "2026-09-22"
+tags: ["dictation", "cursor", "mac", "developers", "how-to"]
+---
+
+Dictating into Cursor means speaking a prompt, comment, or commit message and having the text land in the editor without leaving the IDE. On a Mac, that is a system-wide dictation job: a global hotkey, recognition, then insert at the caret.
+
+Talkie is a local-first Mac dictation app built for that loop. This page is the practical setup, not a feature tour.
+
+## Why dictate into Cursor?
+
+Typing prompts and prose inside an agentic editor is slow compared with speech. Developers often want to:
+
+- Rough out a multi-line prompt without breaking flow
+- Narrate a bug while the file is still open
+- Draft a commit message or PR description from context in view
+
+System dictation beats copy-paste from a separate recorder because the caret never leaves Cursor.
+
+## How do I dictate into Cursor with Talkie?
+
+1. Install Talkie for Mac from [Downloads](/downloads/).
+2. Set a global hotkey in Talkie.
+3. Open Cursor and focus the chat, composer, or editor field where text should land.
+4. Hold the hotkey, speak, and release.
+5. Confirm the transcript inserts at the cursor (grant Accessibility permissions if macOS prompts for paste/insert).
+
+Keep recognition on a local engine when the prompt includes private code or customer detail. See [local speech to text on Mac](/ideas/local-speech-to-text/).
+
+## What if I want the prompt cleaned up first?
+
+For a tighten-then-paste loop aimed at coding agents, use the [Dictate → Claude](/workflows/dictate-to-claude/) workflow: speak a rough prompt, optionally run an LLM cleanup step, then copy a paste-ready version into Cursor or another agent UI.
+
+If you already live in the terminal, capture first and pull later with `@talkie/cli` — see [quick idea → CLI](/workflows/quick-idea-to-cli/) and [why Talkie has a CLI](/ideas/why-talkie-has-a-cli/).
+
+## Tips that matter in Cursor
+
+- **Focus the right pane** before you speak (chat vs editor vs terminal).
+- **Say structure out loud** — “new paragraph”, file names, and command names — then edit once rather than whispering half a thought.
+- **Attach visual context** when your Talkie build supports screenshot or region capture for agent instructions, so the agent sees the UI you mean.
+- **Prefer local recognition** for proprietary repos; turn on external models only when you opt in with your own keys.
+
+## Related reading
+
+- [Mac dictation and speech to text](/ideas/mac-dictation/)
+- [Dictate into ChatGPT](/ideas/dictate-into-chatgpt/)
+- [Talkie for Mac](/mac/)
+- [Best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)

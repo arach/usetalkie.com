@@ -84,8 +84,8 @@ export const WORKFLOWS = [
     body: 'Record the messy thought. Save the useful version as Markdown in your vault.',
     outcome: 'NOTE FILED',
     headline: { lead: 'Messy memo,', accent: 'filed as Markdown' },
-    subhead: 'Record the raw thought and save the useful version to your vault.',
-    metaDescription: 'Record a messy thought in Talkie, distill it with a workflow step, and save a titled Markdown note into your Obsidian vault on your Mac desktop.',
+    subhead: 'Turn a voice memo into an Obsidian Markdown note without retyping.',
+    metaDescription: 'Voice memo to Obsidian on Mac: record in Talkie, distill the capture, and save a titled Markdown note into your vault — a local speech-to-note workflow.',
     when:
       'An idea shows up and you do not want to open anything. Talk it through, tangents and all. Talkie distills it to a clean note and writes it into @Notes with a title and date already set.',
     steps: [

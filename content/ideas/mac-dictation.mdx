@@ -1,0 +1,79 @@
+---
+title: "Mac Dictation and Speech to Text in 2026"
+seoTitle: "Mac Dictation & Speech to Text"
+description: "How Mac dictation and speech to text work today: Apple’s built-in tool, third-party apps, on-device vs cloud, and when Talkie is the better fit for private, reusable captures."
+date: "2026-09-22"
+tags: ["dictation", "mac", "speech-to-text", "guide", "on-device"]
+---
+
+Talkie is a local-first voice dictation app for Mac that turns speech into text in the app that is already open, then keeps searchable captures on your devices for notes, workflows, and agents.
+
+This page is the plain map of **Mac dictation** and **speech to text on Mac**: what the built-in option does, what third-party apps add, how on-device differs from cloud, and how to choose without reading a sales pitch.
+
+## What is Mac dictation?
+
+Mac dictation means speaking to produce text on a Mac — usually into the field or document that already has focus. People also search for **speech to text Mac**, **voice typing Mac**, and **voice to text Mac**. Those phrases usually mean the same job: get spoken words into an app without typing.
+
+Apple ships a built-in dictation feature. Third-party apps add triggers, models, formatting, history, or automation on top of that same basic job.
+
+## How do I dictate on a Mac with Apple’s built-in tools?
+
+Apple Dictation is free and already installed. On modern Apple Silicon Macs it can run on-device for supported languages, so short dictation into Notes, Mail, or a browser field needs no extra download.
+
+It is the right default when you only need occasional text entry. The ceiling shows up when you want a durable record of what you said, a custom vocabulary for product names, or a way to send a capture into a script or agent. For that longer comparison, see [Talkie vs Apple Dictation](/compare/apple-dictation/).
+
+## What is the difference between on-device and cloud speech to text?
+
+**On-device (local) speech to text** runs recognition on your Mac. Audio does not need to leave the machine for the core transcript. That helps with privacy, offline use, and predictable latency once models are loaded.
+
+**Cloud speech to text** sends audio to a remote service. Many apps use that path to power aggressive auto-editing, multilingual cleanup, or cross-platform sync. The trade-off is a network dependency and a different privacy boundary.
+
+Neither approach is universally better. Match the processing locus to the work. Sensitive drafting and agent context often prefer local. Heavy formatting across Windows and Android often prefers cloud. Our roundup of the [best dictation apps for Mac](/compare/best-dictation-apps-for-mac/) sorts tools along that split.
+
+## What should a good Mac speech-to-text app do?
+
+For live dictation, look for:
+
+1. **A reliable trigger** — a global hotkey or push-to-talk that works while another app is focused.
+2. **Paste or insert at the cursor** — so text lands where you were already working.
+3. **Accuracy on your vocabulary** — names, repos, and product terms matter more than demo sentences.
+4. **A clear processing story** — on-device, cloud, or your choice per capture.
+5. **What happens after the paste** — searchable history, export, workflows, or a CLI if you automate.
+
+File transcription (turning an existing audio or video file into text) is a related but different job. Tools like MacWhisper excel there; live dictation apps optimize for the cursor in front of you.
+
+## Where does Talkie fit?
+
+Talkie focuses on Apple hardware: Mac for system-wide dictation, with free companion capture on iPhone and Apple Watch. Core recognition can run on-device (selectable local engines such as Parakeet and Whisper on Mac). Captures can stay in a local library, sync over your iCloud account when you choose, and feed workflows or `@talkie/cli` when you want structured handoff to agents.
+
+The current Mac build is free to download. A planned 7-day trial and $39 one-time Mac license are not active yet — treat live pricing as whatever [Downloads](/downloads/) shows.
+
+Talkie is usually the wrong pick if you need Windows or Android, a large catalogue of cloud reformatting modes, or dedicated meeting-team notes. Those jobs are covered more directly by other apps in the [Mac dictation roundup](/compare/best-dictation-apps-for-mac/).
+
+## How do people actually use Mac dictation day to day?
+
+Common jobs:
+
+- **Dictate into the editor you already use** — Cursor, ChatGPT in the browser, Slack, Mail, or a terminal. See [dictate into Cursor](/ideas/dictate-into-cursor/) and [dictate into ChatGPT](/ideas/dictate-into-chatgpt/).
+- **Capture a thought away from the keyboard** — then file it as Markdown, for example [voice memo → Obsidian](/workflows/voice-memo-to-obsidian/).
+- **Keep recognition local** — when the transcript should not depend on a network path. See [local speech to text on Mac](/ideas/local-speech-to-text/).
+- **Compare alternatives** — including [Wispr Flow](/compare/wispr-flow/) and [Superwhisper](/compare/superwhisper/) when formatting polish or cross-platform reach matters more than local capture.
+
+## How do I get started with Talkie on Mac?
+
+1. Install the current Mac build from [Downloads](/downloads/).
+2. Grant microphone (and Accessibility if you use paste-at-cursor features the app requests).
+3. Set a global hotkey.
+4. Open any text field, hold the hotkey, speak, and confirm the text lands where you expect.
+5. Optionally enable the library, iCloud sync, workflows, or the CLI when you want captures to outlive a single paste.
+
+For product surface detail, read [Talkie for Mac](/mac/). For agent-oriented capture, see [why Talkie has a CLI](/ideas/why-talkie-has-a-cli/) and [dictate to Claude](/workflows/dictate-to-claude/).
+
+## Related reading
+
+- [Best dictation apps for Mac](/compare/best-dictation-apps-for-mac/)
+- [Local speech to text on Mac](/ideas/local-speech-to-text/)
+- [Wispr Flow alternative (Talkie vs Wispr Flow)](/compare/wispr-flow/)
+- [Talkie vs Apple Dictation](/compare/apple-dictation/)
+- [Dictate into Cursor](/ideas/dictate-into-cursor/)
+- [Dictate into ChatGPT](/ideas/dictate-into-chatgpt/)
