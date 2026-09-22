@@ -1,0 +1,44 @@
+---
+title: "Voice Remote for Agents on Mac"
+seoTitle: "Voice Remote for Agents"
+description: "Use Talkie as a voice remote for agents on Mac: dictate prompts into Cursor or Claude Code, attach screen context, and keep captures as local data your CLI can query."
+date: "2026-09-22"
+tags: ["agents", "dictation", "cli", "mac", "workflows", "guide"]
+---
+
+A voice remote for agents means you speak an instruction once, and an agentic tool on your Mac can act on it — not only paste text into a chat box. Talkie is a local-first dictation app that supports that loop: system-wide capture, optional screenshot or region context, a searchable library, and `@talkie/cli` for structured handoff.
+
+## What problem does a voice remote solve?
+
+Agent UIs reward clear prompts and context. Typing both while you are mid-debug is slow. Voice is faster for:
+
+- Roughing a multi-step instruction
+- Narrating a bug while the failing UI is still on screen
+- Queuing a thought that an agent should pick up later from the terminal
+
+The difference from plain dictation is **destination and structure**: the capture should be usable by Cursor, Claude Code, `gh`, or a workflow — not trapped as ephemeral chat text.
+
+## How does Talkie act as a remote for agents?
+
+1. **Dictate at the cursor** into Cursor chat/composer, a terminal, or any text field ([dictate into Cursor](/ideas/dictate-into-cursor/)).
+2. **Clean a prompt first** with [Dictate → Claude](/workflows/dictate-to-claude/), then paste into the agent UI.
+3. **Attach visual context** when your build supports screenshot, region, or camera capture so the agent sees the subject of the instruction.
+4. **Pull captures later** with `@talkie/cli` for scripted agent loops ([why Talkie has a CLI](/ideas/why-talkie-has-a-cli/), [quick idea → CLI](/workflows/quick-idea-to-cli/)).
+5. **File work from speech** such as [bug note → GitHub issue](/workflows/bug-note-to-github/).
+
+Related product surfaces: [Talkie for Mac](/mac/) and the workflows linked above.
+
+## When is voice-to-agent the wrong tool?
+
+- Short one-line chat replies — Apple Dictation is enough
+- You need Windows agents or non-Apple devices — Talkie is Apple-only
+- The job is meeting notes for a team — prefer a meeting product
+
+## How do I try it?
+
+1. Install from [Downloads](/downloads/).
+2. Set a global hotkey and a local recognition engine for private code ([local speech to text](/ideas/local-speech-to-text/)).
+3. Open Cursor or your agent CLI, focus the input, dictate.
+4. Optionally install `@talkie/cli` and query the latest capture as JSON for a pipeline.
+
+Related: [Mac dictation](/ideas/mac-dictation/), [Dictate into ChatGPT](/ideas/dictate-into-chatgpt/), [Talkie vs Superwhisper](/compare/superwhisper/).

@@ -49,6 +49,12 @@ export default function MobilePage() {
               Talkie for iPhone and Apple Watch is free voice capture that syncs into your Mac library.
               Phone and Watch catch the thought. Mac is where you dictate, search, and run workflows.
             </p>
+            <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-ink-muted">
+              Guide:{' '}
+              <a href="/ideas/iphone-apple-watch-voice-capture/" className="underline decoration-edge underline-offset-2 hover:text-ink">iPhone & Apple Watch capture</a>
+              {' · '}
+              <a href="/ideas/voice-remote-for-agents/" className="underline decoration-edge underline-offset-2 hover:text-ink">Voice remote for agents</a>
+            </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <TrackedAnchor
