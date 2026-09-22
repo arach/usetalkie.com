@@ -29,7 +29,7 @@ Three questions sort most of this out:
 | App | Platforms | On-device? | Price | Best for |
 |---|---|---|---|---|
 | **Talkie** | Mac, iPhone, Watch | Yes | See current plans | Private, programmable dictation that feeds your agents |
-| Superwhisper | Mac, Windows, iOS | Local or cloud | Free tier; ~$8/mo; lifetime | A deep menu of AI reformatting modes |
+| Superwhisper | Mac, Windows, iOS | Local or cloud | Free local; Pro ~$8.49/mo; lifetime | A deep menu of AI reformatting modes |
 | Wispr Flow | Mac, Windows, iOS, Android | No (cloud) | Free tier; ~$15/mo | Polished cross-platform formatting |
 | Aqua Voice | Mac, Windows, iOS | No (cloud) | Free tier; ~$8/mo | Fast real-time AI formatting |
 | DictaFlow | Windows, Mac, iOS | Local Offline or cloud | $7/mo; $69/year | Cross-platform dictation + enterprise remote desktops |

@@ -14,7 +14,7 @@ Short version: **Superwhisper is a polished, powerful dictation app with a deep 
 
 Let's be fair, because it's a genuinely good app. Superwhisper has a mature "modes" system — predefined Message, Email, and Voice modes plus custom modes powered by a long list of language models (GPT‑5, Claude, Llama, Gemini, and more). It records meetings and generates notes, transcribes audio and video files, supports 100+ languages with translation to English, and can run offline on Apple Silicon. It's cross-platform, which matters if you live on Windows. If your work is heavily multilingual, or you want a big catalogue of LLM formatting styles and you're happy to pay for it, Superwhisper is a strong choice.
 
-Its pricing reflects that scope: a free tier with 15 minutes of premium access before dropping to basic features, a Pro plan at $8/month, and a premium one-time lifetime license. Powerful, but not free — and the best reformatting leans on cloud models unless you deliberately stay on local ones.
+Its pricing reflects that scope: Free includes unlimited local Whisper dictation (new users also get a limited Pro-feature trial measured in words, then fall back to Free); Pro is listed at about $8.49/month, with annual and lifetime options on Superwhisper’s current plans page. Powerful, but the strongest reformatting leans on Pro/cloud features unless you deliberately stay on local models.
 
 ## Where Talkie is different
 
