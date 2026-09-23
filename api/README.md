@@ -13,6 +13,7 @@ Email signup with spam protection.
   "email": "user@example.com",
   "useCase": "dictation",
   "honeypot": "",
+  "product": "talkie",
   "formLoadTime": 1234567890,
   "utm": {
     "utm_source": "twitter",
@@ -20,6 +21,11 @@ Email signup with spam protection.
   }
 }
 ```
+
+`product` is `talkie` (default) or `fab`. fab signups (from fab.run) are stored with
+`source: "fab.run"` and `useCase: "fab"`, and are never added to the Talkie audience or sent the
+Talkie welcome sequence. An existing Talkie contact keeps their fields; `useCase` is set to `fab`
+only if it was empty.
 
 **Response:**
 ```json

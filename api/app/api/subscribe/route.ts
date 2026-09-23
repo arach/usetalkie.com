@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { waitUntil } from '@vercel/functions'
 import { db } from '@/lib/db'
 import { contacts } from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { and, eq, isNull } from 'drizzle-orm'
 import { addToAudience, sendWelcomeSequence } from '@/lib/emails/service'
 
 // Simple in-memory rate limiting
@@ -28,6 +28,10 @@ function isRateLimited(ip: string): boolean {
   return record.count > MAX_SUBMISSIONS_PER_IP
 }
 
+// Products that share this contact store. fab (fab.run) signups are recorded but never enter
+// Talkie's audience or welcome sequence.
+const PRODUCTS = new Set(['talkie', 'fab'])
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
@@ -45,7 +49,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { email, useCase, referralSource, honeypot, formLoadTime, utm } = await request.json()
+    const { email, useCase, referralSource, honeypot, formLoadTime, utm, product: rawProduct } = await request.json()
+    const product = PRODUCTS.has(rawProduct) ? rawProduct : 'talkie'
+    const isFab = product === 'fab'
 
     // Honeypot check
     if (honeypot) {
@@ -79,12 +85,19 @@ export async function POST(request: NextRequest) {
       await db.insert(contacts).values({
         email: cleanEmail,
         status: 'contact',
-        useCase: useCase || null,
-        source: referralSource || 'direct',
+        useCase: isFab ? 'fab' : useCase || null,
+        source: isFab ? 'fab.run' : referralSource || 'direct',
         utmSource: utm?.utm_source || null,
         utmMedium: utm?.utm_medium || null,
         utmCampaign: utm?.utm_campaign || null,
       })
+    } else if (isFab) {
+      // An existing Talkie contact joining fab's waitlist: keep their Talkie fields and only
+      // record the fab interest where nothing is set yet.
+      await db
+        .update(contacts)
+        .set({ useCase: 'fab' })
+        .where(and(eq(contacts.email, cleanEmail), isNull(contacts.useCase)))
     } else {
       // Update use_case, source, and UTM if not already set
       await db
@@ -101,7 +114,7 @@ export async function POST(request: NextRequest) {
 
     // Sync to Resend and send emails (only for new contacts)
     let emailSent = false
-    if (process.env.RESEND_API_KEY && isNew) {
+    if (process.env.RESEND_API_KEY && isNew && !isFab) {
       emailSent = true
 
       // Add to Resend audience
@@ -120,7 +133,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "You're on the list!",
+      message: isFab ? "You're on the fab list." : "You're on the list!",
       emailSent,
     }, {
       headers: { 'Access-Control-Allow-Origin': '*' },
