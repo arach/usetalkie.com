@@ -20,7 +20,7 @@ export const metadata = {
     siteName: 'Talkie',
     images: [
       {
-        url: '/og-live.png',
+        url: '/og/mac.png',
         width: 1200,
         height: 630,
         alt: 'Talkie for Mac',
@@ -33,7 +33,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: ['/og-live.png'],
+    images: ['/og/mac.png'],
   },
 }
 
