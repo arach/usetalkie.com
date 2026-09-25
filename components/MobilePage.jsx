@@ -1,192 +1,65 @@
-import { ArrowUpRight, Download, QrCode, Smartphone, Watch } from 'lucide-react'
-import SurfacesSubNav from './SurfacesSubNav'
-import MobileCaptureModes from './MobileCaptureModes'
-import MobileTransitBay from './MobileTransitBay'
-import MobileMoments from './MobileMoments'
-import InstallCard from './InstallCard'
-import QRExpand from './QRExpand'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight, ArrowUpRight, Download } from 'lucide-react'
 import TrackedAnchor from './TrackedAnchor'
 import { TALKIE_PHONE_APP } from '../shared/config/product-links'
+import styles from './MobilePage.module.css'
 
-/**
- * MobilePage — body for /mobile (Channel B).
- *
- * Pure server component. The /v2 layout already wraps every route in
- * <SiteShell> on a `bg-canvas text-ink` shell, so this component renders
- * the page-level chrome only: the surfaces sub-nav, hero, two content
- * sections, and the cross-surface tie-back to /mac + install CTA.
- */
+function DownloadLink({ source, children = 'Get Talkie for iPhone' }) {
+  return <TrackedAnchor href={TALKIE_PHONE_APP.appStoreUrl} event={{ type: 'appStore', source }} target="_blank" rel="noopener noreferrer" className={styles.download}><Download size={17} />{children}<ArrowUpRight size={16} /></TrackedAnchor>
+}
+
+function Phone({ screenshot, alt, priority = false }) {
+  return <div className={styles.phone}><Image src={`/screenshots/mobile/${screenshot}.webp`} width={1320} height={2868} alt={alt} priority={priority} sizes="(max-width: 600px) 80vw, 390px" /><span className={styles.island} aria-hidden="true" /></div>
+}
+
 export default function MobilePage() {
-  return (
-    <>
-      <SurfacesSubNav active="mobile" />
-
-      {/* ─────────────── HERO ─────────────── */}
-      <section className="relative overflow-hidden border-b border-edge-faint bg-canvas">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              'linear-gradient(var(--trace-faint) 1px, transparent 1px), linear-gradient(90deg, var(--trace-faint) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 md:px-6 md:py-20 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-center lg:gap-16 lg:py-24">
-          <div>
-            <p
-              className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              · CH-B / MOBILE · 48.0kHz
-            </p>
-            <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
-              Catch it while
-              <br />
-              <span className="italic">it is live.</span>
-            </h1>
-            <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-              Talkie for iPhone and Apple Watch is free voice capture that syncs into your Mac library.
-              Phone and Watch catch the thought. Mac is where you dictate, search, and run workflows.
-            </p>
-            <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-ink-muted">
-              Guide:{' '}
-              <a href="/ideas/iphone-apple-watch-voice-capture/" className="underline decoration-edge underline-offset-2 hover:text-ink">iPhone & Apple Watch capture</a>
-              {' · '}
-              <a href="/ideas/voice-remote-for-agents/" className="underline decoration-edge underline-offset-2 hover:text-ink">Voice remote for agents</a>
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <TrackedAnchor
-                href={TALKIE_PHONE_APP.appStoreUrl}
-                event={{ type: 'appStore', source: 'mobile_hero' }}
-                target="_blank"
-                rel="noopener noreferrer"
-                ariaLabel={`Download ${TALKIE_PHONE_APP.name} on the App Store`}
-                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-sm border border-ink bg-ink px-5 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-canvas transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-16px_rgba(0,0,0,0.5)]"
-              >
-                <Download className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
-                <span>Get the free app</span>
-                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </TrackedAnchor>
-              <a
-                href="#talkie-phone-qr"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-edge px-4 py-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted transition-all duration-200 hover:border-trace hover:text-trace"
-              >
-                <QrCode className="h-4 w-4" />
-                Scan with phone
-              </a>
-            </div>
-
-            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[9px] uppercase tracking-[0.2em] text-ink-faint">
-              <span className="inline-flex items-center gap-1.5">
-                <Smartphone className="h-3 w-3 text-trace" />
-                iPhone · {TALKIE_PHONE_APP.displayPrice}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Watch className="h-3 w-3 text-trace" />
-                Apple Watch · {TALKIE_PHONE_APP.displayPrice}
-              </span>
-              <span>Available on the App Store</span>
-            </div>
-          </div>
-
-          <aside
-            id="talkie-phone-qr"
-            className="relative scroll-mt-28 overflow-hidden rounded-md p-4 sm:p-5"
-            style={{
-              background: 'var(--panel-bg)',
-              color: 'var(--panel-ink)',
-              border: '1px solid var(--panel-edge)',
-              boxShadow: 'var(--panel-chassis-shadow)',
-              '--trace': 'var(--panel-trace)',
-              '--trace-glow': 'var(--panel-trace-glow)',
-              '--ink': 'var(--panel-ink)',
-              '--ink-muted': 'var(--panel-ink-muted)',
-              '--ink-faint': 'var(--panel-ink-faint)',
-              '--ink-subtle': 'var(--panel-ink-subtle)',
-              '--edge': 'var(--panel-edge)',
-              '--edge-dim': 'var(--panel-edge-dim)',
-              '--edge-faint': 'var(--panel-edge-faint)',
-              '--canvas-alt': 'var(--panel-bg-alt)',
-              '--canvas-overlay': 'rgba(6, 9, 10, 0.92)',
-            }}
-          >
-            <span aria-hidden className="absolute left-1.5 top-1.5 font-mono text-[8px] text-ink-faint">·</span>
-            <span aria-hidden className="absolute right-1.5 top-1.5 font-mono text-[8px] text-ink-faint">·</span>
-            <div className="flex items-center justify-between gap-4 border-b border-edge-faint pb-3 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint">
-              <span className="inline-flex items-center gap-2">
-                <span
-                  aria-hidden
-                  className="h-1.5 w-1.5 rounded-full bg-trace"
-                  style={{ boxShadow: '0 0 6px var(--trace)' }}
-                />
-                Talkie Phone
-              </span>
-              <span>App Store · live</span>
-            </div>
-
-            <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center lg:grid-cols-1">
-              <div>
-                <p className="font-display text-2xl font-normal tracking-[-0.01em] text-ink">
-                  Get Talkie for iPhone.
-                </p>
-                <p className="mt-2 font-mono text-[10px] leading-relaxed text-ink-muted">
-                  Scan to open {TALKIE_PHONE_APP.name} directly in the App Store.
-                </p>
-              </div>
-              <QRExpand
-                src="/qr-app-store.svg"
-                alt={`QR code to download ${TALKIE_PHONE_APP.name} on the App Store`}
-                caption="Scan · App Store"
-              />
-            </div>
-
-            <TrackedAnchor
-              href={TALKIE_PHONE_APP.appStoreUrl}
-              event={{ type: 'appStore', source: 'mobile_hero_qr' }}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group mt-5 flex items-center justify-between rounded-sm border border-edge bg-canvas-alt px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted transition-all duration-200 hover:border-trace hover:text-trace"
-            >
-              <span>Open App Store instead</span>
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </TrackedAnchor>
-          </aside>
+  return <>
+    <nav className={styles.surfaceNav} aria-label="Talkie apps"><Link href="/mac/">Mac</Link><Link href="/mobile/" aria-current="page">iPhone &amp; Apple Watch</Link></nav>
+    <div className={styles.page}>
+      <section className={styles.hero} aria-labelledby="mobile-title">
+        <div className={styles.heroCopy}>
+          <h1 id="mobile-title">A thought.<br />A tap.<br /><em>Captured.</em></h1>
+          <p>Talkie for iPhone and Apple Watch.<br />Capture a thought as it happens. Keep it ready for your next note, workflow, or agent.</p>
+          <div className={styles.actions}><DownloadLink source="mobile_hero" /><a className={styles.scanLink} href="#get-talkie">Scan with iPhone <ArrowRight size={16} /></a></div>
+          <div className={styles.availability}><span className={styles.dot} />{TALKIE_PHONE_APP.displayPrice} for iPhone and Apple Watch</div>
+        </div>
+        <div className={styles.heroStage}>
+          <div className={styles.stageCaption}><span>Talkie on iPhone</span><span>Home</span></div>
+          <Phone screenshot="iphone-home-current" alt="Talkie home screen with the activity board, capture actions, and recent notes" priority />
         </div>
       </section>
 
-      {/* ─────────────── SECTIONS ─────────────── */}
-      <MobileCaptureModes />
-
-      {/* DARK TRANSIT BEAT — 3 channels firing live (amber/emerald/cyan) */}
-      <MobileTransitBay />
-
-      <MobileMoments />
-
-      {/* INSTALL — patch-bay chassis (shared across Mac-context pages) */}
-      <section className="relative border-t border-edge-faint bg-canvas-alt">
-        <div className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-20">
-          <div className="text-center">
-            <p
-              className="font-mono text-[10px] uppercase tracking-[0.26em] text-trace"
-              style={{ textShadow: '0 0 4px var(--trace-glow)' }}
-            >
-              · ONE LIBRARY · EVERY SURFACE
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-              Catch it on iPhone.
-              <span className="italic text-ink-muted"> Finish it on Mac.</span>
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-              iPhone and Apple Watch are free · The current Mac build is free
-            </p>
-          </div>
-          <div className="mt-10">
-            <InstallCard />
+      <section className={styles.capture} aria-labelledby="capture-title">
+        <div className={styles.sectionIntro}><h2 id="capture-title">Give a thought<br />somewhere to <em>go.</em></h2><p>A meeting ends. An idea comes up on a walk. A detail needs a follow-up. Record it now. Return to the words when you need them.</p></div>
+        <div className={styles.captureGrid}>
+          <div className={styles.recordStage}><Phone screenshot="iphone-recording-current" alt="Talkie recording screen on iPhone" /><div className={styles.imageCaption}>Start with your voice.</div></div>
+          <div className={styles.captureDetails}>
+            <article><h3>Speak while it is fresh.</h3><p>Open Talkie and start a recording. Capture the thought without stopping to type.</p></article>
+            <article><h3>Keep the words with the recording.</h3><p>Return to a capture, read its transcript, and find the detail you need.</p></article>
+            <article><h3>Make capture a shortcut.</h3><p>Start from a widget, Siri, Shortcuts, or Control Center. Keep Talkie within reach.</p></article>
+            <Link href="/ideas/iphone-apple-watch-voice-capture/">Explore mobile capture <ArrowRight size={16} /></Link>
           </div>
         </div>
       </section>
-    </>
-  )
+
+      <section className={styles.watchSection} aria-labelledby="watch-title">
+        <div className={styles.watchInner}>
+          <div className={styles.watchArt}><div className={styles.watchStrap} /><div className={styles.watchCase}><Image src="/screenshots/mobile/apple-watch-home-current.webp" alt="Talkie on Apple Watch" width={416} height={496} sizes="240px" /></div></div>
+          <div><h2 id="watch-title">A little closer.<br />On your <em>wrist.</em></h2><p>Raise your wrist and tap to record. Talkie on Apple Watch captures the thought without taking out your phone.</p><p className={styles.watchNote}>Captures sync through your iPhone.</p><DownloadLink source="mobile_watch">Get the free app</DownloadLink></div>
+        </div>
+      </section>
+
+      <section className={styles.continueSection} aria-labelledby="continue-title">
+        <div className={styles.sectionIntro}><h2 id="continue-title">Back at your desk.<br />Keep <em>going.</em></h2><div><p>Sync captures through iCloud to your Mac library. Search what you said, shape a note, or use the context in a workflow.</p><Link href="/mac/">Explore Talkie for Mac <ArrowRight size={16} /></Link></div></div>
+        <div className={styles.macFrame}><Image src="/screenshots/mac/current/talkie-home-light.webp" width={1513} height={1235} alt="Talkie for Mac showing recent meetings, voice captures, content, and workflows" sizes="(max-width: 768px) 150vw, 1100px" /></div>
+        <div className={styles.macCaption}><span>One library, across devices.</span><Link href="/ideas/voice-remote-for-agents/">Voice context for agents <ArrowRight size={15} /></Link></div>
+      </section>
+
+      <section className={styles.install} id="get-talkie" aria-labelledby="install-title">
+        <div><h2 id="install-title">The next thought<br />starts <em>here.</em></h2><p>Talkie for iPhone and Apple Watch is free.</p><DownloadLink source="mobile_install" /></div>
+        <a href={TALKIE_PHONE_APP.appStoreUrl} target="_blank" rel="noopener noreferrer" className={styles.qr}><Image src="/qr-app-store.svg" width={152} height={152} alt="Scan to get Talkie on the App Store" /><span>Scan with iPhone <ArrowUpRight size={14} /></span></a>
+      </section>
+    </div>
+  </>
 }
