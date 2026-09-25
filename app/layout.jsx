@@ -79,7 +79,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og/home.png',
         width: 1200,
         height: 630,
         alt: 'Talkie - Talk to your Mac',
@@ -101,7 +101,7 @@ export const metadata = {
     title: 'Talkie - Talk to your Mac',
     description:
       'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
-    images: ['/og-image.png'],
+    images: ['/og/home.png'],
   },
 }
 
