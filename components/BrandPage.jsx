@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Download } from 'lucide-react'
 import { Wordmark } from './brand/Wordmark'
 
@@ -12,7 +13,7 @@ export default function BrandPage() {
       <div className="max-w-2xl">
         <h1 className="font-display text-5xl leading-tight md:text-6xl">The Talkie logo.</h1>
         <p className="mt-5 text-base leading-relaxed text-ink-muted">
-          Our custom lowercase wordmark, with its red dot. Use these files wherever Talkie appears.
+          The Talkie wordmark and icons. Download the original files for use on websites, in apps, and in print.
         </p>
       </div>
 
@@ -39,6 +40,36 @@ export default function BrandPage() {
           </figure>
         ))}
       </div>
+
+      <section className="mt-12 border-t border-edge-faint pt-8" aria-labelledby="brand-icons">
+        <h2 id="brand-icons" className="font-display text-3xl">Icons.</h2>
+        <p className="mt-3 text-base leading-relaxed text-ink-muted">
+          Use the app icon for app listings and the favicon for browser tabs.
+        </p>
+        <div className="mt-6 grid gap-8 sm:grid-cols-2">
+          {[
+            { name: 'App icon', preview: '/icon-1024.png', links: [['PNG · 1024 × 1024', '/icon-1024.png'], ['PNG · 512 × 512', '/icon-512.png']] },
+            { name: 'Favicon', preview: '/favicon.svg', links: [['SVG', '/favicon.svg'], ['ICO', '/favicon.ico']] },
+          ].map(({ name, preview, links }) => (
+            <figure key={name} className="min-w-0">
+              <div className="flex h-56 items-center justify-center bg-canvas-alt">
+                <Image src={preview} alt={`Talkie ${name.toLowerCase()}`} width={144} height={144} />
+              </div>
+              <figcaption className="pt-4">
+                <h3 className="text-base">{name}</h3>
+                <div className="mt-1 flex flex-wrap gap-x-6">
+                  {links.map(([label, href]) => (
+                    <a key={href} href={href} download aria-label={`Download Talkie ${name.toLowerCase()} ${label}`}
+                      className="inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4 hover:text-trace focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current">
+                      {label} <Download size={16} aria-hidden="true" />
+                    </a>
+                  ))}
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
 
       <section className="mt-12 grid gap-5 border-t border-edge-faint pt-8 md:grid-cols-[1fr_2fr] md:gap-12">
         <h2 className="font-display text-3xl">Keep it clear.</h2>
