@@ -44,11 +44,11 @@ export default function BrandPage() {
       <section className="mt-12 border-t border-edge-faint pt-8" aria-labelledby="brand-icons">
         <h2 id="brand-icons" className="font-display text-3xl">Icons.</h2>
         <p className="mt-3 text-base leading-relaxed text-ink-muted">
-          Use the app icon for app listings and the favicon for browser tabs.
+          The iOS and macOS apps use the same icon. Use the favicon for browser tabs.
         </p>
         <div className="mt-6 grid gap-8 sm:grid-cols-2">
           {[
-            { name: 'App icon', preview: '/icon-1024.png', links: [['PNG · 1024 × 1024', '/icon-1024.png'], ['PNG · 512 × 512', '/icon-512.png']] },
+            { name: 'iOS and macOS app icon', preview: '/icon-1024.png', links: [['PNG · 1024 × 1024', '/icon-1024.png'], ['PNG · 512 × 512', '/icon-512.png']] },
             { name: 'Favicon', preview: '/favicon.svg', links: [['SVG', '/favicon.svg'], ['ICO', '/favicon.ico']] },
           ].map(({ name, preview, links }) => (
             <figure key={name} className="min-w-0">
