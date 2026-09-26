@@ -4,7 +4,7 @@ import MainShell from '../../components/MainShell'
 export const metadata = {
   title: 'Brand — Talkie',
   description:
-    "Talkie's brand guide covers the wordmark, colors, type, voice, and motion used across Mac, iPhone, Watch, and marketing surfaces on usetalkie.com.",
+    'Download the official Talkie logo as an SVG for light or dark backgrounds. Find the brand colors and simple guidelines for using the wordmark consistently.',
   alternates: { canonical: 'https://usetalkie.com/brand/' },
 }
 

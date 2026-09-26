@@ -67,7 +67,7 @@ export default function SiteShell({ children }) {
             className="inline-flex h-11 min-w-11 items-center group"
             aria-label="Talkie home"
           >
-            <Wordmark size={28} state="listening" pulse />
+            <Wordmark size={28} />
           </Link>
 
           <nav className="hidden items-center gap-5 text-[9px] uppercase tracking-[0.24em] text-ink-faint lg:flex">
@@ -112,7 +112,7 @@ export default function SiteShell({ children }) {
           {/* Wordmark + tagline + primary CTA */}
           <div className="flex flex-col gap-8 border-b border-edge-subtle pb-8 md:flex-row md:items-end md:justify-between md:gap-12 md:pb-10">
             <div className="max-w-sm">
-              <Wordmark size={48} state="listening" pulse />
+              <Wordmark size={48} />
               <p className="mt-5 font-display text-2xl leading-tight tracking-[-0.01em] text-ink">
                 Talk to your Mac.
                 <br />
