@@ -3,8 +3,8 @@ import { Download } from 'lucide-react'
 import { Wordmark } from './brand/Wordmark'
 
 const variants = [
-  { name: 'For light backgrounds', file: 'dark', background: '#F4EFE6', ink: '#15140F' },
-  { name: 'For dark backgrounds', file: 'light', background: '#0E0D0A', ink: '#F4EFE6' },
+  { name: 'Light mode · dark logo', file: 'dark', background: '#F4EFE6', ink: '#15140F' },
+  { name: 'Dark mode · light logo', file: 'light', background: '#0E0D0A', ink: '#F4EFE6' },
 ]
 
 export default function BrandPage() {
@@ -13,7 +13,7 @@ export default function BrandPage() {
       <div className="max-w-2xl">
         <h1 className="font-display text-5xl leading-tight md:text-6xl">The Talkie logo.</h1>
         <p className="mt-5 text-base leading-relaxed text-ink-muted">
-          The Talkie wordmark and icons. Download the original files for use on websites, in apps, and in print.
+          The Talkie wordmark and icons. Download transparent PNGs or SVGs for light and dark backgrounds.
         </p>
       </div>
 
@@ -28,14 +28,19 @@ export default function BrandPage() {
             </div>
             <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 pt-3">
               <span className="text-sm text-ink-muted">{name}</span>
-              <a
-                href={`/brand/talkie-wordmark-${file}.svg`}
-                download
-                aria-label={`Download Talkie SVG ${name.toLowerCase()}`}
-                className="inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4 hover:text-trace focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
-              >
-                Download SVG <Download size={16} aria-hidden="true" />
-              </a>
+              <div className="flex gap-5">
+                {['png', 'svg'].map((format) => (
+                  <a
+                    key={format}
+                    href={`/brand/talkie-wordmark-${file}.${format}`}
+                    download
+                    aria-label={`Download Talkie ${name.toLowerCase()} ${format.toUpperCase()}`}
+                    className="inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4 hover:text-trace focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+                  >
+                    {format.toUpperCase()} <Download size={16} aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
             </figcaption>
           </figure>
         ))}
