@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import CliPage from '../../../components/docs/CliPage'
 
 export const metadata = {
@@ -14,5 +15,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <CliPage />
+  return <><Breadcrumbs items={[{ name: 'Documentation', path: '/docs/' }, { name: 'CLI Reference', path: '/docs/cli/' }]} /><CliPage /></>
 }

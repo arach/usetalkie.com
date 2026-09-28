@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../components/Breadcrumbs'
 import TourLandingPage from '../../components/TourLandingPage'
 
 const PAGE_TITLE = 'Tour — See Talkie in action'
@@ -26,5 +27,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <TourLandingPage />
+  return <><Breadcrumbs items={[{ name: 'Tour', path: '/tour/' }]} /><TourLandingPage /></>
 }

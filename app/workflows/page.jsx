@@ -1,7 +1,7 @@
 import WorkflowsPage from '../../components/WorkflowsPage'
 import MainShell from '../../components/MainShell'
 
-const PAGE_TITLE = 'Workflows — Talkie'
+const PAGE_TITLE = 'Talkie Workflows: Turn Voice Memos Into Files and Actions'
 const PAGE_DESCRIPTION =
   'Talkie workflows turn captured speech into drafts, tasks, files, and follow-up actions on your Mac. Private, editable recipes you can run again.'
 

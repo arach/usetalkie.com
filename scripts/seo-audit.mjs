@@ -297,6 +297,43 @@ async function auditSitemap() {
   return urls
 }
 
+async function auditPageMetadata(urls) {
+  const titles = new Set()
+  const descriptions = new Set()
+  for (const url of urls) {
+    const file = outputPathForUrl(url)
+    if (!await fileExists(file)) continue
+    const html = await readText(file)
+    const title = html.match(/<title>(.*?)<\/title>/s)?.[1]?.trim() || ''
+    const description = metaContent(html, 'description').trim()
+    assertCheck(title.length >= 20, `descriptive title: ${url}`)
+    assertCheck(description.length >= 70, `nonempty descriptive meta description: ${url}`)
+    assertCheck(!titles.has(title), `unique title: ${url}`)
+    assertCheck(!descriptions.has(description), `unique description: ${url}`)
+    const ogTitle = metaContent(html, 'og:title')
+    if (ogTitle) assertCheck(metaContent(html, 'og:url') === canonicalHref(html), `Open Graph URL matches canonical: ${url}`)
+    if (ogTitle) assertCheck(metaContent(html, 'twitter:title') === ogTitle, `social titles agree: ${url}`)
+    titles.add(title)
+    descriptions.add(description)
+    assertCheck(h1Count(html) === 1, `exactly one H1: ${url}`)
+    const markup = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<!--[\s\S]*?-->/g, '')
+    const images = markup.match(/<img\b[^>]*>/gi) || []
+    assertCheck(images.every(tag => /\balt\s*=/.test(tag)), `all images declare alt text: ${url}`)
+    for (const source of jsonLdScripts(html)) {
+      try {
+        const data = JSON.parse(source)
+        assertCheck(Boolean(data['@context']), `JSON-LD context: ${url}`)
+        const nodes = data['@graph'] || [data]
+        for (const node of nodes) {
+          if (node['@type'] === 'BreadcrumbList') {
+            assertCheck(node.itemListElement.length >= 2 && node.itemListElement.every((item, index) => item.position === index + 1 && item.name && item.item), `valid breadcrumb trail: ${url}`)
+          }
+        }
+      } catch (error) { fail(`JSON-LD parse error: ${url}: ${error.message}`) }
+    }
+  }
+}
+
 async function auditExportIndexingIntent(sitemapUrls) {
   const outDir = path.join(ROOT, 'out')
   if (!existsSync(outDir)) {
@@ -455,6 +492,7 @@ function printSummary() {
 async function main() {
   await auditStaticFiles()
   const urls = await auditSitemap()
+  await auditPageMetadata(urls)
   await auditExportIndexingIntent(urls)
   await auditLiveUrls(urls)
   await auditRecipeJson()

@@ -1,7 +1,7 @@
 import PhilosophyPage from '../../components/PhilosophyPage'
 import MainShell from '../../components/MainShell'
 
-const PAGE_TITLE = 'Philosophy — Talkie'
+const PAGE_TITLE = 'Talkie Philosophy: Local Voice Capture and Context'
 const PAGE_DESCRIPTION =
   'Philosophy behind Talkie: local-first voice capture for agents and everyday work. Voice, local context, and Apple devices make remote and desk use practical.'
 

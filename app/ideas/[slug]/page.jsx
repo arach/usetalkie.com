@@ -93,6 +93,7 @@ export async function generateMetadata({ params }) {
       locale: 'en_US',
       type: 'article',
       publishedTime: idea.date,
+      modifiedTime: idea.updated,
       tags: idea.tags,
       images: [{ url: `/og/ideas/${slug}.png`, width: 1200, height: 630 }],
     },
@@ -124,7 +125,7 @@ function ideaSchema(idea, slug) {
         url,
         mainEntityOfPage: url,
         datePublished: idea.date,
-        dateModified: idea.date,
+        dateModified: idea.updated,
         image: `https://usetalkie.com/og/ideas/${slug}.png`,
         keywords: (idea.tags || []).join(', '),
         author: {

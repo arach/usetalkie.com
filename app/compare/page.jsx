@@ -2,7 +2,7 @@ import { getAllComparisons } from '../../lib/ideas'
 import IdeasPage from '../../components/IdeasPage'
 import MainShell from '../../components/MainShell'
 
-const PAGE_TITLE = 'Compare Talkie'
+const PAGE_TITLE = 'Compare Talkie with Mac Dictation and Voice Apps'
 const PAGE_DESCRIPTION =
   'Compare Talkie with Mac dictation, transcription, and voice-control apps. Fair first-party guides that say when Talkie or another tool fits better.'
 

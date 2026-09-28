@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import LifecyclePage from '../../../components/docs/LifecyclePage'
 
 export const metadata = {
@@ -18,5 +19,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <LifecyclePage />
+  return <><Breadcrumbs items={[{ name: 'Documentation', path: '/docs/' }, { name: 'Lifecycle', path: '/docs/lifecycle/' }]} /><LifecyclePage /></>
 }

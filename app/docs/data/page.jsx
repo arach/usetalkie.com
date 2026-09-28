@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import DataPage from '../../../components/docs/DataPage'
 
 export const metadata = {
@@ -18,5 +19,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <DataPage />
+  return <><Breadcrumbs items={[{ name: 'Documentation', path: '/docs/' }, { name: 'Data Layer', path: '/docs/data/' }]} /><DataPage /></>
 }

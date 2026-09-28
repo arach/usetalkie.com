@@ -2,7 +2,7 @@ import { getAllIdeas } from '../../lib/ideas'
 import IdeasPage from '../../components/IdeasPage'
 import MainShell from '../../components/MainShell'
 
-const PAGE_TITLE = 'Ideas - Talkie'
+const PAGE_TITLE = 'Talkie Ideas: Dictation, Local AI, and Voice Workflows'
 const PAGE_DESCRIPTION =
   'Essays and notes on voice computing, local models, and the tools built around Talkie. Read about CLI agents, on-device models, and capture workflows.'
 

@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import ArchitecturePage from '../../../components/docs/ArchitecturePage'
 
 export const metadata = {
@@ -18,5 +19,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <ArchitecturePage />
+  return <><Breadcrumbs items={[{ name: 'Documentation', path: '/docs/' }, { name: 'Architecture', path: '/docs/architecture/' }]} /><ArchitecturePage /></>
 }

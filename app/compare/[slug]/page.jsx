@@ -58,6 +58,7 @@ export async function generateMetadata({ params }) {
       locale: 'en_US',
       type: 'article',
       publishedTime: comparison.date,
+      modifiedTime: comparison.updated,
       tags: comparison.tags,
       images: [{ url: image, width: 1200, height: 630 }],
     },
@@ -83,7 +84,7 @@ function comparisonSchema(comparison, slug) {
         url,
         mainEntityOfPage: url,
         datePublished: comparison.date,
-        dateModified: comparison.date,
+        dateModified: comparison.updated,
         image: `https://usetalkie.com/og/ideas/${comparison.sourceSlug}.png`,
         keywords: (comparison.tags || []).join(', '),
         author: {

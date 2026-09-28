@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import TailscalePage from '../../../components/docs/TailscalePage'
 
 export const metadata = {
@@ -19,5 +20,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <TailscalePage />
+  return <><Breadcrumbs items={[{ name: 'Documentation', path: '/docs/' }, { name: 'Tailscale Setup', path: '/docs/tailscale/' }]} /><TailscalePage /></>
 }

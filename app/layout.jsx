@@ -96,11 +96,9 @@ export const metadata = {
     ],
     shortcut: ['/favicon.svg?v=talkie-t']
   },
+  // Let Twitter titles and descriptions follow each route's Open Graph metadata.
   twitter: {
     card: 'summary_large_image',
-    title: 'Talkie - Talk to your Mac',
-    description:
-      'Talk to your Mac to capture a thought, shape a draft, search what you said, or kick off a workflow. A mic is all you need.',
     images: ['/og-image.png'],
   },
 }

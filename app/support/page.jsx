@@ -1,7 +1,7 @@
 import SupportPage from '../../components/SupportPage'
 import MainShell from '../../components/MainShell'
 
-const PAGE_TITLE = 'Support — Talkie'
+const PAGE_TITLE = 'Talkie Support: Setup, Permissions, and Sync Help'
 const PAGE_DESCRIPTION =
   'Support for Talkie on Mac, iPhone, and Apple Watch. Browse common topics, troubleshooting for dictation and sync, and contact the Talkie support team.'
 

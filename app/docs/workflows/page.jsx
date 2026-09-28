@@ -1,3 +1,4 @@
+import Breadcrumbs from '../../../components/Breadcrumbs'
 import WorkflowsPage from '../../../components/docs/WorkflowsPage'
 
 export const metadata = {
@@ -18,5 +19,5 @@ export const metadata = {
 }
 
 export default function Page() {
-  return <WorkflowsPage />
+  return <><Breadcrumbs items={[{ name: 'Documentation', path: '/docs/' }, { name: 'Workflows', path: '/docs/workflows/' }]} /><WorkflowsPage /></>
 }
