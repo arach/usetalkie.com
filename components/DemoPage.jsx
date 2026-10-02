@@ -7,8 +7,8 @@ import { Play, Laptop, Mic, Smartphone, Lock } from 'lucide-react'
  * Composition:
  *   1. Hero — phosphor eyebrow + headline + supporting copy
  *   2. Notice — placeholder + mailto "ping" CTA (no client state)
- *   3. Hero clip — TalkieHero.mp4 with native <video controls>
- *   4. Promo clip — TalkiePromo.mp4
+ *   3. Hero clip — the cross-app demo with native <video controls>
+ *   4. iPhone clip — the speak-iphone tour take
  *   5. Spec strip — three product summary tiles
  *   6. Cross-surface CTA — install + tie-back to /mac
  *
@@ -41,7 +41,7 @@ export default function DemoPage() {
               className="text-[10px] uppercase tracking-[0.26em] text-trace"
               style={{ textShadow: '0 0 4px var(--trace-glow)' }}
             >
-              · DEMO REEL · 60s
+              · DEMO REEL · 90s
             </p>
           </div>
           <h1 className="mt-4 font-display text-5xl font-normal leading-[1.02] tracking-[-0.02em] text-ink md:text-6xl">
@@ -99,7 +99,7 @@ export default function DemoPage() {
               className="text-[10px] uppercase tracking-[0.26em] text-trace"
               style={{ textShadow: '0 0 4px var(--trace-glow)' }}
             >
-              · CH-A · OVERVIEW · 60s
+              · CH-A · OVERVIEW · 90s
             </p>
             <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
               CLIP · 01 / 02
@@ -107,15 +107,15 @@ export default function DemoPage() {
           </div>
 
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-            The 60-second tour.
+            The full path, in one take.
           </h2>
 
           <ClipFrame
-            src="/videos/TalkieHero.mp4"
+            src="https://kyuduglcwb3yapbw.public.blob.vercel-storage.com/website/videos/talkie-cross-app-demo-2026-08-13-22786010.mp4"
             label="TALKIE OVERVIEW"
             channel="01"
-            durationLabel="≈ 60s"
-            poster=""
+            durationLabel="≈ 90s"
+            poster="/videos/talkie-cross-app-demo-poster.jpg"
           />
         </div>
       </section>
@@ -128,7 +128,7 @@ export default function DemoPage() {
               className="text-[10px] uppercase tracking-[0.26em] text-trace"
               style={{ textShadow: '0 0 4px var(--trace-glow)' }}
             >
-              · CH-B · PROMO · SHORT
+              · CH-B · IPHONE · 8s
             </p>
             <p className="text-[9px] uppercase tracking-[0.22em] text-ink-subtle">
               CLIP · 02 / 02
@@ -136,15 +136,16 @@ export default function DemoPage() {
           </div>
 
           <h2 className="mt-3 font-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-4xl">
-            <span className="italic text-ink-muted">Quick promo.</span>
+            <span className="italic text-ink-muted">From your pocket.</span>
           </h2>
 
           <ClipFrame
-            src="/videos/TalkiePromo.mp4"
-            label="TALKIE PROMO"
+            src="/videos/tour/speak-iphone.mp4"
+            label="TALKIE IPHONE"
             channel="02"
-            durationLabel="SHORT"
-            narrow
+            durationLabel="8s"
+            poster="/videos/tour/speak-iphone-poster.jpg"
+            portrait
           />
         </div>
       </section>
@@ -257,9 +258,10 @@ export default function DemoPage() {
  * ClipFrame — oscilloscope-flavored video chrome around a native
  * <video> element. No JS player; controls are the browser default.
  */
-function ClipFrame({ src, label, channel, durationLabel, narrow = false }) {
+function ClipFrame({ src, label, channel, durationLabel, poster, narrow = false, portrait = false }) {
+  const width = portrait ? 'mx-auto max-w-sm' : narrow ? 'mx-auto max-w-3xl' : ''
   return (
-    <div className={`relative mt-8 ${narrow ? 'mx-auto max-w-3xl' : ''}`}>
+    <div className={`relative mt-8 ${width}`}>
       <div className="group/clip relative overflow-hidden rounded-md border border-edge-dim bg-surface p-3 transition-all duration-200 hover:border-amber/50 hover:shadow-[0_0_22px_-6px_var(--trace-glow)] md:p-4">
         <div
           aria-hidden
@@ -290,10 +292,11 @@ function ClipFrame({ src, label, channel, durationLabel, narrow = false }) {
         <div className="relative overflow-hidden rounded-sm border border-edge bg-canvas transition-colors duration-200 group-hover/clip:border-amber/40">
           <video
             src={src}
+            poster={poster || undefined}
             controls
             playsInline
             preload="metadata"
-            className="block aspect-video w-full bg-canvas"
+            className={`block w-full bg-canvas ${portrait ? 'aspect-[888/1920]' : 'aspect-video'}`}
           />
         </div>
 

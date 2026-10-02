@@ -21,32 +21,47 @@ import DemoViewer from './DemoViewer'
  * without hiding any screens.
  */
 
+const CROSS_APP_DEMO =
+  'https://kyuduglcwb3yapbw.public.blob.vercel-storage.com/website/videos/talkie-cross-app-demo-2026-08-13-22786010.mp4'
+
+// Takes recorded from the shipping app (Aug–Sep 2026), shared with talkie.to's /tour.
+const tourTake = (id, title) => ({
+  id,
+  src: `/videos/tour/${id}.mp4`,
+  poster: `/videos/tour/${id}-poster.jpg`,
+  title,
+})
+
 const DEMO_SECTIONS = [
   {
     id: 'mac',
     title: 'Mac',
-    description: 'Dictate into anything you’re already using. Compose, transform, ship.',
+    description: 'Dictate into anything you’re already using. Capture, keep the context, hand it on.',
     videos: [
-      { id: 'mac-overview', src: '/videos/TalkieOverview.mp4', title: 'Overview' },
-      { id: 'mac-dictation', src: '/videos/TalkieDictation.mp4', title: 'Dictation' },
+      tourTake('editor', 'Editor'),
+      tourTake('capture-region', 'Screen capture'),
+      tourTake('meeting-notes', 'Meetings'),
+      tourTake('workflow', 'Workflows'),
+      tourTake('dictate-mac', 'Dictation'),
     ],
   },
   {
     id: 'mobile',
     title: 'Mobile',
-    description: 'Capture on the go. Sync via iCloud. Your Mac picks it up from there.',
-    videos: [
-      { id: 'mob-recording', src: '/videos/MobileRecording.mp4', title: 'Recording' },
-      { id: 'mob-capture', src: '/videos/CaptureOverview.mp4', title: 'Capture' },
-    ],
+    description: 'Capture on the go. Point a task at an agent from your pocket.',
+    videos: [tourTake('speak-iphone', 'Ask an agent')],
   },
   {
     id: 'reel',
     title: 'Full Reel',
-    description: 'The longer story. The 60-second tour and the closing pitch.',
+    description: 'One capture, all the way through: spoken, worked by an agent, landed somewhere else.',
     videos: [
-      { id: 'reel-60s', src: '/videos/60s%20Demo%20-%20Full%20Overview.mp4', title: '60-second Tour' },
-      { id: 'reel-promo', src: '/videos/TalkiePromo.mp4', title: 'Promo' },
+      {
+        id: 'reel-cross-app',
+        src: CROSS_APP_DEMO,
+        poster: '/videos/talkie-cross-app-demo-poster.jpg',
+        title: 'Cross-app demo',
+      },
     ],
   },
 ]
