@@ -19,7 +19,7 @@ export const metadata = {
     siteName: 'Talkie',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og/home.png',
         width: 1200,
         height: 630,
         alt: 'Talkie security and privacy',
@@ -32,7 +32,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: ['/og-image.png'],
+    images: ['/og/home.png'],
   },
 }
 

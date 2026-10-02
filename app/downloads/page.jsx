@@ -19,13 +19,13 @@ export const metadata = {
     siteName: 'Talkie',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: PAGE_TITLE }],
+    images: [{ url: '/og/home.png', width: 1200, height: 630, alt: PAGE_TITLE }],
   },
   twitter: {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: ['/og-image.png'],
+    images: ['/og/home.png'],
   },
 }
 

@@ -11,7 +11,7 @@ export const metadata = {
   openGraph: {
     title: 'Demo - Talkie',
     description: 'See Talkie in action. Watch how voice-to-action works on your Mac.',
-    images: ['/og-image.png'],
+    images: ['/og/home.png'],
   },
 }
 

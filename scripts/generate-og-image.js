@@ -13,7 +13,7 @@ const mac = asset('screenshots/mac/current/talkie-home-light.webp', 'image/webp'
 const phone = asset('screenshots/mobile/iphone-home-current.webp', 'image/webp');
 const landscape = asset('backgrounds/talkie-listening-pavilion.webp', 'image/webp');
 const cards = [
-  { slug: 'home', label: 'MAC · IPHONE · APPLE WATCH', title: 'Context app<br>for your', emphasis: 'agents.', description: 'Dictate. Capture context.<br>Follow the result.', alt: 'Talkie with its light Mac app interface' },
+  { slug: 'home', label: 'MAC · IPHONE · APPLE WATCH', title: 'Talk to your apps.<br>Work with your', emphasis: 'agents.', description: 'Local-first voice capture<br>for Mac, iPhone, and Watch.', alt: 'Talkie with its light Mac app interface' },
   { slug: 'mac', label: 'TALKIE FOR MAC', title: 'Speak.<br>See it written.', emphasis: '', description: 'Local voice dictation.<br>For the apps you use.', alt: 'Talkie for Mac showing activity and recent captures' },
   { slug: 'mobile', label: 'IPHONE + APPLE WATCH', title: 'A thought.<br>A tap.', emphasis: 'Captured.', description: 'Voice capture, wherever you are.', alt: 'Talkie for iPhone showing the home screen' },
 ];
@@ -48,6 +48,7 @@ function template(card) {
   .window{position:absolute;width:650px;right:30px;top:58px;border-radius:11px;box-shadow:0 28px 60px #34476726,0 3px 10px #34476714;border:1px solid #fff;overflow:hidden;transform:perspective(1600px) rotateY(-5deg);transform-origin:right center}
   .window img{display:block;width:100%}
   .mobile{background:#f8f6ef;color:#302e29}.mobile .wash{background:linear-gradient(90deg,#f8f6ef 0%,#f8f6efed 40%,#f8f6ef40 100%)}
+  .home h1{font-size:58px}
   .mobile .orb{background:radial-gradient(ellipse,#d6cbb270,transparent 68%)}.mobile h1{font-size:78px}.mobile em{color:#8a785c}.mobile .copy{top:153px}.mobile .description{margin-top:28px}
   .phone-section{position:absolute;left:600px;top:0;width:600px;height:630px;overflow:hidden;background:linear-gradient(145deg,#eeece4e8,#dedbcde0);border-left:1px solid #d8d4c680}.phone{position:absolute;left:100px;top:58px;width:400px;padding:9px;background:linear-gradient(135deg,#807c73,#242522 25%,#75736e 60%,#242522);border-radius:58px;box-shadow:0 28px 48px #3e392a30,0 0 0 1px #6a685d}
   .phone img{display:block;width:100%;border-radius:49px}.island{position:absolute;width:108px;height:29px;background:#181917;border-radius:20px;top:22px;left:calc(50% - 54px)}

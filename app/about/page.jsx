@@ -28,13 +28,13 @@ export const metadata = {
     siteName: 'Talkie',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: pageMetadata.title }],
+    images: [{ url: '/og/home.png', width: 1200, height: 630, alt: pageMetadata.title }],
   },
   twitter: {
     card: 'summary_large_image',
     title: pageMetadata.title,
     description: pageMetadata.description,
-    images: ['/og-image.png'],
+    images: ['/og/home.png'],
   },
 }
 

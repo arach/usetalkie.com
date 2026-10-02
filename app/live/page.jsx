@@ -17,7 +17,7 @@ export const metadata = {
     siteName: 'Talkie',
     images: [
       {
-        url: '/og-live.png',
+        url: '/og/mac.png',
         width: 1200,
         height: 630,
         alt: 'Talkie Dictation',
@@ -31,7 +31,7 @@ export const metadata = {
     title: 'Talkie Live Dictation for Mac',
     description:
       'Talkie for Mac is local-first voice dictation. Speak into any app, keep searchable captures, and run workflows. Current build free; $39 license planned.',
-    images: ['/og-live.png'],
+    images: ['/og/mac.png'],
   },
 }
 

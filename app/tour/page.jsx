@@ -14,7 +14,7 @@ export const metadata = {
     description: PAGE_DESCRIPTION,
     url: 'https://usetalkie.com/tour/',
     siteName: 'Talkie',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Talkie Tour' }],
+    images: [{ url: '/og/home.png', width: 1200, height: 630, alt: 'Talkie Tour' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -22,7 +22,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: ['/og-image.png'],
+    images: ['/og/home.png'],
   },
 }
 
