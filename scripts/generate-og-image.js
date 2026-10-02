@@ -9,18 +9,16 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const asset = (file, mime) => `data:${mime};base64,${fs.readFileSync(path.join(root, 'public', file)).toString('base64')}`;
 const font = (name, file) => `@font-face{font-family:${name};src:url('${asset(`fonts/${file}`, 'font/ttf')}')}`;
-const mac = asset('screenshots/mac/current/talkie-home-light.webp', 'image/webp');
-const phone = asset('screenshots/mobile/iphone-home-current.webp', 'image/webp');
-const landscape = asset('backgrounds/talkie-listening-pavilion.webp', 'image/webp');
+const img = file => asset(file, 'image/webp');
 const cards = [
-  { slug: 'home', label: 'MAC · IPHONE · APPLE WATCH', title: 'Talk to your apps.<br>Work with your', emphasis: 'agents.', description: 'Local-first voice capture<br>for Mac, iPhone, and Watch.', alt: 'Talkie with its light Mac app interface' },
-  { slug: 'mac', label: 'TALKIE FOR MAC', title: 'Speak.<br>See it written.', emphasis: '', description: 'Local voice dictation.<br>For the apps you use.', alt: 'Talkie for Mac showing activity and recent captures' },
-  { slug: 'mobile', label: 'IPHONE + APPLE WATCH', title: 'A thought.<br>A tap.', emphasis: 'Captured.', description: 'Voice capture, wherever you are.', alt: 'Talkie for iPhone showing the home screen' },
+  { slug: 'home', line: 'Talk to your apps.', scene: img('backgrounds/talkie-listening-pavilion.webp'), shot: img('screenshots/mac/current/talkie-home-light.webp'), alt: 'Talkie for Mac floating over a lakeside pavilion at golden hour' },
+  { slug: 'mac', line: 'Speak. It’s written.', scene: img('backgrounds/talkie-listening-pavilion-night.webp'), shot: img('screenshots/mac/current/talkie-editor-light.webp'), alt: 'The Talkie for Mac editor over a lakeside pavilion at night' },
+  { slug: 'mobile', line: 'A thought, a tap.', scene: img('backgrounds/talkie-coast.webp'), shot: img('screenshots/mobile/iphone-recording-current.webp'), alt: 'Talkie for iPhone recording, over a sunlit coast' },
 ];
 
 // Match the canonical Wordmark geometry; the font deliberately has a dotless i.
 function wordmark() {
-  const size = 37;
+  const size = 46;
   const advances = [600, 600, 600, 600, 340, 600];
   const gap = 3340 * (1 - 0.92) / 5;
   const positions = [0];
@@ -31,28 +29,21 @@ function wordmark() {
 }
 
 function template(card) {
-  const mobile = card.slug === 'mobile';
+  const phone = card.slug === 'mobile';
   return `<!doctype html><html lang="en"><meta charset="utf-8"><title>${card.alt}</title><style>
-  ${font('Talkie', 'Talkie-Medium.ttf')}${font('Display', 'Talkie-Display.ttf')}${font('Sans', 'Talkie-Sans.ttf')}${font('Mono', 'Talkie-Mono.ttf')}
-  *{box-sizing:border-box}body{margin:0;width:1200px;height:630px;overflow:hidden;background:#edf0f4;color:#202831;font-family:Sans}
-  .scene{position:absolute;inset:0;background:url('${landscape}') center 58%/cover;opacity:.15}
-  .wash{position:absolute;inset:0;background:linear-gradient(90deg,#f5f6f7 0%,rgba(245,246,247,.93) 32%,rgba(236,241,245,.28) 100%)}
-  .orb{position:absolute;left:670px;top:-100px;width:650px;height:800px;background:radial-gradient(ellipse,#cdd6eb80,transparent 68%)}
-  .brand{position:absolute;left:58px;top:42px;line-height:0}
-  .label{font-family:Mono;font-size:12px;letter-spacing:1.7px;color:#58687b;margin-bottom:23px}
-  .copy{position:absolute;left:58px;top:142px;z-index:2}
-  h1{font-family:Display;font-size:66px;line-height:.99;font-weight:400;letter-spacing:-1.8px;margin:0}
-  em{display:block;color:#657693;font-weight:400;margin-top:9px}
-  .description{font-size:19px;line-height:1.5;color:#647080;margin-top:23px}
-  footer{position:absolute;bottom:37px;left:58px;font-family:Mono;font-size:12px;color:#677382;letter-spacing:.7px}
-  .window{position:absolute;width:650px;right:30px;top:58px;border-radius:11px;box-shadow:0 28px 60px #34476726,0 3px 10px #34476714;border:1px solid #fff;overflow:hidden;transform:perspective(1600px) rotateY(-5deg);transform-origin:right center}
+  ${font('Talkie', 'Talkie-Medium.ttf')}${font('Display', 'Talkie-Display.ttf')}
+  *{box-sizing:border-box;margin:0}body{width:1200px;height:630px;overflow:hidden;position:relative;color:#fff;background:#1c2a44}
+  .scene{position:absolute;inset:0;background:url('${card.scene}') center 70%/cover}
+  .shade{position:absolute;inset:0;background:linear-gradient(100deg,#0d1a3373 0%,#0d1a3326 38%,transparent 60%)}
+  .copy{position:absolute;left:64px;top:60px;text-shadow:0 2px 24px #0b16304d}
+  .brand{line-height:0;filter:drop-shadow(0 2px 14px #0b163059)}
+  h1{font-family:Display;font-weight:400;font-style:italic;font-size:48px;line-height:1.05;letter-spacing:-.8px;margin-top:22px;max-width:420px}
+  .window{position:absolute;left:520px;top:132px;width:800px;border-radius:14px;overflow:hidden;box-shadow:0 40px 90px #08122a66,0 6px 18px #08122a33,0 0 0 1px #ffffff55}
   .window img{display:block;width:100%}
-  .mobile{background:#f8f6ef;color:#302e29}.mobile .wash{background:linear-gradient(90deg,#f8f6ef 0%,#f8f6efed 40%,#f8f6ef40 100%)}
-  .home h1{font-size:58px}
-  .mobile .orb{background:radial-gradient(ellipse,#d6cbb270,transparent 68%)}.mobile h1{font-size:78px}.mobile em{color:#8a785c}.mobile .copy{top:153px}.mobile .description{margin-top:28px}
-  .phone-section{position:absolute;left:600px;top:0;width:600px;height:630px;overflow:hidden;background:linear-gradient(145deg,#eeece4e8,#dedbcde0);border-left:1px solid #d8d4c680}.phone{position:absolute;left:100px;top:58px;width:400px;padding:9px;background:linear-gradient(135deg,#807c73,#242522 25%,#75736e 60%,#242522);border-radius:58px;box-shadow:0 28px 48px #3e392a30,0 0 0 1px #6a685d}
-  .phone img{display:block;width:100%;border-radius:49px}.island{position:absolute;width:108px;height:29px;background:#181917;border-radius:20px;top:22px;left:calc(50% - 54px)}
-  </style><body class="${mobile ? 'mobile' : card.slug}"><div class="scene"></div><div class="wash"></div><div class="orb"></div><div class="brand">${wordmark()}</div><div class="copy"><div class="label">${card.label}</div><h1>${card.title}${card.emphasis ? `<em>${card.emphasis}</em>` : ''}</h1><p class="description">${card.description}</p></div>${mobile ? `<div class="phone-section"><div class="phone"><img src="${phone}" alt="${card.alt}"><div class="island"></div></div></div>` : `<div class="window"><img src="${mac}" alt="${card.alt}"></div>`}<footer>usetalkie.com${card.slug === 'home' ? '' : `/${card.slug}`}</footer></body></html>`;
+  .phone{position:absolute;left:770px;top:52px;width:300px;padding:8px;border-radius:52px;background:linear-gradient(135deg,#8a857a,#262622 25%,#77746d 60%,#262622);box-shadow:0 40px 80px #08122a70,0 0 0 1px #00000040}
+  .phone img{display:block;width:100%;border-radius:44px}
+  .island{position:absolute;width:86px;height:24px;background:#141413;border-radius:14px;top:20px;left:calc(50% - 43px)}
+  </style><body><div class="scene"></div><div class="shade"></div><div class="copy"><div class="brand">${wordmark()}</div><h1>${card.line}</h1></div>${phone ? `<div class="phone"><img src="${card.shot}" alt=""><div class="island"></div></div>` : `<div class="window"><img src="${card.shot}" alt=""></div>`}</body></html>`;
 }
 
 const executablePath = [process.env.PUPPETEER_EXECUTABLE_PATH, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium'].find(p => p && fs.existsSync(p));
