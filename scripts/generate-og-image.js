@@ -11,7 +11,7 @@ const asset = (file, mime) => `data:${mime};base64,${fs.readFileSync(path.join(r
 const font = (name, file) => `@font-face{font-family:${name};src:url('${asset(`fonts/${file}`, 'font/ttf')}')}`;
 const img = file => asset(file, 'image/webp');
 const cards = [
-  { slug: 'home', line: 'Talk to your apps.', scene: img('backgrounds/talkie-listening-pavilion.webp'), shot: img('screenshots/mac/current/talkie-home-light.webp'), alt: 'Talkie for Mac floating over a lakeside pavilion at golden hour' },
+  { slug: 'home', line: 'Talk to your apps.', scene: img('backgrounds/talkie-listening-pavilion.webp'), shot: img('screenshots/mac/current/talkie-agent-home-light.webp'), alt: 'Talkie Agent Home, listing recent places over a lakeside pavilion at golden hour' },
   { slug: 'mac', line: 'Speak. It’s written.', scene: img('backgrounds/talkie-listening-pavilion-night.webp'), shot: img('screenshots/mac/current/talkie-editor-light.webp'), alt: 'The Talkie for Mac editor over a lakeside pavilion at night' },
   { slug: 'mobile', line: 'A thought, a tap.', scene: img('backgrounds/talkie-coast.webp'), shot: img('screenshots/mobile/iphone-recording-current.webp'), alt: 'Talkie for iPhone recording, over a sunlit coast' },
 ];
