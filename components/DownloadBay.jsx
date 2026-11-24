@@ -81,7 +81,7 @@ export default function DownloadBay({ caption }) {
           className="col-span-2 col-start-1 row-start-2 text-center text-[10px] uppercase tracking-[0.26em] transition-opacity duration-200 group-hover/dl:opacity-0"
           style={{ color: 'var(--panel-ink-faint)' }}
         >
-          {TALKIE_MAC_OFFER.currentBuildLabel} · macOS 14+
+          {TALKIE_MAC_OFFER.currentBuildLabel} · macOS 26+
         </span>
         <span
           aria-hidden

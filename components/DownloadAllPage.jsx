@@ -120,7 +120,7 @@ export default function DownloadAllPage() {
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
             <div>
-              <ChannelEyebrow>· INSTALL / ALL CHANNELS · v2.5.43</ChannelEyebrow>
+              <ChannelEyebrow>· INSTALL / ALL CHANNELS</ChannelEyebrow>
               <h1 className="mt-4 font-display text-[2.35rem] font-normal leading-[0.98] tracking-[-0.035em] text-ink md:text-[2.65rem]">
                 Download Talkie.<br />
                 <span className="italic text-ink-muted">Mac, iPhone, and Watch.</span>
@@ -131,8 +131,8 @@ export default function DownloadAllPage() {
                 A 7-day trial and a $39 one-time Mac license for up to two Macs are planned.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3 text-[10px] text-ink-subtle">
-                <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">BUILD 49</span>
-                <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">UNIVERSAL BINARY</span>
+                <a href="https://github.com/arach/usetalkie.com/releases/latest" className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1 underline">Latest Mac release</a>
+                <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">APPLE SILICON</span>
                 <span className="rounded-sm border border-edge-dim bg-canvas-alt px-2.5 py-1">APPLE NOTARIZED</span>
               </div>
             </div>
@@ -169,7 +169,7 @@ export default function DownloadAllPage() {
                 icon={Laptop}
                 channel="· CH-A · MAC"
                 title="Talkie for Mac"
-                meta="macOS 14+ · Apple Silicon"
+                meta="macOS 26+ · Apple Silicon"
               />
 
               <div className="space-y-6 p-5 md:p-6">
@@ -299,7 +299,7 @@ export default function DownloadAllPage() {
             <StatRow
               icon={Cpu}
               label="REQUIRES"
-              value="macOS 14+ · iOS 26+ · watchOS 10+"
+              value="macOS 26+ · iOS 26+ · watchOS 10+"
             />
             <StatRow
               icon={ShieldCheck}
@@ -318,18 +318,18 @@ export default function DownloadAllPage() {
             <div className="flex items-center justify-between border-b border-edge-dim pb-4">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.12em] text-trace">· SYSTEM SPECIFICATION SHEET</p>
-                <h2 className="mt-1 font-display text-[1.65rem] leading-[1.02] tracking-[-0.02em] font-normal text-ink">Technical Specifications (v2.5.43)</h2>
+                <h2 className="mt-1 font-display text-[1.65rem] leading-[1.02] tracking-[-0.02em] font-normal text-ink">Technical Specifications</h2>
               </div>
               <span className="hidden sm:inline-block rounded-sm border border-edge-dim bg-canvas-alt px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-ink-subtle">
-                BUILD 49 · NOTARIZED
+                NOTARIZED
               </span>
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">
                 <p className="text-[9px] uppercase tracking-[0.10em] text-ink-subtle">SYSTEM / HOST</p>
-                <p className="text-[11px] font-semibold text-ink">macOS 14.0+ (Sonoma, Sequoia)</p>
-                <p className="text-[10px] leading-relaxed text-ink-muted">Apple Silicon (M1-M4) &amp; Intel x86_64 Universal Binary</p>
+                <p className="text-[11px] font-semibold text-ink">macOS 26 or later</p>
+                <p className="text-[10px] leading-relaxed text-ink-muted">Mac with Apple silicon</p>
               </div>
 
               <div className="space-y-2 rounded-sm border border-edge-faint bg-canvas-alt p-4">

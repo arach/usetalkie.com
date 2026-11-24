@@ -183,7 +183,7 @@ export default function DownloadPage() {
                 <StatRow
                   icon={Cpu}
                   label="REQUIRES"
-                  value="macOS 14+ · Apple Silicon"
+                  value="macOS 26+ · Apple Silicon"
                 />
                 <StatRow
                   icon={ShieldCheck}

@@ -154,7 +154,7 @@ const KB_SECTIONS = [
         icon: AlertCircle,
         title: 'App will not launch or crashes',
         body:
-          'Download the current signed build again and reinstall it. If you use the command-line tools, run `talkie doctor` to diagnose issues. Check Console.app for crash logs. Talkie requires macOS 14 (Sonoma) or later.',
+          'Download the current signed build again and reinstall it. If you use the command-line tools, run `talkie doctor` to diagnose issues. Check Console.app for crash logs. Talkie requires macOS 26 or later.',
       },
     ],
   },
