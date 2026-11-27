@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       utmSource: utm?.utm_source || null,
       utmMedium: utm?.utm_medium || null,
       utmCampaign: utm?.utm_campaign || null,
-    }).onConflictDoNothing({ target: contacts.email }).returning({ id: contacts.id })
+    }).onConflictDoNothing({ target: contacts.email }).returning()
     const isNew = inserted.length > 0
     if (!isNew) {
       // Update use_case, source, and UTM if not already set
