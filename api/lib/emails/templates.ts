@@ -1,6 +1,6 @@
-const TESTFLIGHT_URL = 'https://marketing.usetalkie.com/testflight?ref=welcome-email'
-const MAC_DOWNLOAD_URL = 'https://usetalkie.com/dl?ref=welcome-email'
-const QR_IMAGE_URL = 'https://marketing.usetalkie.com/images/testflight-qr.png'
+const IOS_INSTALL_URL = 'https://www.talkie.to/install'
+const MAC_DOWNLOAD_URL = 'https://www.talkie.to/download'
+const QR_IMAGE_URL = 'https://www.talkie.to/images/install-qr.svg'
 const ICON_URL = 'https://usetalkie.com/talkie-icon.png'
 
 export interface EmailTemplate {
@@ -92,8 +92,8 @@ function qrBlock() {
   return `<table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center" style="padding: 0 0 24px;">
-                    <p style="margin: 0 0 10px; color: #555; ${mono}; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;">Scan for TestFlight</p>
-                    <img src="${QR_IMAGE_URL}" alt="TestFlight QR Code" width="120" height="120" style="border-radius: 8px;" />
+                    <p style="margin: 0 0 10px; color: #555; ${mono}; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;">Scan for the App Store</p>
+                    <img src="${QR_IMAGE_URL}" alt="Talkie App Store QR code" width="120" height="120" style="border-radius: 8px;" />
                   </td>
                 </tr>
               </table>`
@@ -114,8 +114,8 @@ ${lis}
 const welcomeIosTemplate: EmailTemplate = {
   slug: 'welcome-ios',
   name: 'Welcome - iOS',
-  description: 'Sent when someone signs up via the iPhone/TestFlight CTA. Prioritizes TestFlight, includes Mac download as secondary.',
-  subject: 'Welcome to Talkie - Your TestFlight is ready',
+  description: 'Sent when someone signs up via the iPhone CTA. Prioritizes the App Store, includes Mac download as secondary.',
+  subject: 'Welcome to Talkie - Get Talkie on iPhone',
   variables: ['email'],
   renderHtml: () => emailShell(`
               <p style="margin: 0 0 18px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
@@ -125,9 +125,9 @@ const welcomeIosTemplate: EmailTemplate = {
                 This is super early, so I'd love to hear any feedback. Found a bug? Have an idea? Press <strong style="color: #10b981;">⌘K</strong> on the website or just reply to this email - I read everything and respond to everyone.
               </p>
               <p style="margin: 0 0 24px; color: #a1a1a1; font-size: 15px; line-height: 1.6;">
-                Get the TestFlight beta on your iPhone and start dictating in seconds:
+                Get Talkie from the App Store on your iPhone and start dictating in seconds:
               </p>
-              ${ctaButton(TESTFLIGHT_URL, 'Download TestFlight Beta')}
+              ${ctaButton(IOS_INSTALL_URL, 'Get Talkie on the App Store')}
               ${qrBlock()}
               ${featureList([
                 'Voice memos with fully local transcription',
@@ -144,8 +144,8 @@ const welcomeIosTemplate: EmailTemplate = {
 
 Thanks for signing up! You're one of the first to get early access to Talkie - voice-to-text that actually works.
 
-Get the TestFlight beta on your iPhone:
-${TESTFLIGHT_URL}
+Get Talkie from the App Store on your iPhone:
+${IOS_INSTALL_URL}
 
 What you get:
 - Voice memos with fully local transcription
@@ -167,7 +167,7 @@ https://usetalkie.com`,
 const welcomeMacTemplate: EmailTemplate = {
   slug: 'welcome-mac',
   name: 'Welcome - Mac',
-  description: 'Sent when someone signs up via the Mac download CTA. Prioritizes Mac download, includes TestFlight as secondary.',
+  description: 'Sent when someone signs up via the Mac download CTA. Prioritizes Mac download, includes the App Store as secondary.',
   subject: 'Welcome to Talkie - Your download is ready',
   variables: ['email'],
   renderHtml: () => emailShell(`
@@ -189,7 +189,7 @@ const welcomeMacTemplate: EmailTemplate = {
               ])}
               <div style="margin-top: 24px; padding: 16px; background: #1a1a1a; border-radius: 10px; text-align: center;">
                 <p style="margin: 0 0 10px; color: #777; font-size: 13px;">Take it mobile</p>
-                ${secondaryButton(TESTFLIGHT_URL, 'Get iPhone TestFlight')}
+                ${secondaryButton(IOS_INSTALL_URL, 'Get Talkie for iPhone')}
                 ${qrBlock()}
               </div>
 `),
@@ -206,8 +206,8 @@ What you get:
 - Smart paste - text goes where your cursor was
 - Menu bar app - always one keystroke away
 
-Take it mobile - get iPhone TestFlight:
-${TESTFLIGHT_URL}
+Take it mobile - get Talkie for iPhone:
+${IOS_INSTALL_URL}
 
 Questions or feedback? Just reply to this email - I read everything.
 
@@ -243,7 +243,7 @@ const followUpTemplate: EmailTemplate = {
                   </tr>
                   <tr>
                     <td style="padding: 6px 0;">
-                      <a href="${TESTFLIGHT_URL}" style="color: #10b981; text-decoration: none; font-size: 14px;">Get iPhone TestFlight</a>
+                      <a href="${IOS_INSTALL_URL}" style="color: #10b981; text-decoration: none; font-size: 14px;">Get Talkie for iPhone</a>
                     </td>
                   </tr>
                   <tr>
@@ -264,7 +264,7 @@ If you ran into any issues getting set up, just reply to this email and I'll hel
 
 Quick links:
 - Download Talkie for Mac: ${MAC_DOWNLOAD_URL}
-- Get iPhone TestFlight: ${TESTFLIGHT_URL}
+- Get Talkie for iPhone: ${IOS_INSTALL_URL}
 - Setup guide & docs: https://usetalkie.com/docs
 
 - Arach, Founder of Talkie

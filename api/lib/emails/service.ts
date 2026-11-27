@@ -22,7 +22,7 @@ export async function sendWelcomeEmail({ email, useCase }: SendWelcomeEmailParam
   const templateSlug = getWelcomeTemplateSlug(useCase)
   const template = getTemplate(templateSlug) || getTemplate('welcome')!
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: EMAIL_CONFIG.from,
     to: email,
     bcc: EMAIL_CONFIG.bcc,
@@ -32,6 +32,7 @@ export async function sendWelcomeEmail({ email, useCase }: SendWelcomeEmailParam
     replyTo: EMAIL_CONFIG.replyTo,
   })
 
+  if (error) throw new Error(`Welcome email rejected: ${error.name}`)
   console.log(`Welcome email (${templateSlug}) sent to ${email}`)
 }
 
@@ -46,7 +47,7 @@ export async function sendFollowUpEmail({ email, scheduledAt }: SendFollowUpEmai
     return
   }
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: EMAIL_CONFIG.from,
     to: email,
     subject: template.subject,
@@ -56,6 +57,7 @@ export async function sendFollowUpEmail({ email, scheduledAt }: SendFollowUpEmai
     scheduledAt: scheduledAt.toISOString(),
   })
 
+  if (error) throw new Error(`Follow-up rejected: ${error.name}`)
   console.log(`Follow-up email scheduled for ${email} at ${scheduledAt.toISOString()}`)
 }
 

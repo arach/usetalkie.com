@@ -19,6 +19,7 @@ export default function ComingSoonBanner({ topic }) {
           email,
           intent: topic || 'coming-soon',
           source: 'docs',
+          honeypot: new FormData(e.target).get('website'),
         }),
       })
 
@@ -53,6 +54,7 @@ export default function ComingSoonBanner({ topic }) {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex items-center gap-2">
+                <input hidden name="website" tabIndex={-1} autoComplete="off" />
                 <input
                   type="email"
                   value={email}

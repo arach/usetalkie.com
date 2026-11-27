@@ -66,26 +66,18 @@ export async function POST(request: NextRequest) {
 
     const cleanEmail = email.toLowerCase().trim()
 
-    // Upsert contact into DB
-    const existing = await db
-      .select({ id: contacts.id })
-      .from(contacts)
-      .where(eq(contacts.email, cleanEmail))
-      .limit(1)
-
-    const isNew = existing.length === 0
-
-    if (isNew) {
-      await db.insert(contacts).values({
-        email: cleanEmail,
-        status: 'contact',
-        useCase: useCase || null,
-        source: referralSource || 'direct',
-        utmSource: utm?.utm_source || null,
-        utmMedium: utm?.utm_medium || null,
-        utmCampaign: utm?.utm_campaign || null,
-      })
-    } else {
+    // Only the request that creates the contact starts a welcome sequence.
+    const inserted = await db.insert(contacts).values({
+      email: cleanEmail,
+      status: 'contact',
+      useCase: useCase || null,
+      source: referralSource || 'direct',
+      utmSource: utm?.utm_source || null,
+      utmMedium: utm?.utm_medium || null,
+      utmCampaign: utm?.utm_campaign || null,
+    }).onConflictDoNothing({ target: contacts.email }).returning({ id: contacts.id })
+    const isNew = inserted.length > 0
+    if (!isNew) {
       // Update use_case, source, and UTM if not already set
       await db
         .update(contacts)

@@ -99,3 +99,11 @@ export const reports = pgTable(
 
 export type Report = typeof reports.$inferSelect
 export type NewReport = typeof reports.$inferInsert
+
+// Shared with the operator dashboard. Only topic-specific consent is recorded here.
+export const intents = pgTable('intents', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  email: varchar('email', { length: 255 }).notNull(),
+  intent: varchar('intent', { length: 255 }).notNull(),
+  source: varchar('source', { length: 255 }),
+})

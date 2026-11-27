@@ -45,6 +45,7 @@ const FOOTER_SECTIONS = [
   {
     label: 'Contact',
     links: [
+      { label: 'Email updates', href: 'https://www.talkie.to/signup?from=usetalkie', external: true },
       { label: 'Email',         href: 'mailto:hello@usetalkie.com',          external: true },
       { label: '@usetalkieapp', href: 'https://x.com/usetalkieapp',           external: true },
       { label: 'GitHub',        href: 'https://github.com/arach/usetalkie.com', external: true },

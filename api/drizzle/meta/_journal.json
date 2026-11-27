@@ -15,6 +15,13 @@
       "when": 1771437127913,
       "tag": "0001_far_crystal",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772731817024,
+      "tag": "0002_docs_intents",
+      "breakpoints": true
     }
   ]
 }
