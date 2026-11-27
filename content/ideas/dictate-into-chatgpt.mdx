@@ -3,20 +3,11 @@ title: "How to Dictate into ChatGPT on Mac"
 seoTitle: "Dictate into ChatGPT on Mac"
 description: "Dictate a ChatGPT prompt on your Mac. See how to review names, remove private details, and send just the question you want answered."
 date: "2026-09-22"
+updated: "2026-11-27"
 tags: ["dictation", "chatgpt", "mac", "how-to", "speech-to-text"]
 ---
 
-Dictating into ChatGPT on a Mac means speaking a prompt into the ChatGPT text box in the browser or desktop app without retyping. The reliable pattern is system-wide dictation: global hotkey, transcript, paste or insert at the focused field.
-
-Talkie provides that Mac loop with optional local recognition and a capture library when you want history beyond a single send.
-
-## When is voice better than typing into ChatGPT?
-
-- Long prompts with constraints, examples, and acceptance criteria
-- Thinking out loud while you still see the prior thread
-- Mobile-captured context you continue on the Mac later
-
-For short one-liners, Apple’s built-in dictation is often enough. For reusable captures and agent handoff, a dedicated dictation app fits better. Context: [Mac dictation guide](/ideas/mac-dictation/).
+You can talk through a prompt on your Mac, change your mind halfway through, and send just the question you meant to ask. With Talkie, hold your dictation shortcut while you speak. The next step depends on where you want to review your words.
 
 ## How do I dictate into ChatGPT with Talkie?
 
@@ -30,15 +21,19 @@ For short one-liners, Apple’s built-in dictation is often enough. For reusable
 
 In Talkie, open **Settings › Dictation › Delivery** and set **Paste action** to **Clipboard Only**. Dictate, then paste into a local text editor. If the draft is private, choose on-device transcription and turn off any cloud cleanup workflow.
 
-Say you dictate, “Write Maya an email confirming Friday. Actually, she hasn’t confirmed the room yet. The door code is one two three four. Ask if twelve people will fit.”
+**What you say aloud**
 
-What you paste into ChatGPT can be much shorter. “Draft a two-sentence email asking Maya whether the room seats twelve and whether Friday afternoon is available.”
+> Write Maya an email confirming Friday. Actually, she hasn’t confirmed the room yet. The door code is one two three four. Ask if twelve people will fit.
 
-Read the final question, then send it. The door code stays out of the chat, and the email asks about a date you’re still arranging.
+**What you send to ChatGPT**
 
-## Local vs cloud while prompting ChatGPT
+> Draft a short email to Maya. Ask if the room seats twelve and whether Friday afternoon is available.
 
-ChatGPT’s model runs in OpenAI’s cloud once you send. That does not force your **dictation** path to be cloud-based. You can still recognize speech on-device with Talkie, then paste the local transcript into ChatGPT. That split matters for drafts that should not upload as audio to a second vendor. Details: [local speech to text](/ideas/local-speech-to-text/).
+The second draft keeps the question and leaves out the door code. It also catches the mistake that would matter to Maya. You’re asking if Friday works.
+
+## Does my voice go to ChatGPT?
+
+When you use on-device transcription with cloud cleanup off, Talkie turns speech into text on your Mac. In this workflow, ChatGPT receives the words you paste and send. The recording stays out of the conversation. [How local speech recognition works](/ideas/local-speech-to-text/)
 
 ## Related patterns
 
