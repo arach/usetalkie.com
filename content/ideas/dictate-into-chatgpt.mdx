@@ -1,7 +1,7 @@
 ---
 title: "How to Dictate into ChatGPT on Mac"
 seoTitle: "Dictate into ChatGPT on Mac"
-description: "Dictate into ChatGPT on a Mac with system-wide voice input. Talkie types at the cursor in the browser or desktop chat so prompts stay where you already write."
+description: "Dictate a ChatGPT prompt on your Mac. See how to review names, remove private details, and send just the question you want answered."
 date: "2026-09-22"
 tags: ["dictation", "chatgpt", "mac", "how-to", "speech-to-text"]
 ---
@@ -21,12 +21,20 @@ For short one-liners, Apple’s built-in dictation is often enough. For reusable
 ## How do I dictate into ChatGPT with Talkie?
 
 1. Install Talkie from [Downloads](/downloads/).
-2. Configure a global hotkey.
+2. Configure your dictation hotkey. In **Settings › Dictation › Delivery**, choose **Copy & Paste** and leave **Press Enter after paste** off.
 3. Open ChatGPT (browser or desktop) and click into the message field.
 4. Hold the hotkey, speak the prompt, release.
-5. Review the inserted text, then send.
+5. Read the text in the message field, edit it, then send.
 
-If you want a cleaned prompt on the clipboard before pasting into ChatGPT, use [Dictate → Claude](/workflows/dictate-to-claude/) with the cleanup step pointed at “clear prompt, no preamble,” then paste into ChatGPT the same way.
+## Can I edit a spoken prompt before ChatGPT sees it?
+
+In Talkie, open **Settings › Dictation › Delivery** and set **Paste action** to **Clipboard Only**. Dictate, then paste into a local text editor. If the draft is private, choose on-device transcription and turn off any cloud cleanup workflow.
+
+Say you dictate, “Write Maya an email confirming Friday. Actually, she hasn’t confirmed the room yet. The door code is one two three four. Ask if twelve people will fit.”
+
+What you paste into ChatGPT can be much shorter. “Draft a two-sentence email asking Maya whether the room seats twelve and whether Friday afternoon is available.”
+
+Read the final question, then send it. The door code stays out of the chat, and the email asks about a date you’re still arranging.
 
 ## Local vs cloud while prompting ChatGPT
 
@@ -34,6 +42,7 @@ ChatGPT’s model runs in OpenAI’s cloud once you send. That does not force yo
 
 ## Related patterns
 
+- [Record a voice memo and ask AI about it later](https://www.talkie.to/guides/voice-memo-for-ai) if you want to keep the original recording
 - [Dictate into Cursor](/ideas/dictate-into-cursor/) for IDE prompts
 - [Voice memo → Obsidian](/workflows/voice-memo-to-obsidian/) when the thought should become a note instead of a chat turn
 - [Talkie vs Wispr Flow](/compare/wispr-flow/) if you are comparing formatting-first cloud dictation
