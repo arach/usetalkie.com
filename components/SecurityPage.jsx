@@ -63,7 +63,7 @@ const PRINCIPLES = [
     title: 'BYO providers',
     icon: KeyRound,
     body:
-      'When you use an external provider, audio can stay on your device and only the text you choose to send leaves the machine. That keeps the trust boundary clear. Your keys are stored in the macOS Keychain and accessed only at runtime to sign requests.',
+      'With Cloud annotation enabled in Settings › Meetings and a key for the selected provider, Talkie sends the available microphone and meeting-app audio to ElevenLabs or Deepgram for transcription. Your provider keys are stored in the macOS Keychain.',
   },
   {
     num: '05',
@@ -75,7 +75,7 @@ const PRINCIPLES = [
 ]
 
 const COMPARISON_ROWS = [
-  { feature: 'Audio Processing', talkie: 'Local (Neural Engine)', other: 'Cloud Server' },
+  { feature: 'Audio Processing', talkie: 'On-device dictation, optional cloud meeting transcription', other: 'Cloud Server' },
   { feature: 'Database Location', talkie: 'Local Disk + iCloud', other: 'Vendor’s Cloud SQL' },
   { feature: 'Offline Access', talkie: '100% Full Functionality', other: 'Limited / None' },
   { feature: 'Model Training', talkie: 'Never', other: 'Default Opt-in' },
@@ -392,8 +392,8 @@ function SecuritySchematic() {
           w={OPT.w}
           h={OPT.h}
           label="OPT · EXT.MODEL"
-          subLabel="byo keys · text only"
-          pinsLeft={['TXT']}
+          subLabel="your provider · your key"
+          pinsLeft={['IN']}
           dashed
           amber
         />
@@ -478,7 +478,7 @@ function SecuritySchematic() {
           letterSpacing="1"
           textAnchor="middle"
         >
-          OPT.TEXT.ONLY
+          OPT.PROVIDER
         </text>
         <text
           x={netOutX}
@@ -522,7 +522,7 @@ function SecuritySchematic() {
             fill="var(--ink-faint)"
             letterSpacing="1"
           >
-            dashed = opt-in · byo keys · text only leaves device
+            dashed = optional provider request
           </text>
         </g>
       </svg>
@@ -563,8 +563,8 @@ export default function SecurityPage() {
             Where your data goes, and where it doesn&apos;t.
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
-            Solid traces are your data path. Dashed amber traces are opt-in: text leaves the
-            device only when you route a workflow to an external provider.
+            On-device dictation processes speech on your Mac. The dashed lines show optional provider requests.
+            A writing workflow can send text. Cloud annotation sends meeting audio to your selected transcription provider.
           </p>
 
           <div className="mt-10 theme-warm-only">
@@ -959,7 +959,7 @@ export default function SecurityPage() {
       {/* DOWNLOAD — focused install footer */}
       <section className="relative border-t border-edge-faint bg-canvas-alt">
         <div className="mx-auto max-w-3xl px-4 py-20 md:px-6 md:py-24">
-          <DownloadBay caption="Audio stays on device. Transcripts land in your local SQLite. iCloud sync runs through your keys, not ours." />
+          <DownloadBay caption="On-device dictation processes audio locally. Optional sync uses your private iCloud database." />
         </div>
       </section>
     </>

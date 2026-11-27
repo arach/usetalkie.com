@@ -539,7 +539,7 @@ export function SecurityInfographic() {
                       Outbound: <span
                         className="font-bold transition-colors"
                         style={{ color: isOutboundActive ? 'var(--amber)' : 'var(--ink-muted)' }}
-                      >Text-Only Stream</span>
+                      >Selected provider</span>
                     </p>
 
                     {/* Tooltip Pop-up */}
@@ -548,7 +548,7 @@ export function SecurityInfographic() {
                        <div className="flex gap-2">
                           <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber" />
                           <span>
-                             Only the final, sanitized text prompt is sent. Audio files never leave your device.
+                             A writing workflow can send text. If you enable cloud meeting transcription, the selected provider receives meeting audio.
                           </span>
                        </div>
                     </div>
